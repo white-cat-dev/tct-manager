@@ -1,7 +1,12 @@
 require('angular');
 
 
-var tctApp = angular.module('tctApp', [require('angular-route'), require('angular-resource')]);
+var tctApp = angular.module('tctApp', [
+	require('angular-sanitize'),
+	require('angular-route'), 
+	require('angular-resource'), 
+	require('ui-select'),
+]);
 
 
 tctApp.config(['$locationProvider', function($locationProvider) {
@@ -69,6 +74,23 @@ tctApp.config(['$routeProvider', function($routeProvider) {
 			templateUrl: '/templates/orders',
 			controller: 'OrdersController'
 	    })
+	    .when('/orders/create', {
+			templateUrl: '/templates/orders/edit',
+			controller: 'OrdersController'
+	    })
+	    .when('/orders/:id', {
+			templateUrl: '/templates/orders/show',
+			controller: 'OrdersController'
+	    })
+	    .when('/orders/:id/edit', {
+			templateUrl: '/templates/orders/edit',
+			controller: 'OrdersController'
+	    })
+
+	    .when('/production', {
+			templateUrl: '/templates/production',
+			controller: 'ProductionController'
+	    })
 }]);
 
 tctApp.factory('CategoriesRepository', ['$resource', function($resource) { 
@@ -85,5 +107,9 @@ tctApp.factory('ClientsRepository', ['$resource', function($resource) {
 
 tctApp.factory('OrdersRepository', ['$resource', function($resource) { 
 	return $resource('/orders/:id'); 
+}]);
+
+tctApp.factory('ProductionRepository', ['$resource', function($resource) { 
+	return $resource('/production'); 
 }]);
 

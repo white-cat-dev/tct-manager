@@ -28,7 +28,7 @@
 			<th></th>
 		</tr>
 
-		<tr ng-repeat="client in cliens">
+		<tr ng-repeat="client in clients">
 			<td>
 				@{{ client.id }}
 			</td>

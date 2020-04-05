@@ -20,6 +20,7 @@ class CreateProductionsTable extends Migration
             $table->integer('order_id')->nullable();
             $table->decimal('planned', 10, 2)->unsigned();
             $table->decimal('performed', 10, 2)->unsigned();
+            $table->decimal('batches', 3, 2)->unsigned();
             $table->timestamps();
         });
     }

@@ -60,6 +60,14 @@
 			</div>
 		</div>
 
+		<div class="form-group">
+			<label>Квадратов из замеса</label>
+			<input type="text" class="form-control" ng-model="productGroupData['squares_from_batch']" ng-class="{'is-invalid': productGroupErrors['squares_from_batch']}">
+			<div class="invalid-feedback" ng-if="productGroupErrors['squares_from_batch']">
+				@{{ productGroupErrors['squares_from_batch'][0] }}
+			</div>
+		</div>
+
 		<h2>Цвета</h2>
 
 		<table class="table">

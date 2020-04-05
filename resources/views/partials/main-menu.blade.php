@@ -11,4 +11,7 @@
 	<div class="main-menu-item">
 		<a href="{{ route('orders') }}">Заказы</a>
 	</div>
+	<div class="main-menu-item">
+		<a href="{{ route('production') }}">Производство</a>
+	</div>
 </div>

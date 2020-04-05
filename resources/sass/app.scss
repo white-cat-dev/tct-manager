@@ -1,9 +1,14 @@
 @import "variables";
 @import "~bootstrap/scss/bootstrap";
+@import "~ui-select/dist/select";
 
 @import "categories";
 @import "products";
+@import "production";
 
+.open > .dropdown-menu {
+    display: block;
+}
 
 .btn:focus,
 .btn:active {
@@ -46,12 +51,26 @@ footer {
     display: flex;
     justify-content: space-between;
 
-	.left-buttons {
+    .input-group {
+    	width: auto;
+    }
 
+	.left-buttons {
+		display: flex;
+
+		& > .btn, 
+		& > div {
+			margin-right: 10px;
+		}
 	}
 
 	.right-buttons {
+		display: flex;
 
+		& > .btn, 
+		& > div {
+			margin-left: 10px;
+		}
 	}
 }
 
@@ -73,9 +92,9 @@ footer {
 
 .show-block {
 	border-radius: 5px;
-    box-shadow: 0px 0px 5px #dadada;
+    box-shadow: 0px 0px 5px $dark-grey;
     padding: 20px;
-    border: solid 1px #dadada;
+    border: solid 1px $dark-grey;
 
     .param-block {
     	padding: 20px 0px;
@@ -86,5 +105,25 @@ footer {
 .table {
 	tr td:last-child {
 		text-align: right;
+	}
+}
+
+.modal {
+	display: block;
+	background: rgba(0, 0, 0, 0.1);
+
+	.modal-content {
+		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+	}
+
+	.modal-header {
+		border-bottom: solid 1px $grey;
+	}
+
+	.modal-footer {
+		background: #f9f9f9;
+	    justify-content: center;
+	    border-top: solid 1px $dark-grey;
+	    border-radius: 0px 0px 5px 5px;
 	}
 }

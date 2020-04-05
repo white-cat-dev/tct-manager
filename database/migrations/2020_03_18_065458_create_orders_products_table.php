@@ -18,7 +18,6 @@ class CreateOrdersProductsTable extends Migration
             $table->id();
             $table->integer('order_id');
             $table->integer('product_id');
-            $table->integer('squares');
             $table->decimal('price', 8, 2)->unsigned();
             $table->decimal('count', 8, 2)->unsigned();
             $table->decimal('cost', 10, 2)->unsigned();

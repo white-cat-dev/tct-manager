@@ -23,6 +23,8 @@
         "angular": "^1.7.9",
         "angular-resource": "^1.7.9",
         "angular-route": "^1.7.9",
-        "bootstrap": "^4.4.1"
+        "angular-sanitize": "^1.7.9",
+        "bootstrap": "^4.4.1",
+        "ui-select": "^0.19.8"
     }
 }

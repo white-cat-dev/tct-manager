@@ -65,6 +65,19 @@ Route::prefix('orders')->group(function()
 	Route::delete('{order}', 'OrdersController@delete');
 });
 
+Route::prefix('production')->group(function()
+{
+	Route::get('/', 'ProductionController@index')->name('production');
+	// Route::get('create', 'OrdersController@create')->name('order-create');
+	// Route::get('{order}', 'OrdersController@show')->name('order-show');
+	// Route::get('{order}/edit', 'OrdersController@edit')->name('order-edit');
+
+	// Route::post('/', 'OrdersController@create');
+	// Route::post('{order}', 'OrdersController@edit');
+
+	// Route::delete('{order}', 'OrdersController@delete');
+});
+
 
 Route::prefix('templates')->group(function()
 {
@@ -94,5 +107,10 @@ Route::prefix('templates')->group(function()
 		Route::get('/', 'TemplatesController@orders');
 		Route::get('show', 'TemplatesController@ordersShow');
 		Route::get('edit', 'TemplatesController@ordersEdit');
+	});
+
+	Route::prefix('production')->group(function()
+	{
+		Route::get('/', 'TemplatesController@production');
 	});
 });

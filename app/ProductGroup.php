@@ -25,7 +25,8 @@ class ProductGroup extends Model
     ];
 
     protected $appends = [
-        'url'
+        'url',
+        'size'
     ];
 
     protected $with = [
@@ -46,5 +47,10 @@ class ProductGroup extends Model
     public function getUrlAttribute()
     {
         return route('product-show', ['productGroup' => $this->id]);
+    }
+
+    public function getSizeAttribute()
+    {
+        return $this->length . 'x' . $this->width . 'x' . $this->depth;
     }
 }

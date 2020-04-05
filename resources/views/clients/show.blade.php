@@ -1,5 +1,5 @@
-<div class="categories-block" ng-init="initShow()">
-	<h1>@{{ category.name }}</h1>
+<div class="clients-block" ng-init="initShow()">
+	<h1>@{{ client.name }}</h1>
 	
 	<div class="top-buttons-block">
 		<div class="left-buttons">
@@ -9,10 +9,10 @@
 		</div>
 
 		<div class="right-buttons">
-			<a ng-href="@{{ category.url + '/edit' }}" class="btn btn-primary">
+			<a ng-href="@{{ client.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="category.id" ng-click="delete(category.id)">
+			<button type="button" class="btn btn-primary" ng-if="client.id" ng-click="delete(client.id)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 		</div>
@@ -22,10 +22,28 @@
 	<div class="show-block">
 		<div class="param-block">
 			<div class="param-name">
-				Название
+				Имя
 			</div>
 			<div class="param-value">
-				@{{ category.name }}
+				@{{ client.name }}
+			</div>
+		</div>
+
+		<div class="param-block">
+			<div class="param-name">
+				Номер телефона
+			</div>
+			<div class="param-value">
+				@{{ client.phone }}
+			</div>
+		</div>
+
+		<div class="param-block">
+			<div class="param-name">
+				Электронная почта
+			</div>
+			<div class="param-value">
+				@{{ client.email }}
 			</div>
 		</div>
 	</div>

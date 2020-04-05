@@ -63,10 +63,14 @@
 				</div>
 			</td>
 			<td>
-				0
+				<div ng-repeat="product in productGroup.products">
+					@{{ product.realize_in_stock }} м<sup>2</sup>
+				</div>
 			</td>
 			<td>
-				0
+				<div ng-repeat="product in productGroup.products">
+					@{{ product.free_in_stock }} м<sup>2</sup>
+				</div>
 			</td>
 			<td>
 				<div class="btn-group" role="group">

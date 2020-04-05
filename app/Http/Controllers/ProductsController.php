@@ -41,7 +41,8 @@ class ProductsController extends Controller
         {
             $this->validate($request, $this->validationRules);
 
-            $productGroup = ProductGroup::create($this->getData($request));
+            $productGroupData = $this->getData($request);
+            $productGroup = ProductGroup::create($productGroupData);
 
             foreach ($request->get('products') as $productData) 
             {
@@ -61,7 +62,8 @@ class ProductsController extends Controller
         {
             $this->validate($request, $this->validationRules);
 
-            $productGroup->update($this->getData($request));
+            $productGroupData = $this->getData($request);
+            $productGroup->update($productGroupData);
 
             $productsIds = $productGroup->products()->select('id')->pluck('id');
 
