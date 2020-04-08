@@ -26,6 +26,10 @@ class Product extends Model
         'color_text'
     ];
 
+    protected $with = [
+        'product_group'
+    ];
+
 
     public function product_group()
     {

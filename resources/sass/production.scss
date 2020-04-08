@@ -50,12 +50,18 @@
 					border: solid 1px $dark-grey;
 					vertical-align: middle;
 					text-align: center;
+					cursor: pointer;
+					transition: 0.3s;
 				}
 
 				th {
 					background: $grey;
 
 					&.current {
+						background: lighten($green, 40%);
+					}
+
+					&:hover {
 						background: lighten($green, 45%);
 					}
 				}
@@ -66,15 +72,25 @@
 					padding: 0px;
 					font-size: 15px;
 					background: #FFFFFF;
-					cursor: pointer;
-					transition: 0.3s;
 
 					&.current {
-						background: lighten($green, 50%);
+						background: lighten($green, 45%);
 					}
 
-					&:hover {
-						background: lighten($green, 45%);
+					&.done {
+						.production-planned {
+							color: $green;
+						}
+					}
+
+					&.failed {
+						.production-planned {
+							color: $red;
+						}
+					}
+
+					&:hover, &.hover {
+						background: lighten($green, 50%);
 					}
 
 					.production-planned {

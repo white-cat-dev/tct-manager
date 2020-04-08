@@ -42235,7 +42235,12 @@ tctApp.factory('OrdersRepository', ['$resource', function ($resource) {
   return $resource('/orders/:id');
 }]);
 tctApp.factory('ProductionRepository', ['$resource', function ($resource) {
-  return $resource('/production');
+  return $resource('/production', null, {
+    orders: {
+      method: 'GET',
+      url: '/production/orders'
+    }
+  });
 }]);
 
 /***/ }),
@@ -42509,56 +42514,151 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
 angular.module('tctApp').controller('ProductionController', ['$scope', '$routeParams', '$location', 'ProductionRepository', function ($scope, $routeParams, $location, ProductionRepository) {
   $scope.days = 0;
+  $scope.monthes = {};
+  $scope.years = {};
   $scope.currentDay = 0;
   $scope.currentMonth = 0;
   $scope.currentYear = 0;
   $scope.products = [];
-  $scope.monthes = {
-    1: 'Январь',
-    2: 'Февраль',
-    3: 'Март',
-    4: 'Апрель',
-    5: 'Май',
-    6: 'Июнь',
-    7: 'Июль',
-    8: 'Август',
-    9: 'Сентябрь',
-    10: 'Октябрь',
-    11: 'Ноябрь',
-    12: 'Декабрь'
-  };
 
   $scope.init = function () {
-    ProductionRepository.products(function (response) {
+    var request = {};
+
+    if ($scope.currentYear > 0) {
+      request.year = $scope.currentYear;
+    }
+
+    if ($scope.currentMonth > 0) {
+      request.month = $scope.currentMonth;
+    }
+
+    console.log(request);
+    ProductionRepository.get(request, function (response) {
       $scope.days = response.days;
+      $scope.monthes = response.monthes;
+      $scope.years = response.years;
       $scope.currentDay = response.day;
       $scope.currentMonth = response.month;
       $scope.currentYear = response.year;
       $scope.productionProducts = response.products;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = $scope.productionProducts[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          product = _step.value;
+
+          for (key in product.productions) {
+            if (key < $scope.currentDay) {
+              if (product.productions[key].performed >= product.productions[key].planned) {
+                product.productions[key].status = 'done';
+              } else {
+                product.productions[key].status = 'failed';
+              }
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
     });
   };
 
   $scope.isModalShown = false;
-  $scope.modalDate = {};
+  $scope.modalDate = '';
+  $scope.modalProductionOrders = [];
+  $scope.modalProductId = 0;
 
-  $scope.showModal = function (currentDay) {
-    $scope.isModalShown = true;
-    var modalData = {
+  $scope.showModal = function (day, productId) {
+    var request = {
       'year': $scope.currentYear,
       'month': $scope.currentMonth,
-      'day': currentDay
+      'day': day
     };
-    ProductionRepository.get(function (response) {
-      $scope.days = response.days;
-      $scope.currentDay = response.day;
-      $scope.currentMonth = response.month;
-      $scope.currentYear = response.year;
-      $scope.productionProducts = response.products;
+
+    if (productId) {
+      request['product_id'] = productId;
+    }
+
+    ProductionRepository.orders(request, function (response) {
+      $scope.modalDate = response.date;
+      $scope.modalProductionOrders = response.orders;
+      $scope.isModalShown = true;
     });
   };
 
   $scope.hideModal = function () {
     $scope.isModalShown = false;
+    $scope.modalDate = '';
+    $scope.modalProductionOrders = [];
+  };
+
+  $scope.save = function () {
+    var productions = [];
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+      for (var _iterator2 = $scope.modalProductionOrders[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        order = _step2.value;
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = order.productions[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            production = _step3.value;
+            productions.push(production);
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+              _iterator3["return"]();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
+      }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+          _iterator2["return"]();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
+      }
+    }
+
+    ProductionRepository.save({
+      'productions': productions
+    }, function (response) {
+      $scope.hideModal();
+      $scope.init();
+    });
   };
 }]);
 
@@ -42580,19 +42680,34 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   };
   $scope.productGroupErrors = {};
   $scope.categories = [];
-  $scope.categoryId = 0;
+  $scope.currentCategory = 0;
 
   $scope.init = function () {
+    if ($location.search().category) {
+      $scope.currentCategory = $location.search().category;
+    }
+
+    $scope.loadCategories();
+    $scope.loadProducts();
+  };
+
+  $scope.loadCategories = function () {
     CategoriesRepository.query(function (response) {
       $scope.categories = response;
-
-      if ($scope.categories.length > 0) {
-        $scope.categoryId = $scope.categories[0].id;
-      }
     });
-    ProductsRepository.query(function (response) {
+  };
+
+  $scope.loadProducts = function () {
+    ProductsRepository.query({
+      'category': $scope.currentCategory
+    }, function (response) {
       $scope.productGroups = response;
     });
+  };
+
+  $scope.chooseCategory = function (category) {
+    $scope.currentCategory = category;
+    $scope.loadProducts();
   };
 
   $scope.initShow = function () {
@@ -42606,6 +42721,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 
   $scope.initEdit = function () {
     $scope.id = $routeParams['id'];
+    $scope.loadCategories();
 
     if ($scope.id) {
       ProductsRepository.get({

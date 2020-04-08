@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Order;
+use App\Client;
 use App\Realization;
 use App\Production;
 use Carbon\Carbon;
@@ -45,11 +46,12 @@ class OrdersController extends Controller
             $this->validate($request, $this->validationRules);
 
             $orderData = $this->getData($request);
+            
+            $client = Client::create($request->get('client'));
+            $orderData['client_id'] = $client->id;
+
             $order = Order::create($orderData);
 
-            $order->client()->create(
-            	$request->get('client')
-            );
 
             foreach ($request->get('products') as $productData) 
             {

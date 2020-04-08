@@ -16,7 +16,13 @@ class ProductsController extends Controller
     {
         if ($request->wantsJson())
         {
-            $productGroups = ProductGroup::all();
+            $category = $request->get('category');
+            $query = $productGroups = ProductGroup::with('products');
+            if ($category)
+            {
+                $query = $query->where('category_id', $category);
+            }
+            $productGroups = $query->get();
             return $productGroups;
         }
 

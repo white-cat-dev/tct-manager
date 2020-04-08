@@ -11343,6 +11343,8 @@ body > .ui-select-bootstrap.open {
   border: solid 1px #dadada;
   vertical-align: middle;
   text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .production-page .production-block .productions-block .table th {
@@ -11350,6 +11352,10 @@ body > .ui-select-bootstrap.open {
 }
 
 .production-page .production-block .productions-block .table th.current {
+  background: #afecbd;
+}
+
+.production-page .production-block .productions-block .table th:hover {
   background: #c4f1ce;
 }
 
@@ -11359,16 +11365,23 @@ body > .ui-select-bootstrap.open {
   padding: 0px;
   font-size: 15px;
   background: #FFFFFF;
-  cursor: pointer;
-  transition: 0.3s;
 }
 
 .production-page .production-block .productions-block .table td.current {
-  background: #d8f6df;
+  background: #c4f1ce;
 }
 
-.production-page .production-block .productions-block .table td:hover {
-  background: #c4f1ce;
+.production-page .production-block .productions-block .table td.done .production-planned {
+  color: #28a745;
+}
+
+.production-page .production-block .productions-block .table td.failed .production-planned {
+  color: #dc3545;
+}
+
+.production-page .production-block .productions-block .table td:hover,
+.production-page .production-block .productions-block .table td.hover {
+  background: #d8f6df;
 }
 
 .production-page .production-block .productions-block .table td .production-planned {
@@ -11398,10 +11411,19 @@ body > .ui-select-bootstrap.open {
   display: block;
 }
 
-.btn:focus,
-.btn:active {
+*:focus,
+*:active {
   outline: none;
   box-shadow: none;
+  background: inherit;
+}
+
+option:hover {
+  background: yellow;
+}
+
+.custom-select {
+  background: inherit;
 }
 
 header {
@@ -11415,14 +11437,78 @@ footer {
 }
 
 .main-menu-block {
-  background: #f1f4f7;
   margin-top: 20px;
   border-radius: 5px;
-  padding: 20px;
+  overflow: hidden;
 }
 
-.main-menu-block .main-menu-item {
-  padding: 10px;
+.main-menu-block .menu-item {
+  background: #4081b7;
+  border-bottom: solid 1px #dadada;
+  transition: 0.3s;
+  position: relative;
+}
+
+.main-menu-block .menu-item > a {
+  display: block;
+  padding: 15px 20px;
+  margin-right: 10px;
+  color: #FFFFFF;
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.main-menu-block .menu-item:hover {
+  background: #3b76a8;
+}
+
+.main-menu-block .menu-item.has-submenu > a {
+  margin-right: 50px;
+  padding-right: 0px;
+}
+
+.main-menu-block .menu-item.has-submenu .toggle {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 20px;
+  color: #FFFFFF;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.main-menu-block .menu-item.has-submenu.submenu-opened .toggle {
+  transform: rotate(-180deg);
+}
+
+.main-menu-block .menu-item.has-submenu.submenu-opened .submenu-block {
+  max-height: 500px;
+}
+
+.main-menu-block .submenu-block {
+  max-height: 0px;
+  transition: max-height 0.3s;
+}
+
+.main-menu-block .submenu-block .submenu-item {
+  display: block;
+  background: #aecae2;
+  border-top: solid 1px #dadada;
+  transition: 0.3s;
+}
+
+.main-menu-block .submenu-block .submenu-item > a {
+  display: block;
+  padding: 15px 20px;
+  color: black;
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.main-menu-block .submenu-block .submenu-item:hover {
+  background: #9ec1dd;
 }
 
 .content-block {
@@ -11510,5 +11596,10 @@ footer {
   justify-content: center;
   border-top: solid 1px #dadada;
   border-radius: 0px 0px 5px 5px;
+}
+
+.ui-select-container {
+  border: 1px solid #dadada;
+  border-radius: 0.25rem;
 }
 

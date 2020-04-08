@@ -9,6 +9,7 @@ class ProductGroup extends Model
 {
     protected $fillable = [
     	'name',
+        'category_id',
     	'set_pair_id',
         'category_id',
     	'width',
@@ -28,11 +29,6 @@ class ProductGroup extends Model
         'url',
         'size'
     ];
-
-    protected $with = [
-        'products'
-    ];
-
 
     public function products()
     {

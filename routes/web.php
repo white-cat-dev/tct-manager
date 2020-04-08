@@ -68,11 +68,12 @@ Route::prefix('orders')->group(function()
 Route::prefix('production')->group(function()
 {
 	Route::get('/', 'ProductionController@index')->name('production');
+	Route::get('orders', 'ProductionController@orders');
 	// Route::get('create', 'OrdersController@create')->name('order-create');
 	// Route::get('{order}', 'OrdersController@show')->name('order-show');
 	// Route::get('{order}/edit', 'OrdersController@edit')->name('order-edit');
 
-	// Route::post('/', 'OrdersController@create');
+	Route::post('/', 'ProductionController@save');
 	// Route::post('{order}', 'OrdersController@edit');
 
 	// Route::delete('{order}', 'OrdersController@delete');

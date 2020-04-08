@@ -8,18 +8,7 @@
 				    <i class="fas fa-chevron-left"></i>
 				</button>
 
-				<ui-select theme="bootstrap" ng-model="productData.product_group_id" ng-change="chooseProductGroup(productData, $select.selected.id)">
-		            <ui-select-match placeholder="Название">
-			            @{{ $select.selected.name }}
-			        </ui-select-match>
-		            <ui-select-choices repeat="productGroup.id as productGroup in productGroups | filter: $select.search">
-		                <span ng-bind-html="productGroup.name | highlight: $select.search"></span>
-		            </ui-select-choices>
-				</ui-select>
-
-				<select class="custom-select">
-					<option value="2020">2020</option>
-			     </select>
+				<select class="custom-select" ng-model="currentYear" ng-change="init()" ng-options="item as item for item in years"></select>
 
 				<button class="btn btn-primary input-group-append" type="button">
 				    <i class="fas fa-chevron-right"></i>
@@ -31,11 +20,7 @@
 				    <i class="fas fa-chevron-left"></i>
 				</button>
 
-				<select class="custom-select">
-					<option value="1" ng-repeat="(monthKey, month) in monthes" ng-selected="monthKey == currentMonth">
-						@{{ month }}
-					</option>
-			     </select>
+				<select class="custom-select" ng-model="currentMonth" ng-change="init()" ng-options="month.key as month.name for month in monthes"></select>
 
 				<button class="btn btn-primary input-group-append" type="button">
 				    <i class="fas fa-chevron-right"></i>
@@ -44,7 +29,7 @@
 		</div>
 	</div>
 
-	<div class="production-block">
+	<div class="production-block" ng-if="productionProducts.length > 0">
 		<div class="products-block">
 			<div class="product-block"></div>
 			<div class="product-block" ng-repeat="product in productionProducts">
@@ -63,11 +48,11 @@
 		<div class="productions-block">
 			<table class="table">
 				<tr>
-					<th ng-repeat="x in [].constructor(days) track by $index" ng-class="{'current': $index + 1 == currentDay}">@{{ $index + 1 }}</th>
+					<th ng-repeat="x in [].constructor(days) track by $index" ng-class="{'current': $index + 1 == currentDay}" ng-click="showModal($index + 1)" ng-mouseenter="$parent.hoverDay = $index + 1" ng-mouseleave="$parent.hoverDay = 0">@{{ $index + 1 }}</th>
 				</tr>
 			
 				<tr ng-repeat="product in productionProducts">
-					<td ng-repeat="x in [].constructor(days) track by $index" ng-class="{'current': $index + 1 == currentDay}" ng-click="showModal()">
+					<td ng-repeat="x in [].constructor(days) track by $index" ng-class="{'hover': $index + 1 == $parent.hoverDay, 'current': $index + 1 == currentDay, 'done': product.productions[$index+1].status == 'done', 'failed': product.productions[$index+1].status == 'failed'}" ng-click="showModal($index + 1, product.id)">
 						<div class="production-planned" ng-if="product.productions[$index+1]">
 							@{{ product.productions[$index+1] ? product.productions[$index+1].planned : 0 }} м<sup>2</sup>
 						</div>
@@ -80,17 +65,21 @@
 		</div>
 	</div>
 
+	<div class="no-ptoduction-block" ng-if="productionProducts.length == 0">
+		Нет данных
+	</div>
+
 	<div class="modal" ng-show="isModalShown">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<div class="modal-title">@{{ modalData.date }}</div>
+					<div class="modal-title">@{{ modalDate }}</div>
 					<button type="button" class="close" ng-click="hideModal()">
 						<i class="fas fa-times"></i>
 					</button>
 				</div>
 				<div class="modal-body">
-					<div class="order-block" ng-repeat="order in productionOrders">
+					<div class="order-block" ng-repeat="order in modalProductionOrders">
 						<a ng-href="@{{ order.url }}" class="order-name">
 							Заказ №@{{ order.id }}
 						</a>
@@ -114,10 +103,10 @@
 									</div>
 								</td>
 								<td>
-									@{{ production.planned }}
+									@{{ production.planned }} м<sup>2</sup>
 								</td>
 								<td>
-									<input type="text" class="form-control" ng-model="production.performed">
+									<input type="text" class="form-control" ng-model="production.performed"> м<sup>2</sup>
 								</td>
 							</tr>
 						</table>
@@ -126,10 +115,10 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary">
-						<i class="fas fa-save"></i> Сохранить
-					</button>
-					<button type="button" class="btn btn-primary">
 						<i class="fas fa-print"></i> Распечатать
+					</button>
+					<button type="button" class="btn btn-primary" ng-click="save()">
+						<i class="fas fa-save"></i> Сохранить
 					</button>
 				</div>
 			</div>

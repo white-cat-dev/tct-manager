@@ -20,23 +20,37 @@
 	</div>
 
 	<div class="edit-form-block">
-		<div class="form-group">
-			<label>Название</label>
-			<input type="text" class="form-control" ng-model="productGroupData['name']" ng-class="{'is-invalid': productGroupErrors['name']}">
-			<div class="invalid-feedback" ng-if="productGroupErrors['name']">
-				@{{ productGroupErrors['name'][0] }}
+		<div class="row">
+			<div class="col-6">
+				<label>Категория</label>
+
+				<ui-select theme="bootstrap" ng-model="productGroupData.category_id">
+		            <ui-select-match placeholder="Выберите категорию">
+			            @{{ $select.selected.name }}
+			        </ui-select-match>
+		            <ui-select-choices repeat="category.id as category in categories | filter: $select.search">
+		                <span ng-bind-html="category.name | highlight: $select.search"></span>
+		            </ui-select-choices>
+				</ui-select>
+			</div>
+			<div class="col-6">
+				<div class="form-group">
+					<label>Название</label>
+					<input type="text" class="form-control" ng-model="productGroupData.name" ng-class="{'is-invalid': productGroupErrors.name}">
+					<div class="invalid-feedback" ng-if="productGroupErrors.name'">
+						@{{ productGroupErrors.name[0] }}
+					</div>
+				</div>
 			</div>
 		</div>
-
-		<h2>Размеры</h2>
 
 		<div class="row">
 			<div class="col-4">
 				<div class="form-group">
 					<label>Длина</label>
-					<input type="text" class="form-control" ng-model="productGroupData['lenght']" ng-class="{'is-invalid': productGroupErrors['lenght']}">
-					<div class="invalid-feedback" ng-if="productGroupErrors['lenght']">
-						@{{ productGroupErrors['lenght'][0] }}
+					<input type="text" class="form-control" ng-model="productGroupData.length" ng-class="{'is-invalid': productGroupErrors.length}">
+					<div class="invalid-feedback" ng-if="productGroupErrors.length">
+						@{{ productGroupErrors.length[0] }}
 					</div>
 				</div>
 			</div>

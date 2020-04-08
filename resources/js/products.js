@@ -22,24 +22,42 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.productGroupErrors = {};
 
 	$scope.categories = [];
-	$scope.categoryId = 0;
+	$scope.currentCategory = 0;
 
 
 	$scope.init = function()
 	{
+		if ($location.search().category)
+		{
+			$scope.currentCategory = $location.search().category;
+		}
+		
+		$scope.loadCategories();
+		$scope.loadProducts();
+	}
+
+
+	$scope.loadCategories = function()
+	{
 		CategoriesRepository.query(function(response) 
 		{
 			$scope.categories = response;
-			if ($scope.categories.length > 0)
-			{
-				$scope.categoryId = $scope.categories[0].id;
-			}
 		});
+	}
 
-		ProductsRepository.query(function(response) 
+
+	$scope.loadProducts = function()
+	{
+		ProductsRepository.query({'category': $scope.currentCategory}, function(response) 
 		{
 			$scope.productGroups = response;
 		});
+	}
+
+	$scope.chooseCategory = function(category)
+	{
+		$scope.currentCategory = category;
+		$scope.loadProducts();
 	}
 
 
@@ -56,6 +74,8 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.initEdit = function()
 	{
 		$scope.id = $routeParams['id'];
+
+		$scope.loadCategories();
 
 		if ($scope.id)
 		{

@@ -110,6 +110,8 @@ tctApp.factory('OrdersRepository', ['$resource', function($resource) {
 }]);
 
 tctApp.factory('ProductionRepository', ['$resource', function($resource) { 
-	return $resource('/production'); 
+	return $resource('/production', null, {
+		orders: { method: 'GET', url: '/production/orders' }
+    }); 
 }]);
 
