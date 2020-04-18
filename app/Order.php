@@ -9,6 +9,7 @@ class Order extends Model
 {
     protected $fillable = [
     	'client_id',
+        'status',
         'priority',
         'cost'
     ];
@@ -50,5 +51,26 @@ class Order extends Model
     public function productions()
     {
         return $this->hasMany(Production::class);
+    }
+
+    public function getProgress()
+    {
+        $progress = [
+            'total' => 0,
+            'production' => 0,
+            'realization' => 0,
+            'ready' => 0
+        ];
+
+        foreach ($this->products as $product) 
+        {
+            $progress['total'] += $product->pivot->count;
+            $progress['production'] += $product->getProgress($this)['production'];
+            $progress['realization'] += $product->getProgress($this)['realization'];
+        }
+
+        $progress['ready'] = $progress['production'] - $progress['realization'];
+
+        return $progress;
     }
 }

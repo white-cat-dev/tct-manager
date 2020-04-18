@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 
 class Realization extends Model
@@ -15,6 +16,16 @@ class Realization extends Model
         'performed'
     ];
 
+    protected $appends = [
+        'day',
+        'formatted_date'
+    ];
+
+    protected $casts = [
+        'planned' => 'float',
+        'performed' => 'float'
+    ];
+
 
     public function product()
     {
@@ -24,5 +35,16 @@ class Realization extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+
+
+    public function getDayAttribute()
+    {
+        return Carbon::createFromDate($this->date)->day;
+    }
+
+    public function getFormattedDateAttribute()
+    {
+        return Carbon::createFromDate($this->date)->format('d.m.Y');
     }
 }

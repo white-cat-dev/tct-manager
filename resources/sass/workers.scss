@@ -1,0 +1,239 @@
+.workers-page {
+	.employments-block {
+		display: flex;
+		border-radius: 5px;
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+		border: solid 1px darken($grey, 10%);
+		overflow: hidden;
+		min-height: 200px;
+		margin-bottom: 15px;
+
+		.workers {
+			flex: none;
+	    	width: 150px;
+	    	z-index: 1;
+	    	box-shadow: 2px 0px 6px darken($grey, 10%);
+	    	border-right: solid 1px darken($grey, 10%);
+	    	background: $grey;
+
+			.table {
+				flex: none;
+		    	width: 150px;
+		    	z-index: 1;
+		    	box-shadow: 2px 0px 6px darken($grey, 6%);
+		    	border-right: solid 1px darken($grey, 10%);
+		    	background: $grey;
+
+		    	th {
+		    		height: 41px;
+		    	}
+
+				td {
+					border-bottom: solid 1px darken($grey, 10%);
+					padding: 10px;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					background: $grey;
+					font-size: 14px;
+					text-align: left;
+				}
+			}
+		}
+
+		.employments {
+			overflow-x: scroll;
+			border-right: solid 1px darken($grey, 10%);
+
+			.table {
+				margin: 0px -1px;
+				font-size: 14px;
+				border-bottom: solid 1px darken($grey, 10%);
+
+				th {
+					border-left: solid 1px darken($grey, 10%);
+				}
+
+				td {
+					border-top: solid 1px darken($grey, 10%);
+					cursor: pointer;
+				}
+
+				th, td {
+					padding: 10px;
+					border-left: solid 1px darken($grey, 10%);
+					vertical-align: middle;
+					text-align: center;
+					transition: 0.3s;
+				}
+
+				th {
+					background: $grey;
+
+					&.current {
+						background: lighten($green, 40%);
+					}
+				}
+
+				td {
+					height: 42px;
+					min-width: 42px;
+					padding: 0px;
+					background: #FFFFFF;
+
+					&:hover, &.hover {
+						background: $grey;
+					}
+				}
+			}
+		}
+	}
+
+	.employment-statuses {
+		border: solid 1px darken($grey, 10%);
+		padding: 15px 15px 5px 15px;
+		border-radius: 5px;
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+
+		.statuses-title {
+		    font-weight: 500;
+		    line-height: 31px;
+		    margin-bottom: 10px;
+		    position: relative;
+
+		    .btn {
+		    	position: absolute;
+		    	top: 0;
+		    	right: 0;
+		    }
+		}
+
+		.table {
+			margin-bottom: 0px;
+			margin-top: 15px;
+
+			td {
+				text-align: left;
+				font-size: 14px;
+				padding: 5px;
+
+				&:first-child {
+					font-size: 18px;
+					width: 20%;
+				}
+			}
+		}
+	}
+
+	.employments-buttons {
+		text-align: center;
+		margin-top: 10px;
+	}
+
+	.no-employments {
+		text-align: center;
+		font-size: 18px;
+		border: solid 1px darken($grey, 10%);
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+	    border-radius: 5px;
+	   	height: 100%;
+	   	min-height: 200px;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+
+		div {
+			margin-bottom: 5px;
+			font-size: 60px;
+			color: darken($grey, 60%);
+		}
+	}
+
+	.facilities-block,
+	.workers-block {
+		margin-top: 30px;
+		border-top: solid 1px darken($grey, 10%);
+    	padding-top: 20px;
+
+		.block-title {
+			font-size: 25px;
+			font-weight: 500;
+			position: relative;
+			margin-bottom: 20px;
+
+			.btn {
+		    	position: absolute;
+		    	top: 0;
+		    	right: 0;
+		    }
+		}
+	}
+
+	.facility-block {
+		border: solid 1px darken($grey, 10%);
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+		border-radius: 5px;
+		padding: 15px;
+		position: relative;
+		margin-bottom: 30px;
+
+		.btn-group {
+			position: absolute;
+		    top: 15px;
+		    right: 15px;
+		}
+
+		.facility-title {
+			font-weight: 500;
+			font-size: 20px;
+			margin-bottom: 20px;
+		}
+
+		.facility-icon {
+			position: relative;
+			margin-bottom: 20px;
+
+			img {
+				width: 80%;
+				margin: 0px 10%;
+
+				&:last-child {
+					height: 0%;
+					position: absolute;
+				    bottom: 0;
+				    left: 0;
+				    object-fit: cover;
+					object-position: bottom;
+				}
+			}
+		}
+
+		.facility-params {
+
+			.param-name {
+				color: darken($grey, 75%);
+				font-size: 18px;
+				font-weight: 500;
+				margin-bottom: 5px;
+			}
+		}
+	}
+}
+
+.statuses-page {
+	.ui-select-container {
+		.btn,
+		.ui-select-match-text {
+			color: inherit;
+		}
+	}
+}
+
+
+.add-worker-block {
+
+	.divider {
+		margin: 5px 12px;
+	}
+}
+
+

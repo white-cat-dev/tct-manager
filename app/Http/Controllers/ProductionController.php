@@ -21,12 +21,12 @@ class ProductionController extends Controller
         {
             $today = Carbon::today();
 
-            $month = $request->get('month', $today->month);
-            $year = $request->get('year', $today->year);
+            $month = (int)$request->get('month', $today->month);
+            $year = (int)$request->get('year', $today->year);
 
             if (($month == $today->month) && ($year ==$today->year))
             {
-                $day = $today->day;
+                $day = (int)$today->day;
             }
             else
             {
@@ -69,14 +69,19 @@ class ProductionController extends Controller
                 return Carbon::parse($date->created_at)->format('Y');
             })->keys();
 
-            $years[] = 2021;
+            if (!$years->contains($year))
+            {
+                $years[] = $year;
+            }
+
+            $years = $years->sort();
                
             return ['days' => $days,
                     'monthes' => $monthes,
                     'years' => $years,
-                    'day' => (int)$day,
-                    'year' => (int)$year,
-                    'month' => (int)$month,
+                    'day' => $day,
+                    'year' => $year,
+                    'month' => $month,
                     'products' => $products];
         }
 
@@ -86,35 +91,44 @@ class ProductionController extends Controller
 
     public function orders(Request $request)
     {
-        $today = Carbon::today();
+        if ($request->wantsJson())
+        {
+            $today = Carbon::today();
 
-        $day = $request->get('day', $today->day);
-        $month = $request->get('month', $today->month);
-        $year = $request->get('year', $today->year);
+            $day = $request->get('day', $today->day);
+            $month = $request->get('month', $today->month);
+            $year = $request->get('year', $today->year);
 
-        $date = Carbon::createFromDate($year, $month, $day);
+            $date = Carbon::createFromDate($year, $month, $day);
 
-        $productId = $request->get('product_id');
+            $productId = $request->get('product_id');
 
-        $orders = Order::whereHas('productions', function($query) use ($date, $productId) {
-                $query->where('date', $date->format('Y-m-d'));
-                if ($productId)
-                {
-                    $query->where('product_id', $productId);
-                }
-            })
-            ->with(['productions' => function($query) use ($date, $productId) {
-                $query->where('date', $date->format('Y-m-d'))
-                    ->with('product');
-                if ($productId)
-                {
-                    $query->where('product_id', $productId);
-                }
-            }])
-            ->get();
+            $orders = Order::whereHas('productions', function($query) use ($date, $productId) {
+                    $query->where('date', $date->format('Y-m-d'));
+                    if ($productId)
+                    {
+                        $query->where('product_id', $productId);
+                    }
+                })
+                ->with(['productions' => function($query) use ($date, $productId) {
+                    $query->where('date', $date->format('Y-m-d'))
+                        ->with('product');
+                    if ($productId)
+                    {
+                        $query->where('product_id', $productId);
+                    }
+                }])
+                ->get();
 
-        return ['orders' => $orders,
-                'date' => $date->format('d.m.Y')];
+            $noOrderProductions = Production::where('date', $date->format('Y-m-d'))
+                ->where('order_id', 0)
+                ->with('product')
+                ->get();
+                
+            return ['orders' => $orders,
+                    'no_order' => $noOrderProductions,
+                    'date' => $date->format('d.m.Y')];
+        }
     }
 
 

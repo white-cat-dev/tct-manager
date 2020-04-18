@@ -16,6 +16,10 @@ mix.js(['resources/js/app.js',
 		'resources/js/products.js',
 		'resources/js/clients.js',
 		'resources/js/orders.js',
-		'resources/js/production.js'], 'public/js')
+		'resources/js/production.js',
+		'resources/js/workers.js',
+		'resources/js/statuses.js',
+		'resources/js/facilities.js',
+		'resources/js/employments.js'], 'public/js')
 
     .sass('resources/sass/app.scss', 'public/css');

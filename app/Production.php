@@ -18,7 +18,8 @@ class Production extends Model
     ];
 
     protected $appends = [
-        'day'
+        'day',
+        'formatted_date'
     ];
 
     protected $casts = [
@@ -40,5 +41,10 @@ class Production extends Model
     public function getDayAttribute()
     {
         return Carbon::createFromDate($this->date)->day;
+    }
+
+    public function getFormattedDateAttribute()
+    {
+        return Carbon::createFromDate($this->date)->format('d.m.Y');
     }
 }

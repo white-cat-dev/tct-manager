@@ -11,17 +11,16 @@ class ProductGroup extends Model
     	'name',
         'category_id',
     	'set_pair_id',
-        'category_id',
     	'width',
     	'length',
     	'depth',
     	'weight_unit',
-    	'weight_square',
+    	'weight_units',
     	'weight_pallete',
-    	'units_in_square',
+    	'unit_in_units',
+    	'unit_in_pallete',
     	'units_in_pallete',
-    	'squares_in_pallete',
-    	'squares_from_batch',
+    	'units_from_batch',
     	'forms'
     ];
 
@@ -29,6 +28,12 @@ class ProductGroup extends Model
         'url',
         'size'
     ];
+
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function products()
     {

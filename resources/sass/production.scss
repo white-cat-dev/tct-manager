@@ -1,53 +1,63 @@
 .production-page {
 	.production-block {
 		display: flex;
+		border-radius: 5px;
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+		border: solid 1px darken($grey, 10%);
+		overflow: hidden;
 
 		.products-block	{
 			flex: none;
 	    	width: 150px;
+	    	z-index: 1;
+	    	box-shadow: 2px 0px 6px darken($grey, 6%);
+	    	border-right: solid 1px darken($grey, 10%);
+	    	background: $grey;
 
 			.product-block {
-				border-top: solid 1px $dark-grey;
-				border-left: solid 1px $dark-grey;
-				border-right: solid 1px $dark-grey;
+				border-bottom: solid 1px darken($grey, 10%);
 				padding: 10px;
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				background: $grey;
 
-				&:last-child {
-					border-bottom: solid 1px $dark-grey;
-				}
-
 				&:first-child {
-					height: 45px;
+					height: 42px;
 				}
 
 				.product-name {
-					font-size: 16px;
+					font-size: 14px;
 				}
 				.product-size {
-					color: $gray-500;
 					font-size: 12px;
 				}
 				.product-color {
-					color: $gray-700;
-					font-size: 14px;
+					color: darken($grey, 35%);
+					font-size: 12px;
 				}
 			}
 		}
 
 		.productions-block {
 			overflow-x: scroll;
-			border-right: solid 1px $dark-grey;
+			border-right: solid 1px darken($grey, 10%);
 
 			.table {
 				margin: 0px -1px;
 				width: 2000px;
+				font-size: 14px;
+
+				th {
+					border-left: solid 1px darken($grey, 10%);
+				}
+
+				td {
+					border-top: solid 1px darken($grey, 10%);
+				}
 
 				th, td {
 					padding: 10px;
-					border: solid 1px $dark-grey;
+					border-left: solid 1px darken($grey, 10%);
 					vertical-align: middle;
 					text-align: center;
 					cursor: pointer;
@@ -62,15 +72,14 @@
 					}
 
 					&:hover {
-						background: lighten($green, 45%);
+						background: darken($grey, 1%);
 					}
 				}
 
 				td {
-					height: 84px;
+					height: 78px;
 					width: 3%;
 					padding: 0px;
-					font-size: 15px;
 					background: #FFFFFF;
 
 					&.current {
@@ -90,34 +99,138 @@
 					}
 
 					&:hover, &.hover {
-						background: lighten($green, 50%);
+						background: darken($grey, 1%);
 					}
 
 					.production-planned {
-						// border-bottom: 1px solid $gray-300;
-					    padding: 7px 0px;
-					    color: $gray-500;
+					    padding: 5px 0px;
+					    color: darken($grey, 10%);
+					    border-top: solid 1px darken($grey, 3%);
 					}
 
 					.production-performed {
-						padding: 7px 0px;
+						padding: 5px 0px;
+					}
+
+					.production {
+						width: 100%;
+					    height: 100%;
+					    padding: 5px;
+					    border: solid 1px transparent;
+					    border-radius: 2px;
+					    transition: 0.3s;
 					}
 				}
 			}
 		}
 	}
 
-	.order-block {
-		.product-name {
-			font-size: 16px;
+	.production-modal {
+		.modal-title {
+			font-size: 18px;
+			font-weight: bold;
+			color: darken($grey, 75%);
 		}
-		.product-size {
-			color: $gray-500;
+
+		.order-block {
+			margin-bottom: 15px;
+
+			.order-name {
+				font-size: 20px;
+    			margin-bottom: 0px;
+    			color: $primary;
+			}
+
+			.table {
+				margin-bottom: 0px;
+
+				th {
+					font-size: 14px;
+				}
+
+				td {
+					text-align: left;
+					border-color: darken($grey, 10%);
+					width: 30%;
+
+					&:first-child{
+						width: 40%;
+					}
+
+					.form-control {
+						width: 70px;
+					    display: inline-block;
+					    margin-right: 5px;
+					}
+				}
+			}
+
+			.product-name {
+				font-size: 14px;
+			}
+			.product-size {
+				font-size: 12px;
+			}
+			.product-color {
+				color: darken($grey, 35%);
+				font-size: 12px;
+			}
+		}
+	}
+
+	.production-orders {
+		border: solid 1px darken($grey, 10%);
+		padding: 15px 15px 5px 15px;
+		border-radius: 5px;
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+
+		.orders-title {
+			text-align: center;
+			padding-bottom: 10px;
+		    margin-bottom: 10px;
+		    font-weight: bold;
+		    border-bottom: solid 1px darken($grey, 10%);
+		}
+
+		.order-block {
+			padding-bottom: 5px;
+			margin-bottom: 10px;
+			border-bottom: solid 1px darken($grey, 10%);
+
+			&:last-child {
+				margin-bottom: 0px;
+				border-bottom: none;
+			}
+
+			.custom-control-input:checked ~ .custom-control-label::before {
+				background-color: inherit;
+				border-color: inherit;
+			}
+		}
+
+		.order-products {
 			font-size: 12px;
-		}
-		.product-color {
-			color: $gray-700;
-			font-size: 14px;
+			margin-bottom: 0px;
+
+			td {
+				padding: 5px;
+				border: none;
+			}
+
+			tr td {
+				&:last-child {
+					padding-right: 0px;
+					border-right: none;
+				}
+				&:first-child {
+					padding-left: 0px;
+				}
+			}
+
+			.product-color {
+				color: darken($grey, 35%);
+				font-size: 12px;
+			}
 		}
 	}
 }

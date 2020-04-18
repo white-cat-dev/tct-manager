@@ -23,12 +23,12 @@ class CreateProductGroupsTable extends Migration
             $table->integer('length');
             $table->integer('depth');
             $table->decimal('weight_unit', 6, 2)->unsigned();
-            $table->decimal('weight_square', 6, 2)->unsigned();
+            $table->decimal('weight_units', 6, 2)->unsigned();
             $table->decimal('weight_pallete', 6, 2)->unsigned();
-            $table->decimal('units_in_square', 5, 2)->unsigned();
+            $table->decimal('unit_in_units', 5, 2)->unsigned();
+            $table->decimal('unit_in_pallete', 5, 2)->unsigned();
             $table->decimal('units_in_pallete', 5, 2)->unsigned();
-            $table->decimal('squares_in_pallete', 5, 2)->unsigned();
-            $table->decimal('squares_from_batch', 5, 2)->unsigned();
+            $table->decimal('units_from_batch', 5, 2)->unsigned();
             $table->integer('forms')->unsigned();
             $table->timestamps();
         });

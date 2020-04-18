@@ -17,7 +17,7 @@ class CreateEmploymentsTable extends Migration
             $table->id();
             $table->date('date');
             $table->integer('worker_id');
-            $table->tinyInteger('status')->unsigned();
+            $table->integer('status_id');
             $table->timestamps();
         });
     }

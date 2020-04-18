@@ -3,22 +3,25 @@ angular.module('tctApp').controller('ProductionController', [
 	'$routeParams',
 	'$location',
 	'ProductionRepository',
+	'OrdersRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
-		ProductionRepository
+		ProductionRepository,
+		OrdersRepository
 	){
 
 	$scope.days = 0;
-	$scope.monthes = {};
-	$scope.years = {};
+	$scope.monthes = [];
+	$scope.years = [];
 
 	$scope.currentDay = 0;
 	$scope.currentMonth = 0;
 	$scope.currentYear = 0;
 
-	$scope.products = [];
+	$scope.productionProducts = [];
+	$scope.productionOrders = [];
 
 
 	$scope.init = function()
@@ -64,13 +67,59 @@ angular.module('tctApp').controller('ProductionController', [
 				}
 			}
 		});
+
+
+		OrdersRepository.query({'status': 'current'}, function(response) 
+		{
+			$scope.productionOrders = response;
+
+			console.log($scope.productionOrders);
+		});
 	}
+
+
+	$scope.markColors = [
+		'#9b59b6',
+		'#2ecc71',
+		'#1abc9c',
+		'#3498db'
+	];
+
+	$scope.ordersMarkColors = {};
+
+	$scope.markOrder = function(orderId)
+	{
+		if ($scope.ordersMarkColors[orderId])
+		{
+			$scope.markColors.push($scope.ordersMarkColors[orderId]);
+			delete $scope.ordersMarkColors[orderId];
+		}
+		else
+		{
+			$scope.ordersMarkColors[orderId] = $scope.markColors.pop();
+		}
+	}
+
+	
+	$scope.getOrderMarkColor = function(production)
+	{
+		if ((production) && ($scope.ordersMarkColors[production.order_id]))
+		{
+			return $scope.ordersMarkColors[production.order_id];
+		}
+		else
+		{
+			return 'transparent';
+		}
+	}
+
 
 
 	$scope.isModalShown = false;
 
 	$scope.modalDate = '';
 	$scope.modalProductionOrders = [];
+	$scope.modalNoOrderProductions = [];
 	$scope.modalProductId = 0;
 
 
@@ -91,7 +140,7 @@ angular.module('tctApp').controller('ProductionController', [
 		{
 			$scope.modalDate = response.date;
 			$scope.modalProductionOrders = response.orders;
-
+			$scope.modalNoOrderProductions = response.no_order;
 
 			$scope.isModalShown = true;
 		});
@@ -105,6 +154,8 @@ angular.module('tctApp').controller('ProductionController', [
 		$scope.modalDate = '';
 		$scope.modalProductionOrders = [];
 	}
+
+	
 
 
 	$scope.save = function()

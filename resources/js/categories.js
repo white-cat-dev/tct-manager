@@ -14,8 +14,22 @@ angular.module('tctApp').controller('CategoriesController', [
 	$scope.category = {};
 	$scope.id = 0;
 
-	$scope.categoryData = {};
 	$scope.categoryErrors = {};
+
+	$scope.units = [
+		{
+			'key': 'area',
+			'name': 'Площадь (м<sup>2</sup>/шт./поддон)'
+		},
+		{
+			'key': 'volume',
+			'name': 'Объём (м<sup>3</sup>/шт./поддон)'
+		},
+		{
+			'key': 'length',
+			'name': 'Длина (м/шт./поддон)'
+		}
+	];
 
 
 	$scope.init = function()
@@ -46,18 +60,27 @@ angular.module('tctApp').controller('CategoriesController', [
 			CategoriesRepository.get({id: $scope.id}, function(response) 
 			{
 				$scope.category = response;
-				$scope.categoryData = response;
 			});
 		}
 	}
 
 
-	$scope.save = function(url) 
+	$scope.save = function() 
 	{
-		CategoriesRepository.save({id: $scope.id}, $scope.categoryData, function(response) 
+		CategoriesRepository.save({id: $scope.id}, $scope.category, function(response) 
 		{
-			$location.url(url);
-            $location.replace();
+			$scope.categoryErrors = {};
+			if ($scope.id)
+			{
+				$scope.successAlert = 'Категория успешно обновлена!';
+			}
+			else
+			{
+				$scope.successAlert = 'Новая категория успешно создана!';
+			}
+			$scope.showAlert = true;
+			$scope.id = response.id;
+			$scope.category.url = response.url;
 		}, 
 		function(response) 
 		{

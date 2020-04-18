@@ -16,7 +16,7 @@
     <body ng-app="tctApp">
         @include('partials.header')
 
-        <div class="container-fluid">
+        <div class="fluid-container">
             <div class="row">
                 <div class="col-2">
                     @include('partials.main-menu')

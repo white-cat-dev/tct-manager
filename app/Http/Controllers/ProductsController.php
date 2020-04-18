@@ -8,10 +8,6 @@ use App\ProductGroup;
 
 class ProductsController extends Controller
 {
-    protected $validationRules = [
-        'name' => 'required'
-    ];
-
     public function index(Request $request) 
     {
         if ($request->wantsJson())
@@ -34,6 +30,7 @@ class ProductsController extends Controller
     {
         if ($request->wantsJson())
         {
+            $productGroup->products = $productGroup->products;
             return $productGroup;
         }
 
@@ -52,6 +49,7 @@ class ProductsController extends Controller
 
             foreach ($request->get('products') as $productData) 
             {
+                $productData['category_id'] = $productGroup->category_id;
                 $product = $productGroup->products()->create($productData);
             }
             
@@ -73,8 +71,10 @@ class ProductsController extends Controller
 
             $productsIds = $productGroup->products()->select('id')->pluck('id');
 
-            foreach ($request->get('products') as $productData) 
+            foreach ($request->get('products', []) as $productData) 
             {
+                $productData['category_id'] = $productGroup->category_id;
+
                 $id = !empty($productData['id']) ? $productData['id'] : 0;
                 
                 if ($productsIds->has($id)) 
@@ -110,23 +110,41 @@ class ProductsController extends Controller
     }
 
 
+
+    protected $validationRules = [
+        'name' => 'required',
+        'category_id' => 'required',
+        'width' => 'required',
+        'length' => 'required',
+        'depth' => 'required',
+        'weight_unit' => 'required',
+        'weight_units' => 'required',
+        'weight_pallete' => 'required',
+        'unit_in_units' => 'required',
+        'unit_in_pallete' => 'required',
+        'units_in_pallete' => 'required',
+        'units_from_batch' => 'required',
+        'forms' => 'required'
+    ];
+
+
     protected function getData(Request $request)
     {
         return [
-            'name' => $request->get('name'),
-            'set_pair_id' => $request->get('set_pair_id') ? : 0,
-            'category_id' => $request->get('category_id') ? : 0,
-            'width' => $request->get('width') ? : 0,
-            'length' => $request->get('length') ? : 0,
-            'depth' => $request->get('depth') ? : 0,
-            'weight_unit' => $request->get('weight_unit') ? : 0,
-            'weight_square' => $request->get('weight_square') ? : 0,
-            'weight_pallete' => $request->get('weight_pallete') ? : 0,
-            'units_in_square' => $request->get('units_in_square') ? : 0,
-            'units_in_pallete' => $request->get('units_in_pallete') ? : 0,
-            'squares_in_pallete' => $request->get('squares_in_pallete') ? : 0,
-            'squares_from_batch' => $request->get('squares_from_batch') ? : 0,
-            'forms' => $request->get('forms') ? : 0
+            'name' => $request->get('name', ''),
+            'set_pair_id' => $request->get('set_pair_id', 0),
+            'category_id' => $request->get('category_id', 0),
+            'width' => $request->get('width', 0),
+            'length' => $request->get('length', 0),
+            'depth' => $request->get('depth', 0),
+            'weight_unit' => $request->get('weight_unit', 0),
+            'weight_units' => $request->get('weight_units', 0),
+            'weight_pallete' => $request->get('weight_pallete', 0),
+            'unit_in_units' => $request->get('unit_in_units', 0),
+            'unit_in_pallete' => $request->get('unit_in_pallete', 0),
+            'units_in_pallete' => $request->get('units_in_pallete', 0),
+            'units_from_batch' => $request->get('units_from_batch', 0),
+            'forms' => $request->get('forms', 0),
         ];
     }
 }

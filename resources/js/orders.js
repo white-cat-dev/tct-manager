@@ -12,6 +12,8 @@ angular.module('tctApp').controller('OrdersController', [
 		OrdersRepository
 	){
 
+	$scope.Math = window.Math;
+
 	$scope.orders = [];
 	$scope.order = {};
 	$scope.id = 0;

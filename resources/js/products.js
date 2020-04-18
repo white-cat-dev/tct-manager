@@ -13,16 +13,30 @@ angular.module('tctApp').controller('ProductsController', [
 	){
 
 	$scope.productGroups = [];
-	$scope.productGroup = {};
-	$scope.id = 0;
-
-	$scope.productGroupData = {
+	$scope.productGroup = {
 		'products': []
 	};
+	$scope.id = 0;
+
 	$scope.productGroupErrors = {};
 
 	$scope.categories = [];
 	$scope.currentCategory = 0;
+
+	$scope.colors = [
+		{
+			'key': 'grey',
+			'name': 'Серый'
+		},
+		{
+			'key': 'red',
+			'name': 'Красный'
+		},
+		{
+			'key': 'yellow',
+			'name': 'Желтый'
+		}
+	];
 
 
 	$scope.init = function()
@@ -82,20 +96,27 @@ angular.module('tctApp').controller('ProductsController', [
 			ProductsRepository.get({id: $scope.id}, function(response) 
 			{
 				$scope.productGroup = response;
-				$scope.productGroupData = response;
 			});
 		}
 	}
 
 
-	$scope.save = function(url) 
+	$scope.save = function() 
 	{
-		console.log($scope.productGroupData);
-
-		ProductsRepository.save({id: $scope.id}, $scope.productGroupData, function(response) 
+		ProductsRepository.save({id: $scope.id}, $scope.productGroup, function(response) 
 		{
-			$location.url(url);
-            $location.replace();
+			$scope.productGroupErrors = {};
+			if ($scope.id)
+			{
+				$scope.successAlert = 'Продукт успешно обновлен!';
+			}
+			else
+			{
+				$scope.successAlert = 'Новый продукт успешно создан!';
+			}
+			$scope.showAlert = true;
+			$scope.id = response.id;
+			$scope.category.url = response.url;
 		}, 
 		function(response) 
 		{
@@ -119,13 +140,17 @@ angular.module('tctApp').controller('ProductsController', [
 
 	$scope.addProduct = function()
 	{
-		$scope.productGroupData['products'].push({
-			'color': 'red',
-			'price': 123,
+		$scope.productGroup.products.push({
+			'color': '',
+			'price': 0,
 			'price_unit': 0,
 			'price_pallete': 0,
 			'in_stock': 0
 		});
-		console.log($scope.productGroupData['products']);
+	}
+
+	$scope.deleteProduct = function(index)
+	{
+		$scope.productGroup.products.splice(index, 1);
 	}
 }]);

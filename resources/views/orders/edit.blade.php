@@ -70,7 +70,6 @@
 					<button type="button" class="btn btn-primary" ng-click="deleteProduct($index)">
 						<i class="far fa-trash-alt"></i>
 					</button>
-				</div>
 				</td>
 			</tr>
 		</table>

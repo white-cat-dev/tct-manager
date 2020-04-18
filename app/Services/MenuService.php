@@ -41,6 +41,18 @@ class MenuService
             (object)[
                 'name' => 'Производство',
                 'url' => route('production')
+            ],
+            (object)[
+                'name' => 'Цехи',
+                'url' => route('facilities')
+            ],
+            (object)[
+                'name' => 'Работники',
+                'url' => route('workers')
+            ],
+            (object)[
+                'name' => 'График работ',
+                'url' => route('employments')
             ]
         ];
 

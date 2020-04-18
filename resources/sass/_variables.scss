@@ -1,9 +1,9 @@
-$blue: #4081b7;
-$dark-blue: #1d5889;
-$grey: #f9f9f9;
-$dark-grey: #dadada;
+$blue: #276090;
+$grey: #f3f3f3;
+$green: #28a65b;
 
 $primary: $blue;
-$secondary:  #dadada;
+$secondary: darken($grey, 3%);
 
-$border-color:	$grey;
+$border-color: darken($grey, 10%);
+$input-border-color: $border-color;

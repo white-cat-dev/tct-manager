@@ -1,4 +1,5 @@
 require('angular');
+require('angularjs-color-picker');
 
 
 var tctApp = angular.module('tctApp', [
@@ -6,6 +7,7 @@ var tctApp = angular.module('tctApp', [
 	require('angular-route'), 
 	require('angular-resource'), 
 	require('ui-select'),
+	'color.picker'
 ]);
 
 
@@ -15,6 +17,42 @@ tctApp.config(['$locationProvider', function($locationProvider) {
         requireBase: false
     });
 }]);
+
+tctApp.config(function($provide) {
+    $provide.decorator('ColorPickerOptions', function($delegate) {
+        var options = angular.copy($delegate);
+        options.round = true;
+        options.alpha = false;
+    	options.hue = true;
+    	options.lightness = true;
+        options.format = 'hexString';
+
+        return options;
+    });
+});
+
+tctApp.config(function($provide) {
+    $provide.value('$locale', {
+	    "NUMBER_FORMATS": {
+			"CURRENCY_SYM": "\u20bd",
+			"DECIMAL_SEP": ",",
+			"GROUP_SEP": "\u00a0",
+			"PATTERNS": [
+				{
+					"gSize": 3,
+					"lgSize": 3,
+					"maxFrac": 3,
+					"minFrac": 0,
+					"minInt": 1,
+					"negPre": "-",
+					"negSuf": "",
+					"posPre": "",
+					"posSuf": ""
+				}
+			]
+		}
+	});
+});
 
 
 tctApp.config(['$routeProvider', function($routeProvider) {
@@ -91,7 +129,52 @@ tctApp.config(['$routeProvider', function($routeProvider) {
 			templateUrl: '/templates/production',
 			controller: 'ProductionController'
 	    })
+
+	    .when('/employments', {
+			templateUrl: '/templates/employments',
+			controller: 'EmploymentsController'
+	    })
+
+	    .when('/employments/statuses', {
+			templateUrl: '/templates/employments/statuses',
+			controller: 'EmploymentStatusesController'
+	    })
+
+	    .when('/workers', {
+			templateUrl: '/templates/workers',
+			controller: 'WorkersController'
+	    })
+	    .when('/workers/create', {
+			templateUrl: '/templates/workers/edit',
+			controller: 'WorkersController'
+	    })
+	    .when('/workers/:id', {
+			templateUrl: '/templates/workers/show',
+			controller: 'WorkersController'
+	    })
+	    .when('/workers/:id/edit', {
+			templateUrl: '/templates/workers/edit',
+			controller: 'WorkersController'
+	    })
+
+	    .when('/facilities', {
+			templateUrl: '/templates/facilities',
+			controller: 'FacilitiesController'
+	    })
+	    .when('/facilities/create', {
+			templateUrl: '/templates/facilities/edit',
+			controller: 'FacilitiesController'
+	    })
+	    .when('/facilities/:id', {
+			templateUrl: '/templates/facilities/show',
+			controller: 'FacilitiesController'
+	    })
+	    .when('/facilities/:id/edit', {
+			templateUrl: '/templates/facilities/edit',
+			controller: 'FacilitiesController'
+	    })
 }]);
+
 
 tctApp.factory('CategoriesRepository', ['$resource', function($resource) { 
 	return $resource('/categories/:id'); 
@@ -109,9 +192,26 @@ tctApp.factory('OrdersRepository', ['$resource', function($resource) {
 	return $resource('/orders/:id'); 
 }]);
 
+tctApp.factory('WorkersRepository', ['$resource', function($resource) { 
+	return $resource('/workers/:id'); 
+}]);
+
+tctApp.factory('EmploymentStatusesRepository', ['$resource', function($resource) { 
+	return $resource('/employments/statuses'); 
+}]);
+
+tctApp.factory('FacilitiesRepository', ['$resource', function($resource) { 
+	return $resource('/facilities/:id'); 
+}]);
+
+tctApp.factory('EmploymentsRepository', ['$resource', function($resource) { 
+	return $resource('/employments', null, {
+		saveSalary: { method: 'POST', url: '/employments/salaries/:id' }
+    });  
+}]);
+
 tctApp.factory('ProductionRepository', ['$resource', function($resource) { 
 	return $resource('/production', null, {
 		orders: { method: 'GET', url: '/production/orders' }
     }); 
 }]);
-

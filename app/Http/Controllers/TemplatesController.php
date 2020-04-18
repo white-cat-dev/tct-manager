@@ -70,8 +70,52 @@ class TemplatesController extends Controller
         return view('orders.edit');
     }
 
+
     public function production(Request $request) 
     {
         return view('production');
+    }
+
+
+    public function employments(Request $request)
+    {
+        return view('employments');
+    }
+
+    public function employmentsStatuses(Request $request)
+    {
+        return view('employments.statuses');
+    }
+
+
+    public function workers(Request $request) 
+    {
+        return view('workers');
+    }
+
+    public function workersShow(Request $request) 
+    {
+        return view('workers.show');
+    }
+
+    public function workersEdit(Request $request) 
+    {
+        return view('workers.edit');
+    }
+
+
+    public function facilities(Request $request) 
+    {
+        return view('facilities');
+    }
+
+    public function facilitiesShow(Request $request) 
+    {
+        return view('facilities.show');
+    }
+
+    public function facilitiesEdit(Request $request) 
+    {
+        return view('facilities.edit');
     }
 }

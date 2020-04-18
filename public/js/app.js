@@ -39702,6 +39702,1232 @@ module.exports = angular;
 
 /***/ }),
 
+/***/ "./node_modules/angularjs-color-picker/dist/angularjs-color-picker.min.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/angularjs-color-picker/dist/angularjs-color-picker.min.js ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * angularjs-color-picker v3.4.8
+ * https://github.com/ruhley/angular-color-picker/
+ *
+ * Copyright 2017 ruhley
+ *
+ * 2017-10-06 09:51:57
+ *
+ */
+!function(o,t){ true?module.exports=t(__webpack_require__(/*! tinycolor2 */ "./node_modules/tinycolor2/tinycolor.js")):undefined}(this,function(o){"use strict";function t(o){o.put("template/color-picker/directive.html",'<div class="color-picker-wrapper" ng-class="{\'color-picker-disabled\': AngularColorPickerController.options.disabled,\'color-picker-swatch-only\': AngularColorPickerController.options.swatchOnly,\'color-picker-open\': AngularColorPickerController.is_open,\'color-picker-closed\': !AngularColorPickerController.is_open,\'color-picker-horizontal\': AngularColorPickerController.options.horizontal,}"><div class="color-picker-input-wrapper" ng-class="{\'input-group\': AngularColorPickerController.options.swatchBootstrap && AngularColorPickerController.options.swatch}"><span ng-if="AngularColorPickerController.options.swatchPos === \'left\'" class="color-picker-swatch" ng-click="AngularColorPickerController.onSwatchClick($event)" ng-show="AngularColorPickerController.options.swatch" ng-class="{\'color-picker-swatch-left\': AngularColorPickerController.options.swatchPos !== \'right\', \'color-picker-swatch-right\': AngularColorPickerController.options.swatchPos === \'right\', \'input-group-addon\': AngularColorPickerController.options.swatchBootstrap}"></span><input ng-attr-id="{{AngularColorPickerController.options.id}}" ng-attr-name="{{AngularColorPickerController.options.name}}" class="color-picker-input {{AngularColorPickerController.options.inputClass}}" type="text" ng-model="AngularColorPickerController.internalNgModel" ng-model-options="AngularColorPickerController.ngModelOptions" ng-readonly="AngularColorPickerController.options.swatchOnly" ng-disabled="AngularColorPickerController.options.disabled" ng-change="AngularColorPickerController.onChange($event)" size="7" ng-class="{\'color-picker-input-swatch\': AngularColorPickerController.options.swatch && !AngularColorPickerController.options.swatchOnly && AngularColorPickerController.options.swatchPos === \'left\'}" placeholder="{{AngularColorPickerController.options.placeholder}}" ng-required="AngularColorPickerController.options.required"><span ng-if="AngularColorPickerController.options.swatchPos === \'right\'" class="color-picker-swatch" ng-click="AngularColorPickerController.onSwatchClick($event)" ng-show="AngularColorPickerController.options.swatch" ng-class="{\'color-picker-swatch-left\': AngularColorPickerController.options.swatchPos !== \'right\', \'color-picker-swatch-right\': AngularColorPickerController.options.swatchPos === \'right\', \'input-group-addon\': AngularColorPickerController.options.swatchBootstrap}"></span></div><div class="color-picker-panel" ng-class="{\'color-picker-panel-top color-picker-panel-right\': AngularColorPickerController.options.pos === \'top right\',\'color-picker-panel-top color-picker-panel-left\': AngularColorPickerController.options.pos === \'top left\',\'color-picker-panel-bottom color-picker-panel-right\': AngularColorPickerController.options.pos === \'bottom right\',\'color-picker-panel-bottom color-picker-panel-left\': AngularColorPickerController.options.pos === \'bottom left\',\'color-picker-panel-round\': AngularColorPickerController.options.round,\'color-picker-show-hue\': AngularColorPickerController.options.hue,\'color-picker-show-saturation\': AngularColorPickerController.options.saturation,\'color-picker-show-lightness\': AngularColorPickerController.options.lightness,\'color-picker-show-alpha\': AngularColorPickerController.options.alpha && AngularColorPickerController.options.format !== \'hex\',\'color-picker-show-inline\': AngularColorPickerController.options.inline,}"><div class="color-picker-grid-wrapper"><div class="color-picker-row"><div class="color-picker-grid"><div class="color-picker-overlay"></div><div class="color-picker-grid-inner"></div><div class="color-picker-picker"><div></div></div></div><div class="color-picker-hue" ng-show="AngularColorPickerController.options.hue"><div class="color-picker-overlay"></div><div class="color-picker-slider"></div></div><div class="color-picker-saturation" ng-show="AngularColorPickerController.options.saturation"><div class="color-picker-overlay"></div><div class="color-picker-slider"></div></div><div class="color-picker-lightness" ng-show="AngularColorPickerController.options.lightness"><div class="color-picker-overlay"></div><div class="color-picker-slider"></div></div><div class="color-picker-opacity" ng-show="AngularColorPickerController.options.alpha && AngularColorPickerController.options.format !== \'hex\'"><div class="color-picker-overlay"></div><div class="color-picker-slider"></div></div></div></div><div class="color-picker-actions"><button type="button"class="color-picker-action color-picker-action-clear"tabindex="-1"ng-class="AngularColorPickerController.options.clear.class"ng-show="AngularColorPickerController.options.clear.show"ng-click="AngularColorPickerController.api.clear($event)">{{AngularColorPickerController.options.clear.label}}</button><button type="button"class="color-picker-action color-picker-action-reset"tabindex="-1"ng-class="AngularColorPickerController.options.reset.class"ng-show="AngularColorPickerController.options.reset.show"ng-click="AngularColorPickerController.api.reset($event)">{{AngularColorPickerController.options.reset.label}}</button><button type="button"class="color-picker-action color-picker-action-close"tabindex="-1"ng-class="AngularColorPickerController.options.close.class"ng-show="AngularColorPickerController.options.close.show"ng-click="AngularColorPickerController.api.close($event)">{{AngularColorPickerController.options.close.label}}</button></div></div></div>')}o=o&&o.hasOwnProperty("default")?o.default:o;var e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(o){return typeof o}:function(o){return o&&"function"==typeof Symbol&&o.constructor===Symbol&&o!==Symbol.prototype?"symbol":typeof o},i=(function(){function o(o){this.value=o}function t(t){function e(n,r){try{var s=t[n](r),l=s.value;l instanceof o?Promise.resolve(l.value).then(function(o){e("next",o)},function(o){e("throw",o)}):i(s.done?"return":"normal",s.value)}catch(o){i("throw",o)}}function i(o,t){switch(o){case"return":n.resolve({value:t,done:!0});break;case"throw":n.reject(t);break;default:n.resolve({value:t,done:!1})}(n=n.next)?e(n.key,n.arg):r=null}var n,r;this._invoke=function(o,t){return new Promise(function(i,s){var l={key:o,arg:t,resolve:i,reject:s,next:null};r?r=r.next=l:(n=r=l,e(o,t))})},"function"!=typeof t.return&&(this.return=void 0)}"function"==typeof Symbol&&Symbol.asyncIterator&&(t.prototype[Symbol.asyncIterator]=function(){return this}),t.prototype.next=function(o){return this._invoke("next",o)},t.prototype.throw=function(o){return this._invoke("throw",o)},t.prototype.return=function(o){return this._invoke("return",o)}}(),function(o,t){if(!(o instanceof t))throw new TypeError("Cannot call a class as a function")}),n=function(){function o(o,t){for(var e=0;e<t.length;e++){var i=t[e];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(o,i.key,i)}}return function(t,e,i){return e&&o(t.prototype,e),i&&o(t,i),t}}(),r=function(){function t(o,e,n,r,s){i(this,t),this.$scope=o,this.$element=e,this.$document=n,this.$timeout=r,this.ColorPickerOptions=s,this.$scope.init=this.init.bind(this),this.ngModelOptions={},this.hue=0,this.saturation=void 0,this.lightness=void 0,this.opacity=void 0,this.basicEventTypes=["hue","saturation","lightness","opacity"],this.fullEventTypes=["color","hue","saturation","lightness","opacity"]}return n(t,[{key:"init",value:function(){this.$scope.control[0].$options&&this.$scope.control[0].$options.$$options&&(this.ngModelOptions=this.$scope.control[0].$options.$$options),this.chrome=Boolean(window.chrome);var o=window.navigator.userAgent.match(/Android\s([0-9\.]*)/i);this.android_version=o&&o.length>1?parseFloat(o[1]):NaN,this.updateModel=!0,this.initWatchers(),this.initConfig(),this.initMouseEvents()}},{key:"initConfig",value:function(){this.options||(this.options={}),this.mergeOptions(this.options,this.ColorPickerOptions),this.is_open=this.options.inline,this.options.inline&&(this.options.close.show=!1),this.pickerDimensions={width:150,height:150},this.sliderDimensions={width:this.options.horizontal?this.pickerDimensions.width:20,height:this.options.horizontal?20:this.pickerDimensions.height}}},{key:"mergeOptions",value:function(o,t){for(var i in t)t.hasOwnProperty(i)&&(o&&o.hasOwnProperty(i)?"object"===e(t[i])&&this.mergeOptions(o[i],t[i]):o[i]=t[i])}},{key:"initWatchers",value:function(){var o=this;this.$scope.$watch("AngularColorPickerController.internalNgModel",this.watchInternalNgModel.bind(this)),this.$scope.$watch("AngularColorPickerController.ngModel",this.watchNgModel.bind(this)),this.$scope.$watch("AngularColorPickerController.options.swatchPos",function(t){void 0!==t&&(o.initConfig(),o.$timeout(function(){o.updateSwatchBackground()}))}),this.$scope.$watchGroup(["AngularColorPickerController.options.format","AngularColorPickerController.options.alpha","AngularColorPickerController.options.case","AngularColorPickerController.options.round","AngularColorPickerController.options.restrictToFormat","AngularColorPickerController.options.preserveInputFormat","AngularColorPickerController.options.allowEmpty","AngularColorPickerController.options.horizontal","AngularColorPickerController.options.dynamicHue","AngularColorPickerController.options.dynamicSaturation","AngularColorPickerController.options.dynamicLightness","AngularColorPickerController.options.dynamicAlpha"],function(t){void 0!==t&&(o.initConfig(),o.update())}),this.$scope.$watchGroup(["AngularColorPickerController.options.disabled","AngularColorPickerController.options.swatchBootstrap","AngularColorPickerController.options.swatchOnly","AngularColorPickerController.options.swatch","AngularColorPickerController.options.pos","AngularColorPickerController.options.inline","AngularColorPickerController.options.placeholder"],function(t){void 0!==t&&o.initConfig()}),this.$scope.$watch("AngularColorPickerController.api",this.setupApi.bind(this)),this.$scope.$watch("AngularColorPickerController.swatchColor",this.updateSwatchBackground.bind(this)),this.$scope.$watch("AngularColorPickerController.hue",function(){o.valueUpdate("hue")}),this.$scope.$watch("AngularColorPickerController.saturation",function(){o.valueUpdate("saturation")}),this.$scope.$watch("AngularColorPickerController.lightness",function(){o.valueUpdate("lightness")}),this.$scope.$watch("AngularColorPickerController.opacity",function(){o.valueUpdate("opacity")})}},{key:"watchInternalNgModel",value:function(o,t){this.colorMouse||this.watchNgModelSet(o)}},{key:"watchNgModel",value:function(o,t){void 0===o||this.hasOwnProperty("initialNgModel")||(this.initialNgModel=o),this.checkDirty(o),this.internalNgModel=this.ngModelOptions.getterSetter?this.ngModel():this.ngModel,this.colorMouse||this.watchNgModelSet(o)}},{key:"watchNgModelSet",value:function(t){var e=this;if(void 0!==t&&null!==t){var i=o(t),n=this.isColorValid(i);n&&(this.setColorValue(i),this.updateModel=!1,this.$timeout(function(){e.updateModel=!0})),this.$scope.control[0].$setValidity("color",n)}else null!==t&&""!==t||(this.hue=0,this.saturation=void 0,this.lightness=void 0,this.opacity=void 0),this.swatchColor=""}},{key:"initMouseEvents",value:function(){var o=this,t={mouseDown:this.onMouseDown.bind(this),mouseUp:this.onMouseUp.bind(this),mouseMove:this.onMouseMove.bind(this),keyUp:this.onKeyUp.bind(this)};this.$document.on("mousedown",t.mouseDown),this.$document.on("mouseup",t.mouseUp),this.$document.on("mousemove",t.mouseMove),this.$document.on("touchstart",t.mouseDown),this.$document.on("touchend",t.mouseUp),this.$document.on("touchmove",t.mouseMove),this.$document.on("keyup",t.keyUp),this.find(".color-picker-grid").on("click",function(t){o.onClick("color",t)}),this.find(".color-picker-grid").on("touchend",function(t){o.onClick("color",t)}),this.find(".color-picker-hue").on("click",function(t){o.onClick("hue",t)}),this.find(".color-picker-hue").on("touchend",function(t){o.onClick("hue",t)}),this.find(".color-picker-saturation").on("click",function(t){o.onClick("saturation",t)}),this.find(".color-picker-saturation").on("touchend",function(t){o.onClick("saturation",t)}),this.find(".color-picker-lightness").on("click",function(t){o.onClick("lightness",t)}),this.find(".color-picker-lightness").on("touchend",function(t){o.onClick("lightness",t)}),this.find(".color-picker-opacity").on("click",function(t){o.onClick("opacity",t)}),this.find(".color-picker-opacity").on("touchend",function(t){o.onClick("opacity",t)}),this.find(".color-picker-input").on("focusin",this.onFocus.bind(this)),this.find(".color-picker-input").on("focusout",this.onBlur.bind(this)),this.$scope.$on("$destroy",function(){o.$document.off("mousedown",t.mouseDown),o.$document.off("mouseup",t.mouseUp),o.$document.off("mousemove",t.mouseMove),o.$document.off("touchstart",t.mouseDown),o.$document.off("touchend",t.mouseUp),o.$document.off("touchmove",t.mouseMove),o.$document.off("keyup",t.keyUp),o.eventApiDispatch("onDestroy")})}},{key:"onMouseDown",value:function(o){if(this.has_moused_moved=!1,this.options.disabled||0===this.find(o.target).length)return!0;for(var t=0;t<this.fullEventTypes.length;t++)this.onMouseDownType(this.fullEventTypes[t],o)}},{key:"onMouseDownType",value:function(o,t){"color"===o&&(t.target.classList.contains("color-picker-grid-inner")||t.target.classList.contains("color-picker-picker")||t.target.parentNode.classList.contains("color-picker-picker"))?this.mouseEventToggle(o,!1,t):(t.target.classList.contains("color-picker-"+o)||t.target.parentNode.classList.contains("color-picker-"+o))&&this.mouseEventToggle(o,!1,t)}},{key:"onMouseUp",value:function(o){if(this.anyMouseEvents()||0!==this.find(o.target).length)for(var t=0;t<this.fullEventTypes.length;t++)this.onMouseUpType(this.fullEventTypes[t],o);else this.setupApi(),this.options.hide.click&&this.api.close(o),this.$scope.$apply()}},{key:"onMouseUpType",value:function(o,t){this[o+"Mouse"]&&this.has_moused_moved&&(this.mouseEventToggle(o,!0,t),this.onChange(t))}},{key:"onMouseMove",value:function(o){for(var t=0;t<this.fullEventTypes.length;t++)this.onMouseMoveType(this.fullEventTypes[t],o)}},{key:"onMouseMoveType",value:function(o,t){this[o+"Mouse"]&&(this.has_moused_moved=!0,this.valueChange(o,t),this.$scope.$apply())}},{key:"onKeyUp",value:function(o){this.options.hide.escape&&27===o.keyCode&&this.api.close(o)}},{key:"onClick",value:function(o,t){this.options.disabled||this.has_moused_moved||(this.valueChange(o,t),this.mouseEventToggle(o,!0,t),this.onChange(t))}},{key:"onChange",value:function(o){this.internalNgModel!==this.onChangeValue&&(this.onChangeValue=this.internalNgModel,this.eventApiDispatch("onChange",[o]))}},{key:"onBlur",value:function(o){this.internalNgModel!==this.onChangeValue&&(this.updateModel=!0,this.update()),this.$scope.control[0].$setTouched(),this.eventApiDispatch("onBlur",[o]),this.options.hide.blur&&0===this.find(o.relatedTarget).length&&this.api.close(o)}},{key:"onSwatchClick",value:function(o){this.options.show.swatch&&!this.options.disabled&&this.api.open(o)}},{key:"onFocus",value:function(o){this.options.show.focus&&this.api.open(o)}},{key:"setupApi",value:function(){var o=this;this.api||(this.api={}),this.api.open=function(t){if(o.is_open)return!0;o.is_open=!0,o.hueMouse=!1,o.opacityMouse=!1,o.colorMouse=!1,o.$scope.$applyAsync();for(var e=0;e<o.basicEventTypes.length;e++)o.valueUpdate(o.basicEventTypes[e]);o.eventApiDispatch("onOpen",[t])},this.api.close=function(t){o.options.inline||!o.is_open&&null===o.$element[0].querySelector(".color-picker-panel").offsetParent||(o.is_open=!1,o.$scope.$applyAsync(),o.update(),o.eventApiDispatch("onClose",[t]))},this.api.clear=function(t){o.setNgModel(null),o.eventApiDispatch("onClear",[t])},this.api.reset=function(t){o.internalNgModel!==o.initialNgModel&&(o.setNgModel(o.initialNgModel),o.eventApiDispatch("onReset",[t]))},this.api.getElement=function(){return o.$element},this.api.getScope=function(){return o.$scope}}},{key:"setNgModel",value:function(o){this.internalNgModel=o,this.ngModelOptions.getterSetter?this.ngModel(o):this.ngModel=o}},{key:"update",value:function(){if(!this.areAllValuesSet())return!1;var t=o(this.getColorValue());this.swatchColor=t.toHslString(),this.updateGridBackground(t),this.updateHueBackground(t),this.huePosUpdate(),this.updateSaturationBackground(t),this.saturationPosUpdate(),this.updateLightnessBackground(t),this.lightnessPosUpdate(),this.updateOpacityBackground(t),this.opacityPosUpdate();var e=this.options.preserveInputFormat&&o(this.internalNgModel).toHsvString()===t.toHsvString();if(this.updateModel&&!e){var i=t[{rgb:"toRgbString",hex:"toHex",hex8:"toHex8",hexstring:"toHexString",hex8string:"toHex8String",hsv:"toHsvString",hsl:"toHslString",raw:"clone"}[this.options.format.toLowerCase()]]();this.options.format.match(/hex/i)&&(i="upper"===this.options.case?i.toUpperCase():i.toLowerCase()),this.setNgModel(i)}}},{key:"mouseEventToggle",value:function(o,t,e){this.stopEvent(e),this[o+"Mouse"]=!t,this.$scope.$apply()}},{key:"valueChange",value:function(o,t){if(this.stopEvent(t),"color"===o)return this.colorChange(t);var e=this.find(".color-picker-"+o),i=this.getEventPos(t),n=this.getMaxFromType(o);this[o]=this.calculateSliderPos(e,i,n),this[o]>n?this[o]=n:this[o]<0&&(this[o]=0)}},{key:"valueUpdate",value:function(o){if(void 0!==this[o]){if("saturation"===o)this[o+"Pos"]=this[o];else{var t=this.getMaxFromType(o);this[o+"Pos"]=100*(1-this[o]/t)}this[o+"Pos"]<0?this[o+"Pos"]=0:this[o+"Pos"]>100&&(this[o+"Pos"]=100),this.options.round&&(this.getRoundPos(),this.updateRoundPos()),this[o+"PosUpdate"](),this.update()}}},{key:"huePosUpdate",value:function(){var o=angular.element(this.$element[0].querySelector(".color-picker-hue .color-picker-slider"));this.options.horizontal?o.css({left:this.sliderDimensions.width*this.huePos/100+"px",top:0}):o.css({left:0,top:this.sliderDimensions.height*this.huePos/100+"px"})}},{key:"updateHueBackground",value:function(t){var e=this.find(".color-picker-hue .color-picker-overlay"),i=this.options.horizontal?"left":"top",n=this.getColorValue(this.options.dynamicHue),r=this.getColorValue(this.options.dynamicHue),s=this.getColorValue(this.options.dynamicHue),l=this.getColorValue(this.options.dynamicHue),a=this.getColorValue(this.options.dynamicHue),c=this.getColorValue(this.options.dynamicHue),h=this.getColorValue(this.options.dynamicHue);n.h=0,r.h=60,s.h=120,l.h=180,a.h=240,c.h=300,h.h=359,e.css({background:"linear-gradient(to "+i+", "+o(n).toRgbString()+" 0%, "+o(r).toRgbString()+" 17%, "+o(s).toRgbString()+" 33%, "+o(l).toRgbString()+" 50%, "+o(a).toRgbString()+" 67%, "+o(c).toRgbString()+" 83%, "+o(h).toRgbString()+" 100%)"})}},{key:"saturationPosUpdate",value:function(){var o;this.options.round||(o=angular.element(this.$element[0].querySelector(".color-picker-grid .color-picker-picker"))).css({left:this.pickerDimensions.height*this.saturationPos/100+"px"}),o=angular.element(this.$element[0].querySelector(".color-picker-saturation .color-picker-slider")),this.options.horizontal?o.css({left:this.sliderDimensions.width*(100-this.saturationPos)/100+"px",top:0}):o.css({left:0,top:this.sliderDimensions.height*(100-this.saturationPos)/100+"px"})}},{key:"updateSaturationBackground",value:function(t){var e=this.find(".color-picker-saturation .color-picker-overlay"),i=this.options.horizontal?"right":"bottom",n=this.getColorValue(this.options.dynamicSaturation),r=this.getColorValue(this.options.dynamicSaturation);n.s="100%",r.s="0%",e.css({background:"linear-gradient(to "+i+", "+o(n).toRgbString()+" 0%, "+o(r).toRgbString()+" 100%)"})}},{key:"lightnessPosUpdate",value:function(){var o;this.options.round||(o=angular.element(this.$element[0].querySelector(".color-picker-grid .color-picker-picker"))).css({top:this.pickerDimensions.width*this.lightnessPos/100+"px"}),o=angular.element(this.$element[0].querySelector(".color-picker-lightness .color-picker-slider")),this.options.horizontal?o.css({left:this.sliderDimensions.width*this.lightnessPos/100+"px",top:0}):o.css({left:0,top:this.sliderDimensions.height*this.lightnessPos/100+"px"})}},{key:"updateLightnessBackground",value:function(t){var e=this.find(".color-picker-lightness .color-picker-overlay"),i=this.options.horizontal?"right":"bottom",n=this.getColorValue(this.options.dynamicLightness),r=this.getColorValue(this.options.dynamicLightness),s=this.getColorValue(this.options.dynamicLightness);this.options.round?(n.l=100,r.l=50,s.l=0):(n.v=100,r.v=50,s.v=0),e.css({background:"linear-gradient(to "+i+", "+o(n).toRgbString()+" 0%, "+o(r).toRgbString()+" 50%, "+o(s).toRgbString()+" 100%)"})}},{key:"opacityPosUpdate",value:function(){var o=angular.element(this.$element[0].querySelector(".color-picker-opacity .color-picker-slider"));this.options.horizontal?o.css({left:this.sliderDimensions.width*this.opacityPos/100+"px",top:0}):o.css({left:0,top:this.sliderDimensions.height*this.opacityPos/100+"px"})}},{key:"updateOpacityBackground",value:function(t){var e=this.find(".color-picker-opacity .color-picker-overlay"),i=this.options.horizontal?"right":"bottom",n=this.getColorValue(this.options.dynamicAlpha),r=this.getColorValue(this.options.dynamicAlpha);n.a=1,r.a=0,e.css({background:"linear-gradient(to "+i+", "+o(n).toRgbString()+" 0%, "+o(r).toRgbString()+" 100%)"})}},{key:"colorChange",value:function(o){this.stopEvent(o);var t=this.find(".color-picker-grid-inner"),e=this.getEventPos(o),i=this.offset(t);this.options.round?this.colorChangeRound(t,i,e):this.colorChangeSquare(t,i,e)}},{key:"colorChangeRound",value:function(o,t,e){var i=2*(e.pageX-t.left)/o.prop("offsetWidth")-1,n=-2*(e.pageY-t.top)/o.prop("offsetHeight")+1,r=Math.atan2(n,i),s=Math.round(57.29577951308233*r);s<0&&(s+=360),this.hue=s;var l=Math.sqrt(i*i+n*n);l>1?l=1:l<0&&(l=0),this.saturation=100*l,void 0===this.lightness&&(this.lightness=50)}},{key:"colorChangeSquare",value:function(o,t,e){this.saturation=(e.pageX-t.left)/o.prop("offsetWidth")*100,this.lightness=100*(1-(e.pageY-t.top)/o.prop("offsetHeight")),this.saturation>100?this.saturation=100:this.saturation<0&&(this.saturation=0),this.lightness>100?this.lightness=100:this.lightness<0&&(this.lightness=0)}},{key:"updateGridBackground",value:function(t){var e=this.find(".color-picker-grid .color-picker-overlay"),i=this.getColorValue();this.options.round?i.s="0%":(i.s="100%",i.v="100%",i.a=1),e.css({"background-color":o(i).toRgbString(),opacity:t.getAlpha()}),this.find(".color-picker-grid .color-picker-grid-inner").css({opacity:t.getAlpha()})}},{key:"updateSwatchBackground",value:function(){angular.element(this.$element[0].querySelector(".color-picker-swatch")).css({"background-color":this.swatchColor})}},{key:"isColorValid",value:function(o){var t=o.isValid();if(t&&this.options.restrictToFormat&&(t=o.getFormat()===this.getTinyColorFormat()),!t&&this.options.allowEmpty){var e=o.getOriginalInput();void 0!==e&&null!==e&&""!==e||(t=!0)}return t}},{key:"getTinyColorFormat",value:function(){return"hexString"===this.options.format?"hex":"hex8String"===this.options.format?"hex8":this.options.format}},{key:"areAllValuesSet",value:function(){return void 0!==this.hue&&void 0!==this.saturation&&void 0!==this.lightness}},{key:"getColorValue",value:function(){var o=!(arguments.length>0&&void 0!==arguments[0])||arguments[0],t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],e={h:this.hue,s:o?this.saturation+"%":"100%",v:o?this.lightness+"%":"100%"};return this.options.round&&(e={h:this.hue,s:o?this.saturation+"%":"100%",l:o?this.lightness+"%":"50%"}),t&&(e.a=o?this.opacity/100:1),e}},{key:"setColorValue",value:function(o){var t=!this.anyMouseEvents(),e=this.options.round?o.toHsl():o.toHsv();(t||this.hueMouse)&&(this.hue=e.h),(t||this.saturationMouse)&&(this.saturation=100*e.s),(t||this.lightnessMouse)&&(this.lightness=100*(this.options.round?e.l:e.v)),this.options.alpha&&(t||this.opacityMouse)&&(this.opacity=100*e.a)}},{key:"checkDirty",value:function(o){this.hasOwnProperty("initialNgModel")&&(o===this.initialNgModel?"function"==typeof this.$scope.control[0].$setPristine&&this.$scope.control[0].$setPristine():"function"==typeof this.$scope.control[0].$setDirty&&this.$scope.control[0].$setDirty())}},{key:"stopEvent",value:function(o){o.stopPropagation(),o.preventDefault()}},{key:"getRoundPos",value:function(){var o=.01745329251994*this.hue,t=Math.cos(o)*this.saturation,e=-Math.sin(o)*this.saturation;this.xPos=.5*(t+100),this.yPos=.5*(e+100);if(Math.pow(50-this.xPos,2)+Math.pow(50-this.yPos,2)>Math.pow(50,2)){var i=Math.atan2(this.yPos-50,this.xPos-50);this.xPos=50*Math.cos(i)+50,this.yPos=50*Math.sin(i)+50}}},{key:"updateRoundPos",value:function(){angular.element(this.$element[0].querySelector(".color-picker-grid .color-picker-picker")).css({left:this.pickerDimensions.width*this.xPos/100+"px",top:this.pickerDimensions.height*this.yPos/100+"px"})}},{key:"getEventPos",value:function(o){if(0===o.type.search("touch")){if(o.originalEvent&&o.originalEvent.changedTouches)return o.originalEvent.changedTouches[0];if(o.changedTouches)return o.changedTouches[0]}return o}},{key:"calculateSliderPos",value:function(o,t,e){return this.options.horizontal?Math.round((1-(t.pageX-this.offset(o).left)/o.prop("offsetWidth"))*e):Math.round((1-(t.pageY-this.offset(o).top)/o.prop("offsetHeight"))*e)}},{key:"eventApiDispatch",value:function(o,t){this.eventApi&&"function"==typeof this.eventApi[o]&&(t||(t=[]),t.unshift(this.internalNgModel),t.unshift(this.api),this.eventApi[o].apply(this,t))}},{key:"find",value:function(o){var t,e=this.wrapper?this.wrapper[0]:this.$element[0],i=[];if(!o)return i;if("string"==typeof o){if(1!==(t=e.nodeType)&&9!==t)return[];i=e.querySelectorAll(o)}else e.contains(o)&&i.push(o);return angular.element(i)}},{key:"offset",value:function(o){var t,e,i,n,r=o[0];if(r)return r.getClientRects().length?(i=r.getBoundingClientRect()).width||i.height?(n=r.ownerDocument,e=this.getWindowElements(n),t=n.documentElement,this.chrome&&this.android_version<6&&screen.width<=768?{top:i.top-t.clientTop,left:i.left-t.clientLeft}:{top:i.top+e.pageYOffset-t.clientTop,left:i.left+e.pageXOffset-t.clientLeft}):i:{top:0,left:0}}},{key:"getWindowElements",value:function(o){return null!==o&&o===o.window?o:9===o.nodeType&&o.defaultView}},{key:"anyMouseEvents",value:function(){return this.colorMouse||this.hueMouse||this.saturationMouse||this.lightnessMouse||this.opacityMouse}},{key:"getMaxFromType",value:function(o){return"hue"===o?360:100}}]),t}();r.$inject=["$scope","$element","$document","$timeout","ColorPickerOptions"],t.$inject=["$templateCache"];return angular.module("color.picker",[]).service("ColorPickerOptions",function o(){return i(this,o),{id:void 0,name:void 0,required:!1,disabled:!1,placeholder:"",inputClass:"",restrictToFormat:!1,preserveInputFormat:!1,allowEmpty:!1,format:"hsl",case:"upper",hue:!0,saturation:!1,lightness:!1,alpha:!0,dynamicHue:!0,dynamicSaturation:!0,dynamicLightness:!0,dynamicAlpha:!0,round:!1,pos:"bottom left",inline:!1,horizontal:!1,swatch:!0,swatchOnly:!1,swatchPos:"left",swatchBootstrap:!0,show:{swatch:!0,focus:!0},hide:{blur:!0,escape:!0,click:!0},close:{show:!1,label:"Close",class:""},clear:{show:!1,label:"Clear",class:""},reset:{show:!1,label:"Reset",class:""}}}).directive("colorPicker",function(){return{restrict:"E",require:["^ngModel"],scope:{ngModel:"=",options:"=?",api:"=?",eventApi:"=?"},bindToController:!0,templateUrl:"template/color-picker/directive.html",controller:r,controllerAs:"AngularColorPickerController",link:function(o,t,e,i){o.control=i,o.init()}}}).run(t)});
+
+
+/***/ }),
+
+/***/ "./node_modules/tinycolor2/tinycolor.js":
+/*!**********************************************!*\
+  !*** ./node_modules/tinycolor2/tinycolor.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_RESULT__;// TinyColor v1.4.1
+// https://github.com/bgrins/TinyColor
+// Brian Grinstead, MIT License
+
+(function(Math) {
+
+var trimLeft = /^\s+/,
+    trimRight = /\s+$/,
+    tinyCounter = 0,
+    mathRound = Math.round,
+    mathMin = Math.min,
+    mathMax = Math.max,
+    mathRandom = Math.random;
+
+function tinycolor (color, opts) {
+
+    color = (color) ? color : '';
+    opts = opts || { };
+
+    // If input is already a tinycolor, return itself
+    if (color instanceof tinycolor) {
+       return color;
+    }
+    // If we are called as a function, call using new instead
+    if (!(this instanceof tinycolor)) {
+        return new tinycolor(color, opts);
+    }
+
+    var rgb = inputToRGB(color);
+    this._originalInput = color,
+    this._r = rgb.r,
+    this._g = rgb.g,
+    this._b = rgb.b,
+    this._a = rgb.a,
+    this._roundA = mathRound(100*this._a) / 100,
+    this._format = opts.format || rgb.format;
+    this._gradientType = opts.gradientType;
+
+    // Don't let the range of [0,255] come back in [0,1].
+    // Potentially lose a little bit of precision here, but will fix issues where
+    // .5 gets interpreted as half of the total, instead of half of 1
+    // If it was supposed to be 128, this was already taken care of by `inputToRgb`
+    if (this._r < 1) { this._r = mathRound(this._r); }
+    if (this._g < 1) { this._g = mathRound(this._g); }
+    if (this._b < 1) { this._b = mathRound(this._b); }
+
+    this._ok = rgb.ok;
+    this._tc_id = tinyCounter++;
+}
+
+tinycolor.prototype = {
+    isDark: function() {
+        return this.getBrightness() < 128;
+    },
+    isLight: function() {
+        return !this.isDark();
+    },
+    isValid: function() {
+        return this._ok;
+    },
+    getOriginalInput: function() {
+      return this._originalInput;
+    },
+    getFormat: function() {
+        return this._format;
+    },
+    getAlpha: function() {
+        return this._a;
+    },
+    getBrightness: function() {
+        //http://www.w3.org/TR/AERT#color-contrast
+        var rgb = this.toRgb();
+        return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+    },
+    getLuminance: function() {
+        //http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+        var rgb = this.toRgb();
+        var RsRGB, GsRGB, BsRGB, R, G, B;
+        RsRGB = rgb.r/255;
+        GsRGB = rgb.g/255;
+        BsRGB = rgb.b/255;
+
+        if (RsRGB <= 0.03928) {R = RsRGB / 12.92;} else {R = Math.pow(((RsRGB + 0.055) / 1.055), 2.4);}
+        if (GsRGB <= 0.03928) {G = GsRGB / 12.92;} else {G = Math.pow(((GsRGB + 0.055) / 1.055), 2.4);}
+        if (BsRGB <= 0.03928) {B = BsRGB / 12.92;} else {B = Math.pow(((BsRGB + 0.055) / 1.055), 2.4);}
+        return (0.2126 * R) + (0.7152 * G) + (0.0722 * B);
+    },
+    setAlpha: function(value) {
+        this._a = boundAlpha(value);
+        this._roundA = mathRound(100*this._a) / 100;
+        return this;
+    },
+    toHsv: function() {
+        var hsv = rgbToHsv(this._r, this._g, this._b);
+        return { h: hsv.h * 360, s: hsv.s, v: hsv.v, a: this._a };
+    },
+    toHsvString: function() {
+        var hsv = rgbToHsv(this._r, this._g, this._b);
+        var h = mathRound(hsv.h * 360), s = mathRound(hsv.s * 100), v = mathRound(hsv.v * 100);
+        return (this._a == 1) ?
+          "hsv("  + h + ", " + s + "%, " + v + "%)" :
+          "hsva(" + h + ", " + s + "%, " + v + "%, "+ this._roundA + ")";
+    },
+    toHsl: function() {
+        var hsl = rgbToHsl(this._r, this._g, this._b);
+        return { h: hsl.h * 360, s: hsl.s, l: hsl.l, a: this._a };
+    },
+    toHslString: function() {
+        var hsl = rgbToHsl(this._r, this._g, this._b);
+        var h = mathRound(hsl.h * 360), s = mathRound(hsl.s * 100), l = mathRound(hsl.l * 100);
+        return (this._a == 1) ?
+          "hsl("  + h + ", " + s + "%, " + l + "%)" :
+          "hsla(" + h + ", " + s + "%, " + l + "%, "+ this._roundA + ")";
+    },
+    toHex: function(allow3Char) {
+        return rgbToHex(this._r, this._g, this._b, allow3Char);
+    },
+    toHexString: function(allow3Char) {
+        return '#' + this.toHex(allow3Char);
+    },
+    toHex8: function(allow4Char) {
+        return rgbaToHex(this._r, this._g, this._b, this._a, allow4Char);
+    },
+    toHex8String: function(allow4Char) {
+        return '#' + this.toHex8(allow4Char);
+    },
+    toRgb: function() {
+        return { r: mathRound(this._r), g: mathRound(this._g), b: mathRound(this._b), a: this._a };
+    },
+    toRgbString: function() {
+        return (this._a == 1) ?
+          "rgb("  + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ")" :
+          "rgba(" + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ", " + this._roundA + ")";
+    },
+    toPercentageRgb: function() {
+        return { r: mathRound(bound01(this._r, 255) * 100) + "%", g: mathRound(bound01(this._g, 255) * 100) + "%", b: mathRound(bound01(this._b, 255) * 100) + "%", a: this._a };
+    },
+    toPercentageRgbString: function() {
+        return (this._a == 1) ?
+          "rgb("  + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%)" :
+          "rgba(" + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%, " + this._roundA + ")";
+    },
+    toName: function() {
+        if (this._a === 0) {
+            return "transparent";
+        }
+
+        if (this._a < 1) {
+            return false;
+        }
+
+        return hexNames[rgbToHex(this._r, this._g, this._b, true)] || false;
+    },
+    toFilter: function(secondColor) {
+        var hex8String = '#' + rgbaToArgbHex(this._r, this._g, this._b, this._a);
+        var secondHex8String = hex8String;
+        var gradientType = this._gradientType ? "GradientType = 1, " : "";
+
+        if (secondColor) {
+            var s = tinycolor(secondColor);
+            secondHex8String = '#' + rgbaToArgbHex(s._r, s._g, s._b, s._a);
+        }
+
+        return "progid:DXImageTransform.Microsoft.gradient("+gradientType+"startColorstr="+hex8String+",endColorstr="+secondHex8String+")";
+    },
+    toString: function(format) {
+        var formatSet = !!format;
+        format = format || this._format;
+
+        var formattedString = false;
+        var hasAlpha = this._a < 1 && this._a >= 0;
+        var needsAlphaFormat = !formatSet && hasAlpha && (format === "hex" || format === "hex6" || format === "hex3" || format === "hex4" || format === "hex8" || format === "name");
+
+        if (needsAlphaFormat) {
+            // Special case for "transparent", all other non-alpha formats
+            // will return rgba when there is transparency.
+            if (format === "name" && this._a === 0) {
+                return this.toName();
+            }
+            return this.toRgbString();
+        }
+        if (format === "rgb") {
+            formattedString = this.toRgbString();
+        }
+        if (format === "prgb") {
+            formattedString = this.toPercentageRgbString();
+        }
+        if (format === "hex" || format === "hex6") {
+            formattedString = this.toHexString();
+        }
+        if (format === "hex3") {
+            formattedString = this.toHexString(true);
+        }
+        if (format === "hex4") {
+            formattedString = this.toHex8String(true);
+        }
+        if (format === "hex8") {
+            formattedString = this.toHex8String();
+        }
+        if (format === "name") {
+            formattedString = this.toName();
+        }
+        if (format === "hsl") {
+            formattedString = this.toHslString();
+        }
+        if (format === "hsv") {
+            formattedString = this.toHsvString();
+        }
+
+        return formattedString || this.toHexString();
+    },
+    clone: function() {
+        return tinycolor(this.toString());
+    },
+
+    _applyModification: function(fn, args) {
+        var color = fn.apply(null, [this].concat([].slice.call(args)));
+        this._r = color._r;
+        this._g = color._g;
+        this._b = color._b;
+        this.setAlpha(color._a);
+        return this;
+    },
+    lighten: function() {
+        return this._applyModification(lighten, arguments);
+    },
+    brighten: function() {
+        return this._applyModification(brighten, arguments);
+    },
+    darken: function() {
+        return this._applyModification(darken, arguments);
+    },
+    desaturate: function() {
+        return this._applyModification(desaturate, arguments);
+    },
+    saturate: function() {
+        return this._applyModification(saturate, arguments);
+    },
+    greyscale: function() {
+        return this._applyModification(greyscale, arguments);
+    },
+    spin: function() {
+        return this._applyModification(spin, arguments);
+    },
+
+    _applyCombination: function(fn, args) {
+        return fn.apply(null, [this].concat([].slice.call(args)));
+    },
+    analogous: function() {
+        return this._applyCombination(analogous, arguments);
+    },
+    complement: function() {
+        return this._applyCombination(complement, arguments);
+    },
+    monochromatic: function() {
+        return this._applyCombination(monochromatic, arguments);
+    },
+    splitcomplement: function() {
+        return this._applyCombination(splitcomplement, arguments);
+    },
+    triad: function() {
+        return this._applyCombination(triad, arguments);
+    },
+    tetrad: function() {
+        return this._applyCombination(tetrad, arguments);
+    }
+};
+
+// If input is an object, force 1 into "1.0" to handle ratios properly
+// String input requires "1.0" as input, so 1 will be treated as 1
+tinycolor.fromRatio = function(color, opts) {
+    if (typeof color == "object") {
+        var newColor = {};
+        for (var i in color) {
+            if (color.hasOwnProperty(i)) {
+                if (i === "a") {
+                    newColor[i] = color[i];
+                }
+                else {
+                    newColor[i] = convertToPercentage(color[i]);
+                }
+            }
+        }
+        color = newColor;
+    }
+
+    return tinycolor(color, opts);
+};
+
+// Given a string or object, convert that input to RGB
+// Possible string inputs:
+//
+//     "red"
+//     "#f00" or "f00"
+//     "#ff0000" or "ff0000"
+//     "#ff000000" or "ff000000"
+//     "rgb 255 0 0" or "rgb (255, 0, 0)"
+//     "rgb 1.0 0 0" or "rgb (1, 0, 0)"
+//     "rgba (255, 0, 0, 1)" or "rgba 255, 0, 0, 1"
+//     "rgba (1.0, 0, 0, 1)" or "rgba 1.0, 0, 0, 1"
+//     "hsl(0, 100%, 50%)" or "hsl 0 100% 50%"
+//     "hsla(0, 100%, 50%, 1)" or "hsla 0 100% 50%, 1"
+//     "hsv(0, 100%, 100%)" or "hsv 0 100% 100%"
+//
+function inputToRGB(color) {
+
+    var rgb = { r: 0, g: 0, b: 0 };
+    var a = 1;
+    var s = null;
+    var v = null;
+    var l = null;
+    var ok = false;
+    var format = false;
+
+    if (typeof color == "string") {
+        color = stringInputToObject(color);
+    }
+
+    if (typeof color == "object") {
+        if (isValidCSSUnit(color.r) && isValidCSSUnit(color.g) && isValidCSSUnit(color.b)) {
+            rgb = rgbToRgb(color.r, color.g, color.b);
+            ok = true;
+            format = String(color.r).substr(-1) === "%" ? "prgb" : "rgb";
+        }
+        else if (isValidCSSUnit(color.h) && isValidCSSUnit(color.s) && isValidCSSUnit(color.v)) {
+            s = convertToPercentage(color.s);
+            v = convertToPercentage(color.v);
+            rgb = hsvToRgb(color.h, s, v);
+            ok = true;
+            format = "hsv";
+        }
+        else if (isValidCSSUnit(color.h) && isValidCSSUnit(color.s) && isValidCSSUnit(color.l)) {
+            s = convertToPercentage(color.s);
+            l = convertToPercentage(color.l);
+            rgb = hslToRgb(color.h, s, l);
+            ok = true;
+            format = "hsl";
+        }
+
+        if (color.hasOwnProperty("a")) {
+            a = color.a;
+        }
+    }
+
+    a = boundAlpha(a);
+
+    return {
+        ok: ok,
+        format: color.format || format,
+        r: mathMin(255, mathMax(rgb.r, 0)),
+        g: mathMin(255, mathMax(rgb.g, 0)),
+        b: mathMin(255, mathMax(rgb.b, 0)),
+        a: a
+    };
+}
+
+
+// Conversion Functions
+// --------------------
+
+// `rgbToHsl`, `rgbToHsv`, `hslToRgb`, `hsvToRgb` modified from:
+// <http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript>
+
+// `rgbToRgb`
+// Handle bounds / percentage checking to conform to CSS color spec
+// <http://www.w3.org/TR/css3-color/>
+// *Assumes:* r, g, b in [0, 255] or [0, 1]
+// *Returns:* { r, g, b } in [0, 255]
+function rgbToRgb(r, g, b){
+    return {
+        r: bound01(r, 255) * 255,
+        g: bound01(g, 255) * 255,
+        b: bound01(b, 255) * 255
+    };
+}
+
+// `rgbToHsl`
+// Converts an RGB color value to HSL.
+// *Assumes:* r, g, and b are contained in [0, 255] or [0, 1]
+// *Returns:* { h, s, l } in [0,1]
+function rgbToHsl(r, g, b) {
+
+    r = bound01(r, 255);
+    g = bound01(g, 255);
+    b = bound01(b, 255);
+
+    var max = mathMax(r, g, b), min = mathMin(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if(max == min) {
+        h = s = 0; // achromatic
+    }
+    else {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+
+        h /= 6;
+    }
+
+    return { h: h, s: s, l: l };
+}
+
+// `hslToRgb`
+// Converts an HSL color value to RGB.
+// *Assumes:* h is contained in [0, 1] or [0, 360] and s and l are contained [0, 1] or [0, 100]
+// *Returns:* { r, g, b } in the set [0, 255]
+function hslToRgb(h, s, l) {
+    var r, g, b;
+
+    h = bound01(h, 360);
+    s = bound01(s, 100);
+    l = bound01(l, 100);
+
+    function hue2rgb(p, q, t) {
+        if(t < 0) t += 1;
+        if(t > 1) t -= 1;
+        if(t < 1/6) return p + (q - p) * 6 * t;
+        if(t < 1/2) return q;
+        if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+    }
+
+    if(s === 0) {
+        r = g = b = l; // achromatic
+    }
+    else {
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+    }
+
+    return { r: r * 255, g: g * 255, b: b * 255 };
+}
+
+// `rgbToHsv`
+// Converts an RGB color value to HSV
+// *Assumes:* r, g, and b are contained in the set [0, 255] or [0, 1]
+// *Returns:* { h, s, v } in [0,1]
+function rgbToHsv(r, g, b) {
+
+    r = bound01(r, 255);
+    g = bound01(g, 255);
+    b = bound01(b, 255);
+
+    var max = mathMax(r, g, b), min = mathMin(r, g, b);
+    var h, s, v = max;
+
+    var d = max - min;
+    s = max === 0 ? 0 : d / max;
+
+    if(max == min) {
+        h = 0; // achromatic
+    }
+    else {
+        switch(max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+    return { h: h, s: s, v: v };
+}
+
+// `hsvToRgb`
+// Converts an HSV color value to RGB.
+// *Assumes:* h is contained in [0, 1] or [0, 360] and s and v are contained in [0, 1] or [0, 100]
+// *Returns:* { r, g, b } in the set [0, 255]
+ function hsvToRgb(h, s, v) {
+
+    h = bound01(h, 360) * 6;
+    s = bound01(s, 100);
+    v = bound01(v, 100);
+
+    var i = Math.floor(h),
+        f = h - i,
+        p = v * (1 - s),
+        q = v * (1 - f * s),
+        t = v * (1 - (1 - f) * s),
+        mod = i % 6,
+        r = [v, q, p, p, t, v][mod],
+        g = [t, v, v, q, p, p][mod],
+        b = [p, p, t, v, v, q][mod];
+
+    return { r: r * 255, g: g * 255, b: b * 255 };
+}
+
+// `rgbToHex`
+// Converts an RGB color to hex
+// Assumes r, g, and b are contained in the set [0, 255]
+// Returns a 3 or 6 character hex
+function rgbToHex(r, g, b, allow3Char) {
+
+    var hex = [
+        pad2(mathRound(r).toString(16)),
+        pad2(mathRound(g).toString(16)),
+        pad2(mathRound(b).toString(16))
+    ];
+
+    // Return a 3 character hex if possible
+    if (allow3Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1)) {
+        return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0);
+    }
+
+    return hex.join("");
+}
+
+// `rgbaToHex`
+// Converts an RGBA color plus alpha transparency to hex
+// Assumes r, g, b are contained in the set [0, 255] and
+// a in [0, 1]. Returns a 4 or 8 character rgba hex
+function rgbaToHex(r, g, b, a, allow4Char) {
+
+    var hex = [
+        pad2(mathRound(r).toString(16)),
+        pad2(mathRound(g).toString(16)),
+        pad2(mathRound(b).toString(16)),
+        pad2(convertDecimalToHex(a))
+    ];
+
+    // Return a 4 character hex if possible
+    if (allow4Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1) && hex[3].charAt(0) == hex[3].charAt(1)) {
+        return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0) + hex[3].charAt(0);
+    }
+
+    return hex.join("");
+}
+
+// `rgbaToArgbHex`
+// Converts an RGBA color to an ARGB Hex8 string
+// Rarely used, but required for "toFilter()"
+function rgbaToArgbHex(r, g, b, a) {
+
+    var hex = [
+        pad2(convertDecimalToHex(a)),
+        pad2(mathRound(r).toString(16)),
+        pad2(mathRound(g).toString(16)),
+        pad2(mathRound(b).toString(16))
+    ];
+
+    return hex.join("");
+}
+
+// `equals`
+// Can be called with any tinycolor input
+tinycolor.equals = function (color1, color2) {
+    if (!color1 || !color2) { return false; }
+    return tinycolor(color1).toRgbString() == tinycolor(color2).toRgbString();
+};
+
+tinycolor.random = function() {
+    return tinycolor.fromRatio({
+        r: mathRandom(),
+        g: mathRandom(),
+        b: mathRandom()
+    });
+};
+
+
+// Modification Functions
+// ----------------------
+// Thanks to less.js for some of the basics here
+// <https://github.com/cloudhead/less.js/blob/master/lib/less/functions.js>
+
+function desaturate(color, amount) {
+    amount = (amount === 0) ? 0 : (amount || 10);
+    var hsl = tinycolor(color).toHsl();
+    hsl.s -= amount / 100;
+    hsl.s = clamp01(hsl.s);
+    return tinycolor(hsl);
+}
+
+function saturate(color, amount) {
+    amount = (amount === 0) ? 0 : (amount || 10);
+    var hsl = tinycolor(color).toHsl();
+    hsl.s += amount / 100;
+    hsl.s = clamp01(hsl.s);
+    return tinycolor(hsl);
+}
+
+function greyscale(color) {
+    return tinycolor(color).desaturate(100);
+}
+
+function lighten (color, amount) {
+    amount = (amount === 0) ? 0 : (amount || 10);
+    var hsl = tinycolor(color).toHsl();
+    hsl.l += amount / 100;
+    hsl.l = clamp01(hsl.l);
+    return tinycolor(hsl);
+}
+
+function brighten(color, amount) {
+    amount = (amount === 0) ? 0 : (amount || 10);
+    var rgb = tinycolor(color).toRgb();
+    rgb.r = mathMax(0, mathMin(255, rgb.r - mathRound(255 * - (amount / 100))));
+    rgb.g = mathMax(0, mathMin(255, rgb.g - mathRound(255 * - (amount / 100))));
+    rgb.b = mathMax(0, mathMin(255, rgb.b - mathRound(255 * - (amount / 100))));
+    return tinycolor(rgb);
+}
+
+function darken (color, amount) {
+    amount = (amount === 0) ? 0 : (amount || 10);
+    var hsl = tinycolor(color).toHsl();
+    hsl.l -= amount / 100;
+    hsl.l = clamp01(hsl.l);
+    return tinycolor(hsl);
+}
+
+// Spin takes a positive or negative amount within [-360, 360] indicating the change of hue.
+// Values outside of this range will be wrapped into this range.
+function spin(color, amount) {
+    var hsl = tinycolor(color).toHsl();
+    var hue = (hsl.h + amount) % 360;
+    hsl.h = hue < 0 ? 360 + hue : hue;
+    return tinycolor(hsl);
+}
+
+// Combination Functions
+// ---------------------
+// Thanks to jQuery xColor for some of the ideas behind these
+// <https://github.com/infusion/jQuery-xcolor/blob/master/jquery.xcolor.js>
+
+function complement(color) {
+    var hsl = tinycolor(color).toHsl();
+    hsl.h = (hsl.h + 180) % 360;
+    return tinycolor(hsl);
+}
+
+function triad(color) {
+    var hsl = tinycolor(color).toHsl();
+    var h = hsl.h;
+    return [
+        tinycolor(color),
+        tinycolor({ h: (h + 120) % 360, s: hsl.s, l: hsl.l }),
+        tinycolor({ h: (h + 240) % 360, s: hsl.s, l: hsl.l })
+    ];
+}
+
+function tetrad(color) {
+    var hsl = tinycolor(color).toHsl();
+    var h = hsl.h;
+    return [
+        tinycolor(color),
+        tinycolor({ h: (h + 90) % 360, s: hsl.s, l: hsl.l }),
+        tinycolor({ h: (h + 180) % 360, s: hsl.s, l: hsl.l }),
+        tinycolor({ h: (h + 270) % 360, s: hsl.s, l: hsl.l })
+    ];
+}
+
+function splitcomplement(color) {
+    var hsl = tinycolor(color).toHsl();
+    var h = hsl.h;
+    return [
+        tinycolor(color),
+        tinycolor({ h: (h + 72) % 360, s: hsl.s, l: hsl.l}),
+        tinycolor({ h: (h + 216) % 360, s: hsl.s, l: hsl.l})
+    ];
+}
+
+function analogous(color, results, slices) {
+    results = results || 6;
+    slices = slices || 30;
+
+    var hsl = tinycolor(color).toHsl();
+    var part = 360 / slices;
+    var ret = [tinycolor(color)];
+
+    for (hsl.h = ((hsl.h - (part * results >> 1)) + 720) % 360; --results; ) {
+        hsl.h = (hsl.h + part) % 360;
+        ret.push(tinycolor(hsl));
+    }
+    return ret;
+}
+
+function monochromatic(color, results) {
+    results = results || 6;
+    var hsv = tinycolor(color).toHsv();
+    var h = hsv.h, s = hsv.s, v = hsv.v;
+    var ret = [];
+    var modification = 1 / results;
+
+    while (results--) {
+        ret.push(tinycolor({ h: h, s: s, v: v}));
+        v = (v + modification) % 1;
+    }
+
+    return ret;
+}
+
+// Utility Functions
+// ---------------------
+
+tinycolor.mix = function(color1, color2, amount) {
+    amount = (amount === 0) ? 0 : (amount || 50);
+
+    var rgb1 = tinycolor(color1).toRgb();
+    var rgb2 = tinycolor(color2).toRgb();
+
+    var p = amount / 100;
+
+    var rgba = {
+        r: ((rgb2.r - rgb1.r) * p) + rgb1.r,
+        g: ((rgb2.g - rgb1.g) * p) + rgb1.g,
+        b: ((rgb2.b - rgb1.b) * p) + rgb1.b,
+        a: ((rgb2.a - rgb1.a) * p) + rgb1.a
+    };
+
+    return tinycolor(rgba);
+};
+
+
+// Readability Functions
+// ---------------------
+// <http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef (WCAG Version 2)
+
+// `contrast`
+// Analyze the 2 colors and returns the color contrast defined by (WCAG Version 2)
+tinycolor.readability = function(color1, color2) {
+    var c1 = tinycolor(color1);
+    var c2 = tinycolor(color2);
+    return (Math.max(c1.getLuminance(),c2.getLuminance())+0.05) / (Math.min(c1.getLuminance(),c2.getLuminance())+0.05);
+};
+
+// `isReadable`
+// Ensure that foreground and background color combinations meet WCAG2 guidelines.
+// The third argument is an optional Object.
+//      the 'level' property states 'AA' or 'AAA' - if missing or invalid, it defaults to 'AA';
+//      the 'size' property states 'large' or 'small' - if missing or invalid, it defaults to 'small'.
+// If the entire object is absent, isReadable defaults to {level:"AA",size:"small"}.
+
+// *Example*
+//    tinycolor.isReadable("#000", "#111") => false
+//    tinycolor.isReadable("#000", "#111",{level:"AA",size:"large"}) => false
+tinycolor.isReadable = function(color1, color2, wcag2) {
+    var readability = tinycolor.readability(color1, color2);
+    var wcag2Parms, out;
+
+    out = false;
+
+    wcag2Parms = validateWCAG2Parms(wcag2);
+    switch (wcag2Parms.level + wcag2Parms.size) {
+        case "AAsmall":
+        case "AAAlarge":
+            out = readability >= 4.5;
+            break;
+        case "AAlarge":
+            out = readability >= 3;
+            break;
+        case "AAAsmall":
+            out = readability >= 7;
+            break;
+    }
+    return out;
+
+};
+
+// `mostReadable`
+// Given a base color and a list of possible foreground or background
+// colors for that base, returns the most readable color.
+// Optionally returns Black or White if the most readable color is unreadable.
+// *Example*
+//    tinycolor.mostReadable(tinycolor.mostReadable("#123", ["#124", "#125"],{includeFallbackColors:false}).toHexString(); // "#112255"
+//    tinycolor.mostReadable(tinycolor.mostReadable("#123", ["#124", "#125"],{includeFallbackColors:true}).toHexString();  // "#ffffff"
+//    tinycolor.mostReadable("#a8015a", ["#faf3f3"],{includeFallbackColors:true,level:"AAA",size:"large"}).toHexString(); // "#faf3f3"
+//    tinycolor.mostReadable("#a8015a", ["#faf3f3"],{includeFallbackColors:true,level:"AAA",size:"small"}).toHexString(); // "#ffffff"
+tinycolor.mostReadable = function(baseColor, colorList, args) {
+    var bestColor = null;
+    var bestScore = 0;
+    var readability;
+    var includeFallbackColors, level, size ;
+    args = args || {};
+    includeFallbackColors = args.includeFallbackColors ;
+    level = args.level;
+    size = args.size;
+
+    for (var i= 0; i < colorList.length ; i++) {
+        readability = tinycolor.readability(baseColor, colorList[i]);
+        if (readability > bestScore) {
+            bestScore = readability;
+            bestColor = tinycolor(colorList[i]);
+        }
+    }
+
+    if (tinycolor.isReadable(baseColor, bestColor, {"level":level,"size":size}) || !includeFallbackColors) {
+        return bestColor;
+    }
+    else {
+        args.includeFallbackColors=false;
+        return tinycolor.mostReadable(baseColor,["#fff", "#000"],args);
+    }
+};
+
+
+// Big List of Colors
+// ------------------
+// <http://www.w3.org/TR/css3-color/#svg-color>
+var names = tinycolor.names = {
+    aliceblue: "f0f8ff",
+    antiquewhite: "faebd7",
+    aqua: "0ff",
+    aquamarine: "7fffd4",
+    azure: "f0ffff",
+    beige: "f5f5dc",
+    bisque: "ffe4c4",
+    black: "000",
+    blanchedalmond: "ffebcd",
+    blue: "00f",
+    blueviolet: "8a2be2",
+    brown: "a52a2a",
+    burlywood: "deb887",
+    burntsienna: "ea7e5d",
+    cadetblue: "5f9ea0",
+    chartreuse: "7fff00",
+    chocolate: "d2691e",
+    coral: "ff7f50",
+    cornflowerblue: "6495ed",
+    cornsilk: "fff8dc",
+    crimson: "dc143c",
+    cyan: "0ff",
+    darkblue: "00008b",
+    darkcyan: "008b8b",
+    darkgoldenrod: "b8860b",
+    darkgray: "a9a9a9",
+    darkgreen: "006400",
+    darkgrey: "a9a9a9",
+    darkkhaki: "bdb76b",
+    darkmagenta: "8b008b",
+    darkolivegreen: "556b2f",
+    darkorange: "ff8c00",
+    darkorchid: "9932cc",
+    darkred: "8b0000",
+    darksalmon: "e9967a",
+    darkseagreen: "8fbc8f",
+    darkslateblue: "483d8b",
+    darkslategray: "2f4f4f",
+    darkslategrey: "2f4f4f",
+    darkturquoise: "00ced1",
+    darkviolet: "9400d3",
+    deeppink: "ff1493",
+    deepskyblue: "00bfff",
+    dimgray: "696969",
+    dimgrey: "696969",
+    dodgerblue: "1e90ff",
+    firebrick: "b22222",
+    floralwhite: "fffaf0",
+    forestgreen: "228b22",
+    fuchsia: "f0f",
+    gainsboro: "dcdcdc",
+    ghostwhite: "f8f8ff",
+    gold: "ffd700",
+    goldenrod: "daa520",
+    gray: "808080",
+    green: "008000",
+    greenyellow: "adff2f",
+    grey: "808080",
+    honeydew: "f0fff0",
+    hotpink: "ff69b4",
+    indianred: "cd5c5c",
+    indigo: "4b0082",
+    ivory: "fffff0",
+    khaki: "f0e68c",
+    lavender: "e6e6fa",
+    lavenderblush: "fff0f5",
+    lawngreen: "7cfc00",
+    lemonchiffon: "fffacd",
+    lightblue: "add8e6",
+    lightcoral: "f08080",
+    lightcyan: "e0ffff",
+    lightgoldenrodyellow: "fafad2",
+    lightgray: "d3d3d3",
+    lightgreen: "90ee90",
+    lightgrey: "d3d3d3",
+    lightpink: "ffb6c1",
+    lightsalmon: "ffa07a",
+    lightseagreen: "20b2aa",
+    lightskyblue: "87cefa",
+    lightslategray: "789",
+    lightslategrey: "789",
+    lightsteelblue: "b0c4de",
+    lightyellow: "ffffe0",
+    lime: "0f0",
+    limegreen: "32cd32",
+    linen: "faf0e6",
+    magenta: "f0f",
+    maroon: "800000",
+    mediumaquamarine: "66cdaa",
+    mediumblue: "0000cd",
+    mediumorchid: "ba55d3",
+    mediumpurple: "9370db",
+    mediumseagreen: "3cb371",
+    mediumslateblue: "7b68ee",
+    mediumspringgreen: "00fa9a",
+    mediumturquoise: "48d1cc",
+    mediumvioletred: "c71585",
+    midnightblue: "191970",
+    mintcream: "f5fffa",
+    mistyrose: "ffe4e1",
+    moccasin: "ffe4b5",
+    navajowhite: "ffdead",
+    navy: "000080",
+    oldlace: "fdf5e6",
+    olive: "808000",
+    olivedrab: "6b8e23",
+    orange: "ffa500",
+    orangered: "ff4500",
+    orchid: "da70d6",
+    palegoldenrod: "eee8aa",
+    palegreen: "98fb98",
+    paleturquoise: "afeeee",
+    palevioletred: "db7093",
+    papayawhip: "ffefd5",
+    peachpuff: "ffdab9",
+    peru: "cd853f",
+    pink: "ffc0cb",
+    plum: "dda0dd",
+    powderblue: "b0e0e6",
+    purple: "800080",
+    rebeccapurple: "663399",
+    red: "f00",
+    rosybrown: "bc8f8f",
+    royalblue: "4169e1",
+    saddlebrown: "8b4513",
+    salmon: "fa8072",
+    sandybrown: "f4a460",
+    seagreen: "2e8b57",
+    seashell: "fff5ee",
+    sienna: "a0522d",
+    silver: "c0c0c0",
+    skyblue: "87ceeb",
+    slateblue: "6a5acd",
+    slategray: "708090",
+    slategrey: "708090",
+    snow: "fffafa",
+    springgreen: "00ff7f",
+    steelblue: "4682b4",
+    tan: "d2b48c",
+    teal: "008080",
+    thistle: "d8bfd8",
+    tomato: "ff6347",
+    turquoise: "40e0d0",
+    violet: "ee82ee",
+    wheat: "f5deb3",
+    white: "fff",
+    whitesmoke: "f5f5f5",
+    yellow: "ff0",
+    yellowgreen: "9acd32"
+};
+
+// Make it easy to access colors via `hexNames[hex]`
+var hexNames = tinycolor.hexNames = flip(names);
+
+
+// Utilities
+// ---------
+
+// `{ 'name1': 'val1' }` becomes `{ 'val1': 'name1' }`
+function flip(o) {
+    var flipped = { };
+    for (var i in o) {
+        if (o.hasOwnProperty(i)) {
+            flipped[o[i]] = i;
+        }
+    }
+    return flipped;
+}
+
+// Return a valid alpha value [0,1] with all invalid values being set to 1
+function boundAlpha(a) {
+    a = parseFloat(a);
+
+    if (isNaN(a) || a < 0 || a > 1) {
+        a = 1;
+    }
+
+    return a;
+}
+
+// Take input from [0, n] and return it as [0, 1]
+function bound01(n, max) {
+    if (isOnePointZero(n)) { n = "100%"; }
+
+    var processPercent = isPercentage(n);
+    n = mathMin(max, mathMax(0, parseFloat(n)));
+
+    // Automatically convert percentage into number
+    if (processPercent) {
+        n = parseInt(n * max, 10) / 100;
+    }
+
+    // Handle floating point rounding errors
+    if ((Math.abs(n - max) < 0.000001)) {
+        return 1;
+    }
+
+    // Convert into [0, 1] range if it isn't already
+    return (n % max) / parseFloat(max);
+}
+
+// Force a number between 0 and 1
+function clamp01(val) {
+    return mathMin(1, mathMax(0, val));
+}
+
+// Parse a base-16 hex value into a base-10 integer
+function parseIntFromHex(val) {
+    return parseInt(val, 16);
+}
+
+// Need to handle 1.0 as 100%, since once it is a number, there is no difference between it and 1
+// <http://stackoverflow.com/questions/7422072/javascript-how-to-detect-number-as-a-decimal-including-1-0>
+function isOnePointZero(n) {
+    return typeof n == "string" && n.indexOf('.') != -1 && parseFloat(n) === 1;
+}
+
+// Check to see if string passed in is a percentage
+function isPercentage(n) {
+    return typeof n === "string" && n.indexOf('%') != -1;
+}
+
+// Force a hex value to have 2 characters
+function pad2(c) {
+    return c.length == 1 ? '0' + c : '' + c;
+}
+
+// Replace a decimal with it's percentage value
+function convertToPercentage(n) {
+    if (n <= 1) {
+        n = (n * 100) + "%";
+    }
+
+    return n;
+}
+
+// Converts a decimal to a hex value
+function convertDecimalToHex(d) {
+    return Math.round(parseFloat(d) * 255).toString(16);
+}
+// Converts a hex value to a decimal
+function convertHexToDecimal(h) {
+    return (parseIntFromHex(h) / 255);
+}
+
+var matchers = (function() {
+
+    // <http://www.w3.org/TR/css3-values/#integers>
+    var CSS_INTEGER = "[-\\+]?\\d+%?";
+
+    // <http://www.w3.org/TR/css3-values/#number-value>
+    var CSS_NUMBER = "[-\\+]?\\d*\\.\\d+%?";
+
+    // Allow positive/negative integer/number.  Don't capture the either/or, just the entire outcome.
+    var CSS_UNIT = "(?:" + CSS_NUMBER + ")|(?:" + CSS_INTEGER + ")";
+
+    // Actual matching.
+    // Parentheses and commas are optional, but not required.
+    // Whitespace can take the place of commas or opening paren
+    var PERMISSIVE_MATCH3 = "[\\s|\\(]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")\\s*\\)?";
+    var PERMISSIVE_MATCH4 = "[\\s|\\(]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")\\s*\\)?";
+
+    return {
+        CSS_UNIT: new RegExp(CSS_UNIT),
+        rgb: new RegExp("rgb" + PERMISSIVE_MATCH3),
+        rgba: new RegExp("rgba" + PERMISSIVE_MATCH4),
+        hsl: new RegExp("hsl" + PERMISSIVE_MATCH3),
+        hsla: new RegExp("hsla" + PERMISSIVE_MATCH4),
+        hsv: new RegExp("hsv" + PERMISSIVE_MATCH3),
+        hsva: new RegExp("hsva" + PERMISSIVE_MATCH4),
+        hex3: /^#?([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
+        hex6: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
+        hex4: /^#?([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
+        hex8: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
+    };
+})();
+
+// `isValidCSSUnit`
+// Take in a single string / number and check to see if it looks like a CSS unit
+// (see `matchers` above for definition).
+function isValidCSSUnit(color) {
+    return !!matchers.CSS_UNIT.exec(color);
+}
+
+// `stringInputToObject`
+// Permissive string parsing.  Take in a number of formats, and output an object
+// based on detected format.  Returns `{ r, g, b }` or `{ h, s, l }` or `{ h, s, v}`
+function stringInputToObject(color) {
+
+    color = color.replace(trimLeft,'').replace(trimRight, '').toLowerCase();
+    var named = false;
+    if (names[color]) {
+        color = names[color];
+        named = true;
+    }
+    else if (color == 'transparent') {
+        return { r: 0, g: 0, b: 0, a: 0, format: "name" };
+    }
+
+    // Try to match string input using regular expressions.
+    // Keep most of the number bounding out of this function - don't worry about [0,1] or [0,100] or [0,360]
+    // Just return an object and let the conversion functions handle that.
+    // This way the result will be the same whether the tinycolor is initialized with string or object.
+    var match;
+    if ((match = matchers.rgb.exec(color))) {
+        return { r: match[1], g: match[2], b: match[3] };
+    }
+    if ((match = matchers.rgba.exec(color))) {
+        return { r: match[1], g: match[2], b: match[3], a: match[4] };
+    }
+    if ((match = matchers.hsl.exec(color))) {
+        return { h: match[1], s: match[2], l: match[3] };
+    }
+    if ((match = matchers.hsla.exec(color))) {
+        return { h: match[1], s: match[2], l: match[3], a: match[4] };
+    }
+    if ((match = matchers.hsv.exec(color))) {
+        return { h: match[1], s: match[2], v: match[3] };
+    }
+    if ((match = matchers.hsva.exec(color))) {
+        return { h: match[1], s: match[2], v: match[3], a: match[4] };
+    }
+    if ((match = matchers.hex8.exec(color))) {
+        return {
+            r: parseIntFromHex(match[1]),
+            g: parseIntFromHex(match[2]),
+            b: parseIntFromHex(match[3]),
+            a: convertHexToDecimal(match[4]),
+            format: named ? "name" : "hex8"
+        };
+    }
+    if ((match = matchers.hex6.exec(color))) {
+        return {
+            r: parseIntFromHex(match[1]),
+            g: parseIntFromHex(match[2]),
+            b: parseIntFromHex(match[3]),
+            format: named ? "name" : "hex"
+        };
+    }
+    if ((match = matchers.hex4.exec(color))) {
+        return {
+            r: parseIntFromHex(match[1] + '' + match[1]),
+            g: parseIntFromHex(match[2] + '' + match[2]),
+            b: parseIntFromHex(match[3] + '' + match[3]),
+            a: convertHexToDecimal(match[4] + '' + match[4]),
+            format: named ? "name" : "hex8"
+        };
+    }
+    if ((match = matchers.hex3.exec(color))) {
+        return {
+            r: parseIntFromHex(match[1] + '' + match[1]),
+            g: parseIntFromHex(match[2] + '' + match[2]),
+            b: parseIntFromHex(match[3] + '' + match[3]),
+            format: named ? "name" : "hex"
+        };
+    }
+
+    return false;
+}
+
+function validateWCAG2Parms(parms) {
+    // return valid WCAG2 parms for isReadable.
+    // If input parms are invalid, return {"level":"AA", "size":"small"}
+    var level, size;
+    parms = parms || {"level":"AA", "size":"small"};
+    level = (parms.level || "AA").toUpperCase();
+    size = (parms.size || "small").toLowerCase();
+    if (level !== "AA" && level !== "AAA") {
+        level = "AA";
+    }
+    if (size !== "small" && size !== "large") {
+        size = "small";
+    }
+    return {"level":level, "size":size};
+}
+
+// Node: Export function
+if ( true && module.exports) {
+    module.exports = tinycolor;
+}
+// AMD/requirejs: Define the module
+else if (true) {
+    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {return tinycolor;}).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+}
+// Browser: Expose to window
+else {}
+
+})(Math);
+
+
+/***/ }),
+
 /***/ "./node_modules/ui-select/dist/select.js":
 /*!***********************************************!*\
   !*** ./node_modules/ui-select/dist/select.js ***!
@@ -42161,13 +43387,46 @@ module.exports = 'ui.select';
 
 __webpack_require__(/*! angular */ "./node_modules/angular/index.js");
 
-var tctApp = angular.module('tctApp', [__webpack_require__(/*! angular-sanitize */ "./node_modules/angular-sanitize/index.js"), __webpack_require__(/*! angular-route */ "./node_modules/angular-route/index.js"), __webpack_require__(/*! angular-resource */ "./node_modules/angular-resource/index.js"), __webpack_require__(/*! ui-select */ "./node_modules/ui-select/index.js")]);
+__webpack_require__(/*! angularjs-color-picker */ "./node_modules/angularjs-color-picker/dist/angularjs-color-picker.min.js");
+
+var tctApp = angular.module('tctApp', [__webpack_require__(/*! angular-sanitize */ "./node_modules/angular-sanitize/index.js"), __webpack_require__(/*! angular-route */ "./node_modules/angular-route/index.js"), __webpack_require__(/*! angular-resource */ "./node_modules/angular-resource/index.js"), __webpack_require__(/*! ui-select */ "./node_modules/ui-select/index.js"), 'color.picker']);
 tctApp.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode({
     enabled: true,
     requireBase: false
   });
 }]);
+tctApp.config(function ($provide) {
+  $provide.decorator('ColorPickerOptions', function ($delegate) {
+    var options = angular.copy($delegate);
+    options.round = true;
+    options.alpha = false;
+    options.hue = true;
+    options.lightness = true;
+    options.format = 'hexString';
+    return options;
+  });
+});
+tctApp.config(function ($provide) {
+  $provide.value('$locale', {
+    "NUMBER_FORMATS": {
+      "CURRENCY_SYM": "\u20BD",
+      "DECIMAL_SEP": ",",
+      "GROUP_SEP": "\xA0",
+      "PATTERNS": [{
+        "gSize": 3,
+        "lgSize": 3,
+        "maxFrac": 3,
+        "minFrac": 0,
+        "minInt": 1,
+        "negPre": "-",
+        "negSuf": "",
+        "posPre": "",
+        "posSuf": ""
+      }]
+    }
+  });
+});
 tctApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.when('/categories', {
     templateUrl: '/templates/categories',
@@ -42220,6 +43479,36 @@ tctApp.config(['$routeProvider', function ($routeProvider) {
   }).when('/production', {
     templateUrl: '/templates/production',
     controller: 'ProductionController'
+  }).when('/employments', {
+    templateUrl: '/templates/employments',
+    controller: 'EmploymentsController'
+  }).when('/employments/statuses', {
+    templateUrl: '/templates/employments/statuses',
+    controller: 'EmploymentStatusesController'
+  }).when('/workers', {
+    templateUrl: '/templates/workers',
+    controller: 'WorkersController'
+  }).when('/workers/create', {
+    templateUrl: '/templates/workers/edit',
+    controller: 'WorkersController'
+  }).when('/workers/:id', {
+    templateUrl: '/templates/workers/show',
+    controller: 'WorkersController'
+  }).when('/workers/:id/edit', {
+    templateUrl: '/templates/workers/edit',
+    controller: 'WorkersController'
+  }).when('/facilities', {
+    templateUrl: '/templates/facilities',
+    controller: 'FacilitiesController'
+  }).when('/facilities/create', {
+    templateUrl: '/templates/facilities/edit',
+    controller: 'FacilitiesController'
+  }).when('/facilities/:id', {
+    templateUrl: '/templates/facilities/show',
+    controller: 'FacilitiesController'
+  }).when('/facilities/:id/edit', {
+    templateUrl: '/templates/facilities/edit',
+    controller: 'FacilitiesController'
   });
 }]);
 tctApp.factory('CategoriesRepository', ['$resource', function ($resource) {
@@ -42233,6 +43522,23 @@ tctApp.factory('ClientsRepository', ['$resource', function ($resource) {
 }]);
 tctApp.factory('OrdersRepository', ['$resource', function ($resource) {
   return $resource('/orders/:id');
+}]);
+tctApp.factory('WorkersRepository', ['$resource', function ($resource) {
+  return $resource('/workers/:id');
+}]);
+tctApp.factory('EmploymentStatusesRepository', ['$resource', function ($resource) {
+  return $resource('/employments/statuses');
+}]);
+tctApp.factory('FacilitiesRepository', ['$resource', function ($resource) {
+  return $resource('/facilities/:id');
+}]);
+tctApp.factory('EmploymentsRepository', ['$resource', function ($resource) {
+  return $resource('/employments', null, {
+    saveSalary: {
+      method: 'POST',
+      url: '/employments/salaries/:id'
+    }
+  });
 }]);
 tctApp.factory('ProductionRepository', ['$resource', function ($resource) {
   return $resource('/production', null, {
@@ -42256,8 +43562,17 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
   $scope.categories = [];
   $scope.category = {};
   $scope.id = 0;
-  $scope.categoryData = {};
   $scope.categoryErrors = {};
+  $scope.units = [{
+    'key': 'area',
+    'name': 'Площадь (м<sup>2</sup>/шт./поддон)'
+  }, {
+    'key': 'volume',
+    'name': 'Объём (м<sup>3</sup>/шт./поддон)'
+  }, {
+    'key': 'length',
+    'name': 'Длина (м/шт./поддон)'
+  }];
 
   $scope.init = function () {
     CategoriesRepository.query(function (response) {
@@ -42282,17 +43597,25 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
         id: $scope.id
       }, function (response) {
         $scope.category = response;
-        $scope.categoryData = response;
       });
     }
   };
 
-  $scope.save = function (url) {
+  $scope.save = function () {
     CategoriesRepository.save({
       id: $scope.id
-    }, $scope.categoryData, function (response) {
-      $location.url(url);
-      $location.replace();
+    }, $scope.category, function (response) {
+      $scope.categoryErrors = {};
+
+      if ($scope.id) {
+        $scope.successAlert = 'Категория успешно обновлена!';
+      } else {
+        $scope.successAlert = 'Новая категория успешно создана!';
+      }
+
+      $scope.showAlert = true;
+      $scope.id = response.id;
+      $scope.category.url = response.url;
     }, function (response) {
       $scope.categoryErrors = response.data.errors;
     });
@@ -42373,6 +43696,306 @@ angular.module('tctApp').controller('ClientsController', ['$scope', '$routeParam
 
 /***/ }),
 
+/***/ "./resources/js/employments.js":
+/*!*************************************!*\
+  !*** ./resources/js/employments.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeParams', '$location', '$timeout', 'EmploymentsRepository', function ($scope, $routeParams, $location, $timeout, EmploymentsRepository) {
+  $scope.Object = Object;
+  $scope.days = 0;
+  $scope.monthes = [];
+  $scope.years = [];
+  $scope.currentDay = 0;
+  $scope.currentMonth = 0;
+  $scope.currentYear = 0;
+  $scope.worker = {};
+  $scope.workers = [];
+  $scope.statuses = {};
+
+  $scope.init = function () {
+    var request = {};
+
+    if ($scope.currentYear > 0) {
+      request.year = $scope.currentYear;
+    }
+
+    if ($scope.currentMonth > 0) {
+      request.month = $scope.currentMonth;
+    }
+
+    EmploymentsRepository.get(request, function (response) {
+      $scope.days = response.days;
+      $scope.monthes = response.monthes;
+      $scope.years = response.years;
+      $scope.currentDay = response.day;
+      $scope.currentMonth = response.month;
+      $scope.currentYear = response.year;
+      $scope.workers = response.workers;
+      $scope.statuses = response.statuses;
+    });
+  };
+
+  $scope.save = function () {
+    var employments = [];
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = $scope.workers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        worker = _step.value;
+
+        if (worker.employments) {
+          for (i in worker.employments) {
+            employments.push(worker.employments[i]);
+          }
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+          _iterator["return"]();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    var request = {
+      'employments': employments
+    };
+
+    if ($scope.currentYear > 0) {
+      request.year = $scope.currentYear;
+    }
+
+    if ($scope.currentMonth > 0) {
+      request.month = $scope.currentMonth;
+    }
+
+    EmploymentsRepository.save(request, function (response) {
+      $scope.successAlert = 'Все изменения успешно сохранены!';
+      $scope.showAlert = true;
+      $timeout(function () {
+        $scope.showAlert = false;
+      }, 2000);
+      $scope.init();
+    });
+  };
+
+  $scope.$watch('currentYear', function (newValue, oldValue) {
+    $scope.init();
+  });
+  $scope.$watch('currentMonth', function (newValue, oldValue) {
+    $scope.init();
+  });
+
+  $scope.changeEmploymentStatus = function (worker, day) {
+    $scope.changes = true;
+
+    if (!worker.employments) {
+      worker.employments = {};
+    }
+
+    var statusesKeys = Object.keys($scope.statuses);
+
+    if (!worker.employments[day]) {
+      worker.employments[day] = {
+        'worker_id': worker.id,
+        'day': day,
+        'status_id': statusesKeys.shift()
+      };
+    } else {
+      var statusId = worker.employments[day].status_id;
+      var newStatusId = statusId;
+
+      if (statusId == 0) {
+        newStatusId = statusesKeys.shift();
+      } else {
+        var newStatusId = statusesKeys.indexOf(statusId) + 1;
+
+        if (newStatusId >= statusesKeys.length) {
+          newStatusId = 0;
+        } else {
+          newStatusId = statusesKeys[newStatusId];
+        }
+      }
+
+      worker.employments[day].status_id = newStatusId;
+    }
+  };
+
+  $scope.isSalaryModalShown = false;
+
+  $scope.showSalaryModal = function (worker) {
+    $scope.modalWorker = worker;
+    $scope.isSalaryModalShown = true;
+  };
+
+  $scope.hideSalaryModal = function () {
+    $scope.isSalaryModalShown = false;
+  };
+
+  $scope.saveSalary = function () {
+    EmploymentsRepository.saveSalary({
+      id: $scope.modalWorker.salary.id
+    }, $scope.modalWorker.salary, function (response) {
+      $scope.successAlert = 'Все изменения успешно сохранены!';
+      $scope.showAlert = true;
+      $scope.isSalaryModalShown = false;
+      $timeout(function () {
+        $scope.showAlert = false;
+      }, 2000);
+      $scope.init();
+    });
+  };
+}]);
+
+/***/ }),
+
+/***/ "./resources/js/facilities.js":
+/*!************************************!*\
+  !*** ./resources/js/facilities.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routeParams', '$location', 'FacilitiesRepository', 'CategoriesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, FacilitiesRepository, CategoriesRepository, WorkersRepository) {
+  $scope.facilities = [];
+  $scope.facility = {
+    'workers': []
+  };
+  $scope.id = 0;
+  $scope.facilityErrors = {};
+  $scope.categories = [];
+  $scope.workers = [];
+
+  $scope.init = function () {
+    FacilitiesRepository.query(function (response) {
+      $scope.facilities = response;
+    });
+  };
+
+  $scope.initShow = function () {
+    $scope.id = $routeParams['id'];
+    $scope.loadFacility();
+  };
+
+  $scope.initEdit = function () {
+    $scope.id = $routeParams['id'];
+
+    if ($scope.id) {
+      $scope.loadFacility();
+    }
+
+    CategoriesRepository.query(function (response) {
+      $scope.categories = response;
+    });
+    WorkersRepository.query(function (response) {
+      $scope.workers = response;
+
+      for (var i = 0; i < $scope.workers.length; i++) {
+        if ($scope.workers[i].facility_id > 0 && $scope.workers[i].facility_id == $scope.id) {
+          $scope.workers.splice(i, 1);
+        }
+      }
+    });
+  };
+
+  $scope.loadFacility = function () {
+    FacilitiesRepository.get({
+      id: $scope.id
+    }, function (response) {
+      $scope.facility = response;
+      var categories = $scope.facility.categories;
+      $scope.facility.categories = {};
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = categories[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var category = _step.value;
+          $scope.facility.categories[category.id] = true;
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    });
+  };
+
+  $scope.save = function (facility) {
+    facility = facility || $scope.facility;
+    FacilitiesRepository.save({
+      id: facility.id
+    }, facility, function (response) {
+      $scope.facilityErrors = {};
+
+      if ($scope.id) {
+        $scope.successAlert = 'Данные цеха успешно сохранены!';
+      } else {
+        $scope.successAlert = 'Новый цех успешно создан!';
+      }
+
+      $scope.showAlert = true;
+      $scope.id = response.id;
+      $scope.facility.url = response.url;
+    }, function (response) {
+      $scope.facilityErrors = response.data.errors;
+    });
+  };
+
+  $scope["delete"] = function (id) {
+    FacilitiesRepository["delete"]({
+      id: id
+    }, function (response) {
+      $scope.init();
+    }, function (response) {});
+  };
+
+  $scope.isAddWorkerShown = false;
+  $scope.newWorker = {};
+
+  $scope.showAddWorker = function () {
+    $scope.isAddWorkerShown = true;
+  };
+
+  $scope.addWorker = function () {
+    var index = $scope.workers.indexOf($scope.newWorker.data);
+    $scope.facility.workers.push($scope.newWorker.data);
+    $scope.workers.splice(index, 1);
+    $scope.newWorker.data = null;
+    $scope.isAddWorkerShown = false;
+  };
+
+  $scope.deleteWorker = function (index) {
+    var worker = $scope.facility.workers[index];
+    $scope.facility.workers.splice(index, 1);
+    $scope.workers.push(worker);
+  };
+}]);
+
+/***/ }),
+
 /***/ "./resources/js/orders.js":
 /*!********************************!*\
   !*** ./resources/js/orders.js ***!
@@ -42381,6 +44004,7 @@ angular.module('tctApp').controller('ClientsController', ['$scope', '$routeParam
 /***/ (function(module, exports) {
 
 angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', 'ProductsRepository', 'OrdersRepository', function ($scope, $routeParams, $location, ProductsRepository, OrdersRepository) {
+  $scope.Math = window.Math;
   $scope.orders = [];
   $scope.order = {};
   $scope.id = 0;
@@ -42512,14 +44136,15 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('ProductionController', ['$scope', '$routeParams', '$location', 'ProductionRepository', function ($scope, $routeParams, $location, ProductionRepository) {
+angular.module('tctApp').controller('ProductionController', ['$scope', '$routeParams', '$location', 'ProductionRepository', 'OrdersRepository', function ($scope, $routeParams, $location, ProductionRepository, OrdersRepository) {
   $scope.days = 0;
-  $scope.monthes = {};
-  $scope.years = {};
+  $scope.monthes = [];
+  $scope.years = [];
   $scope.currentDay = 0;
   $scope.currentMonth = 0;
   $scope.currentYear = 0;
-  $scope.products = [];
+  $scope.productionProducts = [];
+  $scope.productionOrders = [];
 
   $scope.init = function () {
     var request = {};
@@ -42574,11 +44199,38 @@ angular.module('tctApp').controller('ProductionController', ['$scope', '$routePa
         }
       }
     });
+    OrdersRepository.query({
+      'status': 'current'
+    }, function (response) {
+      $scope.productionOrders = response;
+      console.log($scope.productionOrders);
+    });
+  };
+
+  $scope.markColors = ['#9b59b6', '#2ecc71', '#1abc9c', '#3498db'];
+  $scope.ordersMarkColors = {};
+
+  $scope.markOrder = function (orderId) {
+    if ($scope.ordersMarkColors[orderId]) {
+      $scope.markColors.push($scope.ordersMarkColors[orderId]);
+      delete $scope.ordersMarkColors[orderId];
+    } else {
+      $scope.ordersMarkColors[orderId] = $scope.markColors.pop();
+    }
+  };
+
+  $scope.getOrderMarkColor = function (production) {
+    if (production && $scope.ordersMarkColors[production.order_id]) {
+      return $scope.ordersMarkColors[production.order_id];
+    } else {
+      return 'transparent';
+    }
   };
 
   $scope.isModalShown = false;
   $scope.modalDate = '';
   $scope.modalProductionOrders = [];
+  $scope.modalNoOrderProductions = [];
   $scope.modalProductId = 0;
 
   $scope.showModal = function (day, productId) {
@@ -42595,6 +44247,7 @@ angular.module('tctApp').controller('ProductionController', ['$scope', '$routePa
     ProductionRepository.orders(request, function (response) {
       $scope.modalDate = response.date;
       $scope.modalProductionOrders = response.orders;
+      $scope.modalNoOrderProductions = response.no_order;
       $scope.isModalShown = true;
     });
   };
@@ -42673,14 +44326,23 @@ angular.module('tctApp').controller('ProductionController', ['$scope', '$routePa
 
 angular.module('tctApp').controller('ProductsController', ['$scope', '$routeParams', '$location', 'CategoriesRepository', 'ProductsRepository', function ($scope, $routeParams, $location, CategoriesRepository, ProductsRepository) {
   $scope.productGroups = [];
-  $scope.productGroup = {};
-  $scope.id = 0;
-  $scope.productGroupData = {
+  $scope.productGroup = {
     'products': []
   };
+  $scope.id = 0;
   $scope.productGroupErrors = {};
   $scope.categories = [];
   $scope.currentCategory = 0;
+  $scope.colors = [{
+    'key': 'grey',
+    'name': 'Серый'
+  }, {
+    'key': 'red',
+    'name': 'Красный'
+  }, {
+    'key': 'yellow',
+    'name': 'Желтый'
+  }];
 
   $scope.init = function () {
     if ($location.search().category) {
@@ -42728,18 +44390,25 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
         id: $scope.id
       }, function (response) {
         $scope.productGroup = response;
-        $scope.productGroupData = response;
       });
     }
   };
 
-  $scope.save = function (url) {
-    console.log($scope.productGroupData);
+  $scope.save = function () {
     ProductsRepository.save({
       id: $scope.id
-    }, $scope.productGroupData, function (response) {
-      $location.url(url);
-      $location.replace();
+    }, $scope.productGroup, function (response) {
+      $scope.productGroupErrors = {};
+
+      if ($scope.id) {
+        $scope.successAlert = 'Продукт успешно обновлен!';
+      } else {
+        $scope.successAlert = 'Новый продукт успешно создан!';
+      }
+
+      $scope.showAlert = true;
+      $scope.id = response.id;
+      $scope.category.url = response.url;
     }, function (response) {
       $scope.productGroupErrors = response.data.errors;
     });
@@ -42754,14 +44423,237 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   };
 
   $scope.addProduct = function () {
-    $scope.productGroupData['products'].push({
-      'color': 'red',
-      'price': 123,
+    $scope.productGroup.products.push({
+      'color': '',
+      'price': 0,
       'price_unit': 0,
       'price_pallete': 0,
       'in_stock': 0
     });
-    console.log($scope.productGroupData['products']);
+  };
+
+  $scope.deleteProduct = function (index) {
+    $scope.productGroup.products.splice(index, 1);
+  };
+}]);
+
+/***/ }),
+
+/***/ "./resources/js/statuses.js":
+/*!**********************************!*\
+  !*** ./resources/js/statuses.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '$routeParams', '$location', 'EmploymentStatusesRepository', function ($scope, $routeParams, $location, EmploymentStatusesRepository) {
+  $scope.statusTemplates = ['<i class="fas fa-check"></i>', '<i class="fas fa-times"></i>', '<i class="fas fa-question"></i>'];
+
+  $scope.init = function () {
+    EmploymentStatusesRepository.query(function (response) {
+      $scope.statuses = response;
+    });
+  };
+
+  $scope.addStatus = function () {
+    $scope.statuses.push({
+      'icon': '',
+      'icon_color': '#888888',
+      'name': '',
+      'salary': 0
+    });
+  };
+
+  $scope.deleteStatus = function (index) {
+    $scope.statuses.splice(index, 1);
+  };
+
+  $scope.save = function () {
+    EmploymentStatusesRepository.save({
+      'statuses': $scope.statuses
+    }, function (response) {
+      $scope.successAlert = 'Статусы успешно сохранены!';
+      $scope.showAlert = true;
+    });
+  };
+}]);
+
+/***/ }),
+
+/***/ "./resources/js/workers.js":
+/*!*********************************!*\
+  !*** ./resources/js/workers.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParams', '$location', '$timeout', 'EmploymentsRepository', 'FacilitiesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $timeout, EmploymentsRepository, FacilitiesRepository, WorkersRepository) {
+  $scope.Object = Object;
+  $scope.days = 0;
+  $scope.monthes = {};
+  $scope.years = {};
+  $scope.currentDay = 0;
+  $scope.currentMonth = 0;
+  $scope.currentYear = 0;
+  $scope.worker = {};
+  $scope.employmentWorkers = [];
+  $scope.statuses = {};
+  $scope.facilities = [];
+  $scope.workers = [];
+
+  $scope.init = function () {
+    var request = {};
+
+    if ($scope.currentYear > 0) {
+      request.year = $scope.currentYear;
+    }
+
+    if ($scope.currentMonth > 0) {
+      request.month = $scope.currentMonth;
+    }
+
+    EmploymentsRepository.get(request, function (response) {
+      $scope.days = response.days;
+      $scope.monthes = response.monthes;
+      $scope.years = response.years;
+      $scope.currentDay = response.day;
+      $scope.currentMonth = response.month;
+      $scope.currentYear = response.year;
+      $scope.employmentWorkers = response.workers;
+      $scope.statuses = response.statuses;
+    });
+    FacilitiesRepository.query(request, function (response) {
+      $scope.facilities = response;
+    });
+    WorkersRepository.query(request, function (response) {
+      $scope.workers = response;
+    });
+  };
+
+  $scope.changeEmploymentStatus = function (worker, day) {
+    if (!worker.employments) {
+      worker.employments = {};
+    }
+
+    var statusesKeys = Object.keys($scope.statuses);
+
+    if (!worker.employments[day]) {
+      worker.employments[day] = {
+        'worker_id': worker.id,
+        'day': day,
+        'status_id': statusesKeys.shift()
+      };
+    } else {
+      var statusId = worker.employments[day].status_id;
+      var newStatusId = statusId;
+
+      if (statusId == 0) {
+        newStatusId = statusesKeys.shift();
+      } else {
+        var newStatusId = statusesKeys.indexOf(statusId) + 1;
+
+        if (newStatusId >= statusesKeys.length) {
+          newStatusId = 0;
+        } else {
+          newStatusId = statusesKeys[newStatusId];
+        }
+      }
+
+      worker.employments[day].status_id = newStatusId;
+    }
+  };
+
+  $scope.saveEmployments = function () {
+    var employments = [];
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = $scope.employmentWorkers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        worker = _step.value;
+
+        if (worker.employments) {
+          for (i in worker.employments) {
+            employments.push(worker.employments[i]);
+          }
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+          _iterator["return"]();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    EmploymentsRepository.save({
+      'employments': employments
+    }, function (response) {
+      $scope.successAlert = 'Все изменения успешно сохранены!';
+      $scope.showAlert = true;
+      $timeout(function () {
+        $scope.showAlert = false;
+      }, 2000);
+    });
+  };
+
+  $scope.initEdit = function () {
+    $scope.id = $routeParams['id'];
+
+    if ($scope.id) {
+      WorkersRepository.get({
+        id: $scope.id
+      }, function (response) {
+        $scope.worker = response;
+      });
+    }
+
+    FacilitiesRepository.query(function (response) {
+      $scope.facilities = response;
+    });
+  };
+
+  $scope.save = function () {
+    WorkersRepository.save({
+      id: $scope.id
+    }, $scope.worker, function (response) {
+      $scope.workerErrors = {};
+
+      if ($scope.id) {
+        $scope.successAlert = 'Данные работника успешно сохранены!';
+      } else {
+        $scope.successAlert = 'Новый работник успешно создан!';
+      }
+
+      $scope.id = response.id;
+      $scope.worker.url = response.url;
+    }, function (response) {
+      $scope.workerErrors = response.data.errors;
+    });
+  };
+
+  $scope.deleteWorker = function (id) {
+    WorkersRepository["delete"]({
+      id: id
+    }, function (response) {
+      $scope.init();
+    }, function (response) {});
+  };
+
+  $scope.deleteFacility = function (id) {
+    FacilitiesRepository["delete"]({
+      id: id
+    }, function (response) {
+      $scope.init();
+    }, function (response) {});
   };
 }]);
 
@@ -42779,9 +44671,9 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 /***/ }),
 
 /***/ 0:
-/*!*****************************************************************************************************************************************************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/js/categories.js ./resources/js/products.js ./resources/js/clients.js ./resources/js/orders.js ./resources/js/production.js ./resources/sass/app.scss ***!
-  \*****************************************************************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/js/categories.js ./resources/js/products.js ./resources/js/clients.js ./resources/js/orders.js ./resources/js/production.js ./resources/js/workers.js ./resources/js/statuses.js ./resources/js/facilities.js ./resources/js/employments.js ./resources/sass/app.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42791,6 +44683,10 @@ __webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\produc
 __webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\clients.js */"./resources/js/clients.js");
 __webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\orders.js */"./resources/js/orders.js");
 __webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\production.js */"./resources/js/production.js");
+__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\workers.js */"./resources/js/workers.js");
+__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\statuses.js */"./resources/js/statuses.js");
+__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\facilities.js */"./resources/js/facilities.js");
+__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\employments.js */"./resources/js/employments.js");
 module.exports = __webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\sass\app.scss */"./resources/sass/app.scss");
 
 

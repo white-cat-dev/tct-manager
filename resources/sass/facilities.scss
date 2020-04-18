@@ -1,0 +1,88 @@
+.facilities-page {
+	
+	.facility-block {
+		border: solid 1px darken($grey, 10%);
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+		border-radius: 5px;
+		padding: 15px;
+		position: relative;
+		margin-bottom: 30px;
+
+		.facility-content {
+			transition: 0.3s;
+		}
+
+		&.paused {
+			.facility-content {
+				opacity: 0.5;
+			}
+		}
+
+		.btn-group {
+			position: absolute;
+		    top: 15px;
+		    right: 15px;
+		}
+
+		.facility-title {
+			font-weight: 500;
+			font-size: 20px;
+			margin-bottom: 20px;
+		}
+
+		.facility-icon {
+			position: relative;
+			margin-bottom: 20px;
+
+			img {
+				width: 100%;
+
+				&:last-child {
+					height: 0%;
+					position: absolute;
+				    bottom: 0;
+				    left: 0;
+				    object-fit: cover;
+					object-position: bottom;
+					transition: height 0.3s;
+				}
+			}
+		}
+
+		.facility-params {
+			font-size: 14px;
+
+			.param-name {
+				color: darken($grey, 75%);
+				font-size: 16px;
+				font-weight: 500;
+				margin-bottom: 3px;
+			}
+
+			ul {
+				padding-left: 20px;
+			}
+
+			.table {
+				margin-top: 5px;
+				margin-bottom: 0px;
+
+				th, td {
+					padding: 5px;
+	    			text-align: left;
+				}
+			}
+		}
+
+		.buttons-block {
+			margin-top: 20px;
+			text-align: center;
+		}
+	}
+
+	.add-worker-block {
+		.divider {
+			margin: 5px 12px;
+		}
+	}
+}

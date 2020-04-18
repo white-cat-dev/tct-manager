@@ -8,10 +8,6 @@ use App\Category;
 
 class CategoriesController extends Controller
 {
-    protected $validationRules = [
-        'name' => 'required'
-    ];
-
     public function index(Request $request) 
     {
         if ($request->wantsJson())
@@ -74,10 +70,18 @@ class CategoriesController extends Controller
     }
 
 
+
+    protected $validationRules = [
+        'name' => 'required',
+        'units' => 'required'
+    ];
+
     protected function getData(Request $request)
     {
         return [
-            'name' => $request->get('name')
+            'name' => $request->get('name', ''),
+            'units' => $request->get('units', 'area'),
+            'has_colors' => $request->get('has_colors', false)
         ];
     }
 }

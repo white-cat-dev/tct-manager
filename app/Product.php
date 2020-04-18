@@ -9,6 +9,8 @@ use Arr;
 class Product extends Model
 {
     protected $fillable = [
+        'category_id',
+        'product_group_id',
     	'color',
     	'price',
     	'price_unit',
@@ -31,6 +33,11 @@ class Product extends Model
     ];
 
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function product_group()
     {
         return $this->belongsTo(ProductGroup::class);
@@ -50,6 +57,61 @@ class Product extends Model
     {
         return $this->hasMany(Production::class);
     }
+
+
+    public function getRealized($orderId = null)
+    {
+        $production = 0;
+        $productions = $this->productions;
+        if ($orderId)
+        {
+            $productions = $productions->where('order_id', $realizations);
+        }
+        foreach ($productions as $production) 
+        {
+            $production += $production->planned - $production->performed;
+        }
+
+        return $production;
+    }
+
+    public function getProducted($orderId = null)
+    {
+
+    }
+
+    public function getProgress($order)
+    {
+        $progress = [
+            'total' => 0,
+            'production' => 0,
+            'realization' => 0,
+            'ready' => 0,
+            'left' => 0
+        ];
+
+        $product = $order->products->where('id', $this->id)->first();
+
+        if ($product)
+        {
+            $progress['total'] = $product->pivot->count;
+
+            foreach ($this->productions->where('order_id', $order->id) as $production) 
+            {
+                $progress['production'] += $production->performed;
+            }
+            foreach ($this->realizations->where('order_id', $order->id) as $realization) 
+            {
+                $progress['realization'] += $realization->performed;
+            }
+
+            $progress['ready'] = $progress['production'] - $progress['realization'];
+            $progress['left'] = $progress['total'] - $progress['production'];
+        }
+
+        return $progress;
+    }
+
 
     public function getRealizeInStockAttribute()
     {
@@ -71,7 +133,8 @@ class Product extends Model
     {
         $colors = [
             'red' => 'красный',
-            'grey' => 'серый'
+            'grey' => 'серый',
+            'yellow' => 'желтый'
         ];
 
         return Arr::get($colors, $this->color, $this->color);

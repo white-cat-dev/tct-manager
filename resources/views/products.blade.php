@@ -1,12 +1,14 @@
-<div class="products-block" ng-init="init()">
+<div class="products-page" ng-init="init()">
 	<h1>Продукты</h1>
 
 	<div class="top-buttons-block">
 		<div class="left-buttons">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Поиск...">
+			<div class="input-group search-group">
+				<input type="text" class="form-control" placeholder="Введите запрос для поиска..." ng-model="tempSearchQuery">
 				<div class="input-group-append">
-			    	<button class="btn btn-primary" type="button">Поиск</button>
+			    	<button class="btn btn-primary" type="button" ng-click="searchQuery = tempSearchQuery">
+			    		<i class="fas fa-search"></i> Поиск
+			    	</button>
 			 	</div>
 			</div>
 		</div>
@@ -27,7 +29,7 @@
 		</button>
 	</div>
 	
-	<table class="table">
+	<table class="table table-with-buttons">
 		<tr>
 			<th>№</th>
 			<th>Название</th>
@@ -40,7 +42,7 @@
 			<th></th>
 		</tr>
 	
-		<tr ng-repeat="productGroup in productGroups">
+		<tr ng-repeat="productGroup in productGroups | filter: searchQuery">
 			<td>
 				@{{ productGroup.id }}
 			</td>
@@ -52,7 +54,7 @@
 			</td>
 			<td>
 				<div ng-repeat="product in productGroup.products">
-					@{{ product.color }}
+					@{{ product.color_text }}
 				</div>
 			</td>
 			<td>

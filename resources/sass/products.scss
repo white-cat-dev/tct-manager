@@ -1,9 +1,20 @@
-.products-block {
+.products-page {
 	.categories-menu-block {
 		margin-top: 10px;
 
 		.btn {
 			margin-right: 10px;
+		}
+	}
+
+	.products-table {
+		tr {
+			td:first-child {
+				width: 25%;
+			}
+			td:nth-child(2) {
+				width: 45%;
+			}
 		}
 	}
 }

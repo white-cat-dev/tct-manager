@@ -20,7 +20,15 @@ class OrdersController extends Controller
     {
         if ($request->wantsJson())
         {
-            $orders = Order::all();
+            $status = $request->get('status', '');
+            if ($status)
+            {
+                $orders = Order::where('status', $status)->get();
+            }
+            else
+            {
+                $orders = Order::all();
+            }
             return $orders;
         }
 
@@ -32,6 +40,15 @@ class OrdersController extends Controller
     {
         if ($request->wantsJson())
         {
+            $order->progress = $order->getProgress();
+            foreach ($order->products as $product) 
+            {
+                $product->progress = $product->getProgress($order);
+            }
+
+            $order->productions = $order->productions()->with('product')->where('performed', '>', 0)->get();
+            $order->realizations = $order->realizations()->with('product')->where('performed', '>', 0)->get();
+
             return $order;
         }
 
@@ -171,9 +188,10 @@ class OrdersController extends Controller
     protected function getData(Request $request)
     {
         return [
-            'client_id' => $request->get('client_id') ? : 0,
-            'priority' => $request->get('priority') ? : 0,
-            'cost' => $request->get('cost') ? : 0
+            'client_id' => $request->get('client_id', 0),
+            'priority' => $request->get('priority',0),
+            'status' => $request->get('status', 'current'),
+            'cost' => $request->get('cost', 0)
         ];
     }
 }

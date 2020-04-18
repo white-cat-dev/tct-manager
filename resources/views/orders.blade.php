@@ -47,7 +47,7 @@
 			<td>
 				<div ng-repeat="product in order.products">
 					@{{ product.product_group.name }}
-					(@{{ product.color }})
+					(@{{ product.color_text }})
 				</div>
 			</td>
 			<td>
