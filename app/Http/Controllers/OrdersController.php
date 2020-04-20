@@ -7,6 +7,7 @@ use App\Order;
 use App\Client;
 use App\Realization;
 use App\Production;
+use App\Facility;
 use Carbon\Carbon;
 
 
@@ -28,6 +29,15 @@ class OrdersController extends Controller
             else
             {
                 $orders = Order::all();
+            }
+
+            foreach ($orders as $order) 
+            {
+                $order->progress = $order->getProgress();
+                foreach ($order->products as $product) 
+                {
+                    $product->progress = $product->getProgress($order);
+                }
             }
             return $orders;
         }
@@ -99,7 +109,9 @@ class OrdersController extends Controller
 
                 $currentDay = Carbon::today();
 
-                $maxBatches = 2;
+                $maxBatches = Facility::whereHas('categories', function($query) use ($product) {
+                    $query->where('categories.id', $product->category_id);
+                })->get()->sum('performance');
 
                 while ($productCount > 0)
                 {
@@ -115,7 +127,11 @@ class OrdersController extends Controller
                         continue;
                     }
 
-                    $maxCount = $product->product_group->squares_from_batch * ($maxBatches - $currentBatches);
+                    $maxCount = $product->product_group->units_from_batch * ($maxBatches - $currentBatches);
+                    if ($maxCount > $product->product_group->forms / $product->product_group->unit_in_units)
+                    {
+                        $maxCount = $product->product_group->forms / $product->product_group->unit_in_units;
+                    }
                     $plannedCount = ($productCount >= $maxCount) ? $maxCount : $productCount;
 
                     $production = Production::create([
@@ -124,7 +140,7 @@ class OrdersController extends Controller
                         'product_id' => $product->id,
                         'planned' => $plannedCount,
                         'performed' => 0,
-                        'batches' => $plannedCount / $product->product_group->squares_from_batch
+                        'batches' => $plannedCount / $product->product_group->units_from_batch
                     ]);
 
                     $productCount -= $plannedCount;
@@ -189,9 +205,12 @@ class OrdersController extends Controller
     {
         return [
             'client_id' => $request->get('client_id', 0),
-            'priority' => $request->get('priority',0),
+            'priority' => $request->get('priority', 1),
+            'comment' => $request->get('comment', 0),
             'status' => $request->get('status', 'current'),
-            'cost' => $request->get('cost', 0)
+            'cost' => $request->get('cost', 0),
+            'weight' => $request->get('weight', 0),
+            'pallets' => $request->get('pallets', 0)
         ];
     }
 }

@@ -14,16 +14,66 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.Math = window.Math;
 
-	$scope.orders = [];
-	$scope.order = {};
-	$scope.id = 0;
+	$scope.baseUrl = '';
 
-	$scope.orderData = {
+	$scope.orders = [];
+	$scope.order = {
+		'cost': 0,
+		'weight': 0,
+		'pallets': 0,
+		'priority': 1,
 		'products': []
 	};
+	$scope.id = 0;
+
 	$scope.orderErrors = {};
 
 	$scope.productGroups = [];
+
+	// $scope.units = {
+	// 	'area': [
+	// 		{
+	// 			'key': 'unit',
+	// 			'name': 'шт.'
+	// 		},
+	// 		{
+	// 			'key': 'units',
+	// 			'name': 'м<sup>2</sup>'
+	// 		},
+	// 		{
+	// 			'key': 'pallete',
+	// 			'name': 'поддон'
+	// 		},
+	// 	],
+	// 	'volume': [
+	// 		{
+	// 			'key': 'unit',
+	// 			'name': 'шт.'
+	// 		},
+	// 		{
+	// 			'key': 'units',
+	// 			'name': 'м<sup>3</sup>'
+	// 		},
+	// 		{
+	// 			'key': 'pallete',
+	// 			'name': 'поддон'
+	// 		},
+	// 	],
+	// 	'length': [
+	// 		{
+	// 			'key': 'unit',
+	// 			'name': 'шт.'
+	// 		},
+	// 		{
+	// 			'key': 'units',
+	// 			'name': 'м'
+	// 		},
+	// 		{
+	// 			'key': 'pallete',
+	// 			'name': 'поддон'
+	// 		},
+	// 	]
+	// };
 
 
 	$scope.init = function()
@@ -37,6 +87,8 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.initShow = function()
 	{
+		$scope.baseUrl = 'orders';
+
 		$scope.id = $routeParams['id'];
 
 		ProductsRepository.query(function(response) 
@@ -53,12 +105,13 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.initEdit = function()
 	{
+		$scope.baseUrl = 'orders';
+
 		$scope.id = $routeParams['id'];
 
 		ProductsRepository.query(function(response) 
 		{
 			$scope.productGroups = response;
-			console.log($scope.productGroups);
 		});
 
 		if ($scope.id)
@@ -66,18 +119,33 @@ angular.module('tctApp').controller('OrdersController', [
 			OrdersRepository.get({id: $scope.id}, function(response) 
 			{
 				$scope.order = response;
-				$scope.orderData = response;
+
+				for (product of $scope.order.products)
+				{
+					$scope.chooseProductGroup(product, product.product_group_id);
+					$scope.chooseProduct(product, product);
+				}
 			});
 		}
 	}
 
 
-	$scope.save = function(url) 
+	$scope.save = function() 
 	{
-		OrdersRepository.save({id: $scope.id}, $scope.orderData, function(response) 
+		OrdersRepository.save({id: $scope.id}, $scope.order, function(response) 
 		{
-			$location.url(url);
-            $location.replace();
+			$scope.orderErrors = {};
+			if ($scope.id)
+			{
+				$scope.successAlert = 'Заказ успешно обновлен!';
+			}
+			else
+			{
+				$scope.successAlert = 'Новый заказ успешно создан!';
+			}
+			$scope.showAlert = true;
+			$scope.id = response.id;
+			$scope.order.url = response.url;
 		}, 
 		function(response) 
 		{
@@ -101,9 +169,9 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.addProduct = function()
 	{
-		$scope.orderData.products.push({
+		$scope.order.products.push({
 			'products': [],
-			'id': undefined,
+			'id': null,
 			'pivot': {
 				'price': 0,
 				'count': 1,
@@ -115,7 +183,7 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.deleteProduct = function(index)
 	{
-		$scope.orderData.products.splice(index, 1);
+		$scope.order.products.splice(index, 1);
 
 		$scope.updateOrderInfo();
 	}
@@ -123,7 +191,7 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.chooseProductGroup = function(productData, productGroupId)
 	{
-		productData.id = undefined;
+		productData.id = null;
 		productData.pivot.cost = 0;
 		productData.products = [];
 
@@ -142,9 +210,10 @@ angular.module('tctApp').controller('OrdersController', [
 		productData.id = product.id;
 		productData.price = product.price;
 		productData.in_stock = product.in_stock;
-		productData.pivot.cost = productData.price * productData.pivot.count;
+		productData.category = product.category;
 
-		console.log(product);
+		productData.pivot.price = product.price;
+		productData.pivot.cost = productData.price * productData.pivot.count;
 
 		$scope.updateOrderInfo();
 	}
@@ -167,11 +236,11 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.updateOrderInfo = function() 
 	{
-		$scope.orderData.cost = 0;
+		$scope.order.cost = 0;
 
-		for (key in $scope.orderData.products) 
+		for (key in $scope.order.products) 
 		{
-			$scope.orderData.cost += $scope.orderData.products[key].pivot.cost;
+			$scope.order.cost += $scope.order.products[key].pivot.cost;
 		}
     }
 }]);

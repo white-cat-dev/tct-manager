@@ -1,14 +1,7 @@
 <div class="employments-page" ng-init="init()">
 	<h1>График работ</h1>
 
-	<div class="alerts-block" ng-class="{'shown': showAlert}">
-		<div class="alert alert-success" role="alert" ng-if="successAlert">
-			@{{ successAlert }} <br>
-		</div>
-		<div class="alert alert-danger" role="alert" ng-if="errorAlert">
-			@{{ errorAlert }}
-		</div>
-	</div>
+	@include('partials.top-alerts')
 
 	<div class="top-buttons-block">
 		<div class="left-buttons">
@@ -159,7 +152,7 @@
 						@{{ (worker.salary.employments - worker.salary.advance + +worker.salary.bonus) | number }} руб.
 					</td>
 					<td>
-						<button type="button" class="btn btn-primary" ng-click="showSalaryModal(worker)">
+						<button type="button" class="btn btn-sm btn-primary" ng-click="showSalaryModal(worker)">
 							<i class="fas fa-edit"></i> Изменить
 						</button>
 					</td>

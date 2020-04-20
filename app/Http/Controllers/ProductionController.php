@@ -51,30 +51,30 @@ class ProductionController extends Controller
             $days = Carbon::createFromDate($year, $month, 1)->daysInMonth;
 
             $monthes = [
-                ['key' => 1, 'name' => 'Январь'],
-                ['key' => 2, 'name' => 'Февраль'],
-                ['key' => 3, 'name' => 'Март'],
-                ['key' => 4, 'name' => 'Апрель'],
-                ['key' => 5, 'name' => 'Май'],
-                ['key' => 6, 'name' => 'Июнь'],
-                ['key' => 7, 'name' => 'Июль'],
-                ['key' => 8, 'name' => 'Август'],
-                ['key' => 9, 'name' => 'Сентябрь'],
-                ['key' => 10, 'name' => 'Октябрь'],
-                ['key' => 11, 'name' => 'Ноябрь'],
-                ['key' => 12, 'name' => 'Декабрь']
+                ['id' => 1, 'name' => 'Январь'],
+                ['id' => 2, 'name' => 'Февраль'],
+                ['id' => 3, 'name' => 'Март'],
+                ['id' => 4, 'name' => 'Апрель'],
+                ['id' => 5, 'name' => 'Май'],
+                ['id' => 6, 'name' => 'Июнь'],
+                ['id' => 7, 'name' => 'Июль'],
+                ['id' => 8, 'name' => 'Август'],
+                ['id' => 9, 'name' => 'Сентябрь'],
+                ['id' => 10, 'name' => 'Октябрь'],
+                ['id' => 11, 'name' => 'Ноябрь'],
+                ['id' => 12, 'name' => 'Декабрь']
             ];
 
             $years = Production::select('date')->groupBy('date')->get()->groupBy(function($date) {
                 return Carbon::parse($date->created_at)->format('Y');
             })->keys();
 
-            if (!$years->contains($year))
-            {
-                $years[] = $year;
-            }
+            $years[] = $today->year - 1;
+            $years[] = $today->year;
+            $years[] = $today->year + 1;
 
-            $years = $years->sort();
+            $years = $years->unique()->sort()->values();
+            
                
             return ['days' => $days,
                     'monthes' => $monthes,

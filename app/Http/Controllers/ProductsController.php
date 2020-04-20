@@ -13,7 +13,7 @@ class ProductsController extends Controller
         if ($request->wantsJson())
         {
             $category = $request->get('category');
-            $query = $productGroups = ProductGroup::with('products');
+            $query = ProductGroup::with('products');
             if ($category)
             {
                 $query = $query->where('category_id', $category);
@@ -31,6 +31,8 @@ class ProductsController extends Controller
         if ($request->wantsJson())
         {
             $productGroup->products = $productGroup->products;
+            $productGroup->category = $productGroup->category;
+
             return $productGroup;
         }
 
@@ -50,6 +52,10 @@ class ProductsController extends Controller
             foreach ($request->get('products') as $productData) 
             {
                 $productData['category_id'] = $productGroup->category_id;
+                if (!$productGroup->category->has_colors)
+                {
+                    $productData['color'] = '';
+                }
                 $product = $productGroup->products()->create($productData);
             }
             
@@ -74,6 +80,10 @@ class ProductsController extends Controller
             foreach ($request->get('products', []) as $productData) 
             {
                 $productData['category_id'] = $productGroup->category_id;
+                if (!$productGroup->category->has_colors)
+                {
+                    $productData['color'] = '';
+                }
 
                 $id = !empty($productData['id']) ? $productData['id'] : 0;
                 

@@ -1,6 +1,8 @@
 <div class="products-page" ng-init="init()">
 	<h1>Продукты</h1>
 
+	@include('partials.top-alerts')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -29,16 +31,18 @@
 		</button>
 	</div>
 	
-	<table class="table table-with-buttons">
+	<table class="table main-table table-with-buttons" ng-if="productGroups.length > 0">
 		<tr>
 			<th>№</th>
 			<th>Название</th>
 			<th>Размер</th>
-			<th>Цвета</th>
+			<th>Разновидности</th>
 			<th>Цена</th>
-			<th>Наличие</th>
-			<th>Выдача</th>
-			<th>Свободно</th>
+			<th>В наличии</th>
+			<th class="product-in-stock-col">
+				<span>К выдаче</span>
+				<span>Свободно</span>
+			</th>
 			<th></th>
 		</tr>
 	
@@ -50,11 +54,12 @@
 				@{{ productGroup.name }}
 			</td>
 			<td>
-				@{{ productGroup.length }}x@{{ productGroup.width }}x@{{ productGroup.depth }}
+				@{{ productGroup.size }} мм
 			</td>
 			<td>
 				<div ng-repeat="product in productGroup.products">
-					@{{ product.color_text }}
+					<span ng-if="product.color_text">@{{ product.color_text }} цвет</span>
+					<span ng-if="!product.color_text">—</span>
 				</div>
 			</td>
 			<td>
@@ -68,13 +73,13 @@
 				</div>
 			</td>
 			<td>
-				<div ng-repeat="product in productGroup.products">
-					@{{ product.realize_in_stock }} м<sup>2</sup>
-				</div>
-			</td>
-			<td>
-				<div ng-repeat="product in productGroup.products">
-					@{{ product.free_in_stock }} м<sup>2</sup>
+				<div class="product-in-stock" ng-repeat="product in productGroup.products">
+					<div class="realize-in-stock" ng-style="{'width': Math.round(product.realize_in_stock / product.in_stock * 100) + '%'}" ng-if="product.realize_in_stock">
+						<div class="in-stock-number">@{{ product.realize_in_stock }} м<sup>2</sup></div>
+					</div>
+					<div class="free-in-stock" ng-style="{'width': (!product.realize_in_stock) ? '100%' : Math.round(product.free_in_stock / product.in_stock * 100) + '%'}" ng-if="product.free_in_stock || !product.realize_in_stock">
+						<div class="in-stock-number">@{{ product.free_in_stock }} м<sup>2</sup></div>
+					</div>
 				</div>
 			</td>
 			<td>

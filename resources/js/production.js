@@ -2,12 +2,14 @@ angular.module('tctApp').controller('ProductionController', [
 	'$scope',
 	'$routeParams',
 	'$location',
+	'$timeout',
 	'ProductionRepository',
 	'OrdersRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
+		$timeout,
 		ProductionRepository,
 		OrdersRepository
 	){
@@ -35,7 +37,6 @@ angular.module('tctApp').controller('ProductionController', [
 		{
 			request.month = $scope.currentMonth;
 		}
-		console.log(request);
 
 		ProductionRepository.get(request, function(response) 
 		{
@@ -49,23 +50,23 @@ angular.module('tctApp').controller('ProductionController', [
 
 			$scope.productionProducts = response.products;
 
-			for (product of $scope.productionProducts)
-			{
-				for (key in product.productions)
-				{
-					if (key < $scope.currentDay)
-					{
-						if (product.productions[key].performed >= product.productions[key].planned)
-						{
-							product.productions[key].status = 'done';
-						}
-						else
-						{
-							product.productions[key].status = 'failed';
-						}
-					}
-				}
-			}
+			// for (product of $scope.productionProducts)
+			// {
+			// 	for (key in product.productions)
+			// 	{
+			// 		if (key < $scope.currentDay)
+			// 		{
+			// 			if (product.productions[key].performed >= product.productions[key].planned)
+			// 			{
+			// 				product.productions[key].status = 'done';
+			// 			}
+			// 			else
+			// 			{
+			// 				product.productions[key].status = 'failed';
+			// 			}
+			// 		}
+			// 	}
+			// }
 		});
 
 
@@ -76,6 +77,16 @@ angular.module('tctApp').controller('ProductionController', [
 			console.log($scope.productionOrders);
 		});
 	}
+
+	$scope.$watch('currentYear', function(newValue, oldValue) 
+	{
+		$scope.init();
+	});
+
+	$scope.$watch('currentMonth', function(newValue, oldValue) 
+	{
+		$scope.init();
+	});
 
 
 	$scope.markColors = [
@@ -171,6 +182,16 @@ angular.module('tctApp').controller('ProductionController', [
 
 		ProductionRepository.save({'productions': productions}, function(response) 
 		{
+			$scope.successAlert = 'Все изменения успешно сохранены!';
+			$scope.showAlert = true;
+
+			$scope.isSalaryModalShown = false;
+
+			$timeout(function() {
+				$scope.showAlert = false;
+			}, 2000);
+
+
 			$scope.hideModal();
 			$scope.init();
 		});

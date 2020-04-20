@@ -14,6 +14,8 @@ angular.module('tctApp').controller('FacilitiesController', [
 		WorkersRepository
 	){
 
+	$scope.baseUrl = '';
+
 	$scope.facilities = [];
 
 	$scope.facility = {
@@ -39,6 +41,8 @@ angular.module('tctApp').controller('FacilitiesController', [
 
 	$scope.initShow = function()
 	{
+		$scope.baseUrl = 'facilities';
+
 		$scope.id = $routeParams['id'];
 		$scope.loadFacility()
 	}
@@ -46,6 +50,8 @@ angular.module('tctApp').controller('FacilitiesController', [
 
 	$scope.initEdit = function()
 	{
+		$scope.baseUrl = 'facilities';
+
 		$scope.id = $routeParams['id'];
 
 		if ($scope.id)

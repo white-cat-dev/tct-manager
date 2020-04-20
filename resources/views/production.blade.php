@@ -1,6 +1,8 @@
 <div class="production-page" ng-init="init()">
 	<h1>Производство</h1>
 
+	@include('partials.top-alerts')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group date-group">
@@ -61,7 +63,7 @@
 						<div class="product-size">
 							@{{ product.product_group.size }} мм
 						</div>
-						<div class="product-color">
+						<div class="product-color" ng-if="product.color_text">
 							@{{ product.color_text }} цвет
 						</div>
 					</div>
@@ -78,7 +80,7 @@
 								ng-class="{'hover': $index + 1 == $parent.hoverDay, {{-- 'current': $index + 1 == currentDay, --}} 'done': product.productions[$index+1].status == 'done', 'failed': product.productions[$index+1].status == 'failed'}" 
 								ng-click="showModal($index + 1, product.id)">
 
-								<div class="production" ng-style="{'box-shadow': 'inset -0.5px -0.5px 4px ' + getOrderMarkColor(product.productions[$index+1]), 'border-color': getOrderMarkColor(product.productions[$index+1])}">
+								<div class="production" ng-style="{'border-color': getOrderMarkColor(product.productions[$index+1])}">
 									<div class="production-performed" ng-if="product.productions[$index+1]">
 										@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} м<sup>2</sup>
 									</div>
@@ -92,15 +94,20 @@
 				</div>
 			</div>
 
-			<div class="no-production-block" ng-if="productionProducts.length == 0">
-				Нет данных
+			<div class="no-productions" ng-if="productionProducts.length == 0">
+				<div>
+					<i class="far fa-calendar-times"></i>
+				</div>
+				Нет данных на текущий месяц
 			</div>
 		</div>
+
 		<div class="col-3">
 			<div class="production-orders">
 				<div class="orders-title">
 					Текущие заказы
 				</div>
+
 				<div class="order-block" ng-repeat="order in productionOrders">
 					<div class="custom-control custom-checkbox">
 						<input type="checkbox" class="custom-control-input" id="checkbox@{{order.id}}" ng-click="markOrder(order.id)">
@@ -111,9 +118,10 @@
 					<table class="table order-products">
 						<tr ng-repeat="product in order.products">
 							<td>
-								@{{ product.product_group.name }} <br>
-								<span class="product-color">
-									@{{ product.color_text }}
+								@{{ product.product_group.name }}
+								(@{{ product.product_group.size }}) <br>
+								<span class="product-color" ng-if ="product.color_text">
+									@{{ product.color_text }} цвет
 								</span>
 							</td>
 							<td>
@@ -121,6 +129,13 @@
 							</td>
 						</tr>
 					</table>
+				</div>
+
+				<div ng-if="productionOrders.length == 0">
+					<div class="no-production-orders" ng-if="productionProducts.length == 0">
+						Нет заказов <br>
+						на текущий месяц
+					</div>
 				</div>
 			</div>
 		</div>
@@ -158,7 +173,7 @@
 									<div class="product-size">
 										@{{ production.product.product_group.size }} мм
 									</div>
-									<div class="product-color">
+									<div class="product-color" ng-if ="production.product.color_text">
 										@{{ production.product.color_text }} цвет
 									</div>
 								</td>
@@ -191,7 +206,7 @@
 									<div class="product-size">
 										@{{ production.product.product_group.size }} мм
 									</div>
-									<div class="product-color">
+									<div class="product-color" ng-if="production.product.color_text">
 										@{{ production.product.color_text }} цвет
 									</div>
 								</td>

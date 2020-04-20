@@ -12,7 +12,7 @@
 			<a ng-href="@{{ category.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="category.id" ng-click="delete(category.id)">
+			<button type="button" class="btn btn-primary" ng-if="id" ng-click="delete(id)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 		</div>

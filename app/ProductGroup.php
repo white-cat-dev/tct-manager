@@ -29,6 +29,20 @@ class ProductGroup extends Model
         'size'
     ];
 
+    protected $with = [
+        'category'
+    ];
+
+    protected $casts = [
+        'weight_unit' => 'float',
+        'weight_units' => 'float',
+        'weight_pallete' => 'float',
+        'unit_in_units' => 'float',
+        'unit_in_pallete' => 'float',
+        'units_in_pallete' => 'float',
+        'units_from_batch' => 'float'
+    ];
+
 
     public function category()
     {

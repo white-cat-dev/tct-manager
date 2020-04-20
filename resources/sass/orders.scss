@@ -1,4 +1,6 @@
-.order-block {
+.orders-page {
+	position: relative;
+	
 	.order-name {
 		font-size: 30px;
     	margin-bottom: 20px;
@@ -6,7 +8,6 @@
 
 	.order-progress {
 		height: 40px;
-		background: $grey;
 		border: solid 1px darken($grey, 10%);
 		margin-bottom: 20px;
 		display: flex;
@@ -23,11 +24,11 @@
 		}
 
 		.progress-realization {
-			background: lighten($green, 40%);
+			background: lighten($green, 50%);
 		}
 
 		.progress-ready {
-			background: lighten($green, 50%);
+			background: lighten($blue, 50%);
 		}
 
 		.progress-number {
@@ -51,8 +52,8 @@
 
 	.product-progress {
 		width: 100%;
+		min-width: 100px;
 		height: 40px;
-		background: $grey;
 		border: solid 1px darken($grey, 10%);
 		margin: 0 0 0 auto;
 		display: flex;
@@ -60,20 +61,24 @@
 		.progress-realization,
 		.progress-ready,
 		.progress-left {
-			padding: 7px 0px;
 			position: relative;
 			height: 100%;
 			width: 0%;
 			min-width: 20%;
+			line-height: 40px;
 			transition: width 0.3s;
 		}
 
 		.progress-realization {
-			background: lighten($green, 40%);
+			background: lighten($green, 50%);
 		}
 
 		.progress-ready {
-			background: lighten($green, 50%);
+			background: lighten($blue, 50%);
+		}
+
+		.progress-left {
+			background: $grey;
 		}
 
 		.progress-number {
@@ -88,6 +93,105 @@
 		    text-align: center;
 		    white-space: nowrap;
 		    color: darken($grey, 30%);
+		}
+	}
+
+
+	.order-block {
+		border: solid 1px darken($grey, 10%);
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+		border-radius: 5px;
+		padding: 15px;
+		position: relative;
+		margin-bottom: 30px;
+
+		.btn-group {
+			position: absolute;
+		    top: 15px;
+		    right: 15px;
+		}
+
+		.order-title {
+			font-weight: 500;
+			font-size: 20px;
+			margin-bottom: 20px;
+		}
+
+		.order-icon {
+			position: relative;
+			margin-bottom: 20px;
+
+			img {
+				width: 100%;
+
+				&:nth-child(2),
+				&:nth-child(3) {
+					height: 0%;
+					position: absolute;
+				    bottom: 0;
+				    left: 0;
+				    object-fit: cover;
+					object-position: bottom;
+					transition: height 0.3s;
+				}
+			}
+		}
+
+		.order-params {
+			font-size: 14px;
+
+			.param-name {
+				color: darken($grey, 75%);
+				font-size: 16px;
+				font-weight: 500;
+				margin-bottom: 3px;
+			}
+
+			.param-value {
+				margin-bottom: 10px;
+    			font-size: 13px;
+			}
+
+			.table {
+				margin-top: 5px;
+				margin-bottom: 0px;
+
+				td:first-child {
+					font-size: 12px;
+
+					.product-color {
+						color: darken($grey, 35%);
+					}
+				}
+			}
+
+			.product-progress {
+				height: 30px;
+
+				.progress-realization,
+				.progress-ready,
+				.progress-left {
+					line-height: 30px;
+					min-width: 30%;
+				}
+			}
+		}
+	}
+
+	.products-table {
+		tr {
+			td {
+				width: 14%;
+			}
+
+			td:first-child,
+			td:nth-child(2) {
+				width: 20%;
+			}
+
+			td:last-child {
+				width: 4%;
+			}
 		}
 	}
 }

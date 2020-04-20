@@ -44,7 +44,7 @@
 
 					<div class="form-group">
 						<div class="param-label">Категория</div>
-						<ui-select theme="bootstrap" ng-model="productGroup.category_id" ng-class="{'is-invalid': productGroupErrors.category_id}">
+						<ui-select theme="bootstrap" ng-model="productGroup.category_id" ng-class="{'is-invalid': productGroupErrors.category_id}" ng-change="chooseProductCategory()">
 				            <ui-select-match placeholder="Выберите из списка...">
 					            @{{ $select.selected.name }}
 					        </ui-select-match>
@@ -114,7 +114,7 @@
 			</div>
 		</div>
 
-		<div class="row justify-content-around">
+		<div class="row justify-content-around" ng-if="productCategory && productCategory.has_colors">
 			<div class="col-11">
 				<div class="params-title">
 					Разновидности по цветам
@@ -160,6 +160,22 @@
 				<button type="button" class="btn btn-primary" ng-click="addProduct()">
 					<i class="fas fa-plus"></i> Добавить разновидность	
 				</button>
+			</div>
+		</div>
+
+		<div class="row justify-content-around" ng-if="productCategory && !productCategory.has_colors">
+			<div class="col-5">
+				<div class="param-label">Цена, руб</div>
+				<div class="input-group divided-input-group">
+					<input type="text" class="form-control" ng-model="productGroup.products[0].price">
+					<input type="text" class="form-control" ng-model="productGroup.products[0].price_unit">
+					<input type="text" class="form-control" ng-model="productGroup.products[0].price_pallete">
+				</div>
+			</div>
+
+			<div class="col-5">
+				<div class="param-label">Наличие</div>
+				<input type="text" class="form-control" ng-model="productGroup.products[0].in_stock">
 			</div>
 		</div>
 

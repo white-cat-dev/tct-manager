@@ -1,4 +1,6 @@
 .production-page {
+	position: relative;
+	
 	.production-block {
 		display: flex;
 		border-radius: 5px;
@@ -17,6 +19,7 @@
 			.product-block {
 				border-bottom: solid 1px darken($grey, 10%);
 				padding: 10px;
+				height: 78px;
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				background: $grey;
@@ -72,7 +75,7 @@
 					}
 
 					&:hover {
-						background: darken($grey, 1%);
+						background: lighten($grey, 3%);
 					}
 				}
 
@@ -99,7 +102,7 @@
 					}
 
 					&:hover, &.hover {
-						background: darken($grey, 1%);
+						background: lighten($grey, 3%);
 					}
 
 					.production-planned {
@@ -231,6 +234,40 @@
 				color: darken($grey, 35%);
 				font-size: 12px;
 			}
+		}
+	}
+
+	.no-productions {
+		text-align: center;
+		font-size: 18px;
+		border: solid 1px darken($grey, 10%);
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+	    border-radius: 5px;
+	   	height: 100%;
+	   	min-height: 200px;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+
+		div {
+			margin-bottom: 5px;
+			font-size: 60px;
+			color: darken($grey, 60%);
+		}
+	}
+
+	.no-production-orders {
+		text-align: center;
+		font-size: 14px;
+	   	min-height: 100px;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+
+		div {
+			margin-bottom: 5px;
+			font-size: 40px;
+			color: darken($grey, 60%);
 		}
 	}
 }

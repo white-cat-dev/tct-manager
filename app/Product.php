@@ -20,6 +20,8 @@ class Product extends Model
 
     protected $casts = [
         'price' => 'float',
+        'price_unit' => 'float',
+        'price_pallete' => 'float'
     ];
 
     protected $appends = [
@@ -29,7 +31,8 @@ class Product extends Model
     ];
 
     protected $with = [
-        'product_group'
+        'product_group',
+        'category'
     ];
 
 
@@ -103,6 +106,7 @@ class Product extends Model
             foreach ($this->realizations->where('order_id', $order->id) as $realization) 
             {
                 $progress['realization'] += $realization->performed;
+                $progress['production'] += $realization->planned;
             }
 
             $progress['ready'] = $progress['production'] - $progress['realization'];

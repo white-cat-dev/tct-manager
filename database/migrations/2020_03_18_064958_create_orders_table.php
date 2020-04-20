@@ -17,9 +17,12 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('client_id');
+            $table->string('comment');
             $table->string('status');
             $table->tinyInteger('priority');
             $table->decimal('cost', 10, 2)->unsigned();
+            $table->decimal('weight', 7, 2)->unsigned();
+            $table->integer('pallets');
             $table->timestamps();
         });
     }

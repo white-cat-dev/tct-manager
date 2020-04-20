@@ -3,7 +3,7 @@
 	
 	<div class="top-buttons-block">
 		<div class="left-buttons">
-			<a href="{{ route('workers') }}" class="btn btn-primary">
+			<a href="{{ route('facilities') }}" class="btn btn-primary">
 				<i class="fas fa-chevron-left"></i> Вернуться к списку цехов
 			</a>
 		</div>

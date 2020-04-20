@@ -1,6 +1,8 @@
 <div class="workers-page" ng-init="init()">
 	<h1>Работники</h1>
 
+	@include('partials.top-alerts')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -20,7 +22,7 @@
 		</div>
 	</div>
 
-	<table class="table" ng-if="workers.length > 0">
+	<table class="table table-with-buttons" ng-if="workers.length > 0">
 		<tr>
 			<th>№</th>
 			<th>Рабочее имя</th>

@@ -1,9 +1,11 @@
 .products-page {
+	position: relative;
+	
 	.categories-menu-block {
-		margin-top: 10px;
+		margin-bottom: 10px;
 
 		.btn {
-			margin-right: 10px;
+			
 		}
 	}
 
@@ -15,6 +17,82 @@
 			td:nth-child(2) {
 				width: 45%;
 			}
+		}
+	}
+
+	.main-table {
+		td {
+			min-width: 12%;
+			vertical-align: top;
+
+			& > div:not(.btn-group) {
+				height: 30px;
+				margin-bottom: 5px;
+
+				&:last-child {
+					margin-bottom: 0px;
+				}
+			}
+		}
+	}
+
+	.product-in-stock-col {
+		span {
+			position: relative;
+			padding-left: 22px;
+
+			&:before {
+				content: '';
+				position: absolute;
+				top: 4px;
+				left: 0px;
+				width: 16px;
+				height: 16px;
+				border: solid 1px darken($grey, 10%);
+			}
+
+			&:first-child {
+				margin-right: 10px;
+
+				&:before {
+					background: $grey;
+				}
+			}
+
+			&:last-child:before {
+				background: lighten($green, 50%);
+			}
+		}
+	}
+
+	.product-in-stock {
+		width: 100%;
+		height: 30px;
+		border: solid 1px darken($grey, 10%);
+		margin: 0 0 0 auto;
+		display: flex;
+
+		.realize-in-stock,
+		.free-in-stock {
+			font-size: 14px;
+			line-height: 28px;
+			position: relative;
+			height: 100%;
+			width: 0%;
+			min-width: 20%;
+			transition: width 0.3s;
+		}
+
+		.realize-in-stock {
+			background: $grey;
+		}
+
+		.free-in-stock {
+			background: lighten($green, 50%);
+		}
+
+		.in-stock-number {
+			text-align: center;
 		}
 	}
 }

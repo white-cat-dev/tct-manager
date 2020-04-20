@@ -1,6 +1,8 @@
 <div class="categories-block" ng-init="init()">
 	<h1>Категории</h1>
 
+	@include('partials.top-alerts')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -15,12 +17,12 @@
 
 		<div class="right-buttons">
 			<a href="{{ route('category-create') }}" class="btn btn-primary">
-				<i class="fas fa-plus"></i> Добавить категорию
+				<i class="fas fa-plus"></i> Добавить новую категорию
 			</a>
 		</div>
 	</div>
 
-	<table class="table table-with-buttons">
+	<table class="table table-with-buttons" ng-if="categories.length > 0">
 		<tr>
 			<th>№</th>
 			<th>Название</th>
@@ -41,7 +43,7 @@
 				</span>
 			</td>
 			<td>
-				@{{ category.has_colors ? 'Разные цвета' : 'Нет разновидностей'}}
+				@{{ category.has_colors ? 'Есть разновидности по цветам' : 'Нет разновидностей'}}
 			</td>
 			<td>
 				<div class="btn-group" role="group">

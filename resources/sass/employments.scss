@@ -144,23 +144,6 @@
 		}
 	}
 
-	.alerts-block {
-		position: absolute;
-		top: -7px;
-		right: 0px;
-		max-width: 0px;
-		max-height: unset;
-		white-space: nowrap;
-		overflow: hidden;
-		transition: max-width 0s 0.3s, opacity 0.3s;
-
-		&.shown {
-			max-width: 400px;
-			transition: max-width 0.3s 0s, opacity 0.3s;
-		}
-	}
-
-
 	.salaries-block {
 		margin-top: 20px;
 		padding-top: 20px;
@@ -182,7 +165,12 @@
 		    box-shadow: 1px 1px 5px #e6e6e6;
 
 		    .table {
-		    	margin-bottom: 0px;
+		    	margin-bottom: 5px;
+
+		    	td {
+		    		padding-top: 10px;
+		    		padding-bottom: 10px;
+		    	}
 		    }
 		}
 	}

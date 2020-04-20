@@ -27,6 +27,7 @@ class WorkersController extends Controller
     {
         if ($request->wantsJson())
         {
+            $worker->facility = $worker->facility;
             return $worker;
         }
 

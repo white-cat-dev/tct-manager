@@ -1,12 +1,16 @@
-<div class="clients-block" ng-init="init()">
+<div class="clients-page" ng-init="init()">
 	<h1>Клиенты</h1>
+
+	@include('partials.top-alerts')
 
 	<div class="top-buttons-block">
 		<div class="left-buttons">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Поиск...">
+			<div class="input-group search-group">
+				<input type="text" class="form-control" placeholder="Введите запрос для поиска..." ng-model="tempSearchQuery">
 				<div class="input-group-append">
-			    	<button class="btn btn-primary" type="button">Поиск</button>
+			    	<button class="btn btn-primary" type="button" ng-click="searchQuery = tempSearchQuery">
+			    		<i class="fas fa-search"></i> Поиск
+			    	</button>
 			 	</div>
 			</div>
 		</div>
@@ -18,17 +22,16 @@
 		</div>
 	</div>
 
-	<table class="table">
+	<table class="table table-with-buttons" ng-if="clients.length > 0">
 		<tr>
 			<th>№</th>
 			<th>Имя</th>
 			<th>Номер телефона</th>
 			<th>Электронная почта</th>
 			<th></th>
-			<th></th>
 		</tr>
 
-		<tr ng-repeat="client in clients">
+		<tr ng-repeat="client in clients | filter: searchQuery">
 			<td>
 				@{{ client.id }}
 			</td>
@@ -40,9 +43,6 @@
 			</td>
 			<td>
 				@{{ client.email }}
-			</td>
-			<td>
-				<a href="">Заказы</a>
 			</td>
 			<td>
 				<div class="btn-group" role="group">
@@ -59,4 +59,11 @@
 			</td>
 		</tr>
 	</table>
+
+	<div class="no-data-block" ng-if="clients.length == 0">
+		<div>
+			<i class="fas fa-th"></i>
+		</div>
+		Вы еще не добавили ни одного клиента
+	</div>
 </div>

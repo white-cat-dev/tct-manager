@@ -10,8 +10,11 @@ class Order extends Model
     protected $fillable = [
     	'client_id',
         'status',
+        'comment',
         'priority',
-        'cost'
+        'cost',
+        'weight',
+        'pallets'
     ];
 
     protected $appends = [

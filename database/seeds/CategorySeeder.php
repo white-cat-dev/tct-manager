@@ -15,10 +15,19 @@ class CategorySeeder extends Seeder
     {
         Category::insert([
             [
-                'name' => 'Плитка'
+                'name' => 'Тротуарная плитка',
+                'units' => 'area',
+                'has_colors' => true
             ],
             [
-                'name' => 'Бордюры'
+                'name' => 'Бордюры',
+                'units' => 'unit',
+                'has_colors' => true
+            ],
+            [
+                'name' => 'Пенобетонные блоки',
+                'units' => 'volume',
+                'has_colors' => false
             ]
         ]);
     }

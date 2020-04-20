@@ -8,11 +8,6 @@ use App\Client;
 
 class ClientsController extends Controller
 {
-    protected $validationRules = [
-        'name' => 'required',
-        'phone' => 'required'
-    ];
-
     public function index(Request $request) 
     {
         if ($request->wantsJson())
@@ -75,12 +70,17 @@ class ClientsController extends Controller
     }
 
 
+    protected $validationRules = [
+        'name' => 'required',
+        'phone' => 'required'
+    ];
+
     protected function getData(Request $request)
     {
         return [
-            'name' => $request->get('name'),
-            'phone' => $request->get('phone'),
-            'email' => $request->get('email')
+            'name' => $request->get('name', ''),
+            'phone' => $request->get('phone', ''),
+            'email' => $request->get('email', '')
         ];
     }
 }

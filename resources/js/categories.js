@@ -2,13 +2,17 @@ angular.module('tctApp').controller('CategoriesController', [
 	'$scope',
 	'$routeParams',
 	'$location',
+	'$timeout',
 	'CategoriesRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
+		$timeout,
 		CategoriesRepository
 	){
+
+	$scope.baseUrl = '';
 
 	$scope.categories = [];
 	$scope.category = {};
@@ -26,8 +30,8 @@ angular.module('tctApp').controller('CategoriesController', [
 			'name': 'Объём (м<sup>3</sup>/шт./поддон)'
 		},
 		{
-			'key': 'length',
-			'name': 'Длина (м/шт./поддон)'
+			'key': 'unit',
+			'name': 'Поштучно (шт.)'
 		}
 	];
 
@@ -43,7 +47,10 @@ angular.module('tctApp').controller('CategoriesController', [
 
 	$scope.initShow = function()
 	{
+		$scope.baseUrl = 'categories';
+
 		$scope.id = $routeParams['id'];
+
 		CategoriesRepository.get({id: $scope.id}, function(response) 
 		{
 			$scope.category = response;
@@ -53,6 +60,8 @@ angular.module('tctApp').controller('CategoriesController', [
 
 	$scope.initEdit = function()
 	{
+		$scope.baseUrl = 'categories';
+
 		$scope.id = $routeParams['id'];
 
 		if ($scope.id)
@@ -93,7 +102,21 @@ angular.module('tctApp').controller('CategoriesController', [
 	{
 		CategoriesRepository.delete({id: id}, function(response) 
 		{
-			$scope.init();
+			if ($scope.baseUrl)
+			{
+				$location.path($scope.baseUrl).replace();
+			}
+			else
+			{
+				$scope.successAlert = 'Категория успешно удалена!';
+				$scope.showAlert = true;
+
+				$timeout(function() {
+					$scope.showAlert = false;
+				}, 2000);
+
+				$scope.init();
+			}
 		}, 
 		function(response) 
 		{

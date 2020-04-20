@@ -1,3 +1,4 @@
+require('bootstrap');
 require('angular');
 require('angularjs-color-picker');
 
@@ -215,3 +216,4 @@ tctApp.factory('ProductionRepository', ['$resource', function($resource) {
 		orders: { method: 'GET', url: '/production/orders' }
     }); 
 }]);
+

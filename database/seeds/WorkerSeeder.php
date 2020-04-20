@@ -15,20 +15,36 @@ class WorkerSeeder extends Seeder
     {
         Worker::insert([
         	[
-	        	'name' => 'Пикторски',
+	        	'name' => 'Витя',
 	        	'surname' => 'Максимов',
 	        	'full_name' => 'Виктор',
 	        	'patronymic' => 'Александрович',
 	        	'status' => 'active',
-	        	'facility_id' => 0
+	        	'facility_id' => 1
 	        ],
 	        [
-	        	'name' => 'Пикторски №2',
-	        	'surname' => 'Максимов',
-	        	'full_name' => 'Виктор',
-	        	'patronymic' => 'Александрович',
+	        	'name' => 'Егор',
+	        	'surname' => 'Мельников',
+	        	'full_name' => 'Егор',
+	        	'patronymic' => 'Викторович',
 	        	'status' => 'active',
-	        	'facility_id' => 0
+	        	'facility_id' => 1
+	        ],
+	        [
+	        	'name' => 'Илья',
+	        	'surname' => 'Давыдов',
+	        	'full_name' => 'Илья',
+	        	'patronymic' => 'Григорьевич',
+	        	'status' => 'active',
+	        	'facility_id' => 1
+	        ],
+	        [
+	        	'name' => 'Влад',
+	        	'surname' => 'Данилов',
+	        	'full_name' => 'Владислав',
+	        	'patronymic' => 'Петрович',
+	        	'status' => 'active',
+	        	'facility_id' => 2
 	        ]
         ]);
     }

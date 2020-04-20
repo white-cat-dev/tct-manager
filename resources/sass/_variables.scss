@@ -7,3 +7,18 @@ $secondary: darken($grey, 3%);
 
 $border-color: darken($grey, 10%);
 $input-border-color: $border-color;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 1210px,
+  xl: 1510px
+);
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 1200px,
+  xl: 1500px
+);
