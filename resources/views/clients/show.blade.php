@@ -9,12 +9,14 @@
 		</div>
 
 		<div class="right-buttons">
+			@if (Auth::user() && Auth::user()->type == 'admin')
 			<a ng-href="@{{ client.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
 			<button type="button" class="btn btn-primary" ng-if="id" ng-click="delete(id)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
+			@endif
 		</div>
 	</div>
 

@@ -94,9 +94,11 @@
 			<div class="employment-statuses">
 				<div class="statuses-title">
 					Статусы
+					@if (Auth::user() && Auth::user()->type == 'admin')
 					<a href="{{ route('employment-statuses') }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-edit"></i> Изменить
 					</a>
+					@endif
 				</div>
 
 				<table class="table" ng-if="Object.keys(statuses).length > 0">
@@ -152,9 +154,11 @@
 						@{{ (worker.salary.employments - worker.salary.advance + +worker.salary.bonus) | number }} руб.
 					</td>
 					<td>
+						@if (Auth::user() && Auth::user()->type == 'admin')
 						<button type="button" class="btn btn-sm btn-primary" ng-click="showSalaryModal(worker)">
 							<i class="fas fa-edit"></i> Изменить
 						</button>
+						@endif
 					</td>
 				</tr>
 			</table>

@@ -16,9 +16,11 @@
 		</div>
 
 		<div class="right-buttons">
+			@if (Auth::user() && Auth::user()->type == 'admin')
 			<a href="{{ route('worker-create') }}" class="btn btn-primary">
 				<i class="fas fa-plus"></i> Добавить нового работника
 			</a>
+			@endif
 		</div>
 	</div>
 
@@ -53,12 +55,14 @@
 					<a ng-href="@{{ worker.url }}" class="btn btn-primary">
 						<i class="fas fa-eye"></i>
 					</a>
+					@if (Auth::user() && Auth::user()->type == 'admin')
 					<a ng-href="@{{ worker.url + '/edit' }}" class="btn btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
 					<button type="button" class="btn btn-primary" ng-click="deleteWorker(worker.id)">
 						<i class="far fa-trash-alt"></i>
 					</button>
+					@endif
 				</div>
 			</td>
 		</tr>

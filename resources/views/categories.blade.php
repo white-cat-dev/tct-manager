@@ -16,9 +16,11 @@
 		</div>
 
 		<div class="right-buttons">
+			@if (Auth::user() && Auth::user()->type == 'admin')
 			<a href="{{ route('category-create') }}" class="btn btn-primary">
 				<i class="fas fa-plus"></i> Добавить новую категорию
 			</a>
+			@endif
 		</div>
 	</div>
 
@@ -50,12 +52,14 @@
 					<a ng-href="@{{ category.url }}" class="btn btn-primary">
 						<i class="fas fa-eye"></i>
 					</a>
+					@if (Auth::user() && Auth::user()->type == 'admin')
 					<a ng-href="@{{ category.url + '/edit' }}" class="btn btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
 					<button type="button" class="btn btn-primary" ng-click="delete(category.id)">
 						<i class="far fa-trash-alt"></i>
 					</button>
+					@endif
 				</div>
 			</td>
 		</tr>

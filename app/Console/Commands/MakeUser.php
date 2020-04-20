@@ -43,13 +43,13 @@ class MakeUser extends Command
         $name = $this->ask('Введите имя');
         $email = $this->ask('Введите логин');
         $password = $this->secret('Введите пароль');
-        $role = $this->choice('Выберите роль', ['admin', 'master'], 0);
+        $type = $this->choice('Выберите тип', ['admin', 'master'], 0);
 
         $user = User::create([
             'name' => $name,
             'email' => $email,
             'password' => Hash::make($password),
-            'role' => $role
+            'type' => $type
         ]);
 
         $this->info('Пользователь успешно создан!');
