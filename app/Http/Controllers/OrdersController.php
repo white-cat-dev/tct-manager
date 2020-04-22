@@ -57,7 +57,7 @@ class OrdersController extends Controller
             }
 
             $order->productions = $order->productions()->with('product')->where('performed', '>', 0)->get();
-            $order->realizations = $order->realizations()->with('product')->where('performed', '>', 0)->get();
+            $order->realizations = $order->realizations()->with('product')->get();
 
             return $order;
         }
@@ -197,6 +197,24 @@ class OrdersController extends Controller
         if ($request->wantsJson())
         {
             $order->delete();
+        }
+    }
+
+
+    public function saveRealizations(Request $request)
+    {
+        $realizationsData = $request->get('realizations');
+
+        foreach ($realizationsData as $realizationData) 
+        {
+            $realization = Realization::find($realizationData['id']);
+
+            if ($realization)
+            {
+                $realization->update([
+                    'performed' => (float)$realizationData['performed']
+                ]);
+            }
         }
     }
 

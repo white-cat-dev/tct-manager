@@ -66,21 +66,45 @@
 			</td>
 			<td>
 				<div ng-repeat="product in productGroup.products">
-					@{{ product.price }} руб./м<sup>2</sup>
+					@{{ product.price }} руб./
+					<span ng-switch on="productGroup.category.units">
+						<span ng-switch-when="area">м<sup>2</sup></span>
+						<span ng-switch-when="volume">м<sup>3</sup></span>
+						<span ng-switch-when="unit">шт.</span>
+					</span>
 				</div>
 			</td>
 			<td>
 				<div ng-repeat="product in productGroup.products">
-					@{{ product.in_stock }} м<sup>2</sup>
+					@{{ product.in_stock }} 
+					<span ng-switch on="productGroup.category.units">
+						<span ng-switch-when="area">м<sup>2</sup></span>
+						<span ng-switch-when="volume">м<sup>3</sup></span>
+						<span ng-switch-when="unit">шт.</span>
+					</span>
 				</div>
 			</td>
 			<td>
 				<div class="product-in-stock" ng-repeat="product in productGroup.products">
 					<div class="realize-in-stock" ng-style="{'width': Math.round(product.realize_in_stock / product.in_stock * 100) + '%'}" ng-if="product.realize_in_stock">
-						<div class="in-stock-number">@{{ product.realize_in_stock }} м<sup>2</sup></div>
+						<div class="in-stock-number">
+							@{{ product.realize_in_stock }} 
+							<span ng-switch on="productGroup.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт.</span>
+							</span>
+						</div>
 					</div>
 					<div class="free-in-stock" ng-style="{'width': (!product.realize_in_stock) ? '100%' : Math.round(product.free_in_stock / product.in_stock * 100) + '%'}" ng-if="product.free_in_stock || !product.realize_in_stock">
-						<div class="in-stock-number">@{{ product.free_in_stock }} м<sup>2</sup></div>
+						<div class="in-stock-number">
+							@{{ product.free_in_stock }} 
+							<span ng-switch on="productGroup.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт.</span>
+							</span>
+						</div>
 					</div>
 				</div>
 			</td>

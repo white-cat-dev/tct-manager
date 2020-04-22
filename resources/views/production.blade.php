@@ -82,10 +82,20 @@
 
 								<div class="production" ng-style="{'border-color': getOrderMarkColor(product.productions[$index+1])}">
 									<div class="production-performed" ng-if="product.productions[$index+1]">
-										@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} м<sup>2</sup>
+										@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} 
+										<span ng-switch on="product.category.units">
+											<span ng-switch-when="area">м<sup>2</sup></span>
+											<span ng-switch-when="volume">м<sup>3</sup></span>
+											<span ng-switch-when="unit">шт.</span>
+										</span>
 									</div>
 									<div class="production-planned" ng-if="product.productions[$index+1]">
-										@{{ product.productions[$index+1] ? product.productions[$index+1].planned : 0 }} м<sup>2</sup>
+										@{{ product.productions[$index+1] ? product.productions[$index+1].planned : 0 }} 
+										<span ng-switch on="product.category.units">
+											<span ng-switch-when="area">м<sup>2</sup></span>
+											<span ng-switch-when="volume">м<sup>3</sup></span>
+											<span ng-switch-when="unit">шт.</span>
+										</span>
 									</div>
 								</div>
 							</td>
@@ -125,7 +135,12 @@
 								</span>
 							</td>
 							<td>
-								@{{ product.pivot.count }} м<sup>2</sup>
+								@{{ product.pivot.count }} 
+								<span ng-switch on="product.category.units">
+									<span ng-switch-when="area">м<sup>2</sup></span>
+									<span ng-switch-when="volume">м<sup>3</sup></span>
+									<span ng-switch-when="unit">шт.</span>
+								</span>
 							</td>
 						</tr>
 					</table>
@@ -178,16 +193,26 @@
 									</div>
 								</td>
 								<td>
-									@{{ production.planned }} м<sup>2</sup>
+									@{{ production.planned }} 
+									<span ng-switch on="production.product.category.units">
+										<span ng-switch-when="area">м<sup>2</sup></span>
+										<span ng-switch-when="volume">м<sup>3</sup></span>
+										<span ng-switch-when="unit">шт.</span>
+									</span>
 								</td>
 								<td>
-									<input type="text" class="form-control" ng-model="production.performed"> м<sup>2</sup>
+									<input type="text" class="form-control" ng-model="production.performed"> 
+									<span ng-switch on="production.product.category.units">
+										<span ng-switch-when="area">м<sup>2</sup></span>
+										<span ng-switch-when="volume">м<sup>3</sup></span>
+										<span ng-switch-when="unit">шт.</span>
+									</span>
 								</td>
 							</tr>
 						</table>
 					</div>
 
-					<div class="order-block" ng-if="modalNoOrderProductions.length > 0">
+					{{-- <div class="order-block" ng-if="modalNoOrderProductions.length > 0">
 						<div class="order-name">
 							Производство без заказов
 						</div>
@@ -211,24 +236,34 @@
 									</div>
 								</td>
 								<td>
-									@{{ production.planned }} м<sup>2</sup>
+									@{{ production.planned }}
+									<span ng-switch on="production.product.category.units">
+										<span ng-switch-when="area">м<sup>2</sup></span>
+										<span ng-switch-when="volume">м<sup>3</sup></span>
+										<span ng-switch-when="unit">шт.</span>
+									</span>
 								</td>
 								<td>
-									<input type="text" class="form-control" ng-model="production.performed"> м<sup>2</sup>
+									<input type="text" class="form-control" ng-model="production.performed"> 
+									<span ng-switch on="production.product.category.units">
+										<span ng-switch-when="area">м<sup>2</sup></span>
+										<span ng-switch-when="volume">м<sup>3</sup></span>
+										<span ng-switch-when="unit">шт.</span>
+									</span>
 								</td>
 							</tr>
 						</table>
-					</div>
+					</div> --}}
 
-					<button type="button" class="btn btn-primary btn-sm">
+					{{-- <button type="button" class="btn btn-primary btn-sm">
 						<i class="fas fa-plus"></i> Производство без заказов
-					</button>
+					</button> --}}
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">
+					{{-- <button type="button" class="btn btn-primary">
 						<i class="fas fa-print"></i> Распечатать
-					</button>
+					</button> --}}
 					<button type="button" class="btn btn-primary" ng-click="save()">
 						<i class="fas fa-save"></i> Сохранить
 					</button>

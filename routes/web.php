@@ -63,6 +63,8 @@ Route::middleware('auth')->group(function()
 
 	Route::prefix('orders')->group(function()
 	{
+		Route::post('realizations', 'OrdersController@saveRealizations');
+
 		Route::get('/', 'OrdersController@index')->name('orders');
 		Route::get('create', 'OrdersController@create')->name('order-create');
 		Route::get('{order}', 'OrdersController@show')->name('order-show');

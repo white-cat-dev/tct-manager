@@ -61599,7 +61599,12 @@ tctApp.factory('ClientsRepository', ['$resource', function ($resource) {
   return $resource('/clients/:id');
 }]);
 tctApp.factory('OrdersRepository', ['$resource', function ($resource) {
-  return $resource('/orders/:id');
+  return $resource('/orders/:id', null, {
+    saveRealizations: {
+      method: 'POST',
+      url: '/orders/realizations'
+    }
+  });
 }]);
 tctApp.factory('WorkersRepository', ['$resource', function ($resource) {
   return $resource('/workers/:id');
@@ -61644,10 +61649,10 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
   $scope.categoryErrors = {};
   $scope.units = [{
     'key': 'area',
-    'name': 'Площадь (м<sup>2</sup>/шт./поддон)'
+    'name': 'Площадь (м<sup>2</sup>)'
   }, {
     'key': 'volume',
-    'name': 'Объём (м<sup>3</sup>/шт./поддон)'
+    'name': 'Объём (м<sup>3</sup>)'
   }, {
     'key': 'unit',
     'name': 'Поштучно (шт.)'
@@ -62115,7 +62120,7 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', 'ProductsRepository', 'OrdersRepository', function ($scope, $routeParams, $location, ProductsRepository, OrdersRepository) {
+angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', 'ProductsRepository', 'OrdersRepository', function ($scope, $routeParams, $location, $timeout, ProductsRepository, OrdersRepository) {
   $scope.Math = window.Math;
   $scope.baseUrl = '';
   $scope.orders = [];
@@ -62128,50 +62133,36 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
   $scope.id = 0;
   $scope.orderErrors = {};
-  $scope.productGroups = []; // $scope.units = {
-  // 	'area': [
-  // 		{
-  // 			'key': 'unit',
-  // 			'name': 'шт.'
-  // 		},
-  // 		{
-  // 			'key': 'units',
-  // 			'name': 'м<sup>2</sup>'
-  // 		},
-  // 		{
-  // 			'key': 'pallete',
-  // 			'name': 'поддон'
-  // 		},
-  // 	],
-  // 	'volume': [
-  // 		{
-  // 			'key': 'unit',
-  // 			'name': 'шт.'
-  // 		},
-  // 		{
-  // 			'key': 'units',
-  // 			'name': 'м<sup>3</sup>'
-  // 		},
-  // 		{
-  // 			'key': 'pallete',
-  // 			'name': 'поддон'
-  // 		},
-  // 	],
-  // 	'length': [
-  // 		{
-  // 			'key': 'unit',
-  // 			'name': 'шт.'
-  // 		},
-  // 		{
-  // 			'key': 'units',
-  // 			'name': 'м'
-  // 		},
-  // 		{
-  // 			'key': 'pallete',
-  // 			'name': 'поддон'
-  // 		},
-  // 	]
-  // };
+  $scope.productGroups = [];
+  $scope.units = {
+    'area': [{
+      'key': 'unit',
+      'name': 'шт.'
+    }, {
+      'key': 'units',
+      'name': 'м<sup>2</sup>'
+    }, {
+      'key': 'pallete',
+      'name': 'поддон'
+    }],
+    'volume': [{
+      'key': 'unit',
+      'name': 'шт.'
+    }, {
+      'key': 'units',
+      'name': 'м<sup>3</sup>'
+    }, {
+      'key': 'pallete',
+      'name': 'поддон'
+    }],
+    'length': [{
+      'key': 'units',
+      'name': 'шт.'
+    }, {
+      'key': 'pallete',
+      'name': 'поддон'
+    }]
+  };
 
   $scope.init = function () {
     OrdersRepository.query(function (response) {
@@ -62262,11 +62253,11 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
   $scope.addProduct = function () {
     $scope.order.products.push({
-      'products': [],
       'id': null,
+      'products': [],
       'pivot': {
         'price': 0,
-        'count': 1,
+        'count': 0,
         'cost': 0
       }
     });
@@ -62277,26 +62268,31 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     $scope.updateOrderInfo();
   };
 
-  $scope.chooseProductGroup = function (productData, productGroupId) {
+  $scope.chooseProductGroup = function (productData, productGroup) {
     productData.id = null;
-    productData.pivot.cost = 0;
-    productData.products = [];
+    productData.category = productGroup.category;
+    productData.weight_units = productGroup.weight_units;
+    productData.units_in_pallete = productGroup.units_in_pallete;
 
     for (key in $scope.productGroups) {
-      if ($scope.productGroups[key].id == productGroupId) {
+      if ($scope.productGroups[key].id == productGroup.id) {
         productData.products = $scope.productGroups[key].products;
         break;
       }
     }
+
+    if (!productGroup.category.hasColors) {
+      $scope.chooseProduct(productData, productData.products[0]);
+    }
+
+    $scope.updateOrderInfo();
   };
 
   $scope.chooseProduct = function (productData, product) {
     productData.id = product.id;
-    productData.price = product.price;
     productData.in_stock = product.in_stock;
-    productData.category = product.category;
     productData.pivot.price = product.price;
-    productData.pivot.cost = productData.price * productData.pivot.count;
+    productData.pivot.cost = product.price * productData.pivot.count;
     $scope.updateOrderInfo();
   };
 
@@ -62307,16 +62303,64 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       productData.pivot.count = 0;
     }
 
-    productData.pivot.cost = productData.price * productData.pivot.count;
+    productData.pivot.cost = productData.pivot.price * productData.pivot.count;
     $scope.updateOrderInfo();
   };
 
   $scope.updateOrderInfo = function () {
     $scope.order.cost = 0;
+    $scope.order.weight = 0;
+    $scope.order.pallets = 0;
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
 
-    for (key in $scope.order.products) {
-      $scope.order.cost += $scope.order.products[key].pivot.cost;
+    try {
+      for (var _iterator2 = $scope.order.products[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        product = _step2.value;
+        $scope.order.cost += product.pivot.cost;
+        $scope.order.weight += product.weight_units * product.pivot.count;
+        $scope.order.pallets += Math.ceil(product.pivot.count / product.units_in_pallete);
+      }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+          _iterator2["return"]();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
+      }
     }
+  };
+
+  $scope.isRealizationModalShown = false;
+  $scope.modalOrder = {};
+
+  $scope.showRealizationModal = function (order) {
+    $scope.modalOrder = order || $scope.order;
+    $scope.isRealizationModalShown = true;
+  };
+
+  $scope.hideRealizationModal = function () {
+    $scope.isRealizationModalShown = false;
+  };
+
+  $scope.saveRealizations = function () {
+    OrdersRepository.saveRealizations({
+      'realizations': $scope.modalOrder.realizations
+    }, function (response) {
+      $scope.successAlert = 'Все изменения успешно сохранены!';
+      $scope.showAlert = true;
+      $timeout(function () {
+        $scope.showAlert = false;
+      }, 2000);
+      $scope.hideRealizationModal();
+    });
   };
 }]);
 
@@ -62493,7 +62537,6 @@ angular.module('tctApp').controller('ProductionController', ['$scope', '$routePa
     }, function (response) {
       $scope.successAlert = 'Все изменения успешно сохранены!';
       $scope.showAlert = true;
-      $scope.isSalaryModalShown = false;
       $timeout(function () {
         $scope.showAlert = false;
       }, 2000);

@@ -28,6 +28,7 @@ class Order extends Model
 
     protected $casts = [
         'cost' => 'float',
+        'weight' => 'float'
     ];
 
 

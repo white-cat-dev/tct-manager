@@ -185,8 +185,6 @@ angular.module('tctApp').controller('ProductionController', [
 			$scope.successAlert = 'Все изменения успешно сохранены!';
 			$scope.showAlert = true;
 
-			$scope.isSalaryModalShown = false;
-
 			$timeout(function() {
 				$scope.showAlert = false;
 			}, 2000);

@@ -87,7 +87,12 @@
 								<div class="product-color">@{{ product.color_text }}</div>
 							</td>
 							<td>
-								@{{ product.progress.total }} м<sup>2</sup>
+								@{{ product.progress.total }}
+								<span ng-switch on="product.category.units">
+									<span ng-switch-when="area">м<sup>2</sup></span>
+									<span ng-switch-when="volume">м<sup>3</sup></span>
+									<span ng-switch-when="unit">шт.</span>
+								</span>
 							</td>
 							<td>
 								<div class="product-progress">

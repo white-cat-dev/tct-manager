@@ -70,7 +70,7 @@
 
 					<div class="form-group">
 						<div class="param-label">Количество поддонов</div>
-						@{{ order.weight | number }} шт.
+						@{{ order.pallets | number }} шт.
 					</div>
 				</div>
 
@@ -110,8 +110,8 @@
 
 					<tr ng-repeat="product in order.products track by $index">
 						<td>
-							<ui-select theme="bootstrap" ng-model="product.product_group_id" ng-change="chooseProductGroup(product, $select.selected.id)">
-					            <ui-select-match placeholder="Продукт...">
+							<ui-select theme="bootstrap" ng-model="product.product_group_id" ng-change="chooseProductGroup(product, $select.selected)">
+					            <ui-select-match placeholder="Выберите продукт...">
 						            @{{ $select.selected.name }}
 						        </ui-select-match>
 					            <ui-select-choices repeat="productGroup.id as productGroup in productGroups | filter: $select.search">
@@ -120,14 +120,19 @@
 							</ui-select>
 						</td>
 						<td>
-							<ui-select theme="bootstrap" ng-model="product.product_id" ng-change="chooseProduct(product, $select.selected)" ng-show="product.products.length > 0">
-					            <ui-select-match placeholder="Цвет...">
-						            @{{ $select.selected.color_text }}
-						        </ui-select-match>
-					            <ui-select-choices repeat="product.id as product in product.products | filter: $select.search">
-					                <span ng-bind-html="product.color_text | highlight: $select.search"></span>
-					            </ui-select-choices>
-							</ui-select>
+							<span ng-if="product.category && product.category.has_colors">
+								<ui-select theme="bootstrap" ng-model="product.product_id" ng-change="chooseProduct(product, $select.selected)">
+						            <ui-select-match placeholder="Выберите цвет...">
+							            @{{ $select.selected.color_text }}
+							        </ui-select-match>
+						            <ui-select-choices repeat="product.id as product in product.products | filter: $select.search">
+						                <span ng-bind-html="product.color_text | highlight: $select.search"></span>
+						            </ui-select-choices>
+								</ui-select>
+							</span>
+							<span ng-if="product.category && !product.category.has_colors">
+								—
+							</span>
 						</td>
 						<td>
 							<input type="text" class="form-control" ng-model="product.pivot.count" ng-change="changeCount(product, 0)">
@@ -144,7 +149,7 @@
 						</td>
 						<td>
 							<span ng-if="product.id">
-								@{{ product.price | number }} руб.
+								@{{ product.pivot.price | number }} руб.
 							</span>
 						</td>
 						<td>

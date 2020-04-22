@@ -23,11 +23,11 @@ angular.module('tctApp').controller('CategoriesController', [
 	$scope.units = [
 		{
 			'key': 'area',
-			'name': 'Площадь (м<sup>2</sup>/шт./поддон)'
+			'name': 'Площадь (м<sup>2</sup>)'
 		},
 		{
 			'key': 'volume',
-			'name': 'Объём (м<sup>3</sup>/шт./поддон)'
+			'name': 'Объём (м<sup>3</sup>)'
 		},
 		{
 			'key': 'unit',

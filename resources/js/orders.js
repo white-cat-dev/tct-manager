@@ -2,12 +2,14 @@ angular.module('tctApp').controller('OrdersController', [
 	'$scope',
 	'$routeParams',
 	'$location',
+	'$timeout',
 	'ProductsRepository',
 	'OrdersRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
+		$timeout,
 		ProductsRepository,
 		OrdersRepository
 	){
@@ -30,50 +32,46 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.productGroups = [];
 
-	// $scope.units = {
-	// 	'area': [
-	// 		{
-	// 			'key': 'unit',
-	// 			'name': 'шт.'
-	// 		},
-	// 		{
-	// 			'key': 'units',
-	// 			'name': 'м<sup>2</sup>'
-	// 		},
-	// 		{
-	// 			'key': 'pallete',
-	// 			'name': 'поддон'
-	// 		},
-	// 	],
-	// 	'volume': [
-	// 		{
-	// 			'key': 'unit',
-	// 			'name': 'шт.'
-	// 		},
-	// 		{
-	// 			'key': 'units',
-	// 			'name': 'м<sup>3</sup>'
-	// 		},
-	// 		{
-	// 			'key': 'pallete',
-	// 			'name': 'поддон'
-	// 		},
-	// 	],
-	// 	'length': [
-	// 		{
-	// 			'key': 'unit',
-	// 			'name': 'шт.'
-	// 		},
-	// 		{
-	// 			'key': 'units',
-	// 			'name': 'м'
-	// 		},
-	// 		{
-	// 			'key': 'pallete',
-	// 			'name': 'поддон'
-	// 		},
-	// 	]
-	// };
+	$scope.units = {
+		'area': [
+			{
+				'key': 'unit',
+				'name': 'шт.'
+			},
+			{
+				'key': 'units',
+				'name': 'м<sup>2</sup>'
+			},
+			{
+				'key': 'pallete',
+				'name': 'поддон'
+			},
+		],
+		'volume': [
+			{
+				'key': 'unit',
+				'name': 'шт.'
+			},
+			{
+				'key': 'units',
+				'name': 'м<sup>3</sup>'
+			},
+			{
+				'key': 'pallete',
+				'name': 'поддон'
+			},
+		],
+		'length': [
+			{
+				'key': 'units',
+				'name': 'шт.'
+			},
+			{
+				'key': 'pallete',
+				'name': 'поддон'
+			},
+		]
+	};
 
 
 	$scope.init = function()
@@ -170,11 +168,11 @@ angular.module('tctApp').controller('OrdersController', [
 	$scope.addProduct = function()
 	{
 		$scope.order.products.push({
-			'products': [],
 			'id': null,
+			'products': [],
 			'pivot': {
 				'price': 0,
-				'count': 1,
+				'count': 0,
 				'cost': 0
 			}
 		});
@@ -189,31 +187,37 @@ angular.module('tctApp').controller('OrdersController', [
 	}
 
 
-	$scope.chooseProductGroup = function(productData, productGroupId)
+	$scope.chooseProductGroup = function(productData, productGroup)
 	{
 		productData.id = null;
-		productData.pivot.cost = 0;
-		productData.products = [];
+		productData.category = productGroup.category;
+		productData.weight_units = productGroup.weight_units;
+		productData.units_in_pallete = productGroup.units_in_pallete;
 
 		for (key in $scope.productGroups)
 		{
-			if ($scope.productGroups[key].id == productGroupId)
+			if ($scope.productGroups[key].id == productGroup.id)
 			{
 				productData.products = $scope.productGroups[key].products;
 				break;
 			}
 		}
+
+		if (!productGroup.category.hasColors)
+		{
+			$scope.chooseProduct(productData, productData.products[0]);
+		}
+
+		$scope.updateOrderInfo();
 	}
+
 
 	$scope.chooseProduct = function(productData, product)
 	{
 		productData.id = product.id;
-		productData.price = product.price;
 		productData.in_stock = product.in_stock;
-		productData.category = product.category;
-
 		productData.pivot.price = product.price;
-		productData.pivot.cost = productData.price * productData.pivot.count;
+		productData.pivot.cost = product.price * productData.pivot.count;
 
 		$scope.updateOrderInfo();
 	}
@@ -228,7 +232,7 @@ angular.module('tctApp').controller('OrdersController', [
 			productData.pivot.count = 0;
 		}
 
-		productData.pivot.cost = productData.price * productData.pivot.count;
+		productData.pivot.cost = productData.pivot.price * productData.pivot.count;
 
 		$scope.updateOrderInfo();
     }
@@ -237,10 +241,47 @@ angular.module('tctApp').controller('OrdersController', [
 	$scope.updateOrderInfo = function() 
 	{
 		$scope.order.cost = 0;
+		$scope.order.weight = 0;
+		$scope.order.pallets = 0;
 
-		for (key in $scope.order.products) 
+		for (product of $scope.order.products) 
 		{
-			$scope.order.cost += $scope.order.products[key].pivot.cost;
+			$scope.order.cost += product.pivot.cost;
+			$scope.order.weight += product.weight_units * product.pivot.count;
+			$scope.order.pallets += Math.ceil(product.pivot.count / product.units_in_pallete); 
 		}
+    }
+
+
+    $scope.isRealizationModalShown = false;
+    $scope.modalOrder = {};
+
+
+    $scope.showRealizationModal = function(order)
+    {
+    	$scope.modalOrder = order || $scope.order;
+    	$scope.isRealizationModalShown = true;
+    }
+
+
+    $scope.hideRealizationModal = function()
+    {
+    	$scope.isRealizationModalShown = false;
+    }
+
+
+    $scope.saveRealizations = function()
+    {
+    	OrdersRepository.saveRealizations({'realizations': $scope.modalOrder.realizations}, function(response) 
+		{
+			$scope.successAlert = 'Все изменения успешно сохранены!';
+			$scope.showAlert = true;
+
+			$timeout(function() {
+				$scope.showAlert = false;
+			}, 2000);
+
+			$scope.hideRealizationModal();
+		});
     }
 }]);

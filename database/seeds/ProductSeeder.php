@@ -25,8 +25,8 @@ class ProductSeeder extends Seeder
 		    	'weight_units' => 61,
 		    	'weight_pallete' => 750,
 		    	'unit_in_units' => 11.1,
-		    	'unit_in_pallete' => 11.9,
-		    	'units_in_pallete' => 132,
+		    	'unit_in_pallete' => 132,
+		    	'units_in_pallete' => 11.9,
 		    	'units_from_batch' => 8,
 		    	'forms' => 100,
 		    	'products' => [
@@ -61,8 +61,8 @@ class ProductSeeder extends Seeder
 		    	'weight_units' => 61,
 		    	'weight_pallete' => 750,
 		    	'unit_in_units' => 11.1,
-		    	'unit_in_pallete' => 11.9,
-		    	'units_in_pallete' => 132,
+		    	'unit_in_pallete' => 132,
+		    	'units_in_pallete' => 11.9,
 		    	'units_from_batch' => 8,
 		    	'forms' => 50,
 		    	'products' => [

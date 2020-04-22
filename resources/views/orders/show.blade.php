@@ -93,7 +93,7 @@
 						Вес
 					</div>
 					<div class="param-value">
-						<span ng-if="order.weight">@{{ order.weight }}</span>
+						<span ng-if="order.weight">@{{ order.weight | number }} кг</span>
 						<span ng-if="!order.weight">Нет данных</span>
 					</div>
 				</div>
@@ -102,14 +102,13 @@
 						Количество поддонов
 					</div>
 					<div class="param-value">
-						<span ng-if="order.weight">@{{ order.pallets }}</span>
+						<span ng-if="order.weight">@{{ order.pallets | number }} шт</span>
 						<span ng-if="!order.weight">Нет данных</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		
-
 
 		<div class="row justify-content-around">
 			<div class="col-11">
@@ -127,19 +126,54 @@
 					<tr ng-repeat="product in order.products">
 						<td>@{{ product.product_group.name }}</td>
 						<td>@{{ product.color_text }}</td>
-						<td>@{{ product.pivot.price }} руб.</td>
-						<td>@{{ product.pivot.count }} м<sup>2</sup></td>
-						<td>@{{ product.pivot.cost }} руб.</td>
+						<td>
+							@{{ product.pivot.price | number }} руб./
+							<span ng-switch on="product.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт.</span>
+							</span>
+						</td>
+						<td>
+							@{{ product.pivot.count | number }} 
+							<span ng-switch on="product.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт.</span>
+							</span>
+						</td>
+						<td>@{{ product.pivot.cost | number }} руб.</td>
 						<td class="product-progress-col">
 							<div class="product-progress">
 								<div class="progress-realization" ng-style="{'width': Math.round(product.progress.realization / product.progress.total * 100) + '%'}" ng-if="product.progress.realization">
-									<div class="progress-number">@{{ product.progress.realization }} м<sup>2</sup></div>
+									<div class="progress-number">
+										@{{ product.progress.realization }}
+										<span ng-switch on="product.category.units">
+											<span ng-switch-when="area">м<sup>2</sup></span>
+											<span ng-switch-when="volume">м<sup>3</sup></span>
+											<span ng-switch-when="unit">шт.</span>
+										</span>
+									</div>
 								</div>
 								<div class="progress-ready" ng-style="{'width': Math.round(product.progress.ready / product.progress.total * 100) + '%'}" ng-if="product.progress.ready">
-									<div class="progress-number">@{{ product.progress.ready }} м<sup>2</sup></div>
+									<div class="progress-number">
+										@{{ product.progress.ready }} 
+										<span ng-switch on="product.category.units">
+											<span ng-switch-when="area">м<sup>2</sup></span>
+											<span ng-switch-when="volume">м<sup>3</sup></span>
+											<span ng-switch-when="unit">шт.</span>
+										</span>
+									</div>
 								</div>
 								<div class="progress-left" ng-style="{'width': Math.round(product.progress.left / product.progress.total * 100) + '%'}" ng-if="product.progress.left">
-									<div class="progress-number">@{{ product.progress.left }} м<sup>2</sup></div>
+									<div class="progress-number">
+										@{{ product.progress.left }} 
+										<span ng-switch on="product.category.units">
+											<span ng-switch-when="area">м<sup>2</sup></span>
+											<span ng-switch-when="volume">м<sup>3</sup></span>
+											<span ng-switch-when="unit">шт.</span>
+										</span>
+									</div>
 								</div>
 							</div>
 						</td>
@@ -154,7 +188,7 @@
 					Производство
 				</div>
 
-				<table class="table" ng-if="order.productions.length > 0">
+				<table class="table">
 					<tr>
 						<th>Дата</th>
 						<th>Продукт</th>
@@ -166,31 +200,109 @@
 							@{{ production.product.product_group.name }} <br>
 							@{{ production.product.color_text }}
 						</td>
-						<td>@{{ production.performed }} м<sup>2</sup></td>
+						<td>
+							@{{ production.performed }} 
+							<span ng-switch on="production.product.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт.</span>
+							</span>
+						</td>
 					</tr>
 				</table>
+
+				<a href="{{ route('production') }}" class="btn btn-primary">
+					<i class="far fa-calendar-check"></i> Перейти к плану производства
+				</a>
 			</div>
 
 			<div class="col-5">
 				<div class="params-title">
-					Реализация
+					Выдача
 				</div>
 
-				<table class="table" ng-if="order.realizations.length > 0">
+				<table class="table">
 					<tr>
 						<th>Дата</th>
 						<th>Продукт</th>
 						<th>Количество</th>
 					</tr>
-					<tr ng-repeat="realization in order.realizations">
+					<tr ng-repeat="realization in order.realizations" ng-if="realization.performed > 0">
 						<td>@{{ realization.formatted_date }}</td>
 						<td>
 							@{{ realization.product.product_group.name }} <br>
 							@{{ realization.product.color_text }}
 						</td>
-						<td>@{{ realization.performed }} м<sup>2</sup></td>
+						<td>
+							@{{ realization.performed }} 
+							<span ng-switch on="realization.product.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт.</span>
+							</span>
+						</td>
 					</tr>
 				</table>
+
+				<button type="button" class="btn btn-primary" ng-click="showRealizationModal()">
+					<i class="fas fa-plus"></i> Добавить выдачу
+				</button>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal realization-modal" ng-show="isRealizationModalShown">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="modal-title">
+						Выдача заказа №@{{ modalOrder.id }}
+					</div>
+					<button type="button" class="close" ng-click="hideRealizationModal()">
+						<i class="fas fa-times"></i>
+					</button>
+				</div>
+				<div class="modal-body">
+					<table class="table">
+						<tr>
+							<th>Продукт</th>
+							<th>Готово к выдаче</th>
+							<th>Выдано</th>
+						</tr>
+
+						<tr ng-repeat="realization in modalOrder.realizations">
+							<td>
+								<div class="product-name">
+									@{{ realization.product.product_group.name }}
+								</div> 
+								<div class="product-size">
+									@{{ realization.product.product_group.size }} мм
+								</div>
+								<div class="product-color" ng-if="realization.product.color_text">
+									@{{ realization.product.color_text }} цвет
+								</div>
+							</td>
+							<td>
+								@{{ realization.planned }} 
+								<span ng-switch on="realization.product.category.units">
+									<span ng-switch-when="area">м<sup>2</sup></span>
+									<span ng-switch-when="volume">м<sup>3</sup></span>
+									<span ng-switch-when="unit">шт.</span>
+								</span>
+							</td>
+							<td>
+								<input type="text" class="form-control" ng-model="realization.performed"> 
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" ng-click="saveRealizations()">
+						<i class="fas fa-save"></i> Сохранить
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
