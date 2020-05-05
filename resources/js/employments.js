@@ -18,25 +18,28 @@ angular.module('tctApp').controller('EmploymentsController', [
 	$scope.monthes = [];
 	$scope.years = [];
 
-	$scope.currentDay = 0;
-	$scope.currentMonth = 0;
-	$scope.currentYear = 0;
+	$scope.currentDate = {
+		'day': 0,
+		'month': 0,
+		'year': 0
+	};
 
 	$scope.worker = {};
 	$scope.workers = [];
 	$scope.statuses = {};
+	$scope.facilities = {};
 
 
 	$scope.init = function()
 	{
 		var request = {};
-		if ($scope.currentYear > 0)
+		if ($scope.currentDate.year > 0)
 		{
-			request.year = $scope.currentYear;
+			request.year = $scope.currentDate.year;
 		}
-		if ($scope.currentMonth > 0)
+		if ($scope.currentDate.month > 0)
 		{
-			request.month = $scope.currentMonth;
+			request.month = $scope.currentDate.month;
 		}
 
 		EmploymentsRepository.get(request, function(response) 
@@ -45,12 +48,13 @@ angular.module('tctApp').controller('EmploymentsController', [
 			$scope.monthes = response.monthes;
 			$scope.years = response.years;
 
-			$scope.currentDay = response.day;
-			$scope.currentMonth = response.month;
-			$scope.currentYear = response.year;
+			$scope.currentDate.day = response.day;
+			$scope.currentDate.month = response.month;
+			$scope.currentDate.year = response.year;
 
 			$scope.workers = response.workers;
 			$scope.statuses = response.statuses;
+			$scope.facilities = response.facilities;
 		});
 	};
 
@@ -64,7 +68,10 @@ angular.module('tctApp').controller('EmploymentsController', [
 			{
 				for (i in worker.employments)
 				{
-					employments.push(worker.employments[i]);
+					if (worker.employments[i].status_id >= 0)
+					{
+						employments.push(worker.employments[i]);
+					}
 				}
 			}
 		}
@@ -72,22 +79,22 @@ angular.module('tctApp').controller('EmploymentsController', [
 		var request = {
 			'employments': employments
 		};
-		if ($scope.currentYear > 0)
+		if ($scope.currentDate.year > 0)
 		{
-			request.year = $scope.currentYear;
+			request.year = $scope.currentDate.year;
 		}
-		if ($scope.currentMonth > 0)
+		if ($scope.currentDate.month > 0)
 		{
-			request.month = $scope.currentMonth;
+			request.month = $scope.currentDate.month;
 		}
 
 		EmploymentsRepository.save(request, function(response) 
 		{
-			$scope.successAlert = 'Все изменения успешно сохранены!';
-			$scope.showAlert = true;
+			$scope.successTopAlert = 'Все изменения успешно сохранены!';
+			$scope.showTopAlert = true;
 
 			$timeout(function() {
-				$scope.showAlert = false;
+				$scope.showTopAlert = false;
 			}, 2000);
 
 			$scope.init();
@@ -95,63 +102,119 @@ angular.module('tctApp').controller('EmploymentsController', [
 	};
 
 
-	$scope.$watch('currentYear', function(newValue, oldValue) 
+	$scope.$watch('currentDate.month', function(newValue, oldValue) 
 	{
 		$scope.init();
 	});
 
-	$scope.$watch('currentMonth', function(newValue, oldValue) 
+	$scope.$watch('currentDate.year', function(newValue, oldValue) 
 	{
 		$scope.init();
 	});
+
+
+	$scope.currentEmploymentStatus = null;
+
+	$scope.chooseCurrentEmploymentStatus = function(status)
+	{
+		if ($scope.currentEmploymentStatus == status)
+		{
+			$scope.currentEmploymentStatus = null;
+		}
+		else
+		{	
+			$scope.currentEmploymentStatus = status;
+		}
+
+		$scope.currentFacility = null;
+		$scope.cleanCurrent = false;
+	}
+
+
+	$scope.currentFacility = null;
+
+	$scope.chooseCurrentFacility = function(facility)
+	{
+		if ($scope.currentFacility == facility)
+		{
+			$scope.currentFacility = null;
+		}
+		else
+		{	
+			$scope.currentFacility = facility;
+		}
+
+		$scope.currentEmploymentStatus = null;
+		$scope.cleanCurrent = false;
+	}
+
+
+	$scope.cleanCurrent = false;
+
+	$scope.chooseCleanCurrent = function()
+	{
+		if ($scope.cleanCurrent)
+		{
+			$scope.cleanCurrent = false;
+		}
+		else
+		{
+			$scope.currentFacility = null;
+			$scope.currentEmploymentStatus = null;
+			$scope.cleanCurrent = true;
+		}
+	}
 
 
 	$scope.changeEmploymentStatus = function(worker, day)
 	{
-		$scope.changes = true;
-
 		if (!worker.employments)
 		{
 			worker.employments = {};
 		}
 
-		var statusesKeys = Object.keys($scope.statuses);
+		if ($scope.cleanCurrent)
+		{
+			delete worker.employments[day]; 
+			console.log(123);
+			return;
+		}
 
 		if (!worker.employments[day])
 		{
+			var statusId = ($scope.currentEmploymentStatus !== null) ? $scope.currentEmploymentStatus : -1;
+			var facilityId = ($scope.currentFacility !== null) ? $scope.currentFacility : 0;
+
 			worker.employments[day] = {
 				'worker_id': worker.id,
 				'day': day,
-				'status_id': statusesKeys.shift()
+				'status_id':  statusId,
+				'facility_id': facilityId
 			};
 		}
 		else
 		{
 			var statusId = worker.employments[day].status_id;
-			var newStatusId = statusId;
-			if (statusId == 0)
+			var facilityId = worker.employments[day].facility_id;
+
+			if ($scope.currentEmploymentStatus !== null)
 			{
-				newStatusId = statusesKeys.shift();
+				statusId = $scope.currentEmploymentStatus;
 			}
-			else
+
+			if ($scope.currentFacility !== null)
 			{
-				var newStatusId = statusesKeys.indexOf(statusId) + 1;
-				if (newStatusId >= statusesKeys.length)
-				{
-					newStatusId = 0
-				}
-				else
-				{
-					newStatusId = statusesKeys[newStatusId];
-				}
+				facilityId = $scope.currentFacility;
 			}
-			worker.employments[day].status_id = newStatusId;
+			worker.employments[day].status_id = statusId;
+			worker.employments[day].facility_id = facilityId;
 		}
 	};
 
 
 
 	$scope.isSalaryModalShown = false;
+	$scope.modalWorker = {};
 
 
 	$scope.showSalaryModal = function(worker)
@@ -171,13 +234,13 @@ angular.module('tctApp').controller('EmploymentsController', [
 	{
 		EmploymentsRepository.saveSalary({id: $scope.modalWorker.salary.id}, $scope.modalWorker.salary, function(response) 
 		{
-			$scope.successAlert = 'Все изменения успешно сохранены!';
-			$scope.showAlert = true;
+			$scope.successTopAlert = 'Все изменения успешно сохранены!';
+			$scope.showTopAlert = true;
 
 			$scope.isSalaryModalShown = false;
 
 			$timeout(function() {
-				$scope.showAlert = false;
+				$scope.showTopAlert = false;
 			}, 2000);
 
 			$scope.init();

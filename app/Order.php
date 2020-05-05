@@ -3,11 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use Arr;
 
 
 class Order extends Model
 {
+    const STATUS_PRODUCTION = 0;
+    const STATUS_READY = 1;
+    const STATUS_NEW = 2;
+    const STATUS_PAUSED = 3;
+    const STATUS_FINISHED = 3;
+
     protected $fillable = [
+        'date',
+        'number',
     	'client_id',
         'status',
         'comment',
@@ -18,7 +28,9 @@ class Order extends Model
     ];
 
     protected $appends = [
-    	'url'
+    	'url',
+        'status_text',
+        'formatted_date'
     ];
 
     protected $with = [
@@ -29,6 +41,14 @@ class Order extends Model
     protected $casts = [
         'cost' => 'float',
         'weight' => 'float'
+    ];
+
+    protected static $statuses = [
+        0 => 'В производстве',
+        1 => 'Готов к выдаче',
+        2 => 'Новый',
+        3 => 'Приостановлен',
+        4 => 'Завершен'
     ];
 
 
@@ -57,6 +77,7 @@ class Order extends Model
         return $this->hasMany(Production::class);
     }
 
+
     public function getProgress()
     {
         $progress = [
@@ -76,5 +97,19 @@ class Order extends Model
         $progress['ready'] = $progress['production'] - $progress['realization'];
 
         return $progress;
+    }
+
+
+    public function getStatusTextAttribute()
+    {
+        $status = Arr::get(static::$statuses, $this->status, '');
+        
+        return $status;
+    }
+
+
+    public function getFormattedDateAttribute()
+    {
+        return Carbon::createFromDate($this->date)->format('d.m.Y');
     }
 }

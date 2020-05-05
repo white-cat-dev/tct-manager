@@ -31,25 +31,6 @@
 			margin-bottom: 20px;
 		}
 
-		.facility-icon {
-			position: relative;
-			margin-bottom: 20px;
-
-			img {
-				width: 100%;
-
-				&:last-child {
-					height: 0%;
-					position: absolute;
-				    bottom: 0;
-				    left: 0;
-				    object-fit: cover;
-					object-position: bottom;
-					transition: height 0.3s;
-				}
-			}
-		}
-
 		.facility-params {
 			font-size: 14px;
 
@@ -77,13 +58,119 @@
 
 		.buttons-block {
 			margin-top: 20px;
-			text-align: center;
 		}
+	}
+
+	.facility-icon {
+		position: relative;
+		margin-bottom: 5px;
+
+		img {
+			width: 100%;
+
+			&:nth-child(2) {
+				height: 0%;
+				position: absolute;
+			    bottom: 0;
+			    left: 0;
+			    object-fit: cover;
+				object-position: bottom;
+				transition: height 0.3s;
+			}
+		}
+	}
+
+	.facility-status {
+		text-align: center;
+	    color: darken($grey, 35%);
+	    font-size: 14px;
+	    margin-bottom: 15px;
 	}
 
 	.add-worker-block {
 		.divider {
 			margin: 5px 12px;
+		}
+	}
+
+	.facility-modal {
+		.modal-dialog {
+			max-width: 380px;
+		}
+    }
+
+    .datepicker-block {
+		padding: 10px 30px;
+	    max-width: 350px;
+	    margin-top: 15px;
+	    border: solid 1px darken($grey, 10%);
+	    position: relative;
+
+	    &.disabled {
+	    	opacity: 0.6;
+	    }
+
+	    .disabled-block {
+	    	position: absolute;
+	    	top: 0px;
+	    	bottom: 0px;
+	    	left: 0px;
+	    	right: 0px;
+	    	background: $grey;
+	    	opacity: 0.1;
+	    }
+
+	    table {
+	    	width: 100%;
+
+	    	th {
+	    		font-weight: 500;
+	    	}
+
+	    	th, td {
+
+	    		span {
+
+	    			&.now {
+	    				background: $grey;
+	    				color: #212529;
+	    				text-shadow: none;
+
+	    				&:hover {
+			    			background: $grey;
+			    			color: #212529;
+			    		}
+	    			}
+
+	    			&.active.active {
+	    				background: $primary;
+	    				color: #FFFFFF;
+
+	    				&:hover {
+			    			background: $primary;
+			    			color: #FFFFFF;
+			    		}
+	    			}
+
+		    		&:hover {
+		    			background: $grey;
+		    		}	
+	    		}
+	    	}
+	    }
+	}
+
+	.facility-edit-status-block {
+		.custom-control > div {
+			position: relative;
+			display: inline-block;
+		}
+
+		.btn {
+			position: absolute;
+			top: -3px;
+			right: -140px;
+			white-space: nowrap;
 		}
 	}
 }

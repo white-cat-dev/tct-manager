@@ -97,7 +97,6 @@ Route::middleware('auth')->group(function()
 		Route::post('{worker}', 'WorkersController@edit');
 		
 		Route::delete('{worker}', 'WorkersController@delete');
-
 	});
 
 

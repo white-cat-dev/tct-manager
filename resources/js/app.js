@@ -1,6 +1,9 @@
+window.moment = require('moment');
+
 require('bootstrap');
 require('angular');
 require('angularjs-color-picker');
+require('angular-datepicker');
 
 
 var tctApp = angular.module('tctApp', [
@@ -8,7 +11,8 @@ var tctApp = angular.module('tctApp', [
 	require('angular-route'), 
 	require('angular-resource'), 
 	require('ui-select'),
-	'color.picker'
+	'color.picker',
+	'datePicker'
 ]);
 
 
@@ -22,10 +26,9 @@ tctApp.config(['$locationProvider', function($locationProvider) {
 tctApp.config(function($provide) {
     $provide.decorator('ColorPickerOptions', function($delegate) {
         var options = angular.copy($delegate);
-        options.round = true;
+        options.round = false;
         options.alpha = false;
     	options.hue = true;
-    	options.lightness = true;
         options.format = 'hexString';
 
         return options;
@@ -34,6 +37,27 @@ tctApp.config(function($provide) {
 
 tctApp.config(function($provide) {
     $provide.value('$locale', {
+    	DATETIME_FORMATS: {
+			"AMPMS": [ "д.п.", "п.п." ],
+			"DAY": [ "воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота" ],
+			"ERANAMES": [ "до н.э.", "н.э." ],
+			"ERAS": [ "до н.э.", "н.э." ],
+			"FIRSTDAYOFWEEK": 0,
+			"MONTH": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+			"SHORTDAY": ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
+			"SHORTMONTH": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+			"STANDALONEMONTH": ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"],
+			"WEEKENDRANGE": [5, 6],
+			"fullDate": "EEEE, d MMMM y г.",
+			"longDate": "d MMMM y г.",
+			"medium": "d MMMM y г. H:mm",
+			"mediumDate": "d MMMM y г.",
+			"mediumTime": "H:mm:ss",
+			"short": "dd.MM.yyyy H:mm",
+			"shortDate": "dd.MM.yyyy",
+			"shortTime": "H:mm",
+			"format": "dd.MM.yyyy"
+		},
 	    "NUMBER_FORMATS": {
 			"CURRENCY_SYM": "\u20bd",
 			"DECIMAL_SEP": ",",

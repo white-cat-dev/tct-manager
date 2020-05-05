@@ -9,6 +9,7 @@ use App\Realization;
 use App\Production;
 use App\Facility;
 use Carbon\Carbon;
+use App\Services\PlanningService;
 
 
 class OrdersController extends Controller
@@ -22,9 +23,9 @@ class OrdersController extends Controller
         if ($request->wantsJson())
         {
             $status = $request->get('status', '');
-            if ($status)
+            if ($status == 'productions')
             {
-                $orders = Order::where('status', $status)->get();
+                $orders = Order::where('status', Order::STATUS_PRODUCTION)->get();
             }
             else
             {
@@ -79,7 +80,6 @@ class OrdersController extends Controller
 
             $order = Order::create($orderData);
 
-
             foreach ($request->get('products') as $productData) 
             {
             	$order->products()->attach([
@@ -91,60 +91,13 @@ class OrdersController extends Controller
                 ]);
             }
 
-            foreach ($order->products as $product)
+            PlanningService::getInstance()->planOrder($order);
+
+            if ($order->productions()->count() == 0)
             {
-                $productCount = $product->pivot->count;
-                if ($product->free_in_stock > 0)
-                {
-                    $realization = Realization::create([
-                        'date' => date('Y-m-d'),
-                        'product_id' => $product->id,
-                        'order_id' => $order->id,
-                        'planned' => ($productCount >= $product->free_in_stock) ? $product->free_in_stock : $productCount,
-                        'performed' => 0
-                    ]);
-
-                    $productCount -= $realization->planned;
-                }
-
-                $currentDay = Carbon::today();
-
-                $maxBatches = Facility::whereHas('categories', function($query) use ($product) {
-                    $query->where('categories.id', $product->category_id);
-                })->get()->sum('performance');
-
-                while ($productCount > 0)
-                {
-                    $currentDay = $currentDay->addDay();
-                    $currentProductions = Production::where('date', $currentDay->format('Y-m-d'))->get();
-                    $currentBatches = 0;
-                    foreach ($currentProductions as $currentProduction) 
-                    {
-                        $currentBatches += $currentProduction->batches;
-                    }
-                    if ($currentBatches >= $maxBatches)
-                    {
-                        continue;
-                    }
-
-                    $maxCount = $product->product_group->units_from_batch * ($maxBatches - $currentBatches);
-                    if ($maxCount > $product->product_group->forms / $product->product_group->unit_in_units)
-                    {
-                        $maxCount = $product->product_group->forms / $product->product_group->unit_in_units;
-                    }
-                    $plannedCount = ($productCount >= $maxCount) ? $maxCount : $productCount;
-
-                    $production = Production::create([
-                        'date' => $currentDay->format('Y-m-d'),
-                        'order_id' => $order->id,
-                        'product_id' => $product->id,
-                        'planned' => $plannedCount,
-                        'performed' => 0,
-                        'batches' => $plannedCount / $product->product_group->units_from_batch
-                    ]);
-
-                    $productCount -= $plannedCount;
-                }
+                $order->update([
+                    'status' => Order::STATUS_READY
+                ]);
             }
             
             return $order;
@@ -211,8 +164,25 @@ class OrdersController extends Controller
 
             if ($realization)
             {
+                $performed = (float)$realizationData['performed'];
+                $planned = $realization->planned - $performed;
+
+                $product = $realization->product->update([
+                    'in_stock' => $realization->product->in_stock - $performed
+                ]);
+
                 $realization->update([
-                    'performed' => (float)$realizationData['performed']
+                    'date' => date('Y-m-d'),
+                    'planned' => $performed,
+                    'performed' => $performed
+                ]);
+
+                $newRealization = Realization::create([
+                    'date' => date('Y-m-d'),
+                    'product_id' => $realization->product_id,
+                    'order_id' => $realization->order_id,
+                    'planned' => $planned,
+                    'performed' => 0
                 ]);
             }
         }
@@ -221,11 +191,36 @@ class OrdersController extends Controller
 
     protected function getData(Request $request)
     {
+        $date = $request->get('date', -1);
+
+        if ($date == -1)
+        {
+            $date = $request->get('date', date('Y-m-d')); 
+        }
+        else
+        {
+            $date = $date ? substr($date, 0, 10) : date('Y-m-d');
+        }
+
+        $number = $request->get('number', '');
+
+        if (!$number)
+        {
+            $number = Order::whereYear('date', date('Y'))
+                ->whereMonth('date', date('m'))
+                ->count() + 1;
+
+            $number = Carbon::createFromDate($date)->format('d') . '-' .  str_pad($number, 3, '0', STR_PAD_LEFT);
+        }
+
+
         return [
+            'date' => $date,
+            'number' => $number,
             'client_id' => $request->get('client_id', 0),
             'priority' => $request->get('priority', 1),
             'comment' => $request->get('comment', 0),
-            'status' => $request->get('status', 'current'),
+            'status' => $request->get('status', Order::STATUS_PRODUCTION),
             'cost' => $request->get('cost', 0),
             'weight' => $request->get('weight', 0),
             'pallets' => $request->get('pallets', 0)

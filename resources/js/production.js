@@ -70,7 +70,7 @@ angular.module('tctApp').controller('ProductionController', [
 		});
 
 
-		OrdersRepository.query({'status': 'current'}, function(response) 
+		OrdersRepository.query({'status': 'productions'}, function(response) 
 		{
 			$scope.productionOrders = response;
 
@@ -90,10 +90,13 @@ angular.module('tctApp').controller('ProductionController', [
 
 
 	$scope.markColors = [
+		'#e67e22',
 		'#9b59b6',
 		'#2ecc71',
 		'#1abc9c',
-		'#3498db'
+		'#d35400',
+		'#f1c40f',
+		'#3498db',
 	];
 
 	$scope.ordersMarkColors = {};

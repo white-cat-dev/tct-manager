@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Facility;
 use App\Worker;
+use Arr;
 
 
 class FacilitiesController extends Controller
@@ -14,7 +15,7 @@ class FacilitiesController extends Controller
     {
         if ($request->wantsJson())
         {
-            $facilities = Facility::all();
+            $facilities = Facility::orderBy('status', 'desc')->orderBy('status_date')->all();
             return $facilities;
         }
 
@@ -80,8 +81,9 @@ class FacilitiesController extends Controller
         {
             $this->validate($request, $this->validationRules);
 
-            $facility->update($this->getData($request));
+            $facilityData = $this->getData($request);
 
+            $facility->update($facilityData);
 
             $categoriesIds = [];
 
@@ -89,13 +91,15 @@ class FacilitiesController extends Controller
             {
                 if ($categoryData) 
                 {
-                    $category = $facility->categories->find($categoryId);
+                    $id = !empty($categoryData['id']) ? $categoryData['id'] : $categoryId;
+
+                    $category = $facility->categories->find($id);
                     if (!$category) 
                     {
-                        $facility->categories()->attach($categoryId);
+                        $facility->categories()->attach($id);
                     }
 
-                    $categoriesIds[] = $categoryId;
+                    $categoriesIds[] = $id;
                 }
             }
 
@@ -144,16 +148,36 @@ class FacilitiesController extends Controller
 
     protected $validationRules = [
         'name' => 'required',
-        'performance' => 'required'
+        'performance' => 'required',
+        'status' => 'required'
     ];
 
 
     protected function getData(Request $request)
     {
-        return [
+        $data = [
             'name' => $request->get('name', ''),
             'performance' => $request->get('performance', 0),
-            'status' => $request->get('status', 'active')
+            'status' => $request->get('status', Facility::STATUS_ACTIVE),
+            'status_date' => $request->get('status_date_raw', -1)
         ];
+
+
+        if ($data['status_date'] == -1)
+        {
+            $data['status_date'] = $request->get('status_date', null); 
+        }
+        else
+        {
+            $data['status_date'] = $data['status_date'] ? substr($data['status_date'], 0, 10) : null;
+        }
+
+        if (($data['status_date']) && ($data['status_date'] <= date('Y-m-d')))
+        {
+            $data['status_date'] = null;
+            $data['status'] = ($data['status'] + 1) % 2;
+        }
+
+        return $data;
     }
 }

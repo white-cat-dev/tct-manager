@@ -11678,6 +11678,234 @@ body > .ui-select-bootstrap.open {
   border-radius: 4px;
 }
 
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  box-sizing: border-box;
+}
+
+.date-picker-date-time {
+  position: absolute;
+}
+
+[date-picker-wrapper] {
+  position: relative !important;
+  z-index: 10;
+  display: block;
+}
+
+[date-time-append] [date-picker] {
+  position: relative;
+  margin-right: -1000px;
+  margin-bottom: -1000px;
+}
+
+[date-range] [date-picker] .after.before {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #499dcd;
+  background-image: linear-gradient(to bottom, #5bc0de, #2f6ab4);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff5bc0de", endColorstr="#ff2f6ab4", GradientType=0);
+  border-color: #2f6ab4 #2f6ab4 #1f4677;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #2f6ab4;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+
+[date-range] [date-picker] .after.before:hover,
+[date-range] [date-picker] .after.before:active,
+[date-range] [date-picker] .after.before.active,
+[date-range] [date-picker] .after.before.disabled,
+[date-range] [date-picker] .after.before[disabled] {
+  color: #ffffff;
+  background-color: #2f6ab4;
+  *background-color: #2a5ea0;
+}
+
+[date-range] [date-picker] .after.before:active,
+[date-range] [date-picker] .after.before.active {
+  background-color: #24528c \9;
+}
+
+[date-picker].hidden {
+  display: none;
+}
+
+[date-picker] {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  border-radius: 4px;
+  background-color: #fff;
+  /* GENERAL */
+  padding: 4px;
+  /* SPECIFIC */
+}
+
+[date-picker] table {
+  margin: 0;
+}
+
+[date-picker] td,
+[date-picker] th {
+  padding: 4px 5px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: none;
+}
+
+[date-picker] .switch {
+  width: 145px;
+}
+
+[date-picker] span {
+  display: block;
+  width: 23%;
+  height: 26px;
+  line-height: 25px;
+  float: left;
+  margin: 1%;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+[date-picker] span:hover {
+  background: #eeeeee;
+}
+
+[date-picker] span.disabled,
+[date-picker] span.disabled:hover {
+  background: none;
+  color: #999999;
+  cursor: default;
+}
+
+[date-picker] .active,
+[date-picker] .now {
+  color: #ffffff;
+  background-color: #006dcc;
+  background-image: linear-gradient(to bottom, #0088cc, #0044cc);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff0088cc", endColorstr="#ff0044cc", GradientType=0);
+  border-color: #0044cc #0044cc #002a80;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #0044cc;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+[date-picker] .active:hover,
+[date-picker] .now:hover,
+[date-picker] .active:active,
+[date-picker] .now:active,
+[date-picker] .active.active,
+[date-picker] .now.active,
+[date-picker] .active.disabled,
+[date-picker] .now.disabled,
+[date-picker] .active[disabled],
+[date-picker] .now[disabled] {
+  color: #ffffff;
+  background-color: #0044cc;
+  *background-color: #003bb3;
+}
+
+[date-picker] .active:active,
+[date-picker] .now:active,
+[date-picker] .active.active,
+[date-picker] .now.active {
+  background-color: #003399 \9;
+}
+
+[date-picker] .now {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #ee735b;
+  background-image: linear-gradient(to bottom, #ee5f5b, #ee905b);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffee5f5b", endColorstr="#ffee905b", GradientType=0);
+  border-color: #ee905b #ee905b #e56218;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ee905b;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+
+[date-picker] .now:hover,
+[date-picker] .now:active,
+[date-picker] .now.active,
+[date-picker] .now.disabled,
+[date-picker] .now[disabled] {
+  color: #ffffff;
+  background-color: #ee905b;
+  *background-color: #ec8044;
+}
+
+[date-picker] .now:active,
+[date-picker] .now.active {
+  background-color: #e9712d \9;
+}
+
+[date-picker] .disabled {
+  background: none;
+  color: #999999 !important;
+  cursor: default;
+}
+
+[date-picker] [ng-switch-when=year] span,
+[date-picker] [ng-switch-when=month] span,
+[date-picker] [ng-switch-when=minutes] span {
+  height: 54px;
+  line-height: 54px;
+}
+
+[date-picker] [ng-switch-when=date] td {
+  padding: 0;
+}
+
+[date-picker] [ng-switch-when=date] span {
+  width: 100%;
+  height: 26px;
+  line-height: 26px;
+}
+
+[date-picker] th:hover,
+[date-picker] [ng-switch-when=date] td span:hover {
+  background: #eeeeee;
+  cursor: pointer;
+}
+
 * {
   border-radius: 0px !important;
 }
@@ -11708,6 +11936,10 @@ i.far {
 .color-picker-wrapper .input-group .input-group-addon {
   height: 38px;
   border-radius: 5px;
+}
+
+.color-picker-wrapper .input-group .input-group-addon:first-child {
+  border-right-width: 1px;
 }
 
 .color-picker-wrapper .input-group .color-picker-input {
@@ -11852,8 +12084,7 @@ footer {
   display: flex;
 }
 
-.top-buttons-block .right-buttons > .btn,
-.top-buttons-block .right-buttons > div {
+.top-buttons-block .right-buttons > .btn {
   margin-left: 10px;
 }
 
@@ -11998,6 +12229,8 @@ footer {
 
 .modal .modal-header {
   border-bottom: solid 1px #dadada;
+  font-weight: 500;
+  font-size: 18px;
 }
 
 .modal .modal-footer {
@@ -12086,6 +12319,20 @@ footer {
   font-size: 60px;
   color: #cdcdcd;
   margin-bottom: 5x;
+}
+
+.buttons-block .dropdown-menu {
+  padding: 5px 0px;
+}
+
+.btn-group .btn {
+  border-color: #FFFFFF;
+  min-width: 50px;
+}
+
+.btn-group .btn-sm,
+.btn-group .btn-group-sm > .btn {
+  min-width: 40px;
 }
 
 .categories-block {
@@ -12198,37 +12445,44 @@ footer {
 
 .production-page .production-block .products-block {
   flex: none;
-  width: 150px;
   z-index: 1;
   box-shadow: 2px 0px 6px #e4e4e4;
   border-right: solid 1px #dadada;
   background: #f3f3f3;
 }
 
-.production-page .production-block .products-block .product-block {
+.production-page .production-block .products-block .table th {
+  height: 41px;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px 8px;
+  vertical-align: middle;
+  border-left: solid 1px #dadada;
+}
+
+.production-page .production-block .products-block .table tr th:first-child {
+  border-left: none;
+}
+
+.production-page .production-block .products-block .table td {
   border-bottom: solid 1px #dadada;
-  padding: 10px;
-  height: 78px;
+  padding: 5px 8px;
+  height: 50px;
   white-space: nowrap;
   text-overflow: ellipsis;
   background: #f3f3f3;
-}
-
-.production-page .production-block .products-block .product-block:first-child {
-  height: 42px;
-}
-
-.production-page .production-block .products-block .product-block .product-name {
-  font-size: 14px;
-}
-
-.production-page .production-block .products-block .product-block .product-size {
   font-size: 12px;
+  border-left: solid 1px #dadada;
+  text-align: center;
 }
 
-.production-page .production-block .products-block .product-block .product-color {
+.production-page .production-block .products-block .table td .product-color {
   color: #9a9a9a;
-  font-size: 12px;
+}
+
+.production-page .production-block .products-block .table tr td:first-child {
+  text-align: left;
+  border-left: none;
 }
 
 .production-page .production-block .productions-block {
@@ -12238,16 +12492,8 @@ footer {
 
 .production-page .production-block .productions-block .table {
   margin: 0px -1px;
-  width: 2000px;
+  width: 1500px;
   font-size: 14px;
-}
-
-.production-page .production-block .productions-block .table th {
-  border-left: solid 1px #dadada;
-}
-
-.production-page .production-block .productions-block .table td {
-  border-top: solid 1px #dadada;
 }
 
 .production-page .production-block .productions-block .table th,
@@ -12257,11 +12503,11 @@ footer {
   vertical-align: middle;
   text-align: center;
   cursor: pointer;
-  transition: 0.3s;
 }
 
 .production-page .production-block .productions-block .table th {
   background: #f3f3f3;
+  border-left: solid 1px #dadada;
 }
 
 .production-page .production-block .productions-block .table th.current {
@@ -12273,10 +12519,13 @@ footer {
 }
 
 .production-page .production-block .productions-block .table td {
-  height: 78px;
+  height: 50px;
   width: 3%;
   padding: 0px;
   background: #FFFFFF;
+  text-align: center;
+  vertical-align: middle;
+  border-top: solid 1px #dadada;
 }
 
 .production-page .production-block .productions-block .table td.current {
@@ -12296,22 +12545,46 @@ footer {
   background: #fbfbfb;
 }
 
-.production-page .production-block .productions-block .table td .production-planned {
-  padding: 5px 0px;
-  color: #dadada;
-  border-top: solid 1px #ebebeb;
-}
-
-.production-page .production-block .productions-block .table td .production-performed {
-  padding: 5px 0px;
-}
-
 .production-page .production-block .productions-block .table td .production {
-  width: 100%;
-  height: 100%;
-  padding: 5px;
-  border: solid 1px transparent;
+  width: 50px;
+  height: 49px;
+  padding: 12px 0px;
+  border: solid 2px #FFFFFF;
   border-radius: 2px;
+  font-size: 14px;
+  position: relative;
+  color: #000000;
+}
+
+.production-page .production-block .productions-block .table td .production.marked {
+  color: #FFFFFF;
+}
+
+.production-page .production-block .productions-block .table td .production.marked .production-planned {
+  color: #FFFFFF;
+}
+
+.production-page .production-block .productions-block .table td .production.marked .production-performed:before {
+  border-color: #FFFFFF;
+}
+
+.production-page .production-block .productions-block .table td .production .production-planned {
+  color: #b3b3b3;
+}
+
+.production-page .production-block .productions-block .table td .production .production-performed {
+  font-weight: 500;
+}
+
+.production-page .production-block .productions-block .table td .production .production-performed:before {
+  content: "";
+  width: 40px;
+  height: 39px;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  border: solid 1px #cdcdcd;
+  position: absolute;
   transition: 0.3s;
 }
 
@@ -12384,6 +12657,7 @@ footer {
 }
 
 .production-page .production-orders .order-block {
+  font-size: 15px;
   padding-bottom: 5px;
   margin-bottom: 10px;
   border-bottom: solid 1px #dadada;
@@ -12394,9 +12668,21 @@ footer {
   border-bottom: none;
 }
 
+.production-page .production-orders .order-block .order-date {
+  font-size: 12px;
+  color: #9a9a9a;
+}
+
 .production-page .production-orders .order-block .custom-control-input:checked ~ .custom-control-label::before {
   background-color: inherit;
   border-color: inherit;
+}
+
+.production-page .production-orders .order-block .custom-control-label::before,
+.production-page .production-orders .order-block .custom-control-label::after {
+  top: 2px;
+  width: 18px;
+  height: 18px;
 }
 
 .production-page .production-orders .order-products {
@@ -12405,13 +12691,14 @@ footer {
 }
 
 .production-page .production-orders .order-products td {
-  padding: 5px;
+  padding: 3px;
   border: none;
 }
 
 .production-page .production-orders .order-products tr td:last-child {
   padding-right: 0px;
   border-right: none;
+  text-align: right;
 }
 
 .production-page .production-orders .order-products tr td:first-child {
@@ -12579,7 +12866,7 @@ footer {
 
 .orders-page .order-block .order-icon {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .orders-page .order-block .order-icon img {
@@ -12597,6 +12884,13 @@ footer {
   -o-object-position: bottom;
      object-position: bottom;
   transition: height 0.3s;
+}
+
+.orders-page .order-block .order-status {
+  text-align: center;
+  color: #9a9a9a;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
 .orders-page .order-block .order-params {
@@ -12639,6 +12933,10 @@ footer {
   min-width: 30%;
 }
 
+.orders-page .order-block .buttons-block {
+  margin-top: 15px;
+}
+
 .orders-page .products-table tr td {
   width: 14%;
 }
@@ -12656,6 +12954,152 @@ footer {
   position: relative;
 }
 
+.workers-page .worker-block {
+  border: solid 1px #dadada;
+  box-shadow: 1px 1px 5px #e6e6e6;
+  border-radius: 5px;
+  padding: 15px;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.workers-page .worker-block .btn-group {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.workers-page .worker-block .worker-title {
+  font-weight: 500;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.workers-page .worker-block .worker-param {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.workers-page .worker-block .worker-param .param-name {
+  color: #343434;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.workers-page .worker-block .buttons-block {
+  margin-top: 15px;
+}
+
+.workers-page .worker-icon {
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.workers-page .worker-icon img {
+  width: 100%;
+}
+
+.workers-page .worker-icon img:nth-child(2) {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: bottom;
+     object-position: bottom;
+  transition: height 0.3s;
+}
+
+.workers-page .worker-status {
+  text-align: center;
+  color: #9a9a9a;
+  font-size: 14px;
+  padding-right: 10px;
+}
+
+.workers-page .worker-modal .modal-dialog {
+  max-width: 380px;
+}
+
+.workers-page .nav-tabs {
+  margin-top: 15px;
+}
+
+.workers-page .nav-tabs .nav-link {
+  padding: 5px 20px;
+  font-size: 16px;
+  background: #f3f3f3;
+}
+
+.workers-page .nav-tabs .nav-link.active {
+  background: #FFFFFF;
+}
+
+.workers-page div[date-picker-wrapper] {
+  display: none;
+}
+
+.workers-page .datepicker-block {
+  padding: 10px 30px;
+  max-width: 350px;
+  border: solid 1px #dadada;
+  border-top: none;
+  position: relative;
+}
+
+.workers-page .datepicker-block table {
+  width: 100%;
+}
+
+.workers-page .datepicker-block table th {
+  font-weight: 500;
+}
+
+.workers-page .datepicker-block table th span.now,
+.workers-page .datepicker-block table td span.now {
+  background: #f3f3f3;
+  color: #212529;
+  text-shadow: none;
+}
+
+.workers-page .datepicker-block table th span.now:hover,
+.workers-page .datepicker-block table td span.now:hover {
+  background: #f3f3f3;
+  color: #212529;
+}
+
+.workers-page .datepicker-block table th span.active.active,
+.workers-page .datepicker-block table td span.active.active {
+  background: #276090;
+  color: #FFFFFF;
+}
+
+.workers-page .datepicker-block table th span.active.active:hover,
+.workers-page .datepicker-block table td span.active.active:hover {
+  background: #276090;
+  color: #FFFFFF;
+}
+
+.workers-page .datepicker-block table th span:hover,
+.workers-page .datepicker-block table td span:hover {
+  background: #f3f3f3;
+}
+
+.workers-page .date-group {
+  display: flex;
+  align-items: center;
+}
+
+.workers-page .date-group .date-label {
+  margin-left: 25px;
+  margin-right: 10px;
+}
+
+.workers-page .date-group .date-label:first-child {
+  margin-left: 0px;
+}
+
 .employments-page {
   position: relative;
 }
@@ -12668,6 +13112,7 @@ footer {
   overflow: hidden;
   min-height: 200px;
   margin-bottom: 15px;
+  min-height: 100%;
 }
 
 .employments-page .employments-block .workers {
@@ -12712,25 +13157,16 @@ footer {
   border-bottom: solid 1px #dadada;
 }
 
-.employments-page .employments-block .employments .table th {
-  border-left: solid 1px #dadada;
-}
-
-.employments-page .employments-block .employments .table td {
-  border-top: solid 1px #dadada;
-  cursor: pointer;
-}
-
 .employments-page .employments-block .employments .table th,
 .employments-page .employments-block .employments .table td {
   padding: 10px;
   border-left: solid 1px #dadada;
   vertical-align: middle;
   text-align: center;
-  transition: 0.3s;
 }
 
 .employments-page .employments-block .employments .table th {
+  border-left: solid 1px #dadada;
   background: #f3f3f3;
 }
 
@@ -12739,27 +13175,39 @@ footer {
 }
 
 .employments-page .employments-block .employments .table td {
+  border-top: solid 1px #dadada;
+  font-weight: 500;
+  cursor: pointer;
   height: 42px;
   min-width: 42px;
   padding: 0px;
   background: #FFFFFF;
+  position: relative;
 }
 
-.employments-page .employments-block .employments .table td:hover,
-.employments-page .employments-block .employments .table td.hover {
-  background: #f3f3f3;
+.employments-page .employments-block .employments .table td > div {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 15px 15px;
+  border-color: transparent;
 }
 
 .employments-page .employment-statuses {
   border: solid 1px #dadada;
-  padding: 15px 15px 5px 15px;
+  padding: 15px;
   border-radius: 5px;
   box-shadow: 1px 1px 5px #e6e6e6;
+  font-size: 14px;
 }
 
 .employments-page .employment-statuses .statuses-title {
   font-weight: 500;
   line-height: 31px;
+  font-size: 16px;
   margin-bottom: 10px;
   position: relative;
 }
@@ -12770,9 +13218,48 @@ footer {
   right: 0;
 }
 
+.employments-page .employment-statuses .statuses-label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+
+.employments-page .employment-statuses .name-statuses {
+  border-top: solid 1px #dadada;
+  display: flex;
+}
+
+.employments-page .employment-statuses .name-statuses > div {
+  flex-grow: 1;
+  text-align: center;
+  padding: 5px;
+  border-right: solid 1px #dadada;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.employments-page .employment-statuses .name-statuses > div:last-child {
+  border-right: none;
+}
+
+.employments-page .employment-statuses .name-statuses > div.active {
+  background: #f6f6f6;
+}
+
 .employments-page .employment-statuses .table {
   margin-bottom: 0px;
-  margin-top: 15px;
+}
+
+.employments-page .employment-statuses .table tr {
+  cursor: pointer;
+}
+
+.employments-page .employment-statuses .table tr.active {
+  background: #f6f6f6;
+}
+
+.employments-page .employment-statuses .table tr:last-child td {
+  border-bottom: solid 1px #dadada;
 }
 
 .employments-page .employment-statuses .table td {
@@ -12783,7 +13270,25 @@ footer {
 
 .employments-page .employment-statuses .table td:first-child {
   font-size: 18px;
-  width: 20%;
+  width: 40px;
+  text-align: center;
+  color: #dadada;
+}
+
+.employments-page .employment-statuses .table td div {
+  width: 21px;
+  height: 21px;
+  margin: 3px;
+  background: #dadada;
+}
+
+.employments-page .employment-statuses .btn {
+  border: solid 1px #dadada;
+  margin-top: 15px;
+}
+
+.employments-page .employment-statuses .btn.active {
+  background: #f6f6f6;
 }
 
 .employments-page .no-employments {
@@ -12890,27 +13395,6 @@ footer {
   margin-bottom: 20px;
 }
 
-.facilities-page .facility-block .facility-icon {
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.facilities-page .facility-block .facility-icon img {
-  width: 100%;
-}
-
-.facilities-page .facility-block .facility-icon img:last-child {
-  height: 0%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: bottom;
-     object-position: bottom;
-  transition: height 0.3s;
-}
-
 .facilities-page .facility-block .facility-params {
   font-size: 14px;
 }
@@ -12939,11 +13423,114 @@ footer {
 
 .facilities-page .facility-block .buttons-block {
   margin-top: 20px;
+}
+
+.facilities-page .facility-icon {
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.facilities-page .facility-icon img {
+  width: 100%;
+}
+
+.facilities-page .facility-icon img:nth-child(2) {
+  height: 0%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: bottom;
+     object-position: bottom;
+  transition: height 0.3s;
+}
+
+.facilities-page .facility-status {
   text-align: center;
+  color: #9a9a9a;
+  font-size: 14px;
+  margin-bottom: 15px;
 }
 
 .facilities-page .add-worker-block .divider {
   margin: 5px 12px;
+}
+
+.facilities-page .facility-modal .modal-dialog {
+  max-width: 380px;
+}
+
+.facilities-page .datepicker-block {
+  padding: 10px 30px;
+  max-width: 350px;
+  margin-top: 15px;
+  border: solid 1px #dadada;
+  position: relative;
+}
+
+.facilities-page .datepicker-block.disabled {
+  opacity: 0.6;
+}
+
+.facilities-page .datepicker-block .disabled-block {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background: #f3f3f3;
+  opacity: 0.1;
+}
+
+.facilities-page .datepicker-block table {
+  width: 100%;
+}
+
+.facilities-page .datepicker-block table th {
+  font-weight: 500;
+}
+
+.facilities-page .datepicker-block table th span.now,
+.facilities-page .datepicker-block table td span.now {
+  background: #f3f3f3;
+  color: #212529;
+  text-shadow: none;
+}
+
+.facilities-page .datepicker-block table th span.now:hover,
+.facilities-page .datepicker-block table td span.now:hover {
+  background: #f3f3f3;
+  color: #212529;
+}
+
+.facilities-page .datepicker-block table th span.active.active,
+.facilities-page .datepicker-block table td span.active.active {
+  background: #276090;
+  color: #FFFFFF;
+}
+
+.facilities-page .datepicker-block table th span.active.active:hover,
+.facilities-page .datepicker-block table td span.active.active:hover {
+  background: #276090;
+  color: #FFFFFF;
+}
+
+.facilities-page .datepicker-block table th span:hover,
+.facilities-page .datepicker-block table td span:hover {
+  background: #f3f3f3;
+}
+
+.facilities-page .facility-edit-status-block .custom-control > div {
+  position: relative;
+  display: inline-block;
+}
+
+.facilities-page .facility-edit-status-block .btn {
+  position: absolute;
+  top: -3px;
+  right: -140px;
+  white-space: nowrap;
 }
 
 .clients-page {

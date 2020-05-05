@@ -3,22 +3,31 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use Arr;
 
 
 class Facility extends Model
 {
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+
+
     protected $fillable = [
-    	'name',
+        'name',
+        'performance',
         'status',
-        'performance'
+        'status_date',
+        'icon_color'
     ];
 
     protected $appends = [
-        'url'
+        'url',
+        'status_text',
+        'current_performance'
     ];
 
     protected $with = [
-        'workers',
         'categories'
     ];
 
@@ -27,8 +36,8 @@ class Facility extends Model
     ];
 
     protected static $statuses = [
-        'active' => 'Работает',
-        'paused' => 'Приостановлен'
+        0 => 'Не работает',
+        1 => 'Работает',
     ];
 
 
@@ -42,8 +51,73 @@ class Facility extends Model
     	return $this->belongsToMany(Category::class, 'facilities_categories');
     }
 
+
     public function getUrlAttribute()
     {
         return route('facility-show', ['facility' => $this->id]);
+    }
+
+
+    public function getStatusTextAttribute()
+    {
+        $status = Arr::get(static::$statuses, $this->status, '');
+        if (!empty($this->status_date))
+        {
+            $status .= ' до ' . Carbon::createFromDate($this->status_date)->format('d.m.Y');
+        }
+        return $status;
+    }
+
+
+    public function getCurrentPerformanceAttribute()
+    {
+        return $this->getPerformance(date('Y-m-d'));
+    }
+
+
+    public function getPerformance($date)
+    {
+        switch ($this->status) 
+        {
+            case static::STATUS_ACTIVE:
+                if ($this->status_date && $date >= $this->status_date)
+                {
+                    if ($this->status_date_next && $date < $this->status_date)
+                    {
+                        return 0;
+                    }
+                    else 
+                    {
+                        return $this->performance;
+                    }
+                }
+                else
+                {
+                    return $this->performance;
+                }
+                break;
+
+            case static::STATUS_INACTIVE:
+                if ($this->status_date && $date >= $this->status_date)
+                {
+                    if ($this->status_date_next && $date < $this->status_date)
+                    {
+                        return $this->performance;
+                    }
+                    else 
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+                break;
+
+            default:
+                return 0;
+                break;
+        }
     }
 }

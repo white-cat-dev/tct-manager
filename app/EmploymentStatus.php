@@ -11,7 +11,9 @@ class EmploymentStatus extends Model
     	'icon',
         'icon_color',
         'name',
-        'salary'
+        'salary_production',
+        'salary_fixed',
+        'salary_team'
     ];
 
     protected $casts = [

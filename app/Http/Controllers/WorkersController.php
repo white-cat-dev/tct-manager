@@ -15,7 +15,7 @@ class WorkersController extends Controller
     {
         if ($request->wantsJson())
         {
-            $workers = Worker::with('facility')->get();
+            $workers = Worker::orderBy('status', 'desc')->orderBy('status_date')->get();
             return $workers;
         }
 
@@ -27,7 +27,6 @@ class WorkersController extends Controller
     {
         if ($request->wantsJson())
         {
-            $worker->facility = $worker->facility;
             return $worker;
         }
 
@@ -84,13 +83,41 @@ class WorkersController extends Controller
 
     protected function getData(Request $request)
     {
-        return [
+        $data = [
             'name' => $request->get('name', ''),
             'surname' => $request->get('surname', ''),
             'full_name' => $request->get('full_name', ''),
             'patronymic' => $request->get('patronymic', ''),
-            'status' => $request->get('status', 'active'),
-            'facility_id' => $request->get('facility_id', 0)
+            'status' => $request->get('status', Worker::STATUS_ACTIVE),
+            'status_date' => $request->get('status_date_raw', -1),
+            'status_date_next' => $request->get('status_date_next_raw', -1)
         ];
+
+        if ($data['status_date'] == -1)
+        {
+            $data['status_date'] = $request->get('status_date', null); 
+        }
+        else
+        {
+            $data['status_date'] = $data['status_date'] ? substr($data['status_date'], 0, 10) : null;
+        }
+
+        if ($data['status_date_next'] == -1)
+        {
+            $data['status_date_next'] = $request->get('status_date_next', null); 
+        }
+        else
+        {
+            $data['status_date_next'] = $data['status_date_next'] ? substr($data['status_date_next'], 0, 10) : null;
+        }
+
+        if (($data['status_date']) && ($data['status_date'] <= date('Y-m-d')))
+        {
+            $data['status_date'] = $data['status_date_next'];
+            $data['status_date_next'] = null;
+            $data['status'] = ($data['status'] + 1) % 2;
+        }
+
+        return $data;
     }
 }

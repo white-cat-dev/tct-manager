@@ -2,6 +2,8 @@ angular.module('tctApp').controller('FacilitiesController', [
 	'$scope',
 	'$routeParams',
 	'$location',
+	'$filter',
+	'$timeout',
 	'FacilitiesRepository',
 	'CategoriesRepository',
 	'WorkersRepository',
@@ -9,6 +11,8 @@ angular.module('tctApp').controller('FacilitiesController', [
 		$scope, 
 		$routeParams,
 		$location,
+		$filter,
+		$timeout,
 		FacilitiesRepository,
 		CategoriesRepository,
 		WorkersRepository
@@ -29,12 +33,17 @@ angular.module('tctApp').controller('FacilitiesController', [
 	$scope.workers = [];
 
 
-
 	$scope.init = function()
 	{
 		FacilitiesRepository.query(function(response) 
 		{
+			console.log(response);
 			$scope.facilities = response;
+			for (var facility of $scope.facilities) 
+			{
+				facility.status_date_raw = facility.status_date ? new Date(Date.parse(facility.status_date.replace(/-/, '/'))) : null;
+			}
+			console.log($scope.facilities);
 		});
 	}
 
@@ -44,7 +53,12 @@ angular.module('tctApp').controller('FacilitiesController', [
 		$scope.baseUrl = 'facilities';
 
 		$scope.id = $routeParams['id'];
-		$scope.loadFacility()
+
+		FacilitiesRepository.get({id: $scope.id}, function(response) 
+		{
+			$scope.facility = response;
+			$scope.facility.status_date_raw = $scope.facility.status_date ? new Date(Date.parse($scope.facility.status_date.replace(/-/, '/'))) : null;
+		});
 	}
 
 
@@ -56,7 +70,18 @@ angular.module('tctApp').controller('FacilitiesController', [
 
 		if ($scope.id)
 		{
-			$scope.loadFacility()
+			FacilitiesRepository.get({id: $scope.id}, function(response) 
+			{
+				$scope.facility = response;
+				$scope.facility.status_date_raw = $scope.facility.status_date ? new Date(Date.parse($scope.facility.status_date.replace(/-/, '/'))) : null;
+
+				var categories = $scope.facility.categories;
+				$scope.facility.categories = {};
+				for (var category of categories)
+				{
+					$scope.facility.categories[category.id] = true;
+				}
+			});
 		}
 
 		CategoriesRepository.query(function(response) 
@@ -75,22 +100,6 @@ angular.module('tctApp').controller('FacilitiesController', [
 				{
 					$scope.workers.splice(i, 1);
 				}
-			}
-		});
-	}
-
-
-	$scope.loadFacility = function()
-	{
-		FacilitiesRepository.get({id: $scope.id}, function(response) 
-		{
-			$scope.facility = response;
-
-			var categories = $scope.facility.categories;
-			$scope.facility.categories = {};
-			for (var category of categories)
-			{
-				$scope.facility.categories[category.id] = true;
 			}
 		});
 	}
@@ -161,5 +170,82 @@ angular.module('tctApp').controller('FacilitiesController', [
 		var worker = $scope.facility.workers[index];
 		$scope.facility.workers.splice(index, 1);
 		$scope.workers.push(worker);
+	}
+
+
+
+	$scope.isStatusModalShown = false;
+	$scope.modalStatusErrors = {};
+	$scope.modalFacility = {};
+
+
+	$scope.showStatusModal = function(facility, status)
+	{
+		$scope.facility = facility || $scope.facility;
+		$scope.modalFacility = angular.copy($scope.facility);
+		$scope.modalFacility.status = status;
+		
+		if ($scope.facility.status == $scope.modalFacility.status)
+		{
+			$scope.saveStatus();
+			return;
+		}
+
+		$scope.isStatusModalShown = true;
+	}
+
+
+	$scope.hideStatusModal = function()
+	{
+		$scope.isStatusModalShown = false;
+
+		$scope.modalStatusErrors = {};
+	}
+
+
+
+	// $scope.updateStatusNow = function()
+	// {
+	// 	$scope.facility.status = ($scope.facility.status + 2) % 4;
+	// 	$scope.facility.status_date_raw = new Date();
+	// }
+
+
+	$scope.saveStatus = function()
+	{
+		if ($scope.facility.status == $scope.modalFacility.status)
+		{
+			$scope.modalFacility.status_date_raw = null;
+		}
+		else if ($scope.modalFacility.status_date_raw)
+		{
+			$scope.modalFacility.status = ($scope.modalFacility.status + 1) % 2;
+		}
+
+		FacilitiesRepository.save({id: $scope.modalFacility.id}, $scope.modalFacility, function(response) 
+		{
+			$scope.modalStatusErrors = {};
+			$scope.successTopAlert = 'Изменения успешно сохранены!';
+			$scope.showTopAlert = true;
+
+			$timeout(function() {
+				$scope.showTopAlert = false;
+			}, 2000);
+
+			if (!$scope.baseUrl)
+			{
+				$scope.init();
+			}
+			else
+			{
+				$scope.facility = $scope.modalFacility;
+			}
+
+			$scope.hideStatusModal();
+		}, 
+		function(response) 
+		{
+            $scope.modalStatusErrors = response.data.errors;
+        });
 	}
 }]);

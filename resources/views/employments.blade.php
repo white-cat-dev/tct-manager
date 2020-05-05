@@ -6,11 +6,11 @@
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group date-group">
-				<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentYear = currentYear - 1" ng-disabled="currentYear == years[0]">
+				<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.year = currentDate.year - 1" ng-disabled="currentDate.year == years[0]">
 				    <i class="fas fa-chevron-left"></i>
 				</button>
 
-				<ui-select theme="bootstrap" ng-model="currentYear">
+				<ui-select theme="bootstrap" ng-model="currentDate.year">
 		            <ui-select-match placeholder="Год">
 			            <span ng-bind-html="$select.selected"></span>
 			        </ui-select-match>
@@ -19,17 +19,17 @@
 		            </ui-select-choices>
 				</ui-select>
 
-				<button class="btn btn-primary input-group-append" type="button" ng-click="currentYear = currentYear + 1" ng-disabled="currentYear == years[years.length - 1]">
+				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.year = currentDate.year + 1" ng-disabled="currentDate.year == years[years.length - 1]">
 				    <i class="fas fa-chevron-right"></i>
 				</button>
 			</div>
 
 			<div class="input-group date-group">
-			    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentMonth = currentMonth - 1" ng-disabled="currentMonth == monthes[0].id">
+			    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.month = currentDate.month - 1" ng-disabled="currentDate.month == monthes[0].id">
 				    <i class="fas fa-chevron-left"></i>
 				</button>
 
-				<ui-select theme="bootstrap" ng-model="currentMonth">
+				<ui-select theme="bootstrap" ng-model="currentDate.month">
 		            <ui-select-match placeholder="Месяц">
 			            <span ng-bind-html="$select.selected.name"></span>
 			        </ui-select-match>
@@ -38,7 +38,7 @@
 		            </ui-select-choices>
 				</ui-select>
 
-				<button class="btn btn-primary input-group-append" type="button" ng-click="currentMonth = currentMonth + 1" ng-disabled="currentMonth == monthes[monthes.length - 1].id">
+				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.month = currentDate.month + 1" ng-disabled="currentDate.month == monthes[monthes.length - 1].id">
 				    <i class="fas fa-chevron-right"></i>
 				</button>
 			</div>
@@ -72,9 +72,10 @@
 						</tr>
 					
 						<tr ng-repeat="worker in workers">
-							<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(worker, $index+1)">
-								<span ng-style="{'color': worker.employments[$index+1] ? statuses[worker.employments[$index+1].status_id].icon_color : ''}" ng-bind-html="worker.employments[$index+1] ? statuses[worker.employments[$index+1].status_id].icon : ''">
+							<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(worker, $index+1)" ng-style="{'color': worker.employments[$index+1] ? statuses[worker.employments[$index+1].status_id].icon_color : ''}">
+								<span ng-bind-html="worker.employments[$index+1] ? (statuses[worker.employments[$index+1].status_id].icon != 'name' ? statuses[worker.employments[$index+1].status_id].icon : statuses[worker.employments[$index+1].status_id].name) : ''">
 								</span>
+								<div ng-style="{'border-bottom-color': worker.employments[$index+1] ? facilities[worker.employments[$index+1].facility_id].icon_color : ''}"></div>
 							</td>
 						</tr>
 					</table>
@@ -101,8 +102,18 @@
 					@endif
 				</div>
 
+				<div class="statuses-label">
+					Выберите статус
+				</div>
+
+				<div class="name-statuses">
+					<div ng-repeat="status in statuses" ng-if="status.icon == 'name'" ng-class="{'active': currentEmploymentStatus == status.id}" ng-click="chooseCurrentEmploymentStatus(status.id)" >
+						<span ng-style="{'color': status.icon_color}">@{{ status.name }}</span>
+					</div>
+				</div>
+
 				<table class="table" ng-if="Object.keys(statuses).length > 0">
-					<tr ng-repeat="status in statuses">
+					<tr ng-repeat="status in statuses" ng-if="status.icon != 'name'" ng-class="{'active': currentEmploymentStatus == status.id}" ng-click="chooseCurrentEmploymentStatus(status.id)">
 						<td>
 							<span ng-bind-html="status.icon" ng-style="{'color': status.icon_color}"></span>
 						</td>
@@ -110,7 +121,34 @@
 							@{{ status.name }}
 						</td>
 					</tr>
+					<tr ng-class="{'active': currentEmploymentStatus == 0}" ng-click="chooseCurrentEmploymentStatus(0)">
+						<td>
+							<div></div>
+						</td>
+						<td>
+							Выходной
+						</td>
+					</tr>
 				</table>
+
+				<div class="statuses-label">
+					Выберите цех
+				</div>
+
+				<table class="table" ng-if="Object.keys(facilities).length > 0">
+					<tr ng-repeat="facility in facilities" ng-class="{'active': currentFacility == facility.id}" ng-click="chooseCurrentFacility(facility.id)">
+						<td>
+							<div ng-style="{'background': facility.icon_color}"></div>
+						</td>
+						<td>
+							@{{ facility.name }}
+						</td>
+					</tr>
+				</table>
+
+				<button type="button" class="btn btn-sm" ng-click="chooseCleanCurrent()" ng-class="{'active': cleanCurrent}">
+					<i class="fas fa-eraser"></i> Очистить
+				</button>
 			</div>
 		</div>
 	</div>
@@ -118,11 +156,11 @@
 	<div class="salaries-block">
 		<div class="block-title">
 			Данные о зарплате за 
-			<span ng-repeat="month in monthes" ng-if="currentMonth == month.id">
+			<span ng-repeat="month in monthes" ng-if="currentDate.month == month.id">
 				@{{ month.name | lowercase }}
 			</span> 
 			<span>
-				@{{ currentYear }} года
+				@{{ currentDate.year }} года
 			</span>
 		</div>
 			

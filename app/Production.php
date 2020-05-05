@@ -12,6 +12,7 @@ class Production extends Model
     	'date',
     	'product_id',
     	'order_id',
+        'facility_id',
     	'planned',
     	'performed',
         'batches'
@@ -40,7 +41,14 @@ class Production extends Model
 
     public function getDayAttribute()
     {
-        return Carbon::createFromDate($this->date)->day;
+        if ($this->date)
+        {
+            return Carbon::createFromDate($this->date)->day;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public function getFormattedDateAttribute()

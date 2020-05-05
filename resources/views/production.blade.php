@@ -55,18 +55,40 @@
 		<div class="col-9">
 			<div class="production-block" ng-if="productionProducts.length > 0">
 				<div class="products-block">
-					<div class="product-block"></div>
-					<div class="product-block" ng-repeat="product in productionProducts">
-						<div class="product-name">
-							@{{ product.product_group.name }}
-						</div>
-						<div class="product-size">
-							@{{ product.product_group.size }} мм
-						</div>
-						<div class="product-color" ng-if="product.color_text">
-							@{{ product.color_text }} цвет
-						</div>
-					</div>
+					<table class="table">
+						<tr>
+							<th>Название</th>
+							<th>Склад</th>
+							<th>План</th>
+						</tr>
+						<tr ng-repeat="product in productionProducts">
+							<td>
+								<div class="product-name">
+									@{{ product.product_group.name }}
+									@{{ product.product_group.size }}
+								</div>
+								<div class="product-color" ng-if="product.color_text">
+									@{{ product.color_text }} цвет
+								</div>
+							</td>
+							<td>
+								@{{ product.in_stock }}
+								<span ng-switch on="product.category.units">
+									<span ng-switch-when="area">м<sup>2</sup></span>
+									<span ng-switch-when="volume">м<sup>3</sup></span>
+									<span ng-switch-when="unit">шт.</span>
+								</span>
+							</td>
+							<td>
+								@{{ product.productions[0] ? product.productions[0].planned : 0 }}
+								<span ng-switch on="product.category.units">
+									<span ng-switch-when="area">м<sup>2</sup></span>
+									<span ng-switch-when="volume">м<sup>3</sup></span>
+									<span ng-switch-when="unit">шт.</span>
+								</span>
+							</td>
+						</tr>
+					</table>
 				</div>
 
 				<div class="productions-block">
@@ -80,23 +102,14 @@
 								ng-class="{'hover': $index + 1 == $parent.hoverDay, {{-- 'current': $index + 1 == currentDay, --}} 'done': product.productions[$index+1].status == 'done', 'failed': product.productions[$index+1].status == 'failed'}" 
 								ng-click="showModal($index + 1, product.id)">
 
-								<div class="production" ng-style="{'border-color': getOrderMarkColor(product.productions[$index+1])}">
-									<div class="production-performed" ng-if="product.productions[$index+1]">
+								<div class="production" ng-style="{'background': getOrderMarkColor(product.productions[$index+1])}"ng-class="{'marked': getOrderMarkColor(product.productions[$index+1]) != 'transparent'}">
+									<div class="production-performed" ng-if="product.productions[$index+1].performed > 0">
 										@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} 
-										<span ng-switch on="product.category.units">
-											<span ng-switch-when="area">м<sup>2</sup></span>
-											<span ng-switch-when="volume">м<sup>3</sup></span>
-											<span ng-switch-when="unit">шт.</span>
-										</span>
 									</div>
-									<div class="production-planned" ng-if="product.productions[$index+1]">
+									<div class="production-planned"  ng-if="product.productions[$index+1].performed == 0">
 										@{{ product.productions[$index+1] ? product.productions[$index+1].planned : 0 }} 
-										<span ng-switch on="product.category.units">
-											<span ng-switch-when="area">м<sup>2</sup></span>
-											<span ng-switch-when="volume">м<sup>3</sup></span>
-											<span ng-switch-when="unit">шт.</span>
-										</span>
 									</div>
+									<div ng-style="{'border-bottom-color': product.productions[$index+1] ? facilities[worker.productions[$index+1].facility_id].icon_color : ''}"></div>
 								</div>
 							</td>
 						</tr>
@@ -122,17 +135,20 @@
 					<div class="custom-control custom-checkbox">
 						<input type="checkbox" class="custom-control-input" id="checkbox@{{order.id}}" ng-click="markOrder(order.id)">
 						<label class="custom-control-label" for="checkbox@{{order.id}}" ng-style="{'background-color': ordersMarkColors[order.id]}"></label>
-						<a href="@{{ order.url }}">Заказ №@{{ order.id }}</a>
+						<a href="@{{ order.url }}">
+							Заказ №@{{ order.number }}
+						</a> 
+						<span class="order-date">@{{ order.formatted_date }}</span>
 					</div>
 
 					<table class="table order-products">
 						<tr ng-repeat="product in order.products">
 							<td>
 								@{{ product.product_group.name }}
-								(@{{ product.product_group.size }}) <br>
-								<span class="product-color" ng-if ="product.color_text">
+								@{{ product.product_group.size }}
+								<div class="product-color" ng-if ="product.color_text">
 									@{{ product.color_text }} цвет
-								</span>
+								</div>
 							</td>
 							<td>
 								@{{ product.pivot.count }} 
@@ -171,7 +187,7 @@
 				<div class="modal-body">
 					<div class="order-block" ng-repeat="order in modalProductionOrders">
 						<a ng-href="@{{ order.url }}" class="order-name">
-							Заказ №@{{ order.id }}
+							Заказ №@{{ order.number }} @{{ order.formatted_date }}
 						</a>
 
 						<table class="table">

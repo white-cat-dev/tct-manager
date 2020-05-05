@@ -28,6 +28,10 @@ i.fas, i.far {
 	.input-group-addon {
 		height: 38px;
 		border-radius: 5px;
+
+		&:first-child {
+			border-right-width: 1px;
+		}
 	}
 
 	.color-picker-input {
@@ -178,8 +182,7 @@ footer {
 	.right-buttons {
 		display: flex;
 
-		& > .btn, 
-		& > div {
+		& > .btn {
 			margin-left: 10px;
 		}
 	}
@@ -332,6 +335,8 @@ footer {
 
 	.modal-header {
 		border-bottom: solid 1px darken($grey, 10%);
+		font-weight: 500;
+    	font-size: 18px;
 	}
 
 	.modal-footer {
@@ -430,5 +435,22 @@ footer {
 		font-size: 60px;
 		color: darken($grey, 15%);
 		margin-bottom: 5x;
+	}
+}
+
+
+.buttons-block {
+	.dropdown-menu {
+		padding: 5px 0px;
+	}
+}
+
+.btn-group {
+	.btn {
+		border-color: #FFFFFF;
+		min-width: 50px;
+	}
+	.btn-sm {
+		min-width: 40px;
 	}
 }

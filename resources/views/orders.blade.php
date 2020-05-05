@@ -47,6 +47,10 @@
 							<img src="{{ url('/images/order-ready.png')}}" ng-style="{'height': Math.round(order.progress.production / order.progress.total * 100) + '%'}">
 							<img src="{{ url('/images/order-realize.png')}}" ng-style="{'height': Math.round(order.progress.realization / order.progress.total * 100) + '%'}">
 						</div>
+
+						<div class="order-status">
+							@{{ order.status_text }}
+						</div>
 					</div>
 					<div class="col-7">
 						<div class="order-params">
@@ -114,6 +118,17 @@
 						Пустой заказ
 					</div>
 				</div>
+
+				<div class="buttons-block">
+					<button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-cog"></i> Доступные действия
+					</button>
+					<div class="dropdown-menu" aria-labelledby="actionsButton">
+						<button type="button" class="btn-sm dropdown-item" ng-click="showRealizationModal()">
+							Добавить выдачу
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -126,4 +141,6 @@
 			</div>
 		</div>
 	</div>
+
+	@include('partials.order-realization-modal')
 </div>

@@ -18,6 +18,7 @@ class CreateEmploymentsTable extends Migration
             $table->date('date');
             $table->integer('worker_id');
             $table->integer('status_id');
+            $table->integer('facility_id');
             $table->timestamps();
         });
     }

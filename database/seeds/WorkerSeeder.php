@@ -19,32 +19,32 @@ class WorkerSeeder extends Seeder
 	        	'surname' => 'Максимов',
 	        	'full_name' => 'Виктор',
 	        	'patronymic' => 'Александрович',
-	        	'status' => 'active',
-	        	'facility_id' => 1
+	        	'phone' => '79120389096',
+	        	'status' => Worker::STATUS_ACTIVE
 	        ],
 	        [
 	        	'name' => 'Егор',
 	        	'surname' => 'Мельников',
 	        	'full_name' => 'Егор',
 	        	'patronymic' => 'Викторович',
-	        	'status' => 'active',
-	        	'facility_id' => 1
+	        	'phone' => '79085234132',
+	        	'status' => Worker::STATUS_ACTIVE
 	        ],
 	        [
 	        	'name' => 'Илья',
 	        	'surname' => 'Давыдов',
 	        	'full_name' => 'Илья',
 	        	'patronymic' => 'Григорьевич',
-	        	'status' => 'active',
-	        	'facility_id' => 1
+	        	'phone' => '79085324322',
+	        	'status' => Worker::STATUS_ACTIVE
 	        ],
 	        [
 	        	'name' => 'Влад',
 	        	'surname' => 'Данилов',
 	        	'full_name' => 'Владислав',
 	        	'patronymic' => 'Петрович',
-	        	'status' => 'active',
-	        	'facility_id' => 2
+	        	'phone' => '79903480345',
+	        	'status' => Worker::STATUS_ACTIVE
 	        ]
         ]);
     }

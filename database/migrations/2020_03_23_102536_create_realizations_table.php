@@ -15,9 +15,9 @@ class CreateRealizationsTable extends Migration
     {
         Schema::create('realizations', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->integer('product_id');
-            $table->integer('order_id')->nullable();
+            $table->integer('order_id');
             $table->decimal('planned', 10, 2)->unsigned();
             $table->decimal('performed', 10, 2)->unsigned();
             $table->timestamps();

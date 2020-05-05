@@ -19,8 +19,10 @@ class CreateWorkersTable extends Migration
             $table->string('surname');
             $table->string('full_name');
             $table->string('patronymic');
-            $table->string('status');
-            $table->integer('facility_id');
+            $table->string('phone');
+            $table->tinyInteger('status');
+            $table->date('status_date')->nullable();
+            $table->date('status_date_next')->nullable();
             $table->timestamps();
         });
     }

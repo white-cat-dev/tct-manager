@@ -3,18 +3,26 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 use Arr;
 
 
 class Worker extends Model
 {
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+
+
     protected $fillable = [
+        'facility_id',
         'surname',
         'full_name',
         'patronymic',
-    	'name',
+        'phone',
+        'name',
         'status',
-        'facility_id'
+        'status_date',
+        'status_date_next'
     ];
 
     protected $appends = [
@@ -23,8 +31,8 @@ class Worker extends Model
     ];
 
     protected static $statuses = [
-        'active' => 'Работает',
-        'paused' => 'В отпуске'
+        0 => 'Не работает',
+        1 => 'Работает'
     ];
 
 
@@ -38,16 +46,27 @@ class Worker extends Model
     	return $this->hasMany(WorkerSalary::class);
     }
 
-    public function facility()
+    public function vacations()
     {
-        return $this->belongsTo(Facility::class);
+        return $this->hasMany(WorkerVacation::class);
     }
 
 
     public function getStatusTextAttribute()
     {
-        return Arr::get(static::$statuses, $this->status, '');
+        $status = Arr::get(static::$statuses, $this->status, '');
+        if ($this->status_date)
+        {
+            $status .= ' до ' . Carbon::createFromDate($this->status_date)->format('d.m.Y');
+
+            // if ($this->status_date_next)
+            // {
+            //     $status .= ' (отпуск до ' . Carbon::createFromDate($this->status_date_next)->format('d.m.Y') . ')';
+            // }
+        }
+        return $status;
     }
+    
 
     public function getUrlAttribute()
     {

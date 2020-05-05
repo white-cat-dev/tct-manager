@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             WorkerSeeder::class,
             FacilitySeeder::class,
-            ProductSeeder::class
+            ProductSeeder::class,
+            UserSeeder::class
 	    ]);
     }
 }

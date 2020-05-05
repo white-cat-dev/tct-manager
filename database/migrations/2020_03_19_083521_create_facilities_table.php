@@ -16,8 +16,10 @@ class CreateFacilitiesTable extends Migration
         Schema::create('facilities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('status');
+            $table->tinyInteger('status');
             $table->decimal('performance', 4, 2)->unsigned();
+            $table->date('status_date')->nullable();
+            $table->string('icon_color');
             $table->timestamps();
         });
     }

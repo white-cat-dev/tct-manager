@@ -44,6 +44,7 @@ class ProductionController extends Controller
                 $products[$key]->productions = $products[$key]->productions()
                     ->whereYear('date', $year)
                     ->whereMonth('date', $month)
+                    ->orWhereNull('date')
                     ->get()
                     ->keyBy('day');
             }
@@ -142,9 +143,42 @@ class ProductionController extends Controller
 
             if ($production)
             {
+                $performed = $production->performed;
+
                 $production->update([
-                    'performed' => (float)$productionData['performed']
+                    'planned' => (float)$productionData['planned'],
+                    'performed' => (float)$productionData['performed'],
+                    'facility_id' => $productionData['facility_id']
                 ]);
+
+                $performed = $production->performed - $performed;
+
+                $baseProduction = Production::where('order_id', $production->order_id)
+                    ->where('product_id', $production->product_id)
+                    ->whereNull('date')
+                    ->first();
+
+                $baseProduction->product->update([
+                    'in_stock' => $baseProduction->product->in_stock + $performed
+                ]);
+
+                if ($baseProduction->planned <= $performed)
+                {
+                    $baseProduction->delete();
+                    $baseProduction->order->update([
+                        'status' => Order::STATUS_READY
+                    ]);
+                }
+                else
+                {
+                    $baseProduction->update([
+                        'planned' => $baseProduction->planned - $performed
+                    ]);
+                }
+            }
+            else
+            {
+
             }
         }
     }

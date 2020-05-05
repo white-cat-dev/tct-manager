@@ -15,12 +15,13 @@ class CreateProductionsTable extends Migration
     {
         Schema::create('productions', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->integer('product_id');
-            $table->integer('order_id')->nullable();
+            $table->integer('order_id');
+            $table->integer('facility_id');
             $table->decimal('planned', 10, 2)->unsigned();
             $table->decimal('performed', 10, 2)->unsigned();
-            $table->decimal('batches', 3, 2)->unsigned();
+            $table->decimal('batches', 4, 2)->unsigned();
             $table->timestamps();
         });
     }

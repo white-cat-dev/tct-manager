@@ -12,6 +12,7 @@ angular.module('tctApp').controller('EmploymentStatusesController', [
 
 
 	$scope.statusTemplates = [
+		'name',
 		'<i class="fas fa-check"></i>',
 		'<i class="fas fa-times"></i>',
 		'<i class="fas fa-question"></i>'
@@ -33,7 +34,9 @@ angular.module('tctApp').controller('EmploymentStatusesController', [
 			'icon': '',
 			'icon_color': '#888888',
 			'name': '',
-			'salary': 0
+			'salary_production': 0,
+			'salary_fixed': 0,
+			'salary_team': 0
 		});
 	}
 

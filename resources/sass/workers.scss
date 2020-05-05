@@ -1,5 +1,152 @@
 .workers-page {
 	position: relative;
+
+	.worker-block {
+		border: solid 1px darken($grey, 10%);
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+		border-radius: 5px;
+		padding: 15px;
+		position: relative;
+		margin-bottom: 30px;
+
+		.btn-group {
+			position: absolute;
+		    top: 15px;
+		    right: 15px;
+		}
+
+		.worker-title {
+			font-weight: 500;
+			font-size: 20px;
+			margin-bottom: 15px;
+		}
+
+		.worker-param {
+			font-size: 14px;
+			margin-bottom: 5px;
+
+			.param-name {
+				color: darken($grey, 75%);
+				font-size: 16px;
+				font-weight: 500;
+				margin-bottom: 3px;
+			}
+		}
+
+		.buttons-block {
+			margin-top: 15px;
+		}
+	}
+
+	.worker-icon {
+		position: relative;
+		margin-bottom: 5px;
+
+		img {
+			width: 100%;
+
+			&:nth-child(2) {
+				position: absolute;
+			    bottom: 0;
+			    left: 0;
+			    object-fit: cover;
+				object-position: bottom;
+				transition: height 0.3s;
+			}
+		}
+	}
+
+	.worker-status {
+		text-align: center;
+	    color: darken($grey, 35%);
+	    font-size: 14px;
+	    padding-right: 10px;
+	}
+
+	.worker-modal {
+		.modal-dialog {
+			max-width: 380px;
+		}
+    }
+
+    .nav-tabs {
+    	margin-top: 15px;
+
+    	.nav-link {
+    		padding: 5px 20px;
+    		font-size: 16px;
+    		background: $grey;
+
+    		&.active {
+    			background: #FFFFFF;
+    		}
+    	}
+    }
+
+    div[date-picker-wrapper] {
+    	display: none;
+    }
+
+    .datepicker-block {
+		padding: 10px 30px;
+	    max-width: 350px;
+	    border: solid 1px darken($grey, 10%);
+	    border-top: none;
+	    position: relative;
+
+	    table {
+	    	width: 100%;
+
+	    	th {
+	    		font-weight: 500;
+	    	}
+
+	    	th, td {
+
+	    		span {
+
+	    			&.now {
+	    				background: $grey;
+	    				color: #212529;
+	    				text-shadow: none;
+
+	    				&:hover {
+			    			background: $grey;
+			    			color: #212529;
+			    		}
+	    			}
+
+	    			&.active.active {
+	    				background: $primary;
+	    				color: #FFFFFF;
+
+	    				&:hover {
+			    			background: $primary;
+			    			color: #FFFFFF;
+			    		}
+	    			}
+
+		    		&:hover {
+		    			background: $grey;
+		    		}	
+	    		}
+	    	}
+	    }
+	}
+
+	.date-group {
+		display: flex;
+		align-items: center;
+
+		.date-label {
+			margin-left: 25px;
+			margin-right: 10px;
+
+			&:first-child {
+				margin-left: 0px;
+			}
+		}
+	}
 }
 
 

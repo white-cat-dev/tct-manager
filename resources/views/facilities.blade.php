@@ -48,10 +48,10 @@
 					<div class="col-5">
 						<div class="facility-icon">
 							<img src="{{ url('/images/facility.png')}}">
-							<img src="{{ url('/images/facility-active.png')}}" style="height: 30%">
+							<img src="{{ url('/images/facility-active.png')}}" ng-style="{'height': facility.current_performance / facility.performance * 100 + '%'}">
 						</div>
-						<div class="facility-performance">
-							@{{ facility.icon }}
+						<div class="facility-status">
+							@{{ facility.status_text }}
 						</div>
 					</div>
 					<div class="col-7">
@@ -104,15 +104,36 @@
 					</div>
 				</div>
 
-				{{-- <div class="buttons-block">
-					<button type="button" class="btn btn-primary btn-sm" ng-click="facility.status = 'paused'; save(facility)" ng-if="facility.status == 'active'">
-						Приостановить работу цеха
+				@if (Auth::user() && Auth::user()->type == 'admin')
+				<div class="buttons-block">
+					<button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-cog"></i> Доступные действия
 					</button>
-					<button type="button" class="btn btn-primary btn-sm" ng-click="facility.status = 'active'; save(facility)" ng-if="facility.status == 'paused'">
-						Восстановить работу цеха
-					</button>
-				</div> --}}
+					<div class="dropdown-menu" aria-labelledby="actionsButton">
+						<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_ACTIVE }} && !facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_INACTIVE }})">
+							Приостановить работу цеха
+						</button>
+						<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_INACTIVE }} && !facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_ACTIVE }})">
+							Возобновить работу цеха
+						</button>
+						<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_INACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_INACTIVE }})">
+							Отменить возобновление работы цеха
+						</button>
+						<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_INACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_ACTIVE }})">
+							Изменить дату возобновления работы цеха
+						</button>
+						<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_ACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_ACTIVE }})">
+							Отменить приостановку работы цеха
+						</button>
+						<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_ACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_INACTIVE }})">
+							Изменить дату приостановки работы цеха
+						</button>
+					</div>
+				</div>
+				@endif
 			</div>
 		</div>
 	</div>
+
+	@include('partials.facility-status-modal')
 </div>

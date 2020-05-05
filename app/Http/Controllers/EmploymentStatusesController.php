@@ -14,6 +14,7 @@ class EmploymentStatusesController extends Controller
         'icon_color' => 'required'
     ];
 
+
     public function index(Request $request)
     {
         if ($request->wantsJson())
@@ -23,8 +24,9 @@ class EmploymentStatusesController extends Controller
             return $statuses;
         }
 
-        return view('index', ['ngTemplate' => 'workers.statuses']);
+        return view('index', ['ngTemplate' => 'employments.statuses']);
     }
+
 
     public function save(Request $request)
     {

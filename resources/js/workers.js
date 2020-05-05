@@ -94,4 +94,81 @@ angular.module('tctApp').controller('WorkersController', [
 	{
 
 	}
+
+
+	$scope.isStatusModalShown = false;
+	$scope.modalStatusErrors = {};
+	$scope.modalWorker = {};
+
+
+	$scope.showStatusModal = function(worker, status)
+	{
+		$scope.worker = worker || $scope.worker;
+		$scope.modalWorker = angular.copy($scope.worker);
+		$scope.modalWorker.status = status;
+		
+		if ($scope.worker.status == $scope.modalWorker.status)
+		{
+			$scope.saveStatus();
+			return;
+		}
+
+		$scope.isStatusModalShown = true;
+	}
+
+
+	$scope.hideStatusModal = function()
+	{
+		$scope.isStatusModalShown = false;
+
+		$scope.modalStatusErrors = {};
+	}
+
+
+
+	// $scope.updateStatusNow = function()
+	// {
+	// 	$scope.worker.status = ($scope.worker.status + 2) % 4;
+	// 	$scope.worker.status_date_raw = new Date();
+	// }
+
+
+	$scope.saveStatus = function()
+	{
+		if ($scope.worker.status == $scope.modalWorker.status)
+		{
+			$scope.modalWorker.status_date_raw = null;
+			$scope.modalWorker.status_date_next_raw = null;
+		}
+		else if ($scope.modalWorker.status_date_raw)
+		{
+			$scope.modalWorker.status = ($scope.modalWorker.status + 1) % 2;
+		}
+		
+		WorkersRepository.save({id: $scope.modalWorker.id}, $scope.modalWorker, function(response) 
+		{
+			$scope.modalStatusErrors = {};
+			$scope.successTopAlert = 'Изменения успешно сохранены!';
+			$scope.showTopAlert = true;
+
+			$timeout(function() {
+				$scope.showTopAlert = false;
+			}, 2000);
+
+			if (!$scope.baseUrl)
+			{
+				$scope.init();
+			}
+			else
+			{
+				$scope.worker = $scope.modalWorker;
+			}
+
+			$scope.hideStatusModal();
+		}, 
+		function(response) 
+		{
+            $scope.modalStatusErrors = response.data.errors;
+        });
+	}
 }]);

@@ -25,11 +25,14 @@
     },
     "dependencies": {
         "angular": "^1.7.9",
+        "angular-datepicker": "^1.0.5",
         "angular-resource": "^1.7.9",
         "angular-route": "^1.7.9",
         "angular-sanitize": "^1.7.9",
         "angularjs-color-picker": "^3.4.8",
+        "angularjs-datepicker": "^2.1.23",
         "bootstrap": "^4.4.1",
+        "moment": "^2.24.0",
         "ui-select": "^0.19.8"
     }
 }

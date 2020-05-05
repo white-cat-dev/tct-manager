@@ -11,7 +11,8 @@ class Employment extends Model
     protected $fillable = [
     	'date',
         'worker_id',
-        'status_id'
+        'status_id',
+        'facility_id'
     ];
 
     protected $appends = [

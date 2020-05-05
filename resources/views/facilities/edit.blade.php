@@ -10,6 +10,29 @@
 		</div>
 
 		<div class="right-buttons">
+			<button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-cog"></i> Доступные действия
+			</button>
+			<div class="dropdown-menu" aria-labelledby="actionsButton">
+				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_ACTIVE }} && !facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_INACTIVE }})">
+					Приостановить работу цеха
+				</button>
+				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_INACTIVE }} && !facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_ACTIVE }})">
+					Возобновить работу цеха
+				</button>
+				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_INACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_INACTIVE }})">
+					Отменить возобновление работы цеха
+				</button>
+				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_INACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_ACTIVE }})">
+					Изменить дату возобновления работы цеха
+				</button>
+				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_ACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_ACTIVE }})">
+					Отменить приостановку работы цеха
+				</button>
+				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_ACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_INACTIVE }})">
+					Изменить дату приостановки работы цеха
+				</button>
+			</div>
 			<a ng-href="@{{ facility.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
@@ -59,6 +82,48 @@
 						Информация о количестве замесов в день необходима для планирования производства
 					</small>
 				</div>
+
+				<div class="form-group facility-edit-status-block">
+					<div class="param-label">Статус цеха</div>
+					<div class="custom-control custom-radio">
+						<input class="custom-control-input" type="radio" ng-model="facility.status" id="radioActive" value="{{ App\Facility::STATUS_ACTIVE }}">
+						<label class="custom-control-label" for="radioActive">Работает</label>
+					</div>
+					{{-- <div class="custom-control custom-radio">
+						<div>
+							<input class="custom-control-input" type="radio" ng-model="facility.status" id="radioPlanPaused" value="plan-paused">
+							<label class="custom-control-label" for="radioPlanPaused">
+								Работает до
+								<span ng-if="facility.status != 'plan-paused'">...</span>
+								<span ng-if="facility.status == 'plan-paused'">
+									@{{ facility.status_date_from_raw | date: 'dd.MM.yyyy' }}
+								</span>
+							</label>
+							<button type="button" class="btn btn-primary btn-sm" ng-click="showStatusModal(facility, 'plan-paused')" ng-if="facility.status == 'plan-paused'">
+								<i class="far fa-calendar-alt"></i> Выбрать дату
+							</button>
+						</div>
+					</div> --}}
+					<div class="custom-control custom-radio">
+						<input class="custom-control-input" type="radio" ng-model="facility.status" id="radioPaused" value="{{ App\Facility::STATUS_INACTIVE }}">
+						<label class="custom-control-label" for="radioPaused">Не работает</label>
+					</div>
+					{{-- <div class="custom-control custom-radio">
+						<div>
+							<input class="custom-control-input" type="radio" ng-model="facility.status" id="radioPlanActive" value="plan-active">
+							<label class="custom-control-label" for="radioPlanActive">
+								Не работает до
+								<span ng-if="facility.status != 'plan-active'">...</span>
+								<span ng-if="facility.status == 'plan-active'">
+									@{{ facility.status_date_from_raw | date: 'dd.MM.yyyy' }}
+								</span>
+							</label>
+							<button type="button" class="btn btn-primary btn-sm" ng-click="showStatusModal(facility, 'plan-active')" ng-if="facility.status == 'plan-active'">
+								<i class="far fa-calendar-alt"></i> Выбрать дату
+							</button>
+						</div>
+					</div> --}}
+				</div>
 			</div>
 
 			<div class="col-6">
@@ -66,7 +131,7 @@
 					Список работников
 				</div>
 
-				<table class="table" ng-if="facility.workers.length > 0">
+				<table class="table table-with-buttons" ng-if="facility.workers.length > 0">
 					<tr>
 						<th>№</th>
 						<th>Имя</th>
@@ -128,4 +193,6 @@
 			</button>
 		</div>
 	</div>
+
+	@include('partials.facility-status-modal')
 </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Worker;
 use App\WorkerSalary;
+use App\Facility;
 use App\Employment;
 use App\EmploymentStatus;
 
@@ -34,7 +35,7 @@ class EmploymentsController extends Controller
                 $day = 0;
             }
 
-            $workers = Worker::where('status', 'active')->get();
+            $workers = Worker::where('status', Worker::STATUS_ACTIVE)->get();
 
             foreach ($workers as $key => $worker) 
             {
@@ -90,6 +91,8 @@ class EmploymentsController extends Controller
 
 
             $statuses = EmploymentStatus::all()->keyBy('id');
+
+            $facilities = Facility::all()->keyBy('id');
                
             return ['days' => $days,
                     'monthes' => $monthes,
@@ -98,7 +101,8 @@ class EmploymentsController extends Controller
                     'year' => (int)$year,
                     'month' => (int)$month,
                     'workers' => $workers,
-                    'statuses' => $statuses
+                    'statuses' => $statuses,
+                    'facilities' => $facilities
                 ];
         }
 
@@ -119,7 +123,6 @@ class EmploymentsController extends Controller
         foreach ($employmentsGroups as $workerId => $employmentsGroup) 
         {
             $salaryEmployments = 0;
-            $s = '';
 
             foreach ($employmentsGroup as $employmentData) 
             {
@@ -132,7 +135,7 @@ class EmploymentsController extends Controller
 
                 if ($employment)
                 {
-                    if ($employmentData['status_id'] == 0)
+                    if ($employmentData['status_id'] == -1)
                     {
                         $employment->delete();
                     }
@@ -141,7 +144,8 @@ class EmploymentsController extends Controller
                         $salaryEmployments += $statuses[$employmentData['status_id']]->salary; 
 
                         $employment->update([
-                            'status_id' => $employmentData['status_id']
+                            'status_id' => $employmentData['status_id'],
+                            'facility_id' => $employmentData['facility_id']
                         ]); 
                     }
                 }
@@ -154,7 +158,8 @@ class EmploymentsController extends Controller
                         $employment = Employment::create([
                             'date' => $date,
                             'worker_id' => $employmentData['worker_id'],
-                            'status_id' => $employmentData['status_id']
+                            'status_id' => $employmentData['status_id'],
+                            'facility_id' =>  $employmentData['facility_id']
                         ]);
                     }
                 }

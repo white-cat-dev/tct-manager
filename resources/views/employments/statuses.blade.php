@@ -22,21 +22,28 @@
 	<div class="edit-form-block">
 		<table class="table">
 			<tr>
+				<th>Название</th>
 				<th>Иконка</th>
 				<th>Цвет иконки</th>
-				<th>Название</th>
-				<th>Влияние на зарплату</th>
+				<th>Производство</th>
+				<th>Фиксированная</th>
+				<th>Процент</th>
 				<th></th>
 			</tr>
 
 			<tr ng-repeat="status in statuses">
+				<td>
+					<input type="text" class="form-control" ng-model="status.name">
+				</td>
 				<td ng-style="{'color': status.icon_color}">
 					<ui-select theme="bootstrap" ng-model="status.icon">
 			            <ui-select-match placeholder="Выберите иконку">
-				            <span ng-bind-html="$select.selected"></span>
+				            <span ng-if="$select.selected == 'name'" ng-bind-html="status.name" style="font-weight: 500;"></span>
+				            <span ng-if="$select.selected != 'name'" ng-bind-html="$select.selected"></span>
 				        </ui-select-match>
 			            <ui-select-choices repeat="statusTemplate in statusTemplates">
-			                <span ng-bind-html="statusTemplate"></span>
+			            	<span ng-if="statusTemplate == 'name'">Название</span>
+			                <span ng-if="statusTemplate != 'name'" ng-bind-html="statusTemplate"></span>
 			            </ui-select-choices>
 					</ui-select>
 				</td>
@@ -45,10 +52,13 @@
 					</color-picker>
 				</td>
 				<td>
-					<input type="text" class="form-control" ng-model="status.name">
+					<input type="text" class="form-control" ng-model="status.salary_production">
 				</td>
 				<td>
-					<input type="text" class="form-control" ng-model="status.salary">
+					<input type="text" class="form-control" ng-model="status.salary_fixed">
+				</td>
+				<td>
+					<input type="text" class="form-control" ng-model="status.salary_people">
 				</td>
 				<td>
 					<button type="button" class="btn btn-primary" ng-click="deleteStatus($index)">
