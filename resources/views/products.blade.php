@@ -38,7 +38,7 @@
 			<th>№</th>
 			<th>Название</th>
 			<th>Размер</th>
-			<th>Разновидности</th>
+			<th>Цвета</th>
 			<th>Цена</th>
 			<th>В наличии</th>
 			<th class="product-in-stock-col">
@@ -60,8 +60,8 @@
 			</td>
 			<td>
 				<div ng-repeat="product in productGroup.products">
-					<span ng-if="product.color_text">@{{ product.color_text }} цвет</span>
-					<span ng-if="!product.color_text">—</span>
+					<span ng-if="product.variation_text">@{{ product.variation_text }}</span>
+					<span ng-if="!product.variation_text">—</span>
 				</div>
 			</td>
 			<td>

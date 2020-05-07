@@ -15,7 +15,7 @@ class FacilitiesController extends Controller
     {
         if ($request->wantsJson())
         {
-            $facilities = Facility::orderBy('status', 'desc')->orderBy('status_date')->all();
+            $facilities = Facility::orderBy('status', 'desc')->orderBy('status_date')->get();
             return $facilities;
         }
 
@@ -159,7 +159,8 @@ class FacilitiesController extends Controller
             'name' => $request->get('name', ''),
             'performance' => $request->get('performance', 0),
             'status' => $request->get('status', Facility::STATUS_ACTIVE),
-            'status_date' => $request->get('status_date_raw', -1)
+            'status_date' => $request->get('status_date_raw', -1),
+            'icon_color' => $request->get('icon_color', '#000000')
         ];
 
 

@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class ProductGroup extends Model
 {
     protected $fillable = [
+        'wp_id',
+        'wp_name',
     	'name',
         'category_id',
     	'set_pair_id',
     	'width',
     	'length',
     	'depth',
+        'adjectives',
     	'weight_unit',
     	'weight_units',
     	'weight_pallete',
@@ -21,7 +24,8 @@ class ProductGroup extends Model
     	'unit_in_pallete',
     	'units_in_pallete',
     	'units_from_batch',
-    	'forms'
+    	'forms',
+        'salary_units'
     ];
 
     protected $appends = [
@@ -40,7 +44,8 @@ class ProductGroup extends Model
         'unit_in_units' => 'float',
         'unit_in_pallete' => 'float',
         'units_in_pallete' => 'float',
-        'units_from_batch' => 'float'
+        'units_from_batch' => 'float',
+        'salary_units' => 'float'
     ];
 
 

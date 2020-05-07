@@ -11,7 +11,8 @@ class Product extends Model
     protected $fillable = [
         'category_id',
         'product_group_id',
-    	'color',
+    	'variation',
+        'main_variation',
     	'price',
     	'price_unit',
     	'price_pallete',
@@ -27,7 +28,9 @@ class Product extends Model
     protected $appends = [
         'realize_in_stock',
         'free_in_stock',
-        'color_text'
+        'variation_text',
+        'variation_noun_text',
+        'main_variation_text'
     ];
 
     protected $with = [
@@ -133,14 +136,106 @@ class Product extends Model
         return $this->in_stock - $this->realize_in_stock;
     }
 
-    public function getColorTextAttribute()
-    {
-        $colors = [
-            'red' => 'красный',
-            'grey' => 'серый',
-            'yellow' => 'желтый'
-        ];
 
-        return Arr::get($colors, $this->color, $this->color);
+    public function getVariationTextAttribute()
+    {
+        if ($this->category->variations == 'colors')
+        {
+            $allColors = static::$allVariations['colors'];
+            $adjectives = $this->product_group->adjectives;
+            $colors = !empty($allColors[$adjectives]) ? $allColors[$adjectives] : [];
+
+            return Arr::get($colors, $this->variation, '');
+        }
+        else if ($this->category->variations == 'grades')
+        {
+            $grades = static::$allVariations['grades'];
+
+            return Arr::get($grades, $this->variation, '');
+        }
+        else
+        {
+            return '';
+        }
     }
+
+
+    public function getMainVariationTextAttribute()
+    {
+        if ($this->category->variations == 'colors')
+        {
+            $allColors = static::$allVariations['colors'];
+            $adjectives = $this->product_group->adjectives;
+            $colors = !empty($allColors[$adjectives]) ? $allColors[$adjectives] : [];
+
+            return Arr::get($colors, $this->main_variation, '');
+        }
+        else if ($this->category->variations == 'grades')
+        {
+            $grades = static::$allVariations['grades'];
+
+            return Arr::get($grades, $this->main_variation, '');
+        }
+        else
+        {
+            return '';
+        }
+    }
+
+
+    public function getVariationNounTextAttribute()
+    {
+        if ($this->category->variations == 'colors')
+        {
+            $colors = static::$allVariations['colors']['masculine'];
+
+            return Arr::get($colors, $this->variation, 'неизвестный') . ' цвет';
+        }
+        else if ($this->category->variations == 'grades')
+        {
+            $grades = static::$allVariations['grades'];
+            $grade = Arr::get($grades, $this->variation, '');
+
+            return $grade ? ('марка ' . $grade) : 'неизвестная марка';
+        }
+        else
+        {
+            return '';
+        }
+    }
+
+
+    protected static $allVariations = [
+        'colors' => [
+            'feminine' => [
+                'grey' => 'серая',
+                'red' => 'красная',
+                'color' => 'цветная',
+                'yellow' => 'желтая',
+                'brown' => 'коричневая',
+                'black' => 'черная'
+            ],
+            'masculine' => [
+                'grey' => 'серый',
+                'red' => 'красный',
+                'color' => 'цветной',
+                'yellow' => 'желтый',
+                'brown' => 'коричневый',
+                'black' => 'черный'
+            ],
+            'neuter' => [
+                'grey' => 'серое',
+                'red' => 'красное',
+                'color' => 'цветное',
+                'yellow' => 'желтое',
+                'brown' => 'коричневое',
+                'black' => 'черное'
+            ]
+        ],
+        'grades' => [
+            'd400' => 'D400',
+            'd500' => 'D500',
+            'd600' => 'D600'
+        ]
+    ];
 }

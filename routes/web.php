@@ -187,4 +187,9 @@ Route::middleware('auth')->group(function()
 
 Auth::routes(['register' => false, 'password.request' => false]);;
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::prefix('wp-api')->namespace('WpApi')->group(function()
+{
+	Route::get('excerpt', 'ProductsController@excerpt');
+	Route::get('content', 'ProductsController@content');
+});

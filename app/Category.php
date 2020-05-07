@@ -10,7 +10,8 @@ class Category extends Model
     protected $fillable = [
     	'name',
         'units',
-        'has_colors'
+        'variations',
+        'adjectives'
     ];
 
     protected $appends = [

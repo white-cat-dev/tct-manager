@@ -38,6 +38,23 @@
 				</div>
 
 				<div class="form-group">
+					<div class="param-label">Род прилагательных</div>
+
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioFeminine" ng-model="category.adjectives" value="feminine">
+						<label class="custom-control-label" for="radioFeminine">Женский</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioMasculine" ng-model="category.adjectives" value="masculine">
+						<label class="custom-control-label" for="radioMasculine">Мужской</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioNeuter" ng-model="category.adjectives" value="neuter">
+						<label class="custom-control-label" for="radioNeuter">Средний</label>
+					</div>
+				</div>
+
+				<div class="form-group">
 					<div class="param-label">Единицы измерения</div>
 					<ui-select theme="bootstrap" ng-model="category.units" ng-class="{'is-invalid': categoryErrors.units}">
 			            <ui-select-match placeholder="Выберите из списка...">
@@ -50,10 +67,23 @@
 				</div>
 
 				<div class="form-group">
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" ng-model="category.has_colors" id="checkbox">
-						<label class="custom-control-label" for="checkbox">
+					<div class="param-label">Разновидности</div>
+					<div class="custom-control custom-radio">
+						<input class="custom-control-input" type="radio" id="radioColors" ng-model="category.variations" value="colors">
+						<label class="custom-control-label" for="radioColors">
 							У товаров категории есть разновидности по цветам
+						</label>
+					</div>
+					<div class="custom-control custom-radio">
+						<input class="custom-control-input" type="radio" id="radioGrades" ng-model="category.variations" value="grades">
+						<label class="custom-control-label" for="radioGrades">
+							У товаров категории есть разновидности по марке бетона
+						</label>
+					</div>
+					<div class="custom-control custom-radio">
+						<input class="custom-control-input" type="radio" id="radioNone" ng-model="category.variations" value="">
+						<label class="custom-control-label" for="radioNone">
+							У товаров категории нет разновидностей
 						</label>
 					</div>
 				</div>

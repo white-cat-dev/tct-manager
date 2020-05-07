@@ -61,6 +61,7 @@
 				width: 1500px;
 				font-size: 14px;
 
+
 				th, td {
 					padding: 10px;
 					border-left: solid 1px darken($grey, 10%);
@@ -74,12 +75,13 @@
 					background: $grey;
 					border-left: solid 1px darken($grey, 10%);
 
-					&.current {
-						background: lighten($green, 40%);
+					&:hover,
+					&.hover {
+						background: darken($grey, 3%);
 					}
 
-					&:hover {
-						background: lighten($grey, 3%);
+					&.current {
+						background: lighten($primary, 55%);
 					}
 				}
 
@@ -92,46 +94,36 @@
 					vertical-align: middle;
 					border-top: solid 1px darken($grey, 10%);
 
+					&:hover, 
+					&.hover {
+						background: lighten($grey, 1%);
+					}
+
 					&.current {
-						background: lighten($green, 45%);
-					}
-
-					&.done {
-						.production-planned {
-							color: $green;
-						}
-					}
-
-					&.failed {
-						.production-planned {
-							color: $red;
-						}
-					}
-
-					&:hover, &.hover {
-						background: lighten($grey, 3%);
+						background: lighten($primary, 61%);
 					}
 
 					.production {
 						width: 50px;
     					height: 49px;
 					    padding: 12px 0px;
-					    border: solid 2px #FFFFFF;
-					    border-radius: 2px;
+					    border: solid 1px #FFFFFF;
 					    // transition: 0.3s;
 					    font-size: 14px;
 					    position: relative;
-					    color: #000000;
 
 					    &.marked {
-							color: #FFFFFF;
 
 							.production-planned {
 								color: #FFFFFF;
 							}
 
-							.production-performed:before {
-								border-color: #FFFFFF;
+							.production-performed {
+								color: #FFFFFF;
+
+								&:before {
+									border-color: #FFFFFF;
+								}
 							}
 					    }
 						
@@ -141,17 +133,18 @@
 
 						.production-performed {
 							font-weight: 500;
+							color: $primary;
 
 							&:before {
 								content: '';
 								width: 40px;
 					   			height: 39px;
 							    border-radius: 50%;
-							    top: 3px;
-							    left: 3px;
-							    border: solid 1px darken($grey, 15%);
+							    top: 4px;
+							    left: 4px;
+							    border: solid 1px $primary;
 							    position: absolute;
-							    transition: 0.3s;
+							    // transition: 0.3s;
 							}
 						}
 					}
@@ -161,54 +154,94 @@
 	}
 
 	.production-modal {
+		.modal-dialog {
+			max-width: 600px;
+		}
+
 		.modal-title {
 			font-size: 18px;
-			font-weight: bold;
+			font-weight: 500;
 			color: darken($grey, 75%);
 		}
 
-		.order-block {
-			margin-bottom: 15px;
+		.table {
+			margin-top: 15px;
 
-			.order-name {
-				font-size: 20px;
-    			margin-bottom: 0px;
-    			color: $primary;
+			th, td {
+				border: solid 1px darken($grey, 10%);
+				padding: 10px;
+				font-size: 12px;
 			}
 
-			.table {
-				margin-bottom: 0px;
-
-				th {
-					font-size: 14px;
-				}
-
-				td {
-					text-align: left;
-					border-color: darken($grey, 10%);
-					width: 30%;
-
-					&:first-child{
-						width: 40%;
-					}
-
-					.form-control {
-						width: 70px;
-					    display: inline-block;
-					    margin-right: 5px;
-					}
-				}
+			th {
+				text-align: center;
 			}
 
 			.product-name {
-				font-size: 14px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
 			}
-			.product-size {
-				font-size: 12px;
-			}
+
 			.product-color {
 				color: darken($grey, 35%);
-				font-size: 12px;
+			}
+
+			.order-name {
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			.order-date {
+				color: darken($grey, 35%);
+			}
+
+			.form-control {
+				border-color: transparent;
+
+				&:focus {
+					border-color: $primary;
+				}
+
+				&.form-control-sm {
+					width: 60px;
+					padding: 3px 7px;
+					font-size: 14px;
+				}
+			}
+
+			.ui-select-container {
+				border: none;
+
+				.btn {
+					border: none;
+					padding: 3px 7px;
+					font-size: 12px;
+
+					&:focus {
+						box-shadow: none;
+					}
+				}
+
+				.btn-default-focus {
+					box-shadow: none;
+					background: #FFFFFF;
+					outline: none;
+				}
+
+				.form-control {
+					padding: 3px 7px;
+					font-size: 12px;
+				}
+
+				.dropdown-menu {
+					font-size: 12px;
+					padding: 3px 0px;
+
+					.ui-select-choices-row-inner {
+						padding: 3px 7px;
+						white-space: unset;
+					}
+				}
 			}
 		}
 	}

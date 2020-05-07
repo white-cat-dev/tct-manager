@@ -37,7 +37,15 @@
 				</div>
 				<div class="param-block">
 					<div class="param-name">
-						Название
+						Полное название
+					</div>
+					<div class="param-value">
+						@{{ productGroup.wp_name }}
+					</div>
+				</div>
+				<div class="param-block">
+					<div class="param-name">
+						Короткое название
 					</div>
 					<div class="param-value">
 						@{{ productGroup.name }}
@@ -51,27 +59,15 @@
 						@{{ productGroup.category.name }}
 					</div>
 				</div>
-
-				<div class="params-title">
-					Данные для производства
-				</div>
-
 				<div class="param-block">
 					<div class="param-name">
-						Количество из одного замеса
+						Род прилагательных
 					</div>
-					<div class="param-value">
-						@{{ productGroup.units_from_batch }}
-					</div>
-				</div>
-
-				<div class="param-block">
-					<div class="param-name">
-						Количество форм
-					</div>
-					<div class="param-value">
-						@{{ productGroup.forms }} шт.
-					</div>
+					<span ng-switch on="productGroup.adjectives">
+						<span ng-switch-when="feminine">Женский</span>
+						<span ng-switch-when="masculine">Мужской</span>
+						<span ng-switch-when="neuter">Средний</span>
+					</span>
 				</div>
 			</div>
 
@@ -121,15 +117,23 @@
 			</div>
 		</div>
 
-		<div class="row justify-content-around" ng-if="productGroup.category.has_colors">
+		<div class="row justify-content-around" ng-if="productGroup.category.variations">
 			<div class="col-11">
 				<div class="params-title">
-					Разновидности по цветам
+					<span ng-switch on="productGroup.category.variations">
+						<span ng-switch-when="colors">Разновидности по цветам</span>
+						<span ng-switch-when="grades">Разновидности по марке бетона</span>
+					</span>
 				</div>
 
 				<table class="table">
 					<tr>
-						<th>Цвет</th>
+						<th>
+							<span ng-switch on="productGroup.category.variations">
+								<span ng-switch-when="colors">Цвет</span>
+								<span ng-switch-when="grades">Марка</span>
+							</span>
+						</th>
 						<th>Цена</th>
 						<th>В наличии</th>
 						<th class="product-in-stock-col">
@@ -139,7 +143,7 @@
 					</tr>
 					<tr ng-repeat="product in productGroup.products">
 						<td>
-							@{{ product.color_text }}
+							@{{ product.variation_text }}
 						</td>
 						<td>
 							@{{ product.price_unit }} руб. /
@@ -164,7 +168,7 @@
 			</div>
 		</div>
 
-		<div class="row justify-content-around" ng-if="!productGroup.category.has_colors">
+		<div class="row" ng-if="!productGroup.category.variations">
 			<div class="col-3">
 				<div class="param-block">
 					<div class="param-name">
@@ -196,6 +200,51 @@
 					</div>
 					<div class="free-in-stock" ng-style="{'width': (!productGroup.products[0].realize_in_stock) ? '100%' : Math.round(productGroup.products[0].free_in_stock / productGroup.products[0].in_stock * 100) + '%'}" ng-if="productGroup.products[0].free_in_stock || !productGroup.products[0].realize_in_stock">
 						<div class="in-stock-number">@{{ productGroup.products[0].free_in_stock }} м<sup>2</sup></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row justify-content-around">	
+			<div class="col-5">
+				<div class="params-title">
+					Данные для производства
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Количество из одного замеса
+					</div>
+					<div class="param-value">
+						@{{ productGroup.units_from_batch }}
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Количество форм
+					</div>
+					<div class="param-value">
+						@{{ productGroup.forms }} шт.
+					</div>
+				</div>
+			</div>
+			<div class="col-5">
+				<div class="params-title">
+					Данные для расчета зарплаты
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Стоимость работы 
+						<span ng-switch on="productGroup.category.units">
+							<span ng-switch-when="area">за 1 м<sup>2</sup></span>
+							<span ng-switch-when="volume">за 1 м<sup>3</sup></span>
+							<span ng-switch-when="unit">за 1 шт.</span>
+						</span>	
+					</div>
+					<div class="param-value">
+						@{{ productGroup.salary_units }}
 					</div>
 				</div>
 			</div>

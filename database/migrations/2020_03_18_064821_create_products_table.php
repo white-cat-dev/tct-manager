@@ -18,7 +18,8 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->integer('category_id');
             $table->integer('product_group_id');
-            $table->string('color');
+            $table->string('variation');
+            $table->string('main_variation');
             $table->decimal('price', 8, 2)->unsigned();
             $table->decimal('price_unit', 8, 2)->unsigned();
             $table->decimal('price_pallete', 8, 2)->unsigned();

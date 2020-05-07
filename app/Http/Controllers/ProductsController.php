@@ -52,9 +52,10 @@ class ProductsController extends Controller
             foreach ($request->get('products') as $productData) 
             {
                 $productData['category_id'] = $productGroup->category_id;
-                if (!$productGroup->category->has_colors)
+                if (!$productGroup->category->variations)
                 {
-                    $productData['color'] = '';
+                    $productData['variation'] = '';
+                    $productData['main_variation'] = '';
                 }
                 $product = $productGroup->products()->create($productData);
             }
@@ -80,9 +81,10 @@ class ProductsController extends Controller
             foreach ($request->get('products', []) as $productData) 
             {
                 $productData['category_id'] = $productGroup->category_id;
-                if (!$productGroup->category->has_colors)
+                if (!$productGroup->variations)
                 {
-                    $productData['color'] = '';
+                    $productData['variation'] = '';
+                    $productData['main_variation'] = '';
                 }
 
                 $id = !empty($productData['id']) ? $productData['id'] : 0;
@@ -134,19 +136,25 @@ class ProductsController extends Controller
         'unit_in_pallete' => 'required',
         'units_in_pallete' => 'required',
         'units_from_batch' => 'required',
-        'forms' => 'required'
+        'forms' => 'required',
+        'adjectives' => 'required',
+        'salary_units' => 'required'
+
     ];
 
 
     protected function getData(Request $request)
     {
         return [
+            'wp_id' => $request->get('wp_id', ''),
+            'wp_name' => $request->get('wp_name', ''),
             'name' => $request->get('name', ''),
             'set_pair_id' => $request->get('set_pair_id', 0),
             'category_id' => $request->get('category_id', 0),
             'width' => $request->get('width', 0),
             'length' => $request->get('length', 0),
             'depth' => $request->get('depth', 0),
+            'adjectives' => $request->get('noun', 'feminine'),
             'weight_unit' => $request->get('weight_unit', 0),
             'weight_units' => $request->get('weight_units', 0),
             'weight_pallete' => $request->get('weight_pallete', 0),
@@ -155,6 +163,7 @@ class ProductsController extends Controller
             'units_in_pallete' => $request->get('units_in_pallete', 0),
             'units_from_batch' => $request->get('units_from_batch', 0),
             'forms' => $request->get('forms', 0),
+            'salary_units' => $request->get('salary_units', 0),
         ];
     }
 }

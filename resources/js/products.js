@@ -32,15 +32,46 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.colors = [
 		{
 			'key': 'grey',
+			'main_key': 'red',
 			'name': 'серый'
 		},
 		{
 			'key': 'red',
+			'main_key': 'red',
 			'name': 'красный'
 		},
 		{
 			'key': 'yellow',
+			'main_key': 'color',
 			'name': 'желтый'
+		},
+		{
+			'key': 'brown',
+			'main_key': 'color',
+			'name': 'коричневый'
+		},
+		{
+			'key': 'black',
+			'main_key': 'color',
+			'name': 'черный'
+		}
+	];
+
+	$scope.grades = [
+		{
+			'key': 'd400',
+			'main_key': 'd400',
+			'name': 'D500'
+		},
+		{
+			'key': 'd500',
+			'main_key': 'd500',
+			'name': 'D500'
+		},
+		{
+			'key': 'd600',
+			'main_key': 'd600',
+			'name': 'D600'
 		}
 	];
 
@@ -175,11 +206,12 @@ angular.module('tctApp').controller('ProductsController', [
 			if (category.id == $scope.productGroup.category_id)
 			{
 				$scope.productCategory = category;
+				$scope.productGroup.adjectives = category.adjectives;
 				break;
 			}
 		}
 
-		if (!$scope.productCategory.has_colors) 
+		if (!$scope.productCategory.variations) 
 		{
 			$scope.addProduct();
 		}
@@ -189,13 +221,20 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.addProduct = function()
 	{
 		$scope.productGroup.products.push({
-			'color': '',
+			'variation': '',
+			'main_variation': '',
 			'price': 0,
 			'price_unit': 0,
 			'price_pallete': 0,
 			'in_stock': 0
 		});
 	}
+
+	$scope.chooseProductVariation = function(product, variation)
+	{
+		product.main_variation = variation.main_key;
+	}
+
 
 	$scope.deleteProduct = function(index)
 	{

@@ -94,7 +94,7 @@
 		<div class="col-3">
 			<div class="employment-statuses">
 				<div class="statuses-title">
-					Статусы
+					Инструменты
 					@if (Auth::user() && Auth::user()->type == 'admin')
 					<a href="{{ route('employment-statuses') }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-edit"></i> Изменить

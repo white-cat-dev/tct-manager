@@ -17,7 +17,8 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('units');
-            $table->boolean('has_colors');
+            $table->string('variations');
+            $table->string('adjectives');
             $table->timestamps();
         });
     }

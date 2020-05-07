@@ -17,17 +17,20 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'Тротуарная плитка',
                 'units' => 'area',
-                'has_colors' => true
+                'variations' => 'colors',
+                'adjectives' => 'feminine'
             ],
             [
                 'name' => 'Бордюры',
                 'units' => 'unit',
-                'has_colors' => true
+                'variations' => 'colors',
+                'adjectives' => 'masculine'
             ],
             [
-                'name' => 'Пенобетонные блоки',
+                'name' => 'Строительные блоки',
                 'units' => 'volume',
-                'has_colors' => false
+                'variations' => 'grades',
+                'adjectives' => 'masculine'
             ]
         ]);
     }

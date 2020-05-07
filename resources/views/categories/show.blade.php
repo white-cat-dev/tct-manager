@@ -48,14 +48,24 @@
 
 				<div class="param-block">
 					<div class="param-name">
+						Род прилагательных
+					</div>
+					<span ng-switch on="category.adjectives">
+						<span ng-switch-when="feminine">Женский</span>
+						<span ng-switch-when="masculine">Мужской</span>
+						<span ng-switch-when="neuter">Средний</span>
+					</span>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
 						Разновидности
 					</div>
 					<div class="param-value">
-						<span ng-if="category.has_colors">
-							У товаров категории есть разновидности по цветам
-						</span>
-						<span ng-if="!category.has_colors">
-							У товаров категории нет разновидностей по цветам
+						<span ng-switch on="category.variations">
+							<span ng-switch-when="colors">У товаров категории есть разновидности по цветам</span>
+							<span ng-switch-when="grades">У товаров категории есть разновидности по марке бетона</span>
+							<span ng-switch-when="">У товаров категории нет разновидностей</span>
 						</span>
 					</div>
 				</div>

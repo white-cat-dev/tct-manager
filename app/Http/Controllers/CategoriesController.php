@@ -50,7 +50,7 @@ class CategoriesController extends Controller
     {
         if ($request->wantsJson())
         {
-        	$this->validate($request, $this->validationRules);
+            $this->validate($request, $this->validationRules);
 
             $category->update($this->getData($request));
 
@@ -73,15 +73,22 @@ class CategoriesController extends Controller
 
     protected $validationRules = [
         'name' => 'required',
-        'units' => 'required'
+        'units' => 'required',
+        'adjectives' => 'required'
     ];
 
     protected function getData(Request $request)
     {
+        $variation = $request->get('variations', '');
+        if ($variation === null)
+        {
+            $variation = '';
+        }
         return [
             'name' => $request->get('name', ''),
             'units' => $request->get('units', 'area'),
-            'has_colors' => $request->get('has_colors', false)
+            'variations' => $variation,
+            'adjectives' => $request->get('adjectives', 'feminine')
         ];
     }
 }

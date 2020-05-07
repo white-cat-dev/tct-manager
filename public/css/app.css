@@ -12131,6 +12131,12 @@ footer {
   font-weight: 500;
 }
 
+.edit-form-block .params-section {
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: solid 1px #dadada;
+}
+
 .show-block {
   border-radius: 5px;
   box-shadow: 0px 0px 5px #dadada;
@@ -12510,12 +12516,13 @@ footer {
   border-left: solid 1px #dadada;
 }
 
-.production-page .production-block .productions-block .table th.current {
-  background: #aeecc7;
+.production-page .production-block .productions-block .table th:hover,
+.production-page .production-block .productions-block .table th.hover {
+  background: #ebebeb;
 }
 
-.production-page .production-block .productions-block .table th:hover {
-  background: #fbfbfb;
+.production-page .production-block .productions-block .table th.current {
+  background: #dae9f5;
 }
 
 .production-page .production-block .productions-block .table td {
@@ -12528,39 +12535,29 @@ footer {
   border-top: solid 1px #dadada;
 }
 
-.production-page .production-block .productions-block .table td.current {
-  background: #c3f1d5;
-}
-
-.production-page .production-block .productions-block .table td.done .production-planned {
-  color: #28a65b;
-}
-
-.production-page .production-block .productions-block .table td.failed .production-planned {
-  color: #dc3545;
-}
-
 .production-page .production-block .productions-block .table td:hover,
 .production-page .production-block .productions-block .table td.hover {
-  background: #fbfbfb;
+  background: #f6f6f6;
+}
+
+.production-page .production-block .productions-block .table td.current {
+  background: #f2f7fc;
 }
 
 .production-page .production-block .productions-block .table td .production {
   width: 50px;
   height: 49px;
   padding: 12px 0px;
-  border: solid 2px #FFFFFF;
-  border-radius: 2px;
+  border: solid 1px #FFFFFF;
   font-size: 14px;
   position: relative;
-  color: #000000;
-}
-
-.production-page .production-block .productions-block .table td .production.marked {
-  color: #FFFFFF;
 }
 
 .production-page .production-block .productions-block .table td .production.marked .production-planned {
+  color: #FFFFFF;
+}
+
+.production-page .production-block .productions-block .table td .production.marked .production-performed {
   color: #FFFFFF;
 }
 
@@ -12574,6 +12571,7 @@ footer {
 
 .production-page .production-block .productions-block .table td .production .production-performed {
   font-weight: 500;
+  color: #276090;
 }
 
 .production-page .production-block .productions-block .table td .production .production-performed:before {
@@ -12581,64 +12579,102 @@ footer {
   width: 40px;
   height: 39px;
   border-radius: 50%;
-  top: 3px;
-  left: 3px;
-  border: solid 1px #cdcdcd;
+  top: 4px;
+  left: 4px;
+  border: solid 1px #276090;
   position: absolute;
-  transition: 0.3s;
+}
+
+.production-page .production-modal .modal-dialog {
+  max-width: 600px;
 }
 
 .production-page .production-modal .modal-title {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
   color: #343434;
 }
 
-.production-page .production-modal .order-block {
-  margin-bottom: 15px;
+.production-page .production-modal .table {
+  margin-top: 15px;
 }
 
-.production-page .production-modal .order-block .order-name {
-  font-size: 20px;
-  margin-bottom: 0px;
-  color: #276090;
-}
-
-.production-page .production-modal .order-block .table {
-  margin-bottom: 0px;
-}
-
-.production-page .production-modal .order-block .table th {
-  font-size: 14px;
-}
-
-.production-page .production-modal .order-block .table td {
-  text-align: left;
-  border-color: #dadada;
-  width: 30%;
-}
-
-.production-page .production-modal .order-block .table td:first-child {
-  width: 40%;
-}
-
-.production-page .production-modal .order-block .table td .form-control {
-  width: 70px;
-  display: inline-block;
-  margin-right: 5px;
-}
-
-.production-page .production-modal .order-block .product-name {
-  font-size: 14px;
-}
-
-.production-page .production-modal .order-block .product-size {
+.production-page .production-modal .table th,
+.production-page .production-modal .table td {
+  border: solid 1px #dadada;
+  padding: 10px;
   font-size: 12px;
 }
 
-.production-page .production-modal .order-block .product-color {
+.production-page .production-modal .table th {
+  text-align: center;
+}
+
+.production-page .production-modal .table .product-name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.production-page .production-modal .table .product-color {
   color: #9a9a9a;
+}
+
+.production-page .production-modal .table .order-name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.production-page .production-modal .table .order-date {
+  color: #9a9a9a;
+}
+
+.production-page .production-modal .table .form-control {
+  border-color: transparent;
+}
+
+.production-page .production-modal .table .form-control:focus {
+  border-color: #276090;
+}
+
+.production-page .production-modal .table .form-control.form-control-sm {
+  width: 60px;
+  padding: 3px 7px;
+  font-size: 14px;
+}
+
+.production-page .production-modal .table .ui-select-container {
+  border: none;
+}
+
+.production-page .production-modal .table .ui-select-container .btn {
+  border: none;
+  padding: 3px 7px;
   font-size: 12px;
+}
+
+.production-page .production-modal .table .ui-select-container .btn:focus {
+  box-shadow: none;
+}
+
+.production-page .production-modal .table .ui-select-container .btn-default-focus {
+  box-shadow: none;
+  background: #FFFFFF;
+  outline: none;
+}
+
+.production-page .production-modal .table .ui-select-container .form-control {
+  padding: 3px 7px;
+  font-size: 12px;
+}
+
+.production-page .production-modal .table .ui-select-container .dropdown-menu {
+  font-size: 12px;
+  padding: 3px 0px;
+}
+
+.production-page .production-modal .table .ui-select-container .dropdown-menu .ui-select-choices-row-inner {
+  padding: 3px 7px;
+  white-space: unset;
 }
 
 .production-page .production-orders {
@@ -13216,6 +13252,7 @@ footer {
   position: absolute;
   top: 0;
   right: 0;
+  margin: 0;
 }
 
 .employments-page .employment-statuses .statuses-label {

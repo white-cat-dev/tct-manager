@@ -127,7 +127,7 @@
 			</div>
 
 			<div class="col-6">
-				<div class="params-title">
+				{{-- <div class="params-title">
 					Список работников
 				</div>
 
@@ -183,7 +183,10 @@
 
 				<button type="button" class="btn btn-primary" ng-click="showAddWorker()" ng-if="!isAddWorkerShown">
 					<i class="fas fa-plus"></i> Добавить работника в цех	
-				</button>
+				</button> --}}
+
+				<color-picker ng-model="facility.icon_color">
+					</color-picker>
 			</div>
 		</div>
 

@@ -45,7 +45,11 @@
 				</span>
 			</td>
 			<td>
-				@{{ category.has_colors ? 'Есть разновидности по цветам' : 'Нет разновидностей'}}
+				<span ng-switch on="category.variations">
+					<span ng-switch-when="colors">Разновидности по цветам</span>
+					<span ng-switch-when="grades">Разновидности по марке бетона</span>
+					<span ng-switch-when="">Нет разновидностей</span>
+				</span>
 			</td>
 			<td>
 				<div class="btn-group" role="group">
