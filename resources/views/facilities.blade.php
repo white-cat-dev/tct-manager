@@ -9,7 +9,8 @@
 				<input type="text" class="form-control" placeholder="Введите запрос для поиска..." ng-model="tempSearchQuery">
 				<div class="input-group-append">
 			    	<button class="btn btn-primary" type="button" ng-click="searchQuery = tempSearchQuery">
-			    		<i class="fas fa-search"></i> Поиск
+			    		<i class="fas fa-search"></i> 
+			    		<span class="d-none d-inline-md">Поиск</span>
 			    	</button>
 			 	</div>
 			</div>
@@ -72,35 +73,6 @@
 								@{{ facility.performance }} замесов в день
 							</div>
 						</div>
-					</div>
-				</div>
-
-				<div class="facility-params">
-					<div class="param-name">
-						Список работников
-					</div>
-
-					<table class="table" ng-if="facility.workers.length > 0">
-						<tr>
-							<th>№</th>
-							<th>Имя</th>
-							<th>Текущий статус</th>
-						</tr>
-						<tr ng-repeat="worker in facility.workers">
-							<td>
-								@{{ $index + 1 }}
-							</td>
-							<td>
-								@{{ worker.name }}
-							</td>
-							<td>
-								@{{ worker.status_text }}
-							</td>
-						</tr>
-					</table>
-
-					<div ng-if="facility.workers.length == 0">
-						Нет работников
 					</div>
 				</div>
 

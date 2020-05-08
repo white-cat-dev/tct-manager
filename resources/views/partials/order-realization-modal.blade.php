@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<div class="modal-title">
-					Выдача заказа №@{{ modalOrder.id }}
+					Выдача заказа №@{{ modalOrder.number }}
 				</div>
 				<button type="button" class="close" ng-click="hideRealizationModal()">
 					<i class="fas fa-times"></i>
@@ -17,16 +17,12 @@
 						<th>Выдано</th>
 					</tr>
 
-					<tr ng-repeat="realization in modalOrder.realizations">
+					<tr ng-repeat="realization in modalOrder.realizations" ng-if="!realization.date">
 						<td>
-							<div class="product-name">
-								@{{ realization.product.product_group.name }}
-							</div> 
-							<div class="product-size">
-								@{{ realization.product.product_group.size }} мм
-							</div>
-							<div class="product-color" ng-if="realization.product.color_text">
-								@{{ realization.product.color_text }} цвет
+							@{{ realization.product.product_group.name }}
+							@{{ realization.product.product_group.size }}
+							<div class="product-color" ng-if="realization.product.variation_noun_text">
+								@{{ realization.product.variation_noun_text }}
 							</div>
 						</td>
 						<td>

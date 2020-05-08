@@ -13,7 +13,7 @@ class Order extends Model
     const STATUS_READY = 1;
     const STATUS_NEW = 2;
     const STATUS_PAUSED = 3;
-    const STATUS_FINISHED = 3;
+    const STATUS_FINISHED = 4;
 
     protected $fillable = [
         'date',
@@ -44,7 +44,7 @@ class Order extends Model
     ];
 
     protected static $statuses = [
-        0 => 'В производстве',
+        0 => 'В работе',
         1 => 'Готов к выдаче',
         2 => 'Новый',
         3 => 'Приостановлен',

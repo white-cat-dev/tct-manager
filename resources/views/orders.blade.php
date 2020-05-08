@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-4" ng-repeat="order in orders | filter: searchQuery">
+		<div class="col-12 col-md-6 col-lg-4" ng-repeat="order in orders | filter: searchQuery">
 			<div class="order-block">
 				<div class="btn-group" role="group">
 					<a ng-href="@{{ order.url }}" class="btn btn-primary btn-sm">
@@ -38,7 +38,8 @@
 				</div>
 
 				<div class="order-title">
-					Заказ №@{{ order.id }}
+					Заказ №@{{ order.number }}
+					<div class="order-date">@{{ order.formatted_date }}</div>
 				</div>
 				<div class="row align-items-center">
 					<div class="col-5">
@@ -65,9 +66,9 @@
 								Данные клиента
 							</div>
 							<div class="param-value">
-								@{{ order.client.name }} <br>
-								@{{ order.client.phone }} <br>
-								@{{ order.client.email }}
+								<div ng-if="order.client.name">@{{ order.client.name }}</div>
+								<div ng-if="order.client.phone">@{{ order.client.phone }}</div>
+								<div ng-if="order.client.email">@{{ order.client.email }}</div>
 							</div>
 						</div>
 					</div>
@@ -88,7 +89,7 @@
 							<td>
 								<div>@{{ product.product_group.name }}</div>
 								<div>@{{ product.product_group.size }}</div>
-								<div class="product-color">@{{ product.color_text }}</div>
+								<div class="product-color">@{{ product.variation_noun_text }}</div>
 							</td>
 							<td>
 								@{{ product.progress.total }}
@@ -124,8 +125,8 @@
 						<i class="fas fa-cog"></i> Доступные действия
 					</button>
 					<div class="dropdown-menu" aria-labelledby="actionsButton">
-						<button type="button" class="btn-sm dropdown-item" ng-click="showRealizationModal()">
-							Добавить выдачу
+						<button type="button" class="btn-sm dropdown-item" ng-click="showRealizationModal(order)">
+							Отпустить заказ
 						</button>
 					</div>
 				</div>

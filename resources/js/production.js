@@ -133,6 +133,8 @@ angular.module('tctApp').controller('ProductionController', [
 					var newOrder = angular.copy(order);
 
 					newOrder.production = newOrder.productions[day];
+					newOrder.baseProduction = newOrder.productions[0];
+					newOrder.productions = [];
 
 					newProduct.orders.push(newOrder);
 				}
@@ -163,11 +165,11 @@ angular.module('tctApp').controller('ProductionController', [
 	{
 		ProductionRepository.save({'products': $scope.modalProductionProducts}, function(response) 
 		{
-			$scope.successAlert = 'Все изменения успешно сохранены!';
-			$scope.showAlert = true;
+			$scope.successTopAlert = 'Все изменения успешно сохранены!';
+			$scope.showTopAlert = true;
 
 			$timeout(function() {
-				$scope.showAlert = false;
+				$scope.showTopAlert = false;
 			}, 2000);
 
 
@@ -246,8 +248,8 @@ angular.module('tctApp').controller('ProductionController', [
 	$scope.chooseProduct = function(product)
 	{
 		$scope.newProduct.id = product.id;
-		$scope.newProduct.color = product.color;
-		$scope.newProduct.color_text = product.color_text;
+		$scope.newProduct.variation = product.variation;
+		$scope.newProduct.variation_noun_text = product.variation_noun_text;
 	}
 	
 
@@ -266,5 +268,87 @@ angular.module('tctApp').controller('ProductionController', [
 		$scope.newProduct = {};
 		$scope.isAddProductShown = false;
 		console.log($scope.modalProductionProducts);
+	}
+
+
+	
+	$scope.chosenModalType = 'perform';
+
+	$scope.chosenModalFacility = 0;
+
+	$scope.chooseModalType = function(type)
+	{
+		$scope.chosenModalType = type;
+		$scope.chosenModalFacility = 0;
+	}
+
+
+
+	$scope.updateProductionPlanned = function(product)
+	{
+		product.production.planned = 0;
+		for (order of product.orders)
+		{
+			product.production.planned += +order.production.planned;
+		}
+	}
+
+	$scope.updateProductionPerformed = function(product)
+	{
+		product.production.performed = 0;
+		for (order of product.orders)
+		{
+			product.production.performed += +order.production.performed;
+		}
+	}
+
+
+	$scope.updateOrderProductionsPerformed = function(product)
+	{
+		performed = product.production.performed;
+
+		for (order of product.orders)
+		{
+			if (order.production.planned > performed)
+			{
+				order.production.performed = performed;
+			}
+			else
+			{
+				order.production.performed = order.production.planned;
+			}
+			
+			performed -= order.production.performed;
+		}
+
+		if (performed > 0)
+		{
+			if (product.orders[product.orders.length - 1].id == 0)
+			{
+				product.orders[product.orders.length - 1].production.performed = performed;
+			}
+			else
+			{
+				product.orders.push({
+					'id': 0,
+					'production': {
+						'facility_id': product.production.facility_id,
+						'order_id': 0,
+						'category_id': product.category_id,
+						'product_id': product.id,
+						'planned': 0,
+						'performed': performed
+					}
+				});
+			}
+		}
+	}
+
+	$scope.updateOrderProductionsFacility = function(product)
+	{
+		for (order of product.orders)
+		{
+			order.production.facility_id = product.production.facility_id;
+		}
 	}
 }]);

@@ -10,21 +10,25 @@ class Production extends Model
 {
     protected $fillable = [
     	'date',
+        'category_id',
     	'product_id',
     	'order_id',
         'facility_id',
-    	'planned',
+        'auto_planned',
+        'manual_planned',
     	'performed',
         'batches'
     ];
 
     protected $appends = [
         'day',
-        'formatted_date'
+        'formatted_date',
+        'planned'
     ];
 
     protected $casts = [
-        'planned' => 'float',
+        'auto_planned' => 'float',
+        'manual_planned' => 'float',
         'performed' => 'float'
     ];
 
@@ -54,5 +58,18 @@ class Production extends Model
     public function getFormattedDateAttribute()
     {
         return Carbon::createFromDate($this->date)->format('d.m.Y');
+    }
+
+
+    public function getPlannedAttribute()
+    {
+        if (!empty($this->manual_planned))
+        {
+            return $this->manual_planned;
+        }
+        else 
+        {
+            return $this->auto_planned;
+        }
     }
 }

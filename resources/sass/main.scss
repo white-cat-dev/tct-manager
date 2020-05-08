@@ -2,6 +2,11 @@
 	border-radius: 0px !important;
 }
 
+button:focus {
+	outline: none !important;
+}
+
+
 h1 {
 	font-size: 32px;
 	border-bottom: solid 1px darken($grey, 10%);
@@ -150,9 +155,14 @@ footer {
     z-index: 10;
     justify-content: space-between;
 
+    @include media-breakpoint-down(sm) {
+		display: block;
+	}
+
     .input-group {
     	&.search-group {
     		width: 350px;
+    		max-width: 100%;
     	}
 
     	&.date-group {
@@ -173,6 +183,10 @@ footer {
 	.left-buttons {
 		display: flex;
 
+		@include media-breakpoint-down(sm) {
+			display: block;
+		}
+
 		& > .btn, 
 		& > div {
 			margin-right: 10px;
@@ -184,6 +198,12 @@ footer {
 
 		& > .btn {
 			margin-left: 10px;
+
+			@include media-breakpoint-down(sm) {
+				margin-left: 0px;
+				margin-right: 10px;
+				margin-top: 20px;
+			}
 		}
 	}
 }

@@ -23,14 +23,13 @@ class OrdersController extends Controller
         if ($request->wantsJson())
         {
             $status = $request->get('status', '');
+
+            $query = Order::with('realizations', 'realizations.product');
             if ($status == 'productions')
             {
-                $orders = Order::where('status', Order::STATUS_PRODUCTION)->get();
+                $query = $query->where('status', Order::STATUS_PRODUCTION);
             }
-            else
-            {
-                $orders = Order::all();
-            }
+            $orders = $query->get();
 
             foreach ($orders as $order) 
             {
@@ -75,7 +74,7 @@ class OrdersController extends Controller
 
             $orderData = $this->getData($request);
             
-            $client = Client::create($request->get('client'));
+            $client = Client::create($this->getClientData($request->get('client')));
             $orderData['client_id'] = $client->id;
 
             $order = Order::create($orderData);
@@ -160,14 +159,21 @@ class OrdersController extends Controller
 
         foreach ($realizationsData as $realizationData) 
         {
-            $realization = Realization::find($realizationData['id']);
+            $realization = Realization::where('id', $realizationData['id'])->with('order', 'product')->first();
 
             if ($realization)
             {
+                if ($realization->date)
+                {
+                    continue;
+                }
+
+                $order = $realization->order;
+
                 $performed = (float)$realizationData['performed'];
                 $planned = $realization->planned - $performed;
 
-                $product = $realization->product->update([
+                $realization->product->update([
                     'in_stock' => $realization->product->in_stock - $performed
                 ]);
 
@@ -177,13 +183,27 @@ class OrdersController extends Controller
                     'performed' => $performed
                 ]);
 
-                $newRealization = Realization::create([
-                    'date' => date('Y-m-d'),
-                    'product_id' => $realization->product_id,
-                    'order_id' => $realization->order_id,
-                    'planned' => $planned,
-                    'performed' => 0
-                ]);
+                if ($planned > 0)
+                {
+                    $baseRealization = Realization::create([
+                        'date' => null,
+                        'category_id' => $realization->product->id,
+                        'product_id' => $realization->product_id,
+                        'order_id' => $realization->order_id,
+                        'planned' => $planned,
+                        'performed' => 0
+                    ]);
+                }
+                else 
+                {
+                    $baseProductions = $realization->order->productions()->whereNull('date')->get();
+                    if ($baseProductions->count() == 0) 
+                    {
+                        $order->update([
+                            'status' => Order::STATUS_FINISHED
+                        ]);
+                    }
+                }
             }
         }
     }
@@ -210,7 +230,7 @@ class OrdersController extends Controller
                 ->whereMonth('date', date('m'))
                 ->count() + 1;
 
-            $number = Carbon::createFromDate($date)->format('d') . '-' .  str_pad($number, 3, '0', STR_PAD_LEFT);
+            $number = Carbon::createFromDate($date)->format('m') . '-' .  str_pad($number, 3, '0', STR_PAD_LEFT);
         }
 
 
@@ -224,6 +244,16 @@ class OrdersController extends Controller
             'cost' => $request->get('cost', 0),
             'weight' => $request->get('weight', 0),
             'pallets' => $request->get('pallets', 0)
+        ];
+    }
+
+
+    protected function getClientData($data)
+    {
+        return [
+            'name' => !empty($data['name']) ? $data['name'] : '',
+            'phone' => !empty($data['phone']) ? $data['phone'] : '',
+            'email' => !empty($data['email']) ? $data['email'] : ''
         ];
     }
 }

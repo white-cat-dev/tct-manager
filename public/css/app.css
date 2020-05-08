@@ -11910,6 +11910,10 @@ body > .ui-select-bootstrap.open {
   border-radius: 0px !important;
 }
 
+button:focus {
+  outline: none !important;
+}
+
 h1 {
   font-size: 32px;
   border-bottom: solid 1px #dadada;
@@ -12053,8 +12057,15 @@ footer {
   justify-content: space-between;
 }
 
+@media (max-width: 767.98px) {
+  .top-buttons-block {
+    display: block;
+  }
+}
+
 .top-buttons-block .input-group.search-group {
   width: 350px;
+  max-width: 100%;
 }
 
 .top-buttons-block .input-group.date-group {
@@ -12075,6 +12086,12 @@ footer {
   display: flex;
 }
 
+@media (max-width: 767.98px) {
+  .top-buttons-block .left-buttons {
+    display: block;
+  }
+}
+
 .top-buttons-block .left-buttons > .btn,
 .top-buttons-block .left-buttons > div {
   margin-right: 10px;
@@ -12086,6 +12103,14 @@ footer {
 
 .top-buttons-block .right-buttons > .btn {
   margin-left: 10px;
+}
+
+@media (max-width: 767.98px) {
+  .top-buttons-block .right-buttons > .btn {
+    margin-left: 0px;
+    margin-right: 10px;
+    margin-top: 20px;
+  }
 }
 
 .edit-form-block {
@@ -12482,6 +12507,12 @@ footer {
   text-align: center;
 }
 
+@media (max-width: 767.98px) {
+  .production-page .production-block .products-block .table td {
+    height: 65px;
+  }
+}
+
 .production-page .production-block .products-block .table td .product-color {
   color: #9a9a9a;
 }
@@ -12535,6 +12566,12 @@ footer {
   border-top: solid 1px #dadada;
 }
 
+@media (max-width: 767.98px) {
+  .production-page .production-block .productions-block .table td {
+    height: 65px;
+  }
+}
+
 .production-page .production-block .productions-block .table td:hover,
 .production-page .production-block .productions-block .table td.hover {
   background: #f6f6f6;
@@ -12551,6 +12588,13 @@ footer {
   border: solid 1px #FFFFFF;
   font-size: 14px;
   position: relative;
+}
+
+@media (max-width: 767.98px) {
+  .production-page .production-block .productions-block .table td .production {
+    height: 64px;
+    padding: 17px 0px;
+  }
 }
 
 .production-page .production-block .productions-block .table td .production.marked .production-planned {
@@ -12585,6 +12629,16 @@ footer {
   position: absolute;
 }
 
+@media (max-width: 767.98px) {
+  .production-page .production-modal .nav-item {
+    width: 50%;
+  }
+
+  .production-page .production-modal .nav-item .nav-link {
+    width: 100%;
+  }
+}
+
 .production-page .production-modal .modal-dialog {
   max-width: 600px;
 }
@@ -12602,17 +12656,12 @@ footer {
 .production-page .production-modal .table th,
 .production-page .production-modal .table td {
   border: solid 1px #dadada;
-  padding: 10px;
+  padding: 5px 10px;
   font-size: 12px;
 }
 
 .production-page .production-modal .table th {
   text-align: center;
-}
-
-.production-page .production-modal .table .product-name {
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 .production-page .production-modal .table .product-color {
@@ -12629,16 +12678,20 @@ footer {
 }
 
 .production-page .production-modal .table .form-control {
-  border-color: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0px;
+  width: 100%;
+  height: auto;
+  border-bottom: solid 1px transparent;
 }
 
 .production-page .production-modal .table .form-control:focus {
-  border-color: #276090;
+  border-bottom: solid 1px #276090;
 }
 
-.production-page .production-modal .table .form-control.form-control-sm {
-  width: 60px;
-  padding: 3px 7px;
+.production-page .production-modal .table .form-control.form-control-num {
+  text-align: center;
   font-size: 14px;
 }
 
@@ -12896,8 +12949,14 @@ footer {
 
 .orders-page .order-block .order-title {
   font-weight: 500;
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.orders-page .order-block .order-title .order-date {
+  font-weight: normal;
+  font-size: 14px;
+  color: #9a9a9a;
 }
 
 .orders-page .order-block .order-icon {
@@ -12927,6 +12986,7 @@ footer {
   color: #9a9a9a;
   font-size: 14px;
   margin-bottom: 10px;
+  white-space: nowrap;
 }
 
 .orders-page .order-block .order-params {

@@ -113,8 +113,14 @@
 
 		.order-title {
 			font-weight: 500;
-			font-size: 20px;
-			margin-bottom: 20px;
+			font-size: 18px;
+			margin-bottom: 15px;
+
+			.order-date {
+				font-weight: normal;
+				font-size: 14px;
+				color: darken($grey, 35%);
+			}
 		}
 
 		.order-icon {
@@ -142,6 +148,7 @@
 		    color: darken($grey, 35%);
 		    font-size: 14px;
 		    margin-bottom: 10px;
+		    white-space: nowrap;
 		}
 
 		.order-params {

@@ -61,26 +61,26 @@
 	</div>
 
 	<div class="row">
-		<div class="col-9">
+		<div class="col-12 col-md-9">
 			<div class="production-block" ng-if="productionProducts.length > 0">
 				<div class="products-block">
 					<table class="table">
 						<tr>
 							<th>Продукт</th>
-							<th>Склад</th>
-							<th>План</th>
+							<th class="d-none d-md-table-cell">Склад</th>
+							<th class="d-none d-md-table-cell">План</th>
 						</tr>
 						<tr ng-repeat="product in productionProducts">
 							<td>
 								<div class="product-name">
-									@{{ product.product_group.name }}
+									@{{ product.product_group.name }}<br class="d-block d-md-none">
 									@{{ product.product_group.size }}
 								</div>
-								<div class="product-color" ng-if="product.color_noun_text">
-									@{{ product.color_noun_text }}
+								<div class="product-color" ng-if="product.variation_noun_text">
+									@{{ product.variation_noun_text }}
 								</div>
 							</td>
-							<td>
+							<td class="d-none d-md-table-cell">
 								@{{ product.in_stock }}
 								<span ng-switch on="product.category.units">
 									<span ng-switch-when="area">м<sup>2</sup></span>
@@ -88,7 +88,7 @@
 									<span ng-switch-when="unit">шт.</span>
 								</span>
 							</td>
-							<td>
+							<td class="d-none d-md-table-cell">
 								@{{ product.productions[0] ? product.productions[0].planned : 0 }}
 								<span ng-switch on="product.category.units">
 									<span ng-switch-when="area">м<sup>2</sup></span>
@@ -136,7 +136,7 @@
 			</div>
 		</div>
 
-		<div class="col-3">
+		<div class="col-12 col-md-3">
 			<div class="production-orders">
 				<div class="orders-title">
 					Текущие заказы
@@ -157,8 +157,8 @@
 							<td>
 								@{{ product.product_group.name }}
 								@{{ product.product_group.size }}
-								<div class="product-color" ng-if ="product.color_noun_text">
-									@{{ product.color_noun_text }}
+								<div class="product-color" ng-if ="product.variation_noun_text">
+									@{{ product.variation_noun_text }}
 								</div>
 							</td>
 							<td>
@@ -189,7 +189,9 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<div class="modal-title">
-						План производства на @{{ modalDate | date: 'dd.MM.yyyy' }}
+						План 
+						<span class="d-none d-md-inline">производства</span>
+						на @{{ modalDate | date: 'dd.MM.yyyy' }}
 					</div>
 					<button type="button" class="close" ng-click="hideModal()">
 						<i class="fas fa-times"></i>
@@ -197,132 +199,151 @@
 				</div>
 
 				<div class="modal-body">
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" ng-model="isOrdersShown" id="checkbox">
-						<label class="custom-control-label" for="checkbox">
-							Разделить по заказам
-						</label>
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<button type="button" class="nav-link btn-sm" ng-click="chooseModalType('perform')" ng-class="{'active': chosenModalType == 'perform'}">
+								Выполнение
+							</button>
+						</li>
+						<li class="nav-item">
+							<button type="button" class="nav-link btn-sm" ng-click="chooseModalType('plan')" ng-class="{'active': chosenModalType == 'plan'}">
+								Планирование
+							</button>
+						</li>
+					</ul>
+
+					{{-- <div ng-if="chosenModalType == 'perform'">
+						@{{chosenModalFacility}}
+						<div class="custom-control custom-radio">
+							<input class="custom-control-input" type="radio" ng-model="chosenModalFacility" id="facilityRadio0" value="0">
+							<label class="custom-control-label" for="facilityRadio0">
+								Все цехи
+							</label>
+						</div>
+
+						<div class="custom-control custom-radio" ng-repeat="facility in facilities">
+							<input class="custom-control-input" type="radio" ng-model="chosenModalFacility" id="facilityRadio@{{ facility.id }}" value="@{{ facility.id }}">
+							<label class="custom-control-label" for="facilityRadio@{{ facility.id }}">
+								@{{ facility.name }}
+							</label>
+						</div>
+					</div> --}}
+
+					<div class="table-responsive" ng-if="chosenModalType == 'perform'">	
+						<table class="table">
+							<tr>
+								<th>Продукт</th>
+								<th>План</th>
+								<th>Готово</th>
+							</tr>
+
+						    <tr ng-repeat="product in modalProductionProducts track by $index" ng-if="!chosenModalFacility || chosenModalFacility == product.production.facility_id">
+						        <td style="width: 50%;">
+						        	<div class="product-name">
+						        		@{{ product.product_group.name }}
+										@{{ product.product_group.size }}
+						        	</div>
+									<div class="product-color" ng-if="product.variation_noun_text">
+										@{{ product.variation_noun_text }}
+									</div>
+						        </td>
+
+						        <td style="width: 25%; text-align: center;">
+									@{{ product.production.planned }}
+									<span ng-switch on="product.category.units">
+										<span ng-switch-when="area">м<sup>2</sup></span>
+										<span ng-switch-when="volume">м<sup>3</sup></span>
+										<span ng-switch-when="unit">шт.</span>
+									</span>
+								</td>
+
+								<td style="width: 25%;">
+									<input type="text" class="form-control form-control-num" ng-model="product.production.performed" ng-change="updateOrderProductionsPerformed(product)"> 
+								</td>
+						    </tr>
+						</table>
 					</div>
 
-					<table class="table" ng-if="!isOrdersShown">
-						<tr>
-							<th>Продукт</th>
-							<th>Цех</th>
-							<th>План</th>
-							<th>Готово</th>
-						</tr>
+					<div class="table-responsive" ng-if="chosenModalType == 'plan'">	
+						<table class="table">
+							<tr>
+								<th>Продукт</th>
+								<th>Цех</th>
+								<th>Заказ</th>
+								<th>План</th>
+								<th>Готово</th>
+							</tr>
 
-					    <tr ng-repeat="product in modalProductionProducts track by $index">
-					        <td style="width: 25%;">
-					        	<div class="product-name">
-					        		@{{ product.product_group.name }}
-									@{{ product.product_group.size }}
-					        	</div>
-								<div class="product-color" ng-if="product.color_noun_text">
-									@{{ product.color_noun_text }}
-								</div>
-					        </td>
+						    <tr ng-repeat-start="product in modalProductionProducts track by $index">
+						        <td rowspan="@{{ product.orders.length}}" style="width: 25%;">
+						        	<div class="product-name">
+						        		@{{ product.product_group.name }}<br class="d-block d-md-none">
+										@{{ product.product_group.size }}
+						        	</div>
+									<div class="product-color" ng-if="product.variation_noun_text">
+										@{{ product.variation_noun_text }}
+									</div>
+						        </td>
 
-					        <td style="width: 26%">
-					        	{{-- <div class="custom-control custom-radio" ng-repeat="facility in getCategoryFacilities(product.category_id)">
-									<input class="custom-control-input" ng-model="product.orders[0].productions[0].facility_id" id="radio@{{ product.id }}@{{ facility.id }}" name="radio@{{ product.id }}" value="@{{ facility.id }}">
-									<label class="custom-control-label" for="radio@{{ product.id }}@{{ facility.id }}">@{{ facility.name }}</label>
-								</div> --}}
+						        <td style="width: 25%" rowspan="@{{ product.orders.length}}">
+						        	<span ng-repeat="facility in facilities" ng-if=>
+						        		@{{ facility.name }}
+						        	</span>
+						        	<ui-select theme="bootstrap" ng-model="product.production.facility_id" ng-change="updateOrderProductionsFacility(product)">
+							            <ui-select-match placeholder="Выберите цех">
+								            <span ng-if="$select.selected.name" ng-bind-html="$select.selected.name"></span>
+								            <span ng-if="!$select.selected.name">Цех не выбран</span>
+								        </ui-select-match>
+							            <ui-select-choices repeat="facility.id as facility in getCategoryFacilities(product.category.id)">
+							                <span ng-bind-html="facility.name"></span>
+							            </ui-select-choices>
+									</ui-select>
+						        </td>
 
-								<ui-select theme="bootstrap" ng-model="product.production.facility_id">
-						            <ui-select-match placeholder="Выберите цех">
-							            <span ng-if="$select.selected.name" ng-bind-html="$select.selected.name"></span>
-							            <span ng-if="!$select.selected.name">Цех не выбран</span>
-							        </ui-select-match>
-						            <ui-select-choices repeat="facility.id as facility in getCategoryFacilities(product.category_id)">
-						                <span ng-bind-html="facility.name"></span>
-						            </ui-select-choices>
-								</ui-select>
-					        </td>
+						        <td style="width: 25%;">
+						        	<div class="order-name" ng-if="product.orders[0].id">
+						        		Заказ №@{{ product.orders[0].number }}
+						        	</div>
+						        	<div class="order-date" ng-if="product.orders[0].id">
+										@{{ product.orders[0].formatted_date }}
+									</div>
+									<div class="order-name" ng-if="!product.orders[0].id">
+						        		Без заказа
+						        	</div>
+						        </td>
 
-					        <td style="width: 15%">
-								<input type="text" class="form-control form-control-sm" ng-model="product.production.planned"> 
-							</td>
+						        <td style="width: 12%;">
+									<input type="text" class="form-control form-control-num" ng-model="product.orders[0].production.planned" ng-change="updateProductionPlanned(product)"> 
+								</td>
 
-							<td style="width: 12%;">
-								<input type="text" class="form-control form-control-sm" ng-model="product.production.performed"> 
-							</td>
-					    </tr>
-					</table>
+								<td style="width: 12%;">
+									<input type="text" class="form-control form-control-num" ng-model="product.orders[0].production.performed" ng-change="updateProductionPerformed(product)"> 
+								</td>
+						    </tr>
 
-					<table class="table" ng-if="isOrdersShown">
-						<tr>
-							<th>Продукт</th>
-							<th>Цех</th>
-							<th>Заказ</th>
-							<th>План</th>
-							<th>Готово</th>
-						</tr>
+						    <tr ng-repeat-end ng-repeat="order in product.orders.slice(1)">
+						        <td style="width: 25%;">
+							       <div class="order-name" ng-if="order.id">
+						        		Заказ №@{{ order.number }}
+						        	</div>
+						        	<div class="order-date" ng-if="order.id">
+										@{{ order.formatted_date }}
+									</div>
+									<div class="order-name" ng-if="!order.id">
+						        		Без заказа
+						        	</div>
+							    </td>
 
-					    <tr ng-repeat-start="product in modalProductionProducts track by $index">
-					        <td rowspan="@{{ product.orders.length}}" style="width: 25%; padding-left: 0px;">
-					        	<div class="product-name">
-					        		@{{ product.product_group.name }}
-									@{{ product.product_group.size }}
-					        	</div>
-								<div class="product-color" ng-if="product.color_noun_text">
-									@{{ product.color_noun_text }}
-								</div>
-					        </td>
+							    <td style="width: 12%;">
+									<input type="text" class="form-control form-control-num" ng-model="order.production.planned" ng-change="updateProductionPlanned(product)"> 
+								</td>
 
-					        <td rowspan="@{{ product.orders.length}}" style="width: 26%">
-					        	{{-- <div class="custom-control custom-radio" ng-repeat="facility in getCategoryFacilities(product.category_id)">
-									<input class="custom-control-input" ng-model="product.orders[0].productions[0].facility_id" id="radio@{{ product.id }}@{{ facility.id }}" name="radio@{{ product.id }}" value="@{{ facility.id }}">
-									<label class="custom-control-label" for="radio@{{ product.id }}@{{ facility.id }}">@{{ facility.name }}</label>
-								</div> --}}
-
-								<ui-select theme="bootstrap" ng-model="product.orders[0].production.facility_id">
-						            <ui-select-match placeholder="Выберите цех">
-							            <span ng-if="$select.selected.name" ng-bind-html="$select.selected.name"></span>
-							            <span ng-if="!$select.selected.name">Цех не выбран</span>
-							        </ui-select-match>
-						            <ui-select-choices repeat="facility.id as facility in getCategoryFacilities(product.category_id)">
-						                <span ng-bind-html="facility.name"></span>
-						            </ui-select-choices>
-								</ui-select>
-					        </td>
-
-					        <td style="width: 25%">
-					        	<div class="order-name">
-					        		Заказ №@{{ product.orders[0].number }}
-					        	</div>
-					        	<div class="order-date">
-									@{{ product.orders[0].formatted_date }}
-								</div>
-					        </td>
-
-					        <td style="width: 15%">
-								<input type="text" class="form-control form-control-sm" ng-model="product.orders[0].production.planned"> 
-							</td>
-
-							<td style="width: 12%;">
-								<input type="text" class="form-control form-control-sm" ng-model="product.orders[0].production.performed"> 
-							</td>
-					    </tr>
-					    <tr ng-repeat-end ng-repeat="order in product.orders.slice(1)">
-					        <td>
-						        <div class="order-name">
-						        	Заказ №@{{ order.number }}
-						        </div>
-					        	<div class="order-date">
-									@{{ order.formatted_date }}
-								</div>
-						    </td>
-
-						    <td>
-								<input type="text" class="form-control form-control-sm" ng-model="order.production.planned"> 
-							</td>
-
-							<td>
-								<input type="text" class="form-control form-control-sm" ng-model="order.production.performed"> 
-							</td>
-					    </tr>
-					</table>
+								<td style="width: 12%;">
+									<input type="text" class="form-control form-control-num" ng-model="order.production.performed" ng-change="updateProductionPerformed(product)"> 
+								</td>
+						    </tr>
+						</table>
+					</div>
 
 					<button type="button" class="btn btn-primary btn-sm" ng-click="showAddProduct()" ng-if="!isAddProductShown">
 						<i class="fas fa-plus"></i> Добавить продукт
@@ -340,17 +361,17 @@
 							</ui-select>
 						</div>
 						<div>
-							<span ng-if="newProduct.category && newProduct.category.has_colors">
+							<span ng-if="newProduct.category && newProduct.category.variations">
 								<ui-select theme="bootstrap" ng-model="newProduct.product_id" ng-change="chooseProduct($select.selected)">
-						            <ui-select-match placeholder="Выберите цвет...">
-							            @{{ $select.selected.color_text }}
+						            <ui-select-match placeholder="Выберите...">
+							            @{{ $select.selected.variation_text }}
 							        </ui-select-match>
 						            <ui-select-choices repeat="product.id as product in newProduct.products | filter: $select.search">
-						                <span ng-bind-html="product.color_text | highlight: $select.search"></span>
+						                <span ng-bind-html="product.variation_text | highlight: $select.search"></span>
 						            </ui-select-choices>
 								</ui-select>
 							</span>
-							<span ng-if="newProduct.category && !newProduct.category.has_colors">
+							<span ng-if="newProduct.category && !newProduct.category.variations">
 								—
 							</span>
 						</div>
@@ -360,54 +381,6 @@
 							</button>
 						</div>
 					</div>
-					
-
-					{{-- <div class="order-block" ng-if="modalNoOrderProductions.length > 0">
-						<div class="order-name">
-							Производство без заказов
-						</div>
-
-						<table class="table">
-							<tr>
-								<th>Продукт</th>
-								<th>План</th>
-								<th>Выполнено</th>
-							</tr>
-							<tr ng-repeat="production in modalNoOrderProductions">
-								<td>
-									<div class="product-name">
-										@{{ production.product.product_group.name }}
-									</div> 
-									<div class="product-size">
-										@{{ production.product.product_group.size }} мм
-									</div>
-									<div class="product-color" ng-if="production.product.color_text">
-										@{{ production.product.color_text }} цвет
-									</div>
-								</td>
-								<td>
-									@{{ production.planned }}
-									<span ng-switch on="production.product.category.units">
-										<span ng-switch-when="area">м<sup>2</sup></span>
-										<span ng-switch-when="volume">м<sup>3</sup></span>
-										<span ng-switch-when="unit">шт.</span>
-									</span>
-								</td>
-								<td>
-									<input type="text" class="form-control" ng-model="production.performed"> 
-									<span ng-switch on="production.product.category.units">
-										<span ng-switch-when="area">м<sup>2</sup></span>
-										<span ng-switch-when="volume">м<sup>3</sup></span>
-										<span ng-switch-when="unit">шт.</span>
-									</span>
-								</td>
-							</tr>
-						</table>
-					</div> --}}
-
-					{{-- <button type="button" class="btn btn-primary btn-sm">
-						<i class="fas fa-plus"></i> Производство без заказов
-					</button> --}}
 				</div>
 
 				<div class="modal-footer">

@@ -274,12 +274,19 @@ angular.module('tctApp').controller('OrdersController', [
     {
     	OrdersRepository.saveRealizations({'realizations': $scope.modalOrder.realizations}, function(response) 
 		{
-			$scope.successAlert = 'Все изменения успешно сохранены!';
-			$scope.showAlert = true;
+			$scope.successTopAlert = 'Все изменения успешно сохранены!';
+			$scope.showTopAlert = true;
 
 			$timeout(function() {
-				$scope.showAlert = false;
+				$scope.showTopAlert = false;
 			}, 2000);
+
+
+			if (!$scope.baseUrl)
+			{
+				$scope.init();
+			}
+
 
 			$scope.hideRealizationModal();
 		});

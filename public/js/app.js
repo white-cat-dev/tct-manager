@@ -81007,11 +81007,16 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     OrdersRepository.saveRealizations({
       'realizations': $scope.modalOrder.realizations
     }, function (response) {
-      $scope.successAlert = 'Все изменения успешно сохранены!';
-      $scope.showAlert = true;
+      $scope.successTopAlert = 'Все изменения успешно сохранены!';
+      $scope.showTopAlert = true;
       $timeout(function () {
-        $scope.showAlert = false;
+        $scope.showTopAlert = false;
       }, 2000);
+
+      if (!$scope.baseUrl) {
+        $scope.init();
+      }
+
       $scope.hideRealizationModal();
     });
   };
@@ -81114,6 +81119,8 @@ angular.module('tctApp').controller('ProductionController', ['$scope', '$routePa
             if (order.productions[day]) {
               var newOrder = angular.copy(order);
               newOrder.production = newOrder.productions[day];
+              newOrder.baseProduction = newOrder.productions[0];
+              newOrder.productions = [];
               newProduct.orders.push(newOrder);
             }
           }
@@ -81164,10 +81171,10 @@ angular.module('tctApp').controller('ProductionController', ['$scope', '$routePa
     ProductionRepository.save({
       'products': $scope.modalProductionProducts
     }, function (response) {
-      $scope.successAlert = 'Все изменения успешно сохранены!';
-      $scope.showAlert = true;
+      $scope.successTopAlert = 'Все изменения успешно сохранены!';
+      $scope.showTopAlert = true;
       $timeout(function () {
-        $scope.showAlert = false;
+        $scope.showTopAlert = false;
       }, 2000);
       $scope.hideModal();
       $scope.init();
@@ -81245,8 +81252,8 @@ angular.module('tctApp').controller('ProductionController', ['$scope', '$routePa
 
   $scope.chooseProduct = function (product) {
     $scope.newProduct.id = product.id;
-    $scope.newProduct.color = product.color;
-    $scope.newProduct.color_text = product.color_text;
+    $scope.newProduct.variation = product.variation;
+    $scope.newProduct.variation_noun_text = product.variation_noun_text;
   };
 
   $scope.addProduct = function () {
@@ -81263,6 +81270,146 @@ angular.module('tctApp').controller('ProductionController', ['$scope', '$routePa
     $scope.newProduct = {};
     $scope.isAddProductShown = false;
     console.log($scope.modalProductionProducts);
+  };
+
+  $scope.chosenModalType = 'perform';
+  $scope.chosenModalFacility = 0;
+
+  $scope.chooseModalType = function (type) {
+    $scope.chosenModalType = type;
+    $scope.chosenModalFacility = 0;
+  };
+
+  $scope.updateProductionPlanned = function (product) {
+    product.production.planned = 0;
+    var _iteratorNormalCompletion4 = true;
+    var _didIteratorError4 = false;
+    var _iteratorError4 = undefined;
+
+    try {
+      for (var _iterator4 = product.orders[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+        order = _step4.value;
+        product.production.planned += +order.production.planned;
+      }
+    } catch (err) {
+      _didIteratorError4 = true;
+      _iteratorError4 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+          _iterator4["return"]();
+        }
+      } finally {
+        if (_didIteratorError4) {
+          throw _iteratorError4;
+        }
+      }
+    }
+  };
+
+  $scope.updateProductionPerformed = function (product) {
+    product.production.performed = 0;
+    var _iteratorNormalCompletion5 = true;
+    var _didIteratorError5 = false;
+    var _iteratorError5 = undefined;
+
+    try {
+      for (var _iterator5 = product.orders[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+        order = _step5.value;
+        product.production.performed += +order.production.performed;
+      }
+    } catch (err) {
+      _didIteratorError5 = true;
+      _iteratorError5 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+          _iterator5["return"]();
+        }
+      } finally {
+        if (_didIteratorError5) {
+          throw _iteratorError5;
+        }
+      }
+    }
+  };
+
+  $scope.updateOrderProductionsPerformed = function (product) {
+    performed = product.production.performed;
+    var _iteratorNormalCompletion6 = true;
+    var _didIteratorError6 = false;
+    var _iteratorError6 = undefined;
+
+    try {
+      for (var _iterator6 = product.orders[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+        order = _step6.value;
+
+        if (order.production.planned > performed) {
+          order.production.performed = performed;
+        } else {
+          order.production.performed = order.production.planned;
+        }
+
+        performed -= order.production.performed;
+      }
+    } catch (err) {
+      _didIteratorError6 = true;
+      _iteratorError6 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
+          _iterator6["return"]();
+        }
+      } finally {
+        if (_didIteratorError6) {
+          throw _iteratorError6;
+        }
+      }
+    }
+
+    if (performed > 0) {
+      if (product.orders[product.orders.length - 1].id == 0) {
+        product.orders[product.orders.length - 1].production.performed = performed;
+      } else {
+        product.orders.push({
+          'id': 0,
+          'production': {
+            'facility_id': product.production.facility_id,
+            'order_id': 0,
+            'category_id': product.category_id,
+            'product_id': product.id,
+            'planned': 0,
+            'performed': performed
+          }
+        });
+      }
+    }
+  };
+
+  $scope.updateOrderProductionsFacility = function (product) {
+    var _iteratorNormalCompletion7 = true;
+    var _didIteratorError7 = false;
+    var _iteratorError7 = undefined;
+
+    try {
+      for (var _iterator7 = product.orders[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+        order = _step7.value;
+        order.production.facility_id = product.production.facility_id;
+      }
+    } catch (err) {
+      _didIteratorError7 = true;
+      _iteratorError7 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
+          _iterator7["return"]();
+        }
+      } finally {
+        if (_didIteratorError7) {
+          throw _iteratorError7;
+        }
+      }
+    }
   };
 }]);
 

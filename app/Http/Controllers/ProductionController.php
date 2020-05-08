@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Production;
+use App\Realization;
 use App\Product;
 use App\Order;
 use App\Facility;
@@ -89,7 +90,15 @@ class ProductionController extends Controller
                 }
 
                 $product->productions = $productProductions;
-                $product->orders = $productOrders;
+                $product->orders = $productOrders->sortBy('priority')->sortBy('date');
+
+                if ($ordersIds->contains(0))
+                {
+                    $product->orders->push(new Order([
+                        'id' => 0,
+                        'productions' => $productions->where('order_id', $order->id)->keyBy('day')
+                    ]));
+                }
             }
 
             $days = Carbon::createFromDate($year, $month, 1)->daysInMonth;
@@ -189,48 +198,80 @@ class ProductionController extends Controller
         {
             foreach ($productData['orders'] as $orderData) 
             {
-                foreach ($orderData['productions'] as $productionData) 
+                $productionData = $orderData['production'];
+
+                if (!empty($productionData['id']))
                 {
                     $production = Production::find($productionData['id']);
+                }
 
-                    if ($production)
+                if (!empty($production))
+                {
+                    $performed = $production->performed;
+
+                    $planned = (float)$productionData['planned'];
+                    $manualPlanned = ($planned != $production->auto_planned) ? $planned : $production->manual_planned;
+
+                    $production->update([
+                        'auto_planned' => $planned,
+                        'manual_planned' => $manualPlanned,
+                        'performed' => (float)$productionData['performed'],
+                        'facility_id' => $productionData['facility_id']
+                    ]);
+
+                    $performed = $production->performed - $performed;
+
+                    $product = Product::find($productionData['product_id']);
+                    if ($product)
                     {
-                        $performed = $production->performed;
-
-                        $production->update([
-                            'planned' => (float)$productionData['planned'],
-                            'performed' => (float)$productionData['performed'],
-                            'facility_id' => $productionData['facility_id']
+                        $product->update([
+                            'in_stock' => $product->in_stock + $performed
                         ]);
+                    }
 
-                        $performed = $production->performed - $performed;
+                    $baseProduction = Production::where('order_id', $production->order_id)
+                        ->where('product_id', $production->product_id)
+                        ->whereNull('date')
+                        ->first();
 
-                        $baseProduction = Production::where('order_id', $production->order_id)
-                            ->where('product_id', $production->product_id)
-                            ->whereNull('date')
-                            ->first();
-
-                        $baseProduction->product->update([
-                            'in_stock' => $baseProduction->product->in_stock + $performed
-                        ]);
-
-                        if ($baseProduction->planned <= $performed)
+                    if ($baseProduction)
+                    {
+                        if ($baseProduction->auto_planned <= $performed)
                         {
-                            $baseProduction->delete();
                             $baseProduction->order->update([
                                 'status' => Order::STATUS_READY
                             ]);
+                            $baseProduction->delete();
                         }
                         else
                         {
                             $baseProduction->update([
-                                'planned' => $baseProduction->planned - $performed
+                                'auto_planned' => $baseProduction->auto_planned - $performed
                             ]);
                         }
                     }
-                    else
-                    {
 
+                    $baseRealization = Realization::where('order_id', $production->order_id)
+                        ->where('product_id', $production->product_id)
+                        ->whereNull('date')
+                        ->first();
+
+                    if ($baseRealization)
+                    {
+                        $baseRealization->update([
+                            'planned' => $baseRealization->planned + $performed
+                        ]);
+                    }
+                }
+                else
+                {
+                    $production = Production::create($productionData);
+                    $product = Product::find($productionData['product_id']);
+                    if ($product)
+                    {
+                        $product->update([
+                            'in_stock' => $baseProduction->product->in_stock + $performed
+                        ]);
                     }
                 }
             }

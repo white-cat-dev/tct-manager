@@ -100,7 +100,7 @@
 				<table class="table products-table table-with-buttons" ng-if="order.products.length > 0">
 					<tr>
 						<th>Название</th>
-						<th>Цвет</th>
+						<th>Разновидность</th>
 						<th>Количество</th>
 						<th>В наличии</th>
 						<th>Цена</th>
@@ -120,17 +120,17 @@
 							</ui-select>
 						</td>
 						<td>
-							<span ng-if="product.category && product.category.has_colors">
+							<span ng-if="product.category && product.category.variations">
 								<ui-select theme="bootstrap" ng-model="product.product_id" ng-change="chooseProduct(product, $select.selected)">
-						            <ui-select-match placeholder="Выберите цвет...">
-							            @{{ $select.selected.color_text }}
+						            <ui-select-match placeholder="Выберите...">
+							            @{{ $select.selected.variation_text }}
 							        </ui-select-match>
 						            <ui-select-choices repeat="product.id as product in product.products | filter: $select.search">
-						                <span ng-bind-html="product.color_text | highlight: $select.search"></span>
+						                <span ng-bind-html="product.variation_text | highlight: $select.search"></span>
 						            </ui-select-choices>
 								</ui-select>
 							</span>
-							<span ng-if="product.category && !product.category.has_colors">
+							<span ng-if="product.category && !product.category.variations">
 								—
 							</span>
 						</td>

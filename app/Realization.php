@@ -10,6 +10,7 @@ class Realization extends Model
 {
     protected $fillable = [
     	'date',
+        'category_id',
     	'product_id',
         'order_id',
         'planned',

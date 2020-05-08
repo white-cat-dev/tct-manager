@@ -102,18 +102,16 @@ class Product extends Model
         {
             $progress['total'] = $product->pivot->count;
 
-            foreach ($this->productions->where('order_id', $order->id) as $production) 
-            {
-                $progress['production'] += $production->performed;
-            }
+            $baseProduction = $this->productions()->where('order_id', $order->id)->whereNull('date')->first();
+            $progress['left'] =  $baseProduction ? $baseProduction->auto_planned : 0;
+            
             foreach ($this->realizations->where('order_id', $order->id) as $realization) 
             {
                 $progress['realization'] += $realization->performed;
-                $progress['production'] += $realization->planned;
             }
 
+            $progress['production'] = $progress['total'] - $progress['left'];
             $progress['ready'] = $progress['production'] - $progress['realization'];
-            $progress['left'] = $progress['total'] - $progress['production'];
         }
 
         return $progress;

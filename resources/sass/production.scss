@@ -40,6 +40,11 @@
 					border-left: solid 1px darken($grey, 10%);
 					text-align: center;
 
+					@include media-breakpoint-down(sm) {
+						height: 65px;
+					}
+
+
 					.product-color {
 						color: darken($grey, 35%);
 					}
@@ -94,6 +99,10 @@
 					vertical-align: middle;
 					border-top: solid 1px darken($grey, 10%);
 
+					@include media-breakpoint-down(sm) {
+						height: 65px;
+					}
+
 					&:hover, 
 					&.hover {
 						background: lighten($grey, 1%);
@@ -111,6 +120,11 @@
 					    // transition: 0.3s;
 					    font-size: 14px;
 					    position: relative;
+
+					    @include media-breakpoint-down(sm) {
+							height: 64px;
+							padding: 17px 0px;
+						}
 
 					    &.marked {
 
@@ -154,6 +168,17 @@
 	}
 
 	.production-modal {
+
+		.nav-item {
+			@include media-breakpoint-down(sm) {
+				width: 50%;
+
+				.nav-link {
+					width: 100%;
+				}
+			}
+		}
+
 		.modal-dialog {
 			max-width: 600px;
 		}
@@ -169,17 +194,12 @@
 
 			th, td {
 				border: solid 1px darken($grey, 10%);
-				padding: 10px;
+				padding: 5px 10px;
 				font-size: 12px;
 			}
 
 			th {
 				text-align: center;
-			}
-
-			.product-name {
-				white-space: nowrap;
-				text-overflow: ellipsis;
 			}
 
 			.product-color {
@@ -196,15 +216,19 @@
 			}
 
 			.form-control {
-				border-color: transparent;
+				border: none;
+				box-shadow: none;
+				padding: 0px;
+				width: 100%;
+				height: auto;
+				border-bottom: solid 1px transparent;
 
 				&:focus {
-					border-color: $primary;
+					border-bottom: solid 1px $primary;
 				}
 
-				&.form-control-sm {
-					width: 60px;
-					padding: 3px 7px;
+				&.form-control-num {
+					text-align: center;
 					font-size: 14px;
 				}
 			}

@@ -31,7 +31,7 @@ class ProductSeeder extends Seeder
 		    	'unit_in_pallete' => 132,
 		    	'units_in_pallete' => 11.9,
 		    	'units_from_batch' => 8,
-		    	'forms' => 100,
+		    	'forms' => 10,
 		    	'salary_units' => 80,
 		    	'products' => [
 		    		[
@@ -73,7 +73,7 @@ class ProductSeeder extends Seeder
 		    	'unit_in_pallete' => 132,
 		    	'units_in_pallete' => 11.9,
 		    	'units_from_batch' => 8,
-		    	'forms' => 50,
+		    	'forms' => 10,
 		    	'salary_units' => 80,
 		    	'products' => [
 		    		[
@@ -115,7 +115,7 @@ class ProductSeeder extends Seeder
 		    	'unit_in_pallete' => 49,
 		    	'units_in_pallete' => 49,
 		    	'units_from_batch' => 20,
-		    	'forms' => 10,
+		    	'forms' => 20,
 		    	'salary_units' => 10,
 		    	'products' => [
 		    		[
@@ -157,7 +157,7 @@ class ProductSeeder extends Seeder
 		    	'unit_in_pallete' => 32,
 		    	'units_in_pallete' => 1.15,
 		    	'units_from_batch' => 10,
-		    	'forms' => 100,
+		    	'forms' => 10,
 		    	'salary_units' => 350,
 		    	'products' => [
 		    		[
