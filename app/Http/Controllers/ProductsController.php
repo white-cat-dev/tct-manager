@@ -146,7 +146,7 @@ class ProductsController extends Controller
     protected function getData(Request $request)
     {
         return [
-            'wp_id' => $request->get('wp_id', ''),
+            'wp_id' => $request->get('wp_id', 0),
             'wp_name' => $request->get('wp_name', ''),
             'name' => $request->get('name', ''),
             'set_pair_id' => $request->get('set_pair_id', 0),

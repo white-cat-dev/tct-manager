@@ -9,11 +9,11 @@ use Arr;
 
 class Order extends Model
 {
-    const STATUS_PRODUCTION = 0;
-    const STATUS_READY = 1;
-    const STATUS_NEW = 2;
-    const STATUS_PAUSED = 3;
-    const STATUS_FINISHED = 4;
+    const STATUS_PRODUCTION = 1;
+    const STATUS_READY = 2;
+    const STATUS_NEW = 3;
+    const STATUS_PAUSED = 4;
+    const STATUS_FINISHED = 5;
 
     protected $fillable = [
         'date',
@@ -44,11 +44,12 @@ class Order extends Model
     ];
 
     protected static $statuses = [
-        0 => 'В работе',
-        1 => 'Готов к выдаче',
-        2 => 'Новый',
-        3 => 'Приостановлен',
-        4 => 'Завершен'
+        0 => 'Нет статуса',
+        1 => 'В работе',
+        2 => 'Готов к выдаче',
+        3 => 'Новый',
+        4 => 'Приостановлен',
+        5 => 'Завершен'
     ];
 
 
@@ -62,11 +63,6 @@ class Order extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function getUrlAttribute()
-    {
-        return route('order-show', ['order' => $this->id]);
-    }
-
     public function realizations()
     {
         return $this->hasMany(Realization::class);
@@ -75,6 +71,25 @@ class Order extends Model
     public function productions()
     {
         return $this->hasMany(Production::class);
+    }
+
+
+    public function getUrlAttribute()
+    {
+        return route('order-show', ['order' => $this->id]);
+    }
+
+
+    public function getStatusTextAttribute()
+    {
+        $status = Arr::get(static::$statuses, $this->status, '');
+        
+        return $status;
+    }
+
+    public function getFormattedDateAttribute()
+    {
+        return Carbon::createFromDate($this->date)->format('d.m.Y');
     }
 
 
@@ -97,19 +112,5 @@ class Order extends Model
         $progress['ready'] = $progress['production'] - $progress['realization'];
 
         return $progress;
-    }
-
-
-    public function getStatusTextAttribute()
-    {
-        $status = Arr::get(static::$statuses, $this->status, '');
-        
-        return $status;
-    }
-
-
-    public function getFormattedDateAttribute()
-    {
-        return Carbon::createFromDate($this->date)->format('d.m.Y');
     }
 }

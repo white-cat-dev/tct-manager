@@ -110,7 +110,7 @@
 
 					<tr ng-repeat="product in order.products track by $index">
 						<td>
-							<ui-select theme="bootstrap" ng-model="product.product_group_id" ng-change="chooseProductGroup(product, $select.selected)">
+							<ui-select ng-model="product.product_group_id" ng-change="chooseProductGroup(product, $select.selected)" skip-focusser="true">
 					            <ui-select-match placeholder="Выберите продукт...">
 						            @{{ $select.selected.name }}
 						        </ui-select-match>
@@ -121,7 +121,7 @@
 						</td>
 						<td>
 							<span ng-if="product.category && product.category.variations">
-								<ui-select theme="bootstrap" ng-model="product.product_id" ng-change="chooseProduct(product, $select.selected)">
+								<ui-select ng-model="product.product_id" ng-change="chooseProduct(product, $select.selected)" skip-focusser="true">
 						            <ui-select-match placeholder="Выберите...">
 							            @{{ $select.selected.variation_text }}
 							        </ui-select-match>
@@ -139,7 +139,7 @@
 						</td>
 						<td>
 							<span ng-if="product.id">
-								@{{ product.in_stock }} 
+								@{{ product.free_in_stock }} (@{{ product.in_stock }})
 								<span ng-switch on="product.category.units">
 									<span ng-switch-when="area">м<sup>2</sup></span>
 									<span ng-switch-when="volume">м<sup>3</sup></span>

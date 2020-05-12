@@ -29,6 +29,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 	$scope.statuses = {};
 	$scope.facilities = {};
 
+	$scope.isSalariesShown = false;
+
 
 	$scope.init = function()
 	{
@@ -77,15 +79,10 @@ angular.module('tctApp').controller('EmploymentsController', [
 		}
 
 		var request = {
-			'employments': employments
-		};
-		if ($scope.currentDate.year > 0)
-		{
-			request.year = $scope.currentDate.year;
-		}
-		if ($scope.currentDate.month > 0)
-		{
-			request.month = $scope.currentDate.month;
+			'employments': employments,
+			'year': $scope.currentDate.year,
+			'month': $scope.currentDate.month,
+			'day': $scope.currentDate.day
 		}
 
 		EmploymentsRepository.save(request, function(response) 
@@ -102,21 +99,12 @@ angular.module('tctApp').controller('EmploymentsController', [
 	};
 
 
-	$scope.$watch('currentDate.month', function(newValue, oldValue) 
-	{
-		$scope.init();
-	});
-
-	$scope.$watch('currentDate.year', function(newValue, oldValue) 
-	{
-		$scope.init();
-	});
-
-
 	$scope.currentEmploymentStatus = null;
 
 	$scope.chooseCurrentEmploymentStatus = function(status)
 	{
+		$scope.isSalariesShown = false;
+
 		if ($scope.currentEmploymentStatus == status)
 		{
 			$scope.currentEmploymentStatus = null;
@@ -135,6 +123,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 	$scope.chooseCurrentFacility = function(facility)
 	{
+		$scope.isSalariesShown = false;
+
 		if ($scope.currentFacility == facility)
 		{
 			$scope.currentFacility = null;
@@ -153,6 +143,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 	$scope.chooseCleanCurrent = function()
 	{
+		$scope.isSalariesShown = false;
+
 		if ($scope.cleanCurrent)
 		{
 			$scope.cleanCurrent = false;
@@ -168,6 +160,11 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 	$scope.changeEmploymentStatus = function(worker, day)
 	{
+		if ($scope.isSalariesShown) 
+		{
+			return;
+		}
+
 		if (!worker.employments)
 		{
 			worker.employments = {};
@@ -176,7 +173,6 @@ angular.module('tctApp').controller('EmploymentsController', [
 		if ($scope.cleanCurrent)
 		{
 			delete worker.employments[day]; 
-			console.log(123);
 			return;
 		}
 
@@ -189,7 +185,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 				'worker_id': worker.id,
 				'day': day,
 				'status_id':  statusId,
-				'facility_id': facilityId
+				'facility_id': facilityId,
+				'salary': 0
 			};
 		}
 		else

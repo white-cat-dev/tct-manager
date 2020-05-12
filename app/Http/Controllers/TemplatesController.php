@@ -71,9 +71,9 @@ class TemplatesController extends Controller
     }
 
 
-    public function production(Request $request) 
+    public function productions(Request $request) 
     {
-        return view('production');
+        return view('productions');
     }
 
 

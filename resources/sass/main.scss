@@ -2,57 +2,56 @@
 	border-radius: 0px !important;
 }
 
-button:focus {
-	outline: none !important;
+body.modal-open {
+	overflow-y: hidden;
 }
 
-
-h1 {
-	font-size: 32px;
-	border-bottom: solid 1px darken($grey, 10%);
-    padding-bottom: 15px;
-    margin-bottom: 0px;
+.modal-open .modal {
+	overflow-y: scroll;
 }
 
-i.fas, i.far {
-	padding: 0px 3px;
-}
-
-.fluid-container {
-	max-width: 1500px;
-    margin: 0px auto;
-    padding: 0px 30px;
-}
-
-.open > .dropdown-menu {
-    display: block;
-    min-width: unset;
-}
-
-.color-picker-wrapper .input-group {
-	.input-group-addon {
-		height: 38px;
-		border-radius: 5px;
-
-		&:first-child {
-			border-right-width: 1px;
-		}
-	}
-
-	.color-picker-input {
-		display: none;
-	}
-}
-
-.custom-select {
-	background: inherit;
-}
 
 header {
 	background: $blue;
+	z-index: 25;
+	position: relative;
+	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
 
-	.navbar-dark .navbar-nav .nav-link {
-		color: #FFFFFF;
+	.navbar {
+		padding-left: 0px;
+    	padding-right: 0px;
+
+		.navbar-nav .nav-link {
+			color: #FFFFFF;
+		}
+	}
+
+	.main-menu-toggler {
+		display: none;
+		padding: 0px;
+	    font-size: 25px;
+	    color: #FFFFFF;
+
+	    &:hover {
+	    	color: #FFFFFF;
+	    }
+
+		@include media-breakpoint-down(md) {
+			display: block;
+		}
+
+		span:first-child {
+			display: none;
+		}
+		span:last-child {
+			display: inline;
+		}
+	}
+
+	.navbar-nav {
+		@include media-breakpoint-down(md) {
+			display: none;
+		}
 	}
 }
 
@@ -62,17 +61,50 @@ footer {
 }
 
 
+.content-block {
+	min-height: 100vh;
+    margin: 20px auto;
+}
+
+
 .main-menu-block {
     margin-top: 20px;
     border-radius: 5px;
    	overflow: hidden;
    	box-shadow: 1px 1px 5px darken($grey, 20%);
 
+   	@include media-breakpoint-down(md) {
+	    z-index: 20;
+	    position: fixed;
+	    top: 56px;
+	    bottom: 0px;
+	    left: 0px;
+	    right: 0px;
+	    margin-top: 0px;
+	    height: 0px;
+	    overflow-y: scroll;
+	    background: #276090;
+	    transition: height 0.5s;
+	}
+
+	.container {
+		@include media-breakpoint-up(lg) {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+	}
+
 	.menu-item {
 		background: $primary;
 		border-bottom: solid 1px darken($grey, 10%);
 		transition: 0.3s;
 		position: relative;
+
+		@include media-breakpoint-down(md) {
+			&:first-child {
+				margin-top: 10px;
+			}
+		}
 
 		& > a {
 			display: block;
@@ -142,10 +174,80 @@ footer {
 	}
 }
 
-.content-block {
-	min-height: 100vh;
-    margin: 20px auto;
+
+.main-menu-open {
+	@include media-breakpoint-down(md) {
+		overflow-y: hidden;
+
+		.main-menu-block {
+			height: 100%;
+			display: block;
+		}
+
+		.main-menu-toggler {
+			span:first-child {
+				display: inline;
+			}
+			span:last-child {
+				display: none;
+			}
+		}
+	}
 }
+
+
+
+
+
+button:focus,
+.btn:focus,
+.form-control:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+
+h1 {
+	font-size: 32px;
+	border-bottom: solid 1px darken($grey, 10%);
+    padding-bottom: 15px;
+    margin-bottom: 0px;
+}
+
+i.fas, i.far {
+	padding: 0px 3px;
+}
+
+.fluid-container {
+	max-width: 1500px;
+    margin: 0px auto;
+    padding: 0px 30px;
+}
+
+.open > .dropdown-menu {
+    display: block;
+    min-width: unset;
+}
+
+.color-picker-wrapper .input-group {
+	.input-group-addon {
+		height: 38px;
+		border-radius: 5px;
+
+		&:first-child {
+			border-right-width: 1px;
+		}
+	}
+
+	.color-picker-input {
+		display: none;
+	}
+}
+
+.custom-select {
+	background: inherit;
+}
+
 
 
 .top-buttons-block {
@@ -154,6 +256,7 @@ footer {
     display: flex;
     z-index: 10;
     justify-content: space-between;
+    align-items: center;
 
     @include media-breakpoint-down(sm) {
 		display: block;
@@ -183,13 +286,13 @@ footer {
 	.left-buttons {
 		display: flex;
 
-		@include media-breakpoint-down(sm) {
-			display: block;
-		}
-
 		& > .btn, 
 		& > div {
 			margin-right: 10px;
+
+			&:last-child {
+				margin-right: 0px;
+			}
 		}
 	}
 
@@ -199,12 +302,20 @@ footer {
 		& > .btn {
 			margin-left: 10px;
 
+			&:first-child {
+				margin-left: 0px;
+			}
+
 			@include media-breakpoint-down(sm) {
 				margin-left: 0px;
 				margin-right: 10px;
 				margin-top: 20px;
 			}
 		}
+	}
+
+	.btn {
+		white-space: nowrap;
 	}
 }
 
@@ -453,7 +564,7 @@ footer {
 
 
 .no-data-block {
-	margin: 50px 0px;
+	margin: 70px 0px;
 	font-size: 18px;
 	text-align: center;
 

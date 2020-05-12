@@ -22,6 +22,18 @@
 		</div>
 	</div>
 
+	<div class="statuses-menu-block">
+		<button type="button" class="btn" ng-class="{'active': currentStatuses.indexOf({{ App\Order::STATUS_PRODUCTION }}) != -1 }" ng-click="chooseStatus({{ App\Order::STATUS_PRODUCTION }})">
+			В работе
+		</button>
+		<button type="button" class="btn" ng-class="{'active': currentStatuses.indexOf({{ App\Order::STATUS_READY }}) != -1}" ng-click="chooseStatus({{ App\Order::STATUS_READY }})">
+			Готовые к выдаче
+		</button>
+		<button type="button" class="btn" ng-class="{'active': currentStatuses.indexOf({{ App\Order::STATUS_FINISHED }}) != -1 }" ng-click="chooseStatus({{ App\Order::STATUS_FINISHED }})">
+			Завершенные
+		</button>
+	</div>
+
 	<div class="row">
 		<div class="col-12 col-md-6 col-lg-4" ng-repeat="order in orders | filter: searchQuery">
 			<div class="order-block">
@@ -69,6 +81,7 @@
 								<div ng-if="order.client.name">@{{ order.client.name }}</div>
 								<div ng-if="order.client.phone">@{{ order.client.phone }}</div>
 								<div ng-if="order.client.email">@{{ order.client.email }}</div>
+								<div ng-if="!order.client.name && !order.client.phone && !order.client.email">Нет данных</div>
 							</div>
 						</div>
 					</div>

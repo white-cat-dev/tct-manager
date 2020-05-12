@@ -12,11 +12,16 @@ class Employment extends Model
     	'date',
         'worker_id',
         'status_id',
-        'facility_id'
+        'facility_id',
+        'salary'
     ];
 
     protected $appends = [
         'day'
+    ];
+
+    protected $casts = [
+        'salary' => 'float'
     ];
 
 
@@ -28,6 +33,11 @@ class Employment extends Model
     public function status()
     {
         return $this->belongsTo(EmploymentStatus::class);
+    }
+
+    public function facility()
+    {
+        return $this->belongsTo(Facility::class);
     }
 
 

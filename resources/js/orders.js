@@ -18,6 +18,8 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.baseUrl = '';
 
+	$scope.currentStatuses = [1, 2];
+
 	$scope.orders = [];
 	$scope.order = {
 		'cost': 0,
@@ -76,10 +78,7 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.init = function()
 	{
-		OrdersRepository.query(function(response) 
-		{
-			$scope.orders = response;
-		});
+		$scope.loadOrders();
 	}
 
 
@@ -165,6 +164,37 @@ angular.module('tctApp').controller('OrdersController', [
 	}
 
 
+	$scope.loadOrders = function()
+	{
+		var status = $scope.currentStatuses.join(',');
+		OrdersRepository.query({'status': status}, function(response) 
+		{
+			$scope.orders = response;
+		});
+	}
+
+
+	$scope.chooseStatus = function(status)
+	{
+		if (status == 0)
+		{
+			$scope.currentStatuses = [0];
+			return;
+		}
+
+		var index = $scope.currentStatuses.indexOf(status);
+		if (index != -1)
+		{
+			$scope.currentStatuses.splice(index, 1);
+		}
+		else
+		{
+			$scope.currentStatuses.push(status);
+		}
+		$scope.loadOrders();
+	}
+
+
 	$scope.addProduct = function()
 	{
 		$scope.order.products.push({
@@ -203,7 +233,7 @@ angular.module('tctApp').controller('OrdersController', [
 			}
 		}
 
-		if (!productGroup.category.hasColors)
+		if (!productGroup.category.variations)
 		{
 			$scope.chooseProduct(productData, productData.products[0]);
 		}
@@ -216,6 +246,7 @@ angular.module('tctApp').controller('OrdersController', [
 	{
 		productData.id = product.id;
 		productData.in_stock = product.in_stock;
+		productData.free_in_stock = product.free_in_stock;
 		productData.pivot.price = product.price;
 		productData.pivot.cost = product.price * productData.pivot.count;
 
@@ -255,18 +286,51 @@ angular.module('tctApp').controller('OrdersController', [
 
     $scope.isRealizationModalShown = false;
     $scope.modalOrder = {};
+    $scope.isAllRealizationsChosen = false;
 
 
     $scope.showRealizationModal = function(order)
     {
     	$scope.modalOrder = order || $scope.order;
     	$scope.isRealizationModalShown = true;
+
+    	$scope.isAllRealizationsChosen = false;
     }
 
 
     $scope.hideRealizationModal = function()
     {
     	$scope.isRealizationModalShown = false;
+    }
+
+
+    $scope.chooseAllRealizations = function()
+    {
+    	if ($scope.isAllRealizationsChosen)
+    	{
+    		for (realization of $scope.modalOrder.realizations)
+    		{
+    			realization.performed = realization.planned;
+    		}
+    	}
+    }
+
+    $scope.checkAllRealizations = function(realization) 
+    {
+    	if (realization.performed > realization.planned)
+		{
+			realization.performed = realization.planned
+		}
+
+    	for (realization of $scope.modalOrder.realizations)
+		{
+			if (realization.performed < realization.planned)
+			{
+				$scope.isAllRealizationsChosen = false;
+				return;
+			}
+		}
+		$scope.isAllRealizationsChosen = true;
     }
 
 

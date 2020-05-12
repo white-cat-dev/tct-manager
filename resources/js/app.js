@@ -150,9 +150,9 @@ tctApp.config(['$routeProvider', function($routeProvider) {
 			controller: 'OrdersController'
 	    })
 
-	    .when('/production', {
-			templateUrl: '/templates/production',
-			controller: 'ProductionController'
+	    .when('/productions', {
+			templateUrl: '/templates/productions',
+			controller: 'ProductionsController'
 	    })
 
 	    .when('/employments', {
@@ -237,9 +237,9 @@ tctApp.factory('EmploymentsRepository', ['$resource', function($resource) {
     });  
 }]);
 
-tctApp.factory('ProductionRepository', ['$resource', function($resource) { 
-	return $resource('/production', null, {
-		orders: { method: 'GET', url: '/production/orders' }
+tctApp.factory('ProductionsRepository', ['$resource', function($resource) { 
+	return $resource('/productions', null, {
+		orders: { method: 'GET', url: '/productions/orders' }
     }); 
 }]);
 

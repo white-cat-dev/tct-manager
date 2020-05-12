@@ -17,6 +17,8 @@ class EmploymentStatus extends Model
     ];
 
     protected $casts = [
-        'salary' => 'float'
+        'salary_production' => 'float',
+        'salary_fixed' => 'float',
+        'salary_team' => 'float'
     ];
 }

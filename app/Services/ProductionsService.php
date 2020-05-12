@@ -3,14 +3,14 @@
 namespace App\Services;
 
 use DB;
-use App\Category;
 use Carbon\Carbon;
+use App\Category;
 use App\Realization;
 use App\Facility;
 use App\Production;
 
 
-class PlanningService
+class ProductionsService
 {
     protected static $instance;
 
@@ -25,24 +25,14 @@ class PlanningService
     }
 
 
-    public function planOrder($order)
+    public function planOrder($order, $startToday = false)
     {
         foreach ($order->products as $product)
         {
             $productCount = $product->pivot->count;
-            if ($product->free_in_stock > 0)
-            {
-                $baseRealization = Realization::create([
-                    'date' => null,
-                    'category_id' => $product->category_id,
-                    'product_id' => $product->id,
-                    'order_id' => $order->id,
-                    'planned' => ($productCount >= $product->free_in_stock) ? $product->free_in_stock : $productCount,
-                    'performed' => 0
-                ]);
 
-                $productCount -= $baseRealization->planned;
-            }
+            $baseRealization = $this->getBaseRealization($order, $product, $productCount);
+            $productCount -= $baseRealization->planned;
 
             if ($productCount == 0)
             {
@@ -53,14 +43,27 @@ class PlanningService
 
             $currentDay = Carbon::today();
 
-            $maxBatches = Facility::whereHas('categories', function($query) use ($product) {
+            if (!$startToday)
+            {
+                $currentDay = $currentDay->addDay();
+            }
+
+            $facilities = Facility::whereHas('categories', function($query) use ($product) {
                 $query->where('categories.id', $product->category_id);
-            })->get()->sum('performance');
+            })->get();
+
+            $facilitiesBatches = 0;
+
+            foreach ($facilities as $facility) 
+            {
+                $facilitiesBatches += $facility->getPerformance($currentDay->format('Y-m-d'));
+            }
+
+            $facilitiesBatches = $facilities->sum('performance');
+
 
             while ($productCount > 0)
             {
-                $currentDay = $currentDay->addDay();
-
                 $categoryProduction = $this->getCategoryProduction($currentDay, $product);
 
                 $currentProductions = Production::where('date', $currentDay->format('Y-m-d'))->get();
@@ -71,12 +74,12 @@ class PlanningService
                 {
                     $currentBatches += $currentProduction->batches;
                 }
-                if ($currentBatches >= $maxBatches)
+                if ($currentBatches >= $facilitiesBatches)
                 {
                     continue;
                 }
 
-                $maxCount = $product->product_group->units_from_batch * ($maxBatches - $currentBatches);
+                $maxCount = $product->product_group->units_from_batch * ($facilitiesBatches - $currentBatches);
                 if ($maxCount > $product->product_group->forms)
                 {
                     $maxCount = $product->product_group->forms;
@@ -86,16 +89,20 @@ class PlanningService
                 $production = Production::create([
                     'date' => $currentDay->format('Y-m-d'),
                     'category_id' => $product->category_id,
+                    'product_group_id' => $product->product_group_id,
                     'order_id' => $order->id,
                     'product_id' => $product->id,
-                    'facility_id' => 0,
+                    'facility_id' => ($facilities->count() == 1) ? $facilities->first()->id : 0,
                     'auto_planned' => $plannedCount,
                     'manual_planned' => 0,
                     'performed' => 0,
-                    'batches' => $plannedCount / $product->product_group->units_from_batch
+                    'batches' => $plannedCount / $product->product_group->units_from_batch,
+                    'salary' => 0
                 ]);
 
                 $productCount -= $plannedCount;
+
+                $currentDay = $currentDay->addDay();
             }
         }
     }
@@ -114,31 +121,50 @@ class PlanningService
 
 
 
+    protected function getBaseRealization($order, $product, $productCount)
+    {
+        $baseRealization = Realization::create([
+            'date' => null,
+            'category_id' => $product->category_id,
+            'product_id' => $product->id,
+            'order_id' => $order->id,
+            'planned' => ($productCount >= $product->free_in_stock) ? $product->free_in_stock : $productCount,
+            'performed' => 0
+        ]);
+
+        return $baseRealization;
+    }
+
+
     protected function getBaseProduction($order, $product, $productCount)
     {
         $baseProduction = Production::where([
-            'date' => null,
-            'order_id' => $order->id,
-            'product_id' => $product->id
-        ])->first();
+                'date' => null,
+                'order_id' => $order->id,
+                'product_id' => $product->id
+            ])
+            ->first();
 
         if (!$baseProduction)
         {    
             $baseProduction = Production::create([
                 'date' => null,
                 'category_id' => $product->category_id,
+                'product_group_id' => $product->product_group_id,
                 'order_id' => $order->id,
                 'product_id' => $product->id,
                 'facility_id' => 0,
                 'auto_planned' => $productCount,
                 'manual_planned' => 0,
                 'performed' => 0,
-                'batches' => $productCount / $product->product_group->units_from_batch
+                'batches' => $productCount / $product->product_group->units_from_batch,
+                'salary' => 0
             ]);
         }
 
         return $baseProduction;
     }
+
 
     protected function getCategoryProduction($day, $product)
     {
@@ -154,13 +180,15 @@ class PlanningService
             $categoryProduction = Production::create([
                 'date' => $day->format('Y-m-d'),
                 'category_id' => $product->category_id,
+                'product_group_id' => 0,
                 'order_id' => 0,
                 'product_id' => 0,
                 'facility_id' => 0,
                 'auto_planned' => 0,
                 'manual_planned' => 0,
                 'performed' => 0,
-                'batches' => 0
+                'batches' => 0,
+                'salary' => 0
             ]);
         }
 

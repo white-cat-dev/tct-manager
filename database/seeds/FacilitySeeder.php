@@ -19,14 +19,14 @@ class FacilitySeeder extends Seeder
                 'status' => Facility::STATUS_ACTIVE,
                 'categories' => [1, 2],
                 'performance' => 10,
-                'icon_color' => '#3498db'
+                'icon_color' => '#55d98c'
             ],
             [
                 'name' => 'Цех с блоками',
                 'status' => Facility::STATUS_ACTIVE,
                 'categories' => [3],
                 'performance' => 5,
-                'icon_color' => '#2ecc71'
+                'icon_color' => '#5faee3'
             ]
         ];
 

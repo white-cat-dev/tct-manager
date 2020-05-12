@@ -9,6 +9,7 @@ use App\WorkerSalary;
 use App\Facility;
 use App\Employment;
 use App\EmploymentStatus;
+use App\Services\EmploymentsService;
 
 
 class EmploymentsController extends Controller
@@ -48,16 +49,17 @@ class EmploymentsController extends Controller
                 $workers[$key]->salary = $workers[$key]->salaries()
                     ->whereYear('date', $year)
                     ->whereMonth('date', $month)
-                    ->whereDay('date', 1)
                     ->first();
 
                 if (!$workers[$key]->salary)
                 {
-                    $workers[$key]->salary = [
+                    $workers[$key]->salary = WorkerSalary::create([
+                        'date' => Carbon::createFromDate($year, $month, 1)->format('Y-m-d'),
+                        'worker_id' => $worker->id,
                         'employments' => 0,
                         'advance' => 0,
                         'bonus' => 0
-                    ];
+                    ]);
                 }
             }
 
@@ -122,12 +124,9 @@ class EmploymentsController extends Controller
 
         foreach ($employmentsGroups as $workerId => $employmentsGroup) 
         {
-            $salaryEmployments = 0;
-
             foreach ($employmentsGroup as $employmentData) 
             {
                 $date = Carbon::createFromDate($year, $month, $employmentData['day'])->format('Y-m-d');
-                $dateMask = substr($date, 0, -2) . '__';
 
                 $employment = Employment::where('worker_id', $employmentData['worker_id'])
                     ->where('date', $date)
@@ -135,57 +134,25 @@ class EmploymentsController extends Controller
 
                 if ($employment)
                 {
-                    if ($employmentData['status_id'] == -1)
-                    {
-                        $employment->delete();
-                    }
-                    else
-                    {
-                        $salaryEmployments += $statuses[$employmentData['status_id']]->salary; 
-
-                        $employment->update([
-                            'status_id' => $employmentData['status_id'],
-                            'facility_id' => $employmentData['facility_id']
-                        ]); 
-                    }
+                    $employment->update([
+                        'status_id' => $employmentData['status_id'],
+                        'facility_id' => $employmentData['facility_id']
+                    ]); 
                 }
                 else
                 {
-                    if ($employmentData['status_id'] > 0)
-                    {
-                        $salaryEmployments += $statuses[$employmentData['status_id']]->salary;
-
-                        $employment = Employment::create([
-                            'date' => $date,
-                            'worker_id' => $employmentData['worker_id'],
-                            'status_id' => $employmentData['status_id'],
-                            'facility_id' =>  $employmentData['facility_id']
-                        ]);
-                    }
+                    $employment = Employment::create([
+                        'date' => $date,
+                        'worker_id' => $employmentData['worker_id'],
+                        'status_id' => $employmentData['status_id'],
+                        'facility_id' =>  $employmentData['facility_id'],
+                        'salary' => 0
+                    ]);
                 }
             }
-
-            $salary = WorkerSalary::where('worker_id', $workerId)
-                ->where('date' , 'like' , $dateMask)
-                ->first();
-
-            if (!$salary) 
-            {
-                $salary = WorkerSalary::create([
-                    'worker_id' => $workerId,
-                    'date' => str_replace('__', '01', $dateMask),
-                    'employments' => $salaryEmployments,
-                    'advance' => 0,
-                    'bonus' => 0
-                ]);
-            }
-            else 
-            {
-                $salary->update([
-                    'employments' => $salaryEmployments
-                ]);
-            }
         }
+
+        EmploymentsService::getInstance()->updateEmployments($year, $month);
     }
 
 

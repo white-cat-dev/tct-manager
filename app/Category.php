@@ -29,6 +29,12 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function productions()
+    {
+        return $this->hasMany(Production::class);
+    }
+    
+
     public function getUrlAttribute()
     {
     	return route('category-show', ['category' => $this->id]);

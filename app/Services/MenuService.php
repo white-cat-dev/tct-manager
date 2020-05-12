@@ -32,11 +32,11 @@ class MenuService
                 'url' => route('products'),
                 // 'submenu' => $categoriesMenu
             ],
-            (object)[
-                'name' => 'Клиенты',
-                'icon' => '<i class="fas fa-users"></i>',
-                'url' => route('clients')
-            ],
+            // (object)[
+            //     'name' => 'Клиенты',
+            //     'icon' => '<i class="fas fa-users"></i>',
+            //     'url' => route('clients')
+            // ],
             (object)[
                 'name' => 'Заказы',
                 'icon' => '<i class="fas fa-shopping-cart"></i>',
@@ -45,7 +45,7 @@ class MenuService
             (object)[
                 'name' => 'Производство',
                 'icon' => '<i class="far fa-calendar-check"></i>',
-                'url' => route('production')
+                'url' => route('productions')
             ],
             (object)[
                 'name' => 'Цехи',

@@ -15,7 +15,7 @@ class EmploymentStatusSeeder extends Seeder
     {
         EmploymentStatus::insert([
         	[
-	        	'name' => '1.0',
+	        	'name' => '1',
 	        	'icon' => 'name',
 	        	'icon_color' => '#28a65b',
 	        	'salary_production' => 1.0,

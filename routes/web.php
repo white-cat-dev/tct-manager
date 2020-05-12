@@ -77,12 +77,12 @@ Route::middleware('auth')->group(function()
 	});
 
 
-	Route::prefix('production')->group(function()
+	Route::prefix('productions')->group(function()
 	{
-		Route::get('/', 'ProductionController@index')->name('production');
-		Route::get('orders', 'ProductionController@orders');
+		Route::get('/', 'ProductionsController@index')->name('productions');
+		Route::get('orders', 'ProductionsController@orders');
 
-		Route::post('/', 'ProductionController@save');
+		Route::post('/', 'ProductionsController@save');
 	});
 
 
@@ -157,9 +157,9 @@ Route::middleware('auth')->group(function()
 			Route::get('edit', 'TemplatesController@ordersEdit');
 		});
 
-		Route::prefix('production')->group(function()
+		Route::prefix('productions')->group(function()
 		{
-			Route::get('/', 'TemplatesController@production');
+			Route::get('/', 'TemplatesController@productions');
 		});
 
 		Route::prefix('employments')->group(function()

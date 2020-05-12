@@ -50,7 +50,7 @@
 
 						<div class="form-group">
 							<div class="param-label">Категория</div>
-							<ui-select theme="bootstrap" ng-model="productGroup.category_id" ng-class="{'is-invalid': productGroupErrors.category_id}" ng-change="chooseProductCategory()">
+							<ui-select ng-model="productGroup.category_id" ng-class="{'is-invalid': productGroupErrors.category_id}" ng-change="chooseProductCategory()" skip-focusser="true">
 					            <ui-select-match placeholder="Выберите из списка...">
 						            @{{ $select.selected.name }}
 						        </ui-select-match>
@@ -145,7 +145,7 @@
 
 						<tr ng-repeat="product in productGroup.products track by $index">
 							<td>
-								<ui-select theme="bootstrap" ng-model="product.variation" ng-change="chooseProductVariation(product, $select.selected)" ng-if="productCategory.variations == 'colors'">
+								<ui-select ng-model="product.variation" ng-change="chooseProductVariation(product, $select.selected)" ng-if="productCategory.variations == 'colors'" skip-focusser="true">
 						            <ui-select-match placeholder="Выберите из списка...">
 							            @{{ $select.selected.name }}
 							        </ui-select-match>
@@ -154,7 +154,7 @@
 						            </ui-select-choices>
 								</ui-select>
 
-								<ui-select theme="bootstrap" ng-model="product.variation" ng-change="chooseProductVariation(product, $select.selected)" ng-if="productCategory.variations == 'grades'">
+								<ui-select ng-model="product.variation" ng-change="chooseProductVariation(product, $select.selected)" ng-if="productCategory.variations == 'grades'" skip-focusser="true">
 						            <ui-select-match placeholder="Выберите из списка...">
 							            @{{ $select.selected.name }}
 							        </ui-select-match>

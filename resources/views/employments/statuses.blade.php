@@ -36,7 +36,7 @@
 					<input type="text" class="form-control" ng-model="status.name">
 				</td>
 				<td ng-style="{'color': status.icon_color}">
-					<ui-select theme="bootstrap" ng-model="status.icon">
+					<ui-select ng-model="status.icon" skip-focusser="true">
 			            <ui-select-match placeholder="Выберите иконку">
 				            <span ng-if="$select.selected == 'name'" ng-bind-html="status.name" style="font-weight: 500;"></span>
 				            <span ng-if="$select.selected != 'name'" ng-bind-html="$select.selected"></span>
@@ -58,7 +58,7 @@
 					<input type="text" class="form-control" ng-model="status.salary_fixed">
 				</td>
 				<td>
-					<input type="text" class="form-control" ng-model="status.salary_people">
+					<input type="text" class="form-control" ng-model="status.salary_team">
 				</td>
 				<td>
 					<button type="button" class="btn btn-primary" ng-click="deleteStatus($index)">

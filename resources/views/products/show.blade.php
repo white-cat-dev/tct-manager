@@ -217,6 +217,11 @@
 					</div>
 					<div class="param-value">
 						@{{ productGroup.units_from_batch }}
+						<span ng-switch on="productGroup.category.units">
+							<span ng-switch-when="area">м<sup>2</sup></span>
+							<span ng-switch-when="volume">м<sup>3</sup></span>
+							<span ng-switch-when="unit">шт.</span>
+						</span>
 					</div>
 				</div>
 
@@ -225,7 +230,12 @@
 						Количество форм
 					</div>
 					<div class="param-value">
-						@{{ productGroup.forms }} шт.
+						@{{ productGroup.forms }} 
+						<span ng-switch on="productGroup.category.units">
+							<span ng-switch-when="area">м<sup>2</sup></span>
+							<span ng-switch-when="volume">м<sup>3</sup></span>
+							<span ng-switch-when="unit">шт.</span>
+						</span>
 					</div>
 				</div>
 			</div>

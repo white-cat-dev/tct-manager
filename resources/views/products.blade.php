@@ -25,10 +25,10 @@
 	</div>
 
 	<div class="categories-menu-block">
-		<button type="button" class="btn btn-secondary" ng-class="{'active': currentCategory == 0}" ng-click="chooseCategory(0)">
+		<button type="button" class="btn" ng-class="{'active': currentCategory == 0}" ng-click="chooseCategory(0)">
 			Все категории
 		</button>
-		<button type="button" ng-repeat="category in categories" class="btn btn-secondary" ng-class="{'active': currentCategory == category.id}" ng-click="chooseCategory(category.id)">
+		<button type="button" ng-repeat="category in categories" class="btn" ng-class="{'active': currentCategory == category.id}" ng-click="chooseCategory(category.id)">
 			@{{ category.name }}
 		</button>
 	</div>

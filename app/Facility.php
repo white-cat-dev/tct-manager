@@ -24,7 +24,8 @@ class Facility extends Model
     protected $appends = [
         'url',
         'status_text',
-        'current_performance'
+        'current_performance',
+        'categories_list'
     ];
 
     protected $with = [
@@ -119,5 +120,11 @@ class Facility extends Model
                 return 0;
                 break;
         }
+    }
+
+
+    public function getCategoriesListAttribute()
+    {
+        return $this->categories->pluck('id')->values();
     }
 }

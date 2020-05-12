@@ -9,7 +9,7 @@ use App\Realization;
 use App\Production;
 use App\Facility;
 use Carbon\Carbon;
-use App\Services\PlanningService;
+use App\Services\ProductionsService;
 
 
 class OrdersController extends Controller
@@ -22,14 +22,16 @@ class OrdersController extends Controller
     {
         if ($request->wantsJson())
         {
-            $status = $request->get('status', '');
-
             $query = Order::with('realizations', 'realizations.product');
-            if ($status == 'productions')
+
+            $statuses = $request->get('status', 0);
+            if ($statuses != 0)
             {
-                $query = $query->where('status', Order::STATUS_PRODUCTION);
+                $statuses = explode(',', $statuses);
+                $query = $query->whereIn('status', $statuses);
             }
-            $orders = $query->get();
+
+            $orders = $query->orderBy('status')->orderBy('priority')->orderBy('date')->get();
 
             foreach ($orders as $order) 
             {
@@ -90,7 +92,7 @@ class OrdersController extends Controller
                 ]);
             }
 
-            PlanningService::getInstance()->planOrder($order);
+            ProductionsService::getInstance()->planOrder($order);
 
             if ($order->productions()->count() == 0)
             {
@@ -183,18 +185,8 @@ class OrdersController extends Controller
                     'performed' => $performed
                 ]);
 
-                if ($planned > 0)
-                {
-                    $baseRealization = Realization::create([
-                        'date' => null,
-                        'category_id' => $realization->product->id,
-                        'product_id' => $realization->product_id,
-                        'order_id' => $realization->order_id,
-                        'planned' => $planned,
-                        'performed' => 0
-                    ]);
-                }
-                else 
+
+                if ($planned == 0)
                 {
                     $baseProductions = $realization->order->productions()->whereNull('date')->get();
                     if ($baseProductions->count() == 0) 
@@ -202,8 +194,18 @@ class OrdersController extends Controller
                         $order->update([
                             'status' => Order::STATUS_FINISHED
                         ]);
+                        continue;
                     }
                 }
+
+                $baseRealization = Realization::create([
+                    'date' => null,
+                    'category_id' => $realization->product->id,
+                    'product_id' => $realization->product_id,
+                    'order_id' => $realization->order_id,
+                    'planned' => $planned,
+                    'performed' => 0
+                ]);
             }
         }
     }

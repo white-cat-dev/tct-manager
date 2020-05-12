@@ -17,6 +17,7 @@ class CreateProductionsTable extends Migration
             $table->id();
             $table->date('date')->nullable();
             $table->integer('category_id');
+            $table->integer('product_group_id');
             $table->integer('product_id');
             $table->integer('order_id');
             $table->integer('facility_id');
@@ -24,6 +25,7 @@ class CreateProductionsTable extends Migration
             $table->decimal('manual_planned', 10, 2)->unsigned();
             $table->decimal('performed', 10, 2)->unsigned();
             $table->decimal('batches', 4, 2)->unsigned();
+            $table->decimal('salary', 8, 2)->unsigned();
             $table->timestamps();
         });
     }

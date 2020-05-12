@@ -9,11 +9,12 @@
 					<i class="fas fa-times"></i>
 				</button>
 			</div>
+
 			<div class="modal-body">
 				<table class="table">
 					<tr>
 						<th>Продукт</th>
-						<th>Готово к выдаче</th>
+						<th>Готово</th>
 						<th>Выдано</th>
 					</tr>
 
@@ -34,10 +35,17 @@
 							</span>
 						</td>
 						<td>
-							<input type="text" class="form-control" ng-model="realization.performed"> 
+							<input type="text" class="form-control" ng-model="realization.performed" ng-change="checkAllRealizations(realization)"> 
 						</td>
 					</tr>
 				</table>
+
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" ng-model="isAllRealizationsChosen" ng-change="chooseAllRealizations()" id="checkboxRealizations">
+					<label class="custom-control-label" for="checkboxRealizations">
+						Отпустить все готовые продукты
+					</label>
+				</div>
 			</div>
 
 			<div class="modal-footer">

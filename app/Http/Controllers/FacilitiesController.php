@@ -106,29 +106,6 @@ class FacilitiesController extends Controller
             $facility->categories()->wherePivotNotIn('category_id', $categoriesIds)->detach();
 
 
-            $workersIds = [];
-
-            foreach ($request->get('workers') as $workerData) 
-            {
-                $worker = Worker::find($workerData['id']);
-
-                if ($worker) 
-                {
-                    if ($worker->facility_id != $facility->id)
-                    {
-                        $worker->update([
-                            'facility_id' => $facility->id
-                        ]);
-                    }
-
-                    $workersIds[] = $worker->id;
-                }
-            }
-
-            $facility->workers()->whereNotIn('id', $workersIds)->update([
-                'facility_id' => 0
-            ]);
-
 
             return $facility;
         }

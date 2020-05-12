@@ -1,5 +1,22 @@
 .orders-page {
 	position: relative;
+
+	.statuses-menu-block {
+		margin-bottom: 20px;
+		padding: 10px;
+		background: $grey;
+
+		.btn {
+			background: #FFFFFF;
+			border: solid 1px darken($grey, 5%);
+
+			&.active {
+				background: $primary;
+				color: #FFFFFF;
+				border-color: $primary;
+			}
+		}
+	}
 	
 	.order-name {
 		font-size: 30px;
@@ -210,6 +227,54 @@
 			td:last-child {
 				width: 4%;
 			}
+		}
+	}
+
+
+	.realization-modal {
+		.table {
+			.product-color {
+				color: darken($grey, 35%);
+			}
+
+			.form-control {
+			    border: none;
+			    box-shadow: none;
+			    padding: 0px;
+			    width: 100%;
+			    height: auto;
+			    border-bottom: solid 1px transparent;
+			    text-align: center;
+			    font-size: 14px;
+
+			    &:focus {
+			    	border-bottom: solid 1px #276090;
+			    }
+			}
+
+			tr {
+				td, th {
+					width: 25%;
+					text-align: center;
+					border: solid 1px darken($grey, 10%);
+					padding: 5px 10px;
+					font-size: 14px;
+				}
+
+				td:first-child {
+					width: 50%;
+					text-align: left;
+					font-size: 12px;
+				}
+
+				th {
+					text-align: center;
+				}
+			}
+		}
+
+		.custom-control-label {
+			font-size: 15px;
 		}
 	}
 }

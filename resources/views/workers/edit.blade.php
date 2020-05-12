@@ -80,7 +80,7 @@
 					</small>
 				</div>
 
-				<div class="form-group">
+				{{-- <div class="form-group">
 					<div class="param-label">Цех</div>
 					<ui-select theme="bootstrap" ng-model="worker.facility_id">
 			            <ui-select-match placeholder="Выберите цех из списка">
@@ -90,7 +90,7 @@
 			                <span ng-bind-html="facility.name | highlight: $select.search"></span>
 			            </ui-select-choices>
 					</ui-select>
-				</div>
+				</div> --}}
 			</div>
 		</div>
 

@@ -211,7 +211,7 @@
 					</tr>
 				</table>
 
-				<a href="{{ route('production') }}" class="btn btn-primary">
+				<a href="{{ route('productions') }}" class="btn btn-primary">
 					<i class="far fa-calendar-check"></i> Перейти к плану производства
 				</a>
 			</div>

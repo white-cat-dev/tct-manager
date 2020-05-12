@@ -1,10 +1,10 @@
-angular.module('tctApp').controller('ProductionController', [
+angular.module('tctApp').controller('ProductionsController', [
 	'$scope',
 	'$routeParams',
 	'$location',
 	'$timeout',
 	'$filter',
-	'ProductionRepository',
+	'ProductionsRepository',
 	'OrdersRepository',
 	'ProductsRepository',
 	function(
@@ -13,7 +13,7 @@ angular.module('tctApp').controller('ProductionController', [
 		$location,
 		$timeout,
 		$filter,
-		ProductionRepository,
+		ProductionsRepository,
 		OrdersRepository,
 		ProductsRepository
 	){
@@ -30,8 +30,12 @@ angular.module('tctApp').controller('ProductionController', [
 
 	$scope.productionProducts = [];
 	$scope.productionOrders = [];
+	$scope.productionCategories = {};
 	
 	$scope.facilities = {};
+
+	$scope.productionsPlanned = false;
+	$scope.isAllProductionsShown = false;
 
 
 	$scope.init = function()
@@ -46,7 +50,7 @@ angular.module('tctApp').controller('ProductionController', [
 			request.month = $scope.currentDate.month;
 		}
 
-		ProductionRepository.get(request, function(response) 
+		ProductionsRepository.get(request, function(response) 
 		{
 			$scope.days = response.days;
 			$scope.monthes = response.monthes;
@@ -58,8 +62,19 @@ angular.module('tctApp').controller('ProductionController', [
 
 			$scope.productionProducts = response.products;
 			$scope.productionOrders = response.orders;
+			$scope.productionCategories = response.categories;
 
 			$scope.facilities = response.facilities;
+
+			$scope.productionsPlanned = false;
+			for (product of $scope.productionProducts)
+			{
+				if (product.productions[0] && product.productions[0].planned > 0)
+				{
+					$scope.productionsPlanned = true;
+					break;
+				}
+			}
 		});
 	}
 
@@ -103,11 +118,18 @@ angular.module('tctApp').controller('ProductionController', [
 	}
 
 
+	$scope.showAllProductions = function()
+	{
+		$scope.isAllProductionsShown = true
+	}
+
+
 
 	$scope.isModalShown = false;
 
 	$scope.modalDate = new Date();
 	$scope.modalProductionProducts = [];
+	$scope.modalProductionCategories = [];
 
 	$scope.isOrdersShown = false;
 
@@ -115,7 +137,6 @@ angular.module('tctApp').controller('ProductionController', [
 	$scope.showModal = function(day)
 	{
 		$scope.modalDate = new Date($scope.currentDate.year, $scope.currentDate.month - 1, day);
-		// $scope.modalDate = $filter('date')(currentDate, 'dd.MM.yyyy');
 
 		$scope.modalProductionProducts = [];
 
@@ -133,7 +154,6 @@ angular.module('tctApp').controller('ProductionController', [
 					var newOrder = angular.copy(order);
 
 					newOrder.production = newOrder.productions[day];
-					newOrder.baseProduction = newOrder.productions[0];
 					newOrder.productions = [];
 
 					newProduct.orders.push(newOrder);
@@ -146,12 +166,28 @@ angular.module('tctApp').controller('ProductionController', [
 			}
 		}
 
+		$scope.modalProductionCategories = [];
+
+		for (category of $scope.productionCategories)
+		{
+			if (category.productions[day])
+			{
+				var newCategory = angular.copy(category);
+				newCategory.production = newCategory.productions[day];
+				newCategory.productions = [];
+
+				$scope.modalProductionCategories.push(newCategory);
+			}
+		}
+
+		document.querySelector('body').classList.add('modal-open');
 		$scope.isModalShown = true;
 	}
 
 
 	$scope.hideModal = function()
 	{
+		document.querySelector('body').classList.remove('modal-open');
 		$scope.isModalShown = false;
 
 		$scope.modalDate = '';
@@ -163,7 +199,14 @@ angular.module('tctApp').controller('ProductionController', [
 
 	$scope.save = function()
 	{
-		ProductionRepository.save({'products': $scope.modalProductionProducts}, function(response) 
+		var request = {
+			'products': $scope.modalProductionProducts,
+			'year': $scope.currentDate.year,
+			'month': $scope.currentDate.month,
+			'day': $scope.currentDate.day
+		}
+
+		ProductionsRepository.save(request, function(response) 
 		{
 			$scope.successTopAlert = 'Все изменения успешно сохранены!';
 			$scope.showTopAlert = true;
@@ -180,22 +223,49 @@ angular.module('tctApp').controller('ProductionController', [
 
 
 
-	$scope.getCategoryFacilities = function(categoryId)
+	$scope.getCategoryFacilities = function(category)
 	{
 		var categoryFacilities = [];
 		for (key in $scope.facilities)
 		{
-			for (category of $scope.facilities[key].categories)
+			if ($scope.facilities[key].categories_list.indexOf(category) != -1)
 			{
-				if (category.id == categoryId)
-				{
-					categoryFacilities.push($scope.facilities[key]);
-					break;
-				}
+				categoryFacilities.push($scope.facilities[key]);
 			}
 		}
 
 		return categoryFacilities;
+	}
+
+
+	$scope.getFacilityProductGroups = function(facility)
+	{
+		var facilityProductGroups = [];
+		for (key in $scope.productGroups)
+		{
+			var category = $scope.productGroups[key].category_id;
+			if (facility.categories_list.indexOf(category) != -1)
+			{
+				facilityProductGroups.push($scope.productGroups[key]);
+			}
+		}
+
+		return facilityProductGroups;
+	}
+
+
+	$scope.getFacilityProductionProducts = function(facility)
+	{
+		var facilityProductionProducts = [];
+		for (key in $scope.modalProductionProducts)
+		{
+			if ($scope.modalProductionProducts[key].production.facility_id == facility)
+			{
+				facilityProductionProducts.push($scope.modalProductionProducts[key]);
+			}
+		}
+
+		return facilityProductionProducts;
 	}
 
 
@@ -208,73 +278,85 @@ angular.module('tctApp').controller('ProductionController', [
 	}
 
 
-	$scope.isAddProductShown = false;
+	$scope.isAddProductShown = {};
 	$scope.newProduct = {};
 	
 
-	$scope.showAddProduct = function()
+	$scope.showAddProduct = function(facility)
 	{
 		ProductsRepository.query(function(response) 
 		{
 			$scope.productGroups = response;
 		});
 
-		$scope.isAddProductShown = true;
+		$scope.isAddProductShown[facility] = true;
 	}
 
 
-	$scope.chooseProductGroup = function(productGroup)
+	$scope.chooseProductGroup = function(facility, productGroup)
 	{
-		$scope.newProduct.id = null;
-		$scope.newProduct.product_group = productGroup;
-		$scope.newProduct.category = productGroup.category;
+		$scope.newProduct[facility] = {};
+		$scope.newProduct[facility].id = null;
+		$scope.newProduct[facility].product_group = productGroup;
+		$scope.newProduct[facility].category = productGroup.category;
+		$scope.newProduct[facility].category_id = productGroup.category_id;
 
 		for (key in $scope.productGroups)
 		{
 			if ($scope.productGroups[key].id == productGroup.id)
 			{
-				$scope.newProduct.products = $scope.productGroups[key].products;
+				$scope.newProduct[facility].products = $scope.productGroups[key].products;
 				break;
 			}
 		}
 
-		if (!productGroup.category.hasColors)
+		if (!productGroup.category.variations)
 		{
-			$scope.chooseProduct($scope.newProduct.products[0]);
+			var product = $scope.newProduct[facility].products[0];
+			$scope.chooseProduct(facility, product);
 		}
 	}
 
 
-	$scope.chooseProduct = function(product)
+	$scope.chooseProduct = function(facility, product)
 	{
-		$scope.newProduct.id = product.id;
-		$scope.newProduct.variation = product.variation;
-		$scope.newProduct.variation_noun_text = product.variation_noun_text;
+		$scope.newProduct[facility].id = product.id;
+		$scope.newProduct[facility].variation = product.variation;
+		$scope.newProduct[facility].variation_noun_text = product.variation_noun_text;
 	}
 	
 
-	$scope.addProduct = function()
+	$scope.addProduct = function(facility)
 	{
-		var day = $scope.modalDate.getDate();
-		$scope.newProduct.production = {
-			'day': day,
+		var production = {
+			'day': $scope.modalDate.getDate(),
 			'date': $filter('date')($scope.modalDate, 'yyyy-MM-dd'),
-			'product_id': $scope.newProduct.id,
+			'category_id': $scope.newProduct[facility].category_id,
+			'product_group_id': $scope.newProduct[facility].category_id,
+			'facility_id': facility,
+			'product_id': $scope.newProduct[facility].id,
 			'order_id': 0,
 			'planned': 0,
 			'performed': 0
 		};
-		$scope.modalProductionProducts.push($scope.newProduct);
-		$scope.newProduct = {};
-		$scope.isAddProductShown = false;
-		console.log($scope.modalProductionProducts);
+
+		$scope.newProduct[facility].production = production;
+		$scope.newProduct[facility].orders = [
+			{
+				'id': 0,
+				'production': angular.copy(production)
+			}
+		];
+
+		$scope.modalProductionProducts.push($scope.newProduct[facility]);
+		$scope.newProduct[facility] = {};
+		$scope.isAddProductShown[facility] = false;
 	}
 
 
 	
 	$scope.chosenModalType = 'perform';
 
-	$scope.chosenModalFacility = 0;
 
 	$scope.chooseModalType = function(type)
 	{
@@ -286,6 +368,7 @@ angular.module('tctApp').controller('ProductionController', [
 
 	$scope.updateProductionPlanned = function(product)
 	{
+
 		product.production.planned = 0;
 		for (order of product.orders)
 		{
@@ -332,9 +415,12 @@ angular.module('tctApp').controller('ProductionController', [
 				product.orders.push({
 					'id': 0,
 					'production': {
+						'day': $scope.modalDate.getDate(),
+						'date': $filter('date')($scope.modalDate, 'yyyy-MM-dd'),
 						'facility_id': product.production.facility_id,
 						'order_id': 0,
 						'category_id': product.category_id,
+						'product_group_id': product.product_group_id,
 						'product_id': product.id,
 						'planned': 0,
 						'performed': performed
