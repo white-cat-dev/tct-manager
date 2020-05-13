@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ProductGroup;
+use App\Product; 
+use App\Exports\ProductsExport;
+use Excel;
+use Storage;
 
 
 class ProductsController extends Controller
@@ -18,7 +22,7 @@ class ProductsController extends Controller
             {
                 $query = $query->where('category_id', $category);
             }
-            $productGroups = $query->get();
+            $productGroups = $query->orderBy('name')->get();
             return $productGroups;
         }
 
@@ -59,7 +63,10 @@ class ProductsController extends Controller
                 }
                 $product = $productGroup->products()->create($productData);
             }
-            
+
+            $productGroup->products = $productGroup->products;
+            $productGroup->category = $productGroup->category;
+
             return $productGroup;
         }
 
@@ -81,7 +88,7 @@ class ProductsController extends Controller
             foreach ($request->get('products', []) as $productData) 
             {
                 $productData['category_id'] = $productGroup->category_id;
-                if (!$productGroup->variations)
+                if (!$productGroup->category->variations)
                 {
                     $productData['variation'] = '';
                     $productData['main_variation'] = '';
@@ -106,6 +113,9 @@ class ProductsController extends Controller
                 }
             }
 
+            $productGroup->products = $productGroup->products;
+            $productGroup->category = $productGroup->category;
+
             return $productGroup;
         }
 
@@ -119,6 +129,27 @@ class ProductsController extends Controller
         {
             $productGroup->delete();
         }
+    }
+
+
+    public function getExportFile(Request $request)
+    {
+        $category = $request->get('category', 0);
+        $onlyInStock = $request->get('stock', false);
+
+        $fileName = 'Склад_' . date('d_m_Y') . '.xlsx';
+
+        Excel::store(new ProductsExport($category, $onlyInStock), $fileName);
+
+        return $fileName;
+    }
+
+
+    public function downloadExportFile(Request $request)
+    {
+        $fileName = storage_path('app/' . $request->route('file', 0));
+
+        return Storage::download($fileName);
     }
 
 

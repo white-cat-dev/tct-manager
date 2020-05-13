@@ -80116,7 +80116,12 @@ tctApp.factory('CategoriesRepository', ['$resource', function ($resource) {
   return $resource('/categories/:id');
 }]);
 tctApp.factory('ProductsRepository', ['$resource', function ($resource) {
-  return $resource('/products/:id');
+  return $resource('/products/:id', null, {
+    getExportFile: {
+      method: 'GET',
+      url: '/products/export'
+    }
+  });
 }]);
 tctApp.factory('ClientsRepository', ['$resource', function ($resource) {
   return $resource('/clients/:id');
@@ -80154,6 +80159,27 @@ tctApp.factory('ProductionsRepository', ['$resource', function ($resource) {
     }
   });
 }]);
+tctApp.run(function ($rootScope) {
+  $rootScope.searchInputKeyPressed = function ($event) {
+    if ($event.which === 13) {
+      $event.currentTarget.blur();
+      $event.currentTarget.nextElementSibling.querySelector('.btn').click();
+    }
+  };
+
+  $rootScope.inputKeyPressed = function ($event) {
+    if ($event.which === 13) {
+      $event.currentTarget.blur();
+    }
+  };
+
+  $rootScope.focusNextInput = function ($event) {
+    var nextInput = $event.currentTarget.nextElementSibling;
+    setTimeout(function () {
+      nextInput.focus();
+    }, 50);
+  };
+});
 
 /***/ }),
 
@@ -80762,6 +80788,17 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
     });
   };
 }]);
+
+/***/ }),
+
+/***/ "./resources/js/main.js":
+/*!******************************!*\
+  !*** ./resources/js/main.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
 
 /***/ }),
 
@@ -81609,6 +81646,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   $scope.productGroupErrors = {};
   $scope.categories = [];
   $scope.currentCategory = 0;
+  $scope.isStockProductsShown = true;
   $scope.colors = [{
     'key': 'grey',
     'main_key': 'red',
@@ -81726,6 +81764,52 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       'category': $scope.currentCategory
     }, function (response) {
       $scope.productGroups = response;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = $scope.productGroups[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          productGroup = _step.value;
+          productGroup.in_stock = 0;
+          var _iteratorNormalCompletion2 = true;
+          var _didIteratorError2 = false;
+          var _iteratorError2 = undefined;
+
+          try {
+            for (var _iterator2 = productGroup.products[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              product = _step2.value;
+              productGroup.in_stock += product.in_stock;
+            }
+          } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                _iterator2["return"]();
+              }
+            } finally {
+              if (_didIteratorError2) {
+                throw _iteratorError2;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
     });
   };
 
@@ -81737,13 +81821,13 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   $scope.productCategory = null;
 
   $scope.chooseProductCategory = function () {
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
+    var _iteratorNormalCompletion3 = true;
+    var _didIteratorError3 = false;
+    var _iteratorError3 = undefined;
 
     try {
-      for (var _iterator = $scope.categories[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        category = _step.value;
+      for (var _iterator3 = $scope.categories[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        category = _step3.value;
 
         if (category.id == $scope.productGroup.category_id) {
           $scope.productCategory = category;
@@ -81752,16 +81836,16 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
         }
       }
     } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
+      _didIteratorError3 = true;
+      _iteratorError3 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-          _iterator["return"]();
+        if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+          _iterator3["return"]();
         }
       } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
+        if (_didIteratorError3) {
+          throw _iteratorError3;
         }
       }
     }
@@ -81788,6 +81872,59 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 
   $scope.deleteProduct = function (index) {
     $scope.productGroup.products.splice(index, 1);
+  };
+
+  $scope.saveEditField = function (productGroupNum, productNum) {
+    var productGroup = $scope.productGroups[productGroupNum];
+    ProductsRepository.save({
+      id: productGroup.id
+    }, productGroup, function (response) {
+      $scope.successTopAlert = 'Изменения успешно сохранены!';
+      $scope.showTopAlert = true;
+      $timeout(function () {
+        $scope.showTopAlert = false;
+      }, 2000);
+
+      if (productNum != undefined) {
+        productGroup.products[productNum].free_in_stock = response.products[productNum].free_in_stock;
+        productGroup.in_stock = 0;
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
+
+        try {
+          for (var _iterator4 = productGroup.products[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            product = _step4.value;
+            productGroup.in_stock += product.in_stock;
+          }
+        } catch (err) {
+          _didIteratorError4 = true;
+          _iteratorError4 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+              _iterator4["return"]();
+            }
+          } finally {
+            if (_didIteratorError4) {
+              throw _iteratorError4;
+            }
+          }
+        }
+      }
+    }, function (response) {});
+  };
+
+  $scope.exportFile = '';
+
+  $scope.loadExportFile = function () {
+    var request = {
+      'category': $scope.currentCategory,
+      'stock': $scope.isStockProductsShown
+    };
+    ProductsRepository.getExportFile(request, function (response) {
+      $scope.exportFile = response;
+    }, function (response) {});
   };
 }]);
 
@@ -81976,23 +82113,24 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
 /***/ }),
 
 /***/ 0:
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/js/categories.js ./resources/js/products.js ./resources/js/clients.js ./resources/js/orders.js ./resources/js/productions.js ./resources/js/workers.js ./resources/js/statuses.js ./resources/js/facilities.js ./resources/js/employments.js ./resources/sass/app.scss ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/js/main.js ./resources/js/categories.js ./resources/js/products.js ./resources/js/clients.js ./resources/js/orders.js ./resources/js/productions.js ./resources/js/workers.js ./resources/js/statuses.js ./resources/js/facilities.js ./resources/js/employments.js ./resources/sass/app.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\categories.js */"./resources/js/categories.js");
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\products.js */"./resources/js/products.js");
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\clients.js */"./resources/js/clients.js");
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\orders.js */"./resources/js/orders.js");
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\productions.js */"./resources/js/productions.js");
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\workers.js */"./resources/js/workers.js");
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\statuses.js */"./resources/js/statuses.js");
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\facilities.js */"./resources/js/facilities.js");
-__webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\js\employments.js */"./resources/js/employments.js");
-module.exports = __webpack_require__(/*! D:\OSPanel\domains\tct-manager.local\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\main.js */"./resources/js/main.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\categories.js */"./resources/js/categories.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\products.js */"./resources/js/products.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\clients.js */"./resources/js/clients.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\orders.js */"./resources/js/orders.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\productions.js */"./resources/js/productions.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\workers.js */"./resources/js/workers.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\statuses.js */"./resources/js/statuses.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\facilities.js */"./resources/js/facilities.js");
+__webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\js\employments.js */"./resources/js/employments.js");
+module.exports = __webpack_require__(/*! D:\OSPanel\domains\manager.582907.local\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -12,6 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix.js(['resources/js/app.js',
+		'resources/js/main.js',
 		'resources/js/categories.js',
 		'resources/js/products.js',
 		'resources/js/clients.js',

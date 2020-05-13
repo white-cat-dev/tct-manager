@@ -28,6 +28,7 @@ angular.module('tctApp').controller('ProductsController', [
 
 	$scope.categories = [];
 	$scope.currentCategory = 0;
+	$scope.isStockProductsShown = true;
 
 	$scope.colors = [
 		{
@@ -186,6 +187,15 @@ angular.module('tctApp').controller('ProductsController', [
 		ProductsRepository.query({'category': $scope.currentCategory}, function(response) 
 		{
 			$scope.productGroups = response;
+
+			for (productGroup of $scope.productGroups) 
+			{
+				productGroup.in_stock = 0;
+				for (product of productGroup.products)
+				{
+					productGroup.in_stock += product.in_stock;
+				}
+			}
 		});
 	}
 
@@ -239,5 +249,55 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.deleteProduct = function(index)
 	{
 		$scope.productGroup.products.splice(index, 1);
+	}
+
+
+	$scope.saveEditField = function(productGroupNum, productNum) 
+	{
+		var productGroup = $scope.productGroups[productGroupNum];
+
+		ProductsRepository.save({id: productGroup.id}, productGroup, function(response) 
+		{
+			$scope.successTopAlert = 'Изменения успешно сохранены!';
+			$scope.showTopAlert = true;
+
+			$timeout(function() {
+				$scope.showTopAlert = false;
+			}, 2000);
+
+			
+			if (productNum != undefined)
+			{
+				productGroup.products[productNum].free_in_stock = response.products[productNum].free_in_stock;
+
+				productGroup.in_stock = 0;
+				for (product of productGroup.products)
+				{
+					productGroup.in_stock += product.in_stock;
+				}
+			}
+		}, 
+		function(response) 
+		{
+        });
+	}
+
+
+	$scope.exportFile = '';
+
+	$scope.loadExportFile = function () 
+	{
+		var request = {
+			'category': $scope.currentCategory,
+			'stock': $scope.isStockProductsShown
+		};
+
+		ProductsRepository.getExportFile(request, function(response) 
+		{
+			$scope.exportFile = response;
+		}, 
+		function(response) 
+		{
+        });
 	}
 }]);

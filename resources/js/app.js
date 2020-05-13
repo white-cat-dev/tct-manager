@@ -206,7 +206,9 @@ tctApp.factory('CategoriesRepository', ['$resource', function($resource) {
 }]);
 
 tctApp.factory('ProductsRepository', ['$resource', function($resource) { 
-	return $resource('/products/:id'); 
+	return $resource('/products/:id', null, {
+		getExportFile: { method: 'GET', url: '/products/export' }
+    });  
 }]);
 
 tctApp.factory('ClientsRepository', ['$resource', function($resource) { 
@@ -242,4 +244,36 @@ tctApp.factory('ProductionsRepository', ['$resource', function($resource) {
 		orders: { method: 'GET', url: '/productions/orders' }
     }); 
 }]);
+
+
+
+
+tctApp.run(function($rootScope) 
+{
+    $rootScope.searchInputKeyPressed = function($event) 
+    {
+        if ($event.which === 13)
+        {
+        	$event.currentTarget.blur();
+        	$event.currentTarget.nextElementSibling.querySelector('.btn').click();
+        }
+    };
+
+    $rootScope.inputKeyPressed = function($event) 
+    {
+        if ($event.which === 13)
+        {
+        	$event.currentTarget.blur();
+        }
+    };
+
+    $rootScope.focusNextInput = function($event) 
+    {
+        var nextInput = $event.currentTarget.nextElementSibling;
+
+        setTimeout(function() {
+        	nextInput.focus();
+        }, 50);
+    };
+});
 

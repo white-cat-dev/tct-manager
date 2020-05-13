@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function()
 
 	Route::prefix('products')->group(function()
 	{
+		Route::get('export', 'ProductsController@getExportFile');
+		Route::get('export/{file}', 'ProductsController@downloadExportFile');
+
 		Route::get('/', 'ProductsController@index')->name('products');
 		Route::get('create', 'ProductsController@create')->name('product-create');
 		Route::get('{productGroup}', 'ProductsController@show')->name('product-show');

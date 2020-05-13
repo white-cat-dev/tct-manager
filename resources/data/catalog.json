@@ -1,0 +1,123 @@
+[
+    {
+        "name": "Плитка",
+        "units": "area",
+        "variations": "colors",
+        "adjectives": "feminine",
+        "product_groups": [
+            {
+                "wp_id": 0,
+                "wp_name": "Тротуарная плитка \"Паутина\"",
+                "name": "Паутина",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "adjectives": "feminine",
+                "weight_unit": 5.5,
+                "weight_units": 61,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 8,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 4525,
+                        "in_stock": 5
+                    },
+                ]
+            },
+            {
+                "wp_id": 0,
+                "wp_name": "Тротуарная плитка \"Паутина\"",
+                "name": "Паутина",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "adjectives": "feminine",
+                "weight_unit": 5.5,
+                "weight_units": 61,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 8,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 4525,
+                        "in_stock": 5
+                    },
+                ]
+            }
+
+        ]
+    },
+    {
+        "name": "Брусчатка",
+        "units": "area",
+        "variations": "colors",
+        "adjectives": "feminine",
+        "product_groups": [
+            {
+                "wp_id": 0,
+                "wp_name": "Брусчатка «Волна шагрень»",
+                "name": "Волна",
+                "set_pair_id": 0,
+                "width": 220,
+                "length": 110,
+                "depth": 45,
+                "weight_unit": 2,
+                "weight_units": 61,
+                "weight_pallete": 920,
+                "unit_in_units": 43,
+                "unit_in_pallete": 418,
+                "units_in_pallete": 9.7,
+                "units_from_batch": 7,
+                "forms": 90,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 12,
+                        "price_pallete": 4850,
+                        "in_stock": 0
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        "name": "Бордюры",
+        "units": "unit",
+        "variations": "colors",
+        "adjectives": "masculine"
+    },
+    {
+        "name": "Водостоки",
+        "units": "unit",
+        "variations": "colors",
+        "adjectives": "masculine"
+    },
+    {
+        "name": "Полистиролбетон",
+        "units": "volume",
+        "variations": "grades",
+        "adjectives": "masculine"
+    }
+]

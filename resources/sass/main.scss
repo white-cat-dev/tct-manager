@@ -2,6 +2,10 @@
 	border-radius: 0px !important;
 }
 
+body {
+	background: lighten($grey, 10%);
+}
+
 body.modal-open {
 	overflow-y: hidden;
 }
@@ -249,12 +253,21 @@ i.fas, i.far {
 }
 
 
+.top-right-button {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	display: none;
+
+	@include media-breakpoint-down(sm) {
+		display: block;
+	}
+}
+
 
 .top-buttons-block {
-	position: sticky;
     padding: 20px 0px;
     display: flex;
-    z-index: 10;
     justify-content: space-between;
     align-items: center;
 
@@ -266,6 +279,10 @@ i.fas, i.far {
     	&.search-group {
     		width: 350px;
     		max-width: 100%;
+
+    		@include media-breakpoint-down(sm) {
+				width: 100%;
+    		}
     	}
 
     	&.date-group {
@@ -555,6 +572,10 @@ i.fas, i.far {
 		white-space: nowrap;
 		overflow: hidden;
 		transition: opacity 0.3s;
+		position: fixed;
+		top: 20px;
+		right: 20px;
+		z-index: 25;
 
 		&.shown {
 			max-width: 400px;
@@ -564,14 +585,22 @@ i.fas, i.far {
 
 
 .no-data-block {
-	margin: 70px 0px;
+	padding: 70px 30px;
 	font-size: 18px;
 	text-align: center;
+
+	@include media-breakpoint-down(sm) {
+	    font-size: 16px;
+	}
 
 	& > div {
 		font-size: 60px;
 		color: darken($grey, 15%);
 		margin-bottom: 5x;
+
+		@include media-breakpoint-down(sm) {
+		    font-size: 50px;
+		}
 	}
 }
 
