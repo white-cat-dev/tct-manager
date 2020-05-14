@@ -80116,12 +80116,7 @@ tctApp.factory('CategoriesRepository', ['$resource', function ($resource) {
   return $resource('/categories/:id');
 }]);
 tctApp.factory('ProductsRepository', ['$resource', function ($resource) {
-  return $resource('/products/:id', null, {
-    getExportFile: {
-      method: 'GET',
-      url: '/products/export'
-    }
-  });
+  return $resource('/products/:id');
 }]);
 tctApp.factory('ClientsRepository', ['$resource', function ($resource) {
   return $resource('/clients/:id');
@@ -80156,6 +80151,14 @@ tctApp.factory('ProductionsRepository', ['$resource', function ($resource) {
     orders: {
       method: 'GET',
       url: '/productions/orders'
+    }
+  });
+}]);
+tctApp.factory('ExportsRepository', ['$resource', function ($resource) {
+  return $resource('/export', null, {
+    products: {
+      method: 'GET',
+      url: '/export/products'
     }
   });
 }]);
@@ -81635,7 +81638,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('ProductsController', ['$scope', '$routeParams', '$location', '$timeout', 'CategoriesRepository', 'ProductsRepository', function ($scope, $routeParams, $location, $timeout, CategoriesRepository, ProductsRepository) {
+angular.module('tctApp').controller('ProductsController', ['$scope', '$routeParams', '$location', '$timeout', 'CategoriesRepository', 'ProductsRepository', 'ExportsRepository', function ($scope, $routeParams, $location, $timeout, CategoriesRepository, ProductsRepository, ExportsRepository) {
   $scope.Math = window.Math;
   $scope.baseUrl = '';
   $scope.productGroups = [];
@@ -81915,15 +81918,13 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     }, function (response) {});
   };
 
-  $scope.exportFile = '';
-
   $scope.loadExportFile = function () {
     var request = {
       'category': $scope.currentCategory,
       'stock': $scope.isStockProductsShown
     };
-    ProductsRepository.getExportFile(request, function (response) {
-      $scope.exportFile = response;
+    ExportsRepository.products(request, function (response) {
+      document.location.href = response.file;
     }, function (response) {});
   };
 }]);

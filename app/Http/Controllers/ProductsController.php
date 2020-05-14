@@ -132,28 +132,6 @@ class ProductsController extends Controller
     }
 
 
-    public function getExportFile(Request $request)
-    {
-        $category = $request->get('category', 0);
-        $onlyInStock = $request->get('stock', false);
-
-        $fileName = 'Склад_' . date('d_m_Y') . '.xlsx';
-
-        Excel::store(new ProductsExport($category, $onlyInStock), $fileName);
-
-        return $fileName;
-    }
-
-
-    public function downloadExportFile(Request $request)
-    {
-        $fileName = storage_path('app/' . $request->route('file', 0));
-
-        return Storage::download($fileName);
-    }
-
-
-
     protected $validationRules = [
         'name' => 'required',
         'category_id' => 'required',

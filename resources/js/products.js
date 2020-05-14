@@ -5,13 +5,15 @@ angular.module('tctApp').controller('ProductsController', [
 	'$timeout',
 	'CategoriesRepository',
 	'ProductsRepository',
+	'ExportsRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
 		$timeout,
 		CategoriesRepository,
-		ProductsRepository
+		ProductsRepository,
+		ExportsRepository
 	){
 
 	$scope.Math = window.Math;
@@ -283,8 +285,6 @@ angular.module('tctApp').controller('ProductsController', [
 	}
 
 
-	$scope.exportFile = '';
-
 	$scope.loadExportFile = function () 
 	{
 		var request = {
@@ -292,9 +292,9 @@ angular.module('tctApp').controller('ProductsController', [
 			'stock': $scope.isStockProductsShown
 		};
 
-		ProductsRepository.getExportFile(request, function(response) 
+		ExportsRepository.products(request, function(response) 
 		{
-			$scope.exportFile = response;
+			document.location.href = response.file;
 		}, 
 		function(response) 
 		{

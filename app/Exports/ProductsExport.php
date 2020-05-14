@@ -4,9 +4,12 @@ namespace App\Exports;
 
 use App\Product;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Events\AfterSheet;
+// use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 
-class ProductsExport implements FromCollection
+class ProductsExport implements FromCollection, ShouldAutoSize
 {
     protected $category = 0;
     protected $onlyInStock = false;
@@ -35,9 +38,13 @@ class ProductsExport implements FromCollection
         $products = $query->get()->sortBy('product_group.name');
 
 
-        $collection = collect([]);
+        $collection = collect([
+            [
+                'Название', 'В наличии'
+            ]
+        ]);
 
-        foreach ($products as $product) 
+        foreach ($products as $num => $product) 
         {
             $collection->push([
                 $product->product_group->name . ' ' . $product->variation_text,
@@ -47,4 +54,15 @@ class ProductsExport implements FromCollection
 
         return $collection;
     }
+
+
+    // public static function afterSheet(AfterSheet $event)
+    // {
+    //     $colums = ['A', 'B', 'C'];
+
+    //     foreach ($colums as $column) 
+    //     {
+    //         $event->sheet->getDelegate()->getColumnDimension($column)->setWidth(100);
+    //     }
+    // }
 }

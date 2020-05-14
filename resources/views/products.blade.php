@@ -24,7 +24,7 @@
 
 		<div class="right-buttons d-none d-md-flex">
 			<button type="button" class="btn btn-primary" ng-click="loadExportFile()">
-				<i class="fas fa-file-word"></i> Распечатать
+				<i class="fas fa-file-excel"></i> Скачать
 			</button>
 
 			@if (Auth::user() && Auth::user()->type == 'admin')

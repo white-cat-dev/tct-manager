@@ -206,9 +206,7 @@ tctApp.factory('CategoriesRepository', ['$resource', function($resource) {
 }]);
 
 tctApp.factory('ProductsRepository', ['$resource', function($resource) { 
-	return $resource('/products/:id', null, {
-		getExportFile: { method: 'GET', url: '/products/export' }
-    });  
+	return $resource('/products/:id');  
 }]);
 
 tctApp.factory('ClientsRepository', ['$resource', function($resource) { 
@@ -243,6 +241,12 @@ tctApp.factory('ProductionsRepository', ['$resource', function($resource) {
 	return $resource('/productions', null, {
 		orders: { method: 'GET', url: '/productions/orders' }
     }); 
+}]);
+
+tctApp.factory('ExportsRepository', ['$resource', function($resource) { 
+	return $resource('/export', null, {
+		products: { method: 'GET', url: '/export/products' }
+    });  
 }]);
 
 

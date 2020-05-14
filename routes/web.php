@@ -35,9 +35,6 @@ Route::middleware('auth')->group(function()
 
 	Route::prefix('products')->group(function()
 	{
-		Route::get('export', 'ProductsController@getExportFile');
-		Route::get('export/{file}', 'ProductsController@downloadExportFile');
-
 		Route::get('/', 'ProductsController@index')->name('products');
 		Route::get('create', 'ProductsController@create')->name('product-create');
 		Route::get('{productGroup}', 'ProductsController@show')->name('product-show');
@@ -127,6 +124,13 @@ Route::middleware('auth')->group(function()
 		Route::post('{facility}', 'FacilitiesController@edit');
 		
 		Route::delete('{facility}', 'FacilitiesController@delete');
+	});
+
+
+	Route::prefix('export')->group(function()
+	{
+		Route::get('products', 'ExportsController@products');
+		Route::get('{file}', 'ExportsController@index')->name('export');
 	});
 
 
