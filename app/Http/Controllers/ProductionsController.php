@@ -237,13 +237,13 @@ class ProductionsController extends Controller
                             ->sortBy('order.priority')
                             ->sortBy('order.date');
 
+                        $performed = $productionData['performed'];
+
                         if ($baseProductions->count() > 0) 
                         {
                             $baseProductions = $baseProductions
                                 ->sortBy('order.priority')
                                 ->sortBy('order.date');
-
-                            $performed = $productionData['performed'];
 
                             foreach ($baseProductions as $baseProduction) 
                             {
@@ -266,7 +266,7 @@ class ProductionsController extends Controller
                                     $production = Production::create([
                                         'date' => $productionData['date'],
                                         'category_id' => $baseProduction->category_id,
-                                        'category_id' => $baseProduction->product_group_id,
+                                        'product_group_id' => $baseProduction->product_group_id,
                                         'product_id' => $baseProduction->product_id,
                                         'order_id' => $baseProduction->order_id,
                                         'facility_id' => $productionData['facility_id'],
@@ -296,6 +296,7 @@ class ProductionsController extends Controller
                         if ($performed > 0)
                         {
                             $productionData['performed'] = $performed;
+
                             $production = Production::create($this->getData($productionData));
                         }
                     }
@@ -415,6 +416,7 @@ class ProductionsController extends Controller
             $categoryProduction = Production::create([
                 'date' => $production->date,
                 'category_id' => $production->category_id,
+                'product_group_id' => 0,
                 'product_id' => 0,
                 'order_id' => 0,
                 'facility_id' => 0,

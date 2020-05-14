@@ -90,7 +90,7 @@
 					<table class="table">
 						<tr>
 							<th ng-repeat="x in [].constructor(days) track by $index">@{{ $index + 1 }}</th>
-							<th ng-if="isSalariesShown"></th>
+							<th ng-if="isSalariesShown">Итого</th>
 						</tr>
 					
 						<tr ng-repeat="worker in workers">
@@ -99,10 +99,13 @@
 									<div ng-bind-html="worker.employments[$index+1] ? (statuses[worker.employments[$index+1].status_id].icon != 'name' ? statuses[worker.employments[$index+1].status_id].icon : statuses[worker.employments[$index+1].status_id].name) : ''" ng-if="!isSalariesShown">
 									</div>
 									<div class="employment-salary" ng-if="isSalariesShown">
-										@{{ worker.employments[$index+1] ? (worker.employments[$index+1].salary | number) : '' }}
+										@{{ worker.employments[$index+1] ? (worker.employments[$index+1].salary) : '' }}
 									</div>
 									<div class="employment-facility" ng-style="{'border-bottom-color': worker.employments[$index+1] ? facilities[worker.employments[$index+1].facility_id].icon_color : ''}" ng-if="!isSalariesShown"></div>
 								</div>
+							</td>
+							<td ng-if="isSalariesShown">
+								@{{ worker.salary.employments }}
 							</td>
 						</tr>
 					</table>

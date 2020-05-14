@@ -298,6 +298,7 @@ angular.module('tctApp').controller('ProductionsController', [
 		$scope.newProduct[facility] = {};
 		$scope.newProduct[facility].id = null;
 		$scope.newProduct[facility].product_group = productGroup;
+		$scope.newProduct[facility].product_group_id = productGroup.id;
 		$scope.newProduct[facility].category = productGroup.category;
 		$scope.newProduct[facility].category_id = productGroup.category_id;
 
