@@ -351,7 +351,7 @@ angular.module('tctApp').controller('ProductsController', [
 	}
 
 
-	$scope.loadExportFile = function () 
+	$scope.loadExportFile = function() 
 	{
 		var request = {
 			'category': $scope.currentCategory,

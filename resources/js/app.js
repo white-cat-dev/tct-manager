@@ -10,7 +10,6 @@ var tctApp = angular.module('tctApp', [
 	require('angular-sanitize'),
 	require('angular-route'), 
 	require('angular-resource'), 
-	require('angular-animate'),
 	require('angular-toastr'),
 	require('angular-ui-mask'),
 	require('ui-select'),
