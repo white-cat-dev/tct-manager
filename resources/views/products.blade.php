@@ -1,13 +1,13 @@
 <div class="products-page" ng-init="init()">
 	<h1>Продукты</h1>
 
+	@include('partials.top-alerts')
+
 	@if (Auth::user() && Auth::user()->type == 'admin')
 	<a href="{{ route('product-create') }}" class="btn btn-primary top-right-button">
 		<i class="fas fa-plus"></i>
 	</a>
 	@endif
-
-	@include('partials.top-alerts')
 
 	<div class="top-buttons-block">
 		<div class="left-buttons" ng-init="count=0">
@@ -29,7 +29,7 @@
 
 			@if (Auth::user() && Auth::user()->type == 'admin')
 			<a href="{{ route('product-create') }}" class="btn btn-primary">
-				<i class="fas fa-plus"></i> Добавить продукт
+				<i class="fas fa-plus"></i> Создать продукт
 			</a>
 			@endif
 		</div>
@@ -64,7 +64,7 @@
 	</div>
 	
 	<div>
-		<table class="table main-table table-with-buttons d-none d-lg-table" ng-if="productGroups.length > 0">
+		<table class="table main-table table-with-buttons d-none d-lg-table" ng-if="(productGroups | filter: {'name': searchQuery}).length > 0">
 			<tr>
 				<th>№</th>
 				<th>Название</th>
@@ -94,10 +94,11 @@
 				</td>
 				<td style="width: 12%;">
 					<div ng-repeat="product in productGroup.products" ng-if="!isStockProductsShown || product.in_stock > 0">
-						<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
+						{{-- <div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
 							@{{ product.price }} руб.
 						</div>
-						<input type="text" class="form-control" ng-model="product.price" ng-show="isEditFieldShown" ng-blur="saveEditField(productGroupNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
+						<input type="text" class="form-control" ng-model="product.price" ng-show="isEditFieldShown" ng-blur="saveEditField('products', productGroupNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)"> --}}
+						@{{ product.price }} руб.
 					</div>
 				</td>
 				<td style="width: 12%;">
@@ -110,7 +111,7 @@
 								<span ng-switch-when="unit">шт.</span>
 							</span>
 						</div>
-						<input type="text" class="form-control" ng-model="product.new_in_stock" ng-init="product.new_in_stock = product.in_stock" ng-show="isEditFieldShown" ng-blur="product.in_stock = product.new_in_stock; saveEditField(productGroupNum, productNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
+						<input type="text" class="form-control" ng-model="product.new_in_stock" ng-init="product.new_in_stock = product.in_stock" ng-show="isEditFieldShown" ng-blur="product.in_stock = product.new_in_stock; saveEditField('products', productGroupNum, productNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
 					</div>
 				</td>
 				<td style="width: 12%;">
@@ -124,7 +125,7 @@
 					</div>
 				</td>
 				<td>
-					<div class="btn-group" role="group">
+					<div class="btn-group">
 						<a ng-href="@{{ productGroup.url }}" class="btn btn-sm btn-primary">
 							<i class="fas fa-eye"></i>
 						</a>
@@ -175,7 +176,7 @@
 						<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
 							@{{ product.price }} руб.
 						</div>
-						<input type="text" class="form-control" ng-model="product.price" ng-show="isEditFieldShown" ng-blur="saveEditField(productGroupNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
+						<input type="text" class="form-control" ng-model="product.price" ng-show="isEditFieldShown" ng-blur="saveEditField('products', productGroupNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
 						</td>
 					<td ng-if="true">
 						<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
@@ -186,7 +187,7 @@
 								<span ng-switch-when="unit">шт.</span>
 							</span>
 						</div>
-						<input type="text" class="form-control" ng-model="product.new_in_stock" ng-init="product.new_in_stock = product.in_stock" ng-show="isEditFieldShown" ng-blur="product.in_stock = product.new_in_stock; saveEditField(productGroupNum, productNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
+						<input type="text" class="form-control" ng-model="product.new_in_stock" ng-init="product.new_in_stock = product.in_stock" ng-show="isEditFieldShown" ng-blur="product.in_stock = product.new_in_stock; saveEditField('products', productGroupNum, productNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
 					</td>
 					<td>
 						@{{ product.free_in_stock }} 
@@ -201,10 +202,101 @@
 		</div>
 	</div>
 
-	<div class="no-data-block" ng-if="productGroups.length == 0">
-		<div>
+	<div class="no-data-block" ng-if="(productGroups | filter: {'name': searchQuery}).length == 0">
+		<div class="icon">
 			<i class="fas fa-th"></i>
 		</div>
 		Не найдено ни одного продукта
+
+		@if (Auth::user() && Auth::user()->type == 'admin')
+		<div>
+			<a href="{{ route('product-create') }}" class="btn btn-primary">
+				<i class="fas fa-plus"></i> Создать продукт
+			</a>
+		</div>
+		@endif
 	</div>
+
+{{-- 	<div class="top-buttons-block section-buttons-block">
+		<div class="left-buttons" ng-init="count=0">
+			Материалы
+		</div>
+
+		<div class="right-buttons d-none d-md-flex">
+			@if (Auth::user() && Auth::user()->type == 'admin')
+			<a href="{{ route('material-create') }}" class="btn btn-primary">
+				<i class="fas fa-plus"></i> Создать материал
+			</a>
+			@endif
+		</div>
+	</div>
+
+	<table class="table main-table table-with-buttons" ng-if="materials.length > 0">
+		<tr>
+			<th>№</th>
+			<th>Название</th>
+			<th>Единицы измерения</th>
+			<th>Цена</th>
+			<th>В наличии</th>
+			<th></th>
+		</tr>
+
+		<tr ng-repeat="(materialNum, material) in materials">
+			<td>
+				@{{ $index + 1 }}
+			</td>
+			<td>
+				@{{ material.name }}
+			</td>
+			<td>
+				<span ng-repeat="unit in units" ng-if="unit.key == material.units" ng-bind-html="unit.name"> 
+				</span>
+			</td>
+			<td>
+				@{{ material.price }} руб.
+			</td>
+			<td>
+				<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
+					@{{ material.in_stock }}
+					<span ng-switch on="material.units">
+						<span ng-switch-when="volume_l">л</span>
+						<span ng-switch-when="volume_ml">мл</span>
+						<span ng-switch-when="weight_kg">кг</span>
+						<span ng-switch-when="weight_t">т</span>
+					</span>
+				</div>
+				<input type="text" class="form-control" ng-model="material.new_in_stock" ng-init="material.new_in_stock = material.in_stock" ng-show="isEditFieldShown" ng-blur="material.in_stock = material.new_in_stock; saveEditField('materials', materialNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
+			</td>
+			<td>
+				<div class="btn-group" role="group">
+					<a ng-href="@{{ material.url }}" class="btn btn-sm btn-primary">
+						<i class="fas fa-eye"></i>
+					</a>
+					@if (Auth::user() && Auth::user()->type == 'admin')
+					<a ng-href="@{{ material.url + '/edit' }}" class="btn btn-sm btn-primary">
+						<i class="fas fa-edit"></i>
+					</a>
+					<button type="button" class="btn btn-sm btn-primary" ng-click="delete(material.id)">
+						<i class="far fa-trash-alt"></i>
+					</button>
+					@endif
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<div class="no-data-block" ng-if="materials.length == 0">
+		<div class="icon">
+			<i class="fas fa-th"></i>
+		</div>
+		Не найдено ни одного материала
+
+		@if (Auth::user() && Auth::user()->type == 'admin')
+		<div>
+			<a href="{{ route('material-create') }}" class="btn btn-primary">
+				<i class="fas fa-plus"></i> Создать материал
+			</a>
+		</div>
+		@endif
+	</div> --}}
 </div>

@@ -18,7 +18,8 @@ class CreateEmploymentsTable extends Migration
             $table->date('date');
             $table->integer('worker_id');
             $table->integer('status_id');
-            $table->integer('facility_id');
+            $table->decimal('status_custom', 4, 2);
+            $table->string('main_category');
             $table->decimal('salary', 8, 2);
             $table->timestamps();
         });

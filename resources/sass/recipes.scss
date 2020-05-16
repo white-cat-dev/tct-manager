@@ -1,0 +1,25 @@
+.recipes-page {
+	position: relative;
+
+	.main-table {
+		@include media-breakpoint-down(md) {
+			margin-bottom: 0px;
+		}
+
+		td {
+			cursor: default;
+			vertical-align: top;
+
+			@include media-breakpoint-down(md) {
+				border: none;
+				font-size: 14px;
+			}
+
+			&:last-child {
+				@include media-breakpoint-up(lg) {
+					padding: 8px 0px;
+				}
+			}
+		}
+	}
+}

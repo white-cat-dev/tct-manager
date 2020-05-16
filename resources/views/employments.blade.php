@@ -95,13 +95,28 @@
 					
 						<tr ng-repeat="worker in workers">
 							<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(worker, $index+1)" ng-style="{'color': worker.employments[$index+1] ? statuses[worker.employments[$index+1].status_id].icon_color : ''}">
-								<div class="employment">
-									<div ng-bind-html="worker.employments[$index+1] ? (statuses[worker.employments[$index+1].status_id].icon != 'name' ? statuses[worker.employments[$index+1].status_id].icon : statuses[worker.employments[$index+1].status_id].name) : ''" ng-if="!isSalariesShown">
+								<div class="employment" ng-if="worker.employments[$index+1]">
+									<div ng-if="!isSalariesShown">
+										<div ng-bind-html="statuses[worker.employments[$index+1].status_id].icon" ng-if="!statuses[worker.employments[$index+1].status_id].customable"></div>
+
+										<div ng-if="statuses[worker.employments[$index+1].status_id].customable">
+											<div ng-if="!statuses[currentEmploymentStatus].customable">
+												@{{ worker.employments[$index+1].status_custom }} 
+											</div>
+											<div ng-if="statuses[currentEmploymentStatus].customable">
+												<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
+													@{{ worker.employments[$index+1].status_custom }} 
+												</div>
+												<input type="text" class="form-control" ng-model="worker.employments[$index+1].status_custom" ng-show="isEditFieldShown" ng-blur="isEditFieldShown = false" ng-keypress="inputKeyPressed($event)">
+											</div>
+										</div>
+
+										<div class="employment-category" ng-style="{'border-bottom-color': mainCategories[worker.employments[$index+1].main_category].icon_color}"></div>
 									</div>
+
 									<div class="employment-salary" ng-if="isSalariesShown">
-										@{{ worker.employments[$index+1] ? (worker.employments[$index+1].salary) : '' }}
+										@{{ worker.employments[$index+1].salary }}
 									</div>
-									<div class="employment-facility" ng-style="{'border-bottom-color': worker.employments[$index+1] ? facilities[worker.employments[$index+1].facility_id].icon_color : ''}" ng-if="!isSalariesShown"></div>
 								</div>
 							</td>
 							<td ng-if="isSalariesShown">
@@ -127,19 +142,13 @@
 					Инструменты
 					@if (Auth::user() && Auth::user()->type == 'admin')
 					<a href="{{ route('employment-statuses') }}" class="btn btn-primary btn-sm">
-						<i class="fas fa-edit"></i> Изменить
+						<i class="fas fa-edit"></i> <span class="d-none d-xl-inline">Изменить</span>
 					</a>
 					@endif
 				</div>
 
 				<div class="statuses-label">
 					Выберите статус
-				</div>
-
-				<div class="name-statuses">
-					<div ng-repeat="status in statuses" ng-if="status.icon == 'name'" ng-class="{'active': currentEmploymentStatus == status.id}" ng-click="chooseCurrentEmploymentStatus(status.id)" >
-						<span ng-style="{'color': status.icon_color}">@{{ status.name }}</span>
-					</div>
 				</div>
 
 				<table class="table" ng-if="Object.keys(statuses).length > 0">
@@ -151,27 +160,19 @@
 							@{{ status.name }}
 						</td>
 					</tr>
-					<tr ng-class="{'active': currentEmploymentStatus == 0}" ng-click="chooseCurrentEmploymentStatus(0)">
-						<td>
-							<div></div>
-						</td>
-						<td>
-							Выходной
-						</td>
-					</tr>
 				</table>
 
 				<div class="statuses-label">
-					Выберите цех
+					Выберите категорию
 				</div>
 
-				<table class="table" ng-if="Object.keys(facilities).length > 0">
-					<tr ng-repeat="facility in facilities" ng-class="{'active': currentFacility == facility.id}" ng-click="chooseCurrentFacility(facility.id)">
+				<table class="table" ng-if="Object.keys(mainCategories).length > 0">
+					<tr ng-repeat="mainCategory in mainCategories" ng-class="{'active': currentMainCategory == mainCategory.key}" ng-click="chooseCurrentMainCategory(mainCategory.key)">
 						<td>
-							<div ng-style="{'background': facility.icon_color}"></div>
+							<div ng-style="{'background': mainCategory.icon_color}"></div>
 						</td>
 						<td>
-							@{{ facility.name }}
+							@{{ mainCategory.name }}
 						</td>
 					</tr>
 				</table>

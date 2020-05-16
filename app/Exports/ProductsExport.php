@@ -3,9 +3,8 @@
 namespace App\Exports;
 
 use App\Product;
+use App\Material;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Events\AfterSheet;
-// use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 
@@ -13,12 +12,14 @@ class ProductsExport implements FromCollection, ShouldAutoSize
 {
     protected $category = 0;
     protected $onlyInStock = false;
+    protected $withMaterials = false;
 
 
-    public function __construct($category, $onlyInStock)
+    public function __construct($category, $onlyInStock, $withMaterials)
     {
         $this->category = $category;
         $this->onlyInStock = $onlyInStock == 'true';
+        $this->withMaterials = $withMaterials == 'true';
     }
     
 
@@ -39,12 +40,10 @@ class ProductsExport implements FromCollection, ShouldAutoSize
 
 
         $collection = collect([
-            [
-                'Название', 'В наличии'
-            ]
+            ['Название', 'В наличии']
         ]);
 
-        foreach ($products as $num => $product) 
+        foreach ($products as $product) 
         {
             $collection->push([
                 $product->product_group->name . ' ' . $product->variation_text,
@@ -52,17 +51,23 @@ class ProductsExport implements FromCollection, ShouldAutoSize
             ]);
         }
 
+
+        if ($this->withMaterials)
+        {
+            $collection->push(['', '']);
+
+            $materials = Material::orderBy('name')->get();
+
+            foreach ($materials as $material) 
+            {
+                $collection->push([
+                    $material->name,
+                    $material->in_stock > 0 ? $material->in_stock : '0'
+                ]);
+            }
+
+        }
+
         return $collection;
     }
-
-
-    // public static function afterSheet(AfterSheet $event)
-    // {
-    //     $colums = ['A', 'B', 'C'];
-
-    //     foreach ($colums as $column) 
-    //     {
-    //         $event->sheet->getDelegate()->getColumnDimension($column)->setWidth(100);
-    //     }
-    // }
 }

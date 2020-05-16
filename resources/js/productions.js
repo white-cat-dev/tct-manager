@@ -30,7 +30,8 @@ angular.module('tctApp').controller('ProductionsController', [
 
 	$scope.productionProducts = [];
 	$scope.productionOrders = [];
-	$scope.productionCategories = {};
+	$scope.productionCategories = [];
+	$scope.productionMaterials = [];
 	
 	$scope.facilities = {};
 
@@ -63,6 +64,7 @@ angular.module('tctApp').controller('ProductionsController', [
 			$scope.productionProducts = response.products;
 			$scope.productionOrders = response.orders;
 			$scope.productionCategories = response.categories;
+			$scope.productionMaterials = response.materials;
 
 			$scope.facilities = response.facilities;
 
@@ -179,6 +181,22 @@ angular.module('tctApp').controller('ProductionsController', [
 				$scope.modalProductionCategories.push(newCategory);
 			}
 		}
+
+		$scope.modalProductionMaterials = [];
+
+		for (material of $scope.productionMaterials)
+		{
+			if (material.applies[day])
+			{
+				var newMaterial = angular.copy(material);
+				newMaterial.apply = newMaterial.applies[day];
+				newMaterial.applies = [];
+
+				$scope.modalProductionMaterials.push(newMaterial);
+			}
+		}
+
+		console.log($scope.modalProductionMaterials, $scope.productionMaterials);
 
 		document.querySelector('body').classList.add('modal-open');
 		$scope.isModalShown = true;
@@ -333,7 +351,7 @@ angular.module('tctApp').controller('ProductionsController', [
 			'day': $scope.modalDate.getDate(),
 			'date': $filter('date')($scope.modalDate, 'yyyy-MM-dd'),
 			'category_id': $scope.newProduct[facility].category_id,
-			'product_group_id': $scope.newProduct[facility].category_id,
+			'product_group_id': $scope.newProduct[facility].product_group_id,
 			'facility_id': facility,
 			'product_id': $scope.newProduct[facility].id,
 			'order_id': 0,

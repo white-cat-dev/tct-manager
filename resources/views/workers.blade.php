@@ -27,7 +27,7 @@
 	<div class="row">
 		<div class="col-12 col-lg-6 col-xl-4" ng-repeat="worker in workers | filter: {'name': searchQuery}">
 			<div class="worker-block">
-				<div class="btn-group" role="group">
+				<div class="btn-group">
 					<a ng-href="@{{ worker.url }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-eye"></i>
 					</a>

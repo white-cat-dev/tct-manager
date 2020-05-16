@@ -32,6 +32,16 @@ class MenuService
                 'url' => route('products'),
                 // 'submenu' => $categoriesMenu
             ],
+            (object)[
+                'name' => 'Материалы',
+                'icon' => '<i class="fas fa-tools"></i>',
+                'url' => route('materials')
+            ],
+            (object)[
+                'name' => 'Рецепты',
+                'icon' => '<i class="fas fa-scroll"></i>',
+                'url' => route('recipes')
+            ],
             // (object)[
             //     'name' => 'Клиенты',
             //     'icon' => '<i class="fas fa-users"></i>',

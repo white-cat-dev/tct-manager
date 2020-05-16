@@ -21,6 +21,7 @@ class CreateEmploymentStatusesTable extends Migration
             $table->decimal('salary_production', 5, 2);
             $table->decimal('salary_fixed', 10, 2);
             $table->decimal('salary_team', 10, 2);
+            $table->boolean('customable');
             $table->timestamps();
         });
     }

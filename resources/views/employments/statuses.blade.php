@@ -23,11 +23,10 @@
 		<table class="table">
 			<tr>
 				<th>Название</th>
-				<th>Иконка</th>
-				<th>Цвет иконки</th>
 				<th>Производство</th>
 				<th>Фиксированная</th>
-				<th>Процент</th>
+				<th>Иконка</th>
+				<th>Цвет иконки</th>
 				<th></th>
 			</tr>
 
@@ -35,8 +34,20 @@
 				<td>
 					<input type="text" class="form-control" ng-model="status.name">
 				</td>
+				<td>
+					<input type="text" class="form-control" ng-model="status.salary_production" ng-disabled="status.customable">
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" ng-model="status.customable" id="checkboxCustomable@{{ $index }}">
+						<label class="custom-control-label" for="checkboxCustomable@{{ $index }}">
+							Ручной ввод значения
+						</label>
+					</div>
+				</td>
+				<td>
+					<input type="text" class="form-control" ng-model="status.salary_fixed">
+				</td>
 				<td ng-style="{'color': status.icon_color}">
-					<ui-select ng-model="status.icon" skip-focusser="true">
+					<ui-select ng-model="status.icon" skip-focusser="true" ng-disabled="status.customable">
 			            <ui-select-match placeholder="Выберите иконку">
 				            <span ng-if="$select.selected == 'name'" ng-bind-html="status.name" style="font-weight: 500;"></span>
 				            <span ng-if="$select.selected != 'name'" ng-bind-html="$select.selected"></span>
@@ -50,15 +61,6 @@
 				<td>
 					<color-picker ng-model="status.icon_color">
 					</color-picker>
-				</td>
-				<td>
-					<input type="text" class="form-control" ng-model="status.salary_production">
-				</td>
-				<td>
-					<input type="text" class="form-control" ng-model="status.salary_fixed">
-				</td>
-				<td>
-					<input type="text" class="form-control" ng-model="status.salary_team">
 				</td>
 				<td>
 					<button type="button" class="btn btn-primary" ng-click="deleteStatus($index)">

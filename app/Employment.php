@@ -12,7 +12,8 @@ class Employment extends Model
     	'date',
         'worker_id',
         'status_id',
-        'facility_id',
+        'status_custom',
+        'main_category',
         'salary'
     ];
 
@@ -21,7 +22,8 @@ class Employment extends Model
     ];
 
     protected $casts = [
-        'salary' => 'float'
+        'salary' => 'float',
+        'status_custom' => 'float'
     ];
 
 
@@ -33,11 +35,6 @@ class Employment extends Model
     public function status()
     {
         return $this->belongsTo(EmploymentStatus::class);
-    }
-
-    public function facility()
-    {
-        return $this->belongsTo(Facility::class);
     }
 
 

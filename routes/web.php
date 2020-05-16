@@ -47,6 +47,36 @@ Route::middleware('auth')->group(function()
 	});
 
 
+	Route::prefix('materials')->group(function()
+	{
+		Route::post('supply', 'MaterialsController@saveSupply');
+
+		Route::get('/', 'MaterialsController@index')->name('materials');
+		Route::get('create', 'MaterialsController@create')->name('material-create');
+		Route::get('{materialGroup}', 'MaterialsController@show')->name('material-show');
+		Route::get('{materialGroup}/edit', 'MaterialsController@edit')->name('material-edit');
+
+		Route::post('/', 'MaterialsController@create');
+		Route::post('{materialGroup}', 'MaterialsController@edit');
+
+		Route::delete('{materialGroup}', 'MaterialsController@delete');
+	});
+
+
+	Route::prefix('recipes')->group(function()
+	{
+		Route::get('/', 'RecipesController@index')->name('recipes');
+		Route::get('create', 'RecipesController@create')->name('recipe-create');
+		Route::get('{recipe}', 'RecipesController@show')->name('recipe-show');
+		Route::get('{recipe}/edit', 'RecipesController@edit')->name('recipe-edit');
+
+		Route::post('/', 'RecipesController@create');
+		Route::post('{recipe}', 'RecipesController@edit');
+
+		Route::delete('{recipe}', 'RecipesController@delete');
+	});
+
+
 	Route::prefix('clients')->group(function()
 	{
 		Route::get('/', 'ClientsController@index')->name('clients');
@@ -63,7 +93,7 @@ Route::middleware('auth')->group(function()
 
 	Route::prefix('orders')->group(function()
 	{
-		Route::post('realizations', 'OrdersController@saveRealizations');
+		Route::post('realization', 'OrdersController@saveRealization');
 
 		Route::get('/', 'OrdersController@index')->name('orders');
 		Route::get('create', 'OrdersController@create')->name('order-create');
@@ -130,6 +160,7 @@ Route::middleware('auth')->group(function()
 	Route::prefix('export')->group(function()
 	{
 		Route::get('products', 'ExportsController@products');
+		Route::get('materials', 'ExportsController@materials');
 		Route::get('{file}', 'ExportsController@index')->name('export');
 	});
 
@@ -148,6 +179,27 @@ Route::middleware('auth')->group(function()
 			Route::get('/', 'TemplatesController@products');
 			Route::get('show', 'TemplatesController@productsShow');
 			Route::get('edit', 'TemplatesController@productsEdit');
+		});
+
+		Route::prefix('products')->group(function()
+		{
+			Route::get('/', 'TemplatesController@products');
+			Route::get('show', 'TemplatesController@productsShow');
+			Route::get('edit', 'TemplatesController@productsEdit');
+		});
+
+		Route::prefix('materials')->group(function()
+		{
+			Route::get('/', 'TemplatesController@materials');
+			Route::get('show', 'TemplatesController@materialsShow');
+			Route::get('edit', 'TemplatesController@materialsEdit');
+		});
+
+		Route::prefix('recipes')->group(function()
+		{
+			Route::get('/', 'TemplatesController@recipes');
+			Route::get('show', 'TemplatesController@recipesShow');
+			Route::get('edit', 'TemplatesController@recipesEdit');
 		});
 
 		Route::prefix('clients')->group(function()

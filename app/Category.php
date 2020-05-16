@@ -9,6 +9,7 @@ class Category extends Model
 {
     protected $fillable = [
     	'name',
+        'main_category',
         'units',
         'variations',
         'adjectives'

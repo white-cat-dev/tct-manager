@@ -1,5 +1,5 @@
-window.moment = require('moment');
-
+require('moment');
+require('jquery');
 require('bootstrap');
 require('angular');
 require('angularjs-color-picker');
@@ -10,6 +10,9 @@ var tctApp = angular.module('tctApp', [
 	require('angular-sanitize'),
 	require('angular-route'), 
 	require('angular-resource'), 
+	require('angular-animate'),
+	require('angular-toastr'),
+	require('angular-ui-mask'),
 	require('ui-select'),
 	'color.picker',
 	'datePicker'
@@ -33,6 +36,13 @@ tctApp.config(function($provide) {
 
         return options;
     });
+});
+
+tctApp.config(function(toastrConfig) {
+	angular.extend(toastrConfig, {
+		timeOut: 2000,
+		extendedTimeOut: 1000
+	});
 });
 
 tctApp.config(function($provide) {
@@ -114,6 +124,40 @@ tctApp.config(['$routeProvider', function($routeProvider) {
 	    .when('/products/:id/edit', {
 			templateUrl: '/templates/products/edit',
 			controller: 'ProductsController'
+	    })
+
+	    .when('/materials', {
+			templateUrl: '/templates/materials',
+			controller: 'MaterialsController'
+	    })
+	    .when('/materials/create', {
+			templateUrl: '/templates/materials/edit',
+			controller: 'MaterialsController'
+	    })
+	    .when('/materials/:id', {
+			templateUrl: '/templates/materials/show',
+			controller: 'MaterialsController'
+	    })
+	    .when('/materials/:id/edit', {
+			templateUrl: '/templates/materials/edit',
+			controller: 'MaterialsController'
+	    })
+
+	    .when('/recipes', {
+			templateUrl: '/templates/recipes',
+			controller: 'RecipesController'
+	    })
+	    .when('/recipes/create', {
+			templateUrl: '/templates/recipes/edit',
+			controller: 'RecipesController'
+	    })
+	    .when('/recipes/:id', {
+			templateUrl: '/templates/recipes/show',
+			controller: 'RecipesController'
+	    })
+	    .when('/recipes/:id/edit', {
+			templateUrl: '/templates/recipes/edit',
+			controller: 'RecipesController'
 	    })
 
 	    .when('/clients', {
@@ -209,13 +253,23 @@ tctApp.factory('ProductsRepository', ['$resource', function($resource) {
 	return $resource('/products/:id');  
 }]);
 
+tctApp.factory('MaterialsRepository', ['$resource', function($resource) { 
+	return $resource('/materials/:id', null, {
+		saveSupply: { method: 'POST', url: '/materials/supply' }
+    });  
+}]);
+
+tctApp.factory('RecipesRepository', ['$resource', function($resource) { 
+	return $resource('/recipes/:id');  
+}]);
+
 tctApp.factory('ClientsRepository', ['$resource', function($resource) { 
 	return $resource('/clients/:id'); 
 }]);
 
 tctApp.factory('OrdersRepository', ['$resource', function($resource) { 
 	return $resource('/orders/:id', null, {
-		saveRealizations: { method: 'POST', url: '/orders/realizations' }
+		saveRealization: { method: 'POST', url: '/orders/realization' }
     });  
 }]);
 
@@ -238,14 +292,13 @@ tctApp.factory('EmploymentsRepository', ['$resource', function($resource) {
 }]);
 
 tctApp.factory('ProductionsRepository', ['$resource', function($resource) { 
-	return $resource('/productions', null, {
-		orders: { method: 'GET', url: '/productions/orders' }
-    }); 
+	return $resource('/productions'); 
 }]);
 
 tctApp.factory('ExportsRepository', ['$resource', function($resource) { 
 	return $resource('/export', null, {
-		products: { method: 'GET', url: '/export/products' }
+		products: { method: 'GET', url: '/export/products' },
+		materials: { method: 'GET', url: '/export/materials' }
     });  
 }]);
 

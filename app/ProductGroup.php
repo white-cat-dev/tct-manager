@@ -25,7 +25,8 @@ class ProductGroup extends Model
     	'units_in_pallete',
     	'units_from_batch',
     	'forms',
-        'salary_units'
+        'salary_units',
+        'recipe_id'
     ];
 
     protected $appends = [
@@ -49,9 +50,25 @@ class ProductGroup extends Model
     ];
 
 
+    public static function boot() 
+    {
+        parent::boot();
+
+        static::deleting(function($productGroup) 
+        {
+            $productGroup->products()->delete();
+        });
+    }
+
+
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function recipe()
+    {
+        return $this->belongsTo(Recipe::class);
     }
 
     public function products()

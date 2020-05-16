@@ -39,6 +39,38 @@ class TemplatesController extends Controller
     }
 
 
+    public function materials(Request $request) 
+    {
+        return view('materials');
+    }
+
+    public function materialsShow(Request $request) 
+    {
+        return view('materials.show');
+    }
+
+    public function materialsEdit(Request $request) 
+    {
+        return view('materials.edit');
+    }
+
+
+    public function recipes(Request $request) 
+    {
+        return view('recipes');
+    }
+
+    public function recipesShow(Request $request) 
+    {
+        return view('recipes.show');
+    }
+
+    public function recipesEdit(Request $request) 
+    {
+        return view('recipes.edit');
+    }
+
+
     public function clients(Request $request) 
     {
         return view('clients');

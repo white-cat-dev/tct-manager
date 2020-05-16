@@ -3,17 +3,23 @@ angular.module('tctApp').controller('ProductsController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
+	'toastr',
 	'CategoriesRepository',
 	'ProductsRepository',
 	'ExportsRepository',
+	'MaterialsRepository',
+	'RecipesRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
 		$timeout,
+		toastr,
 		CategoriesRepository,
 		ProductsRepository,
-		ExportsRepository
+		ExportsRepository,
+		MaterialsRepository,
+		RecipesRepository
 	){
 
 	$scope.Math = window.Math;
@@ -22,7 +28,16 @@ angular.module('tctApp').controller('ProductsController', [
 
 	$scope.productGroups = [];
 	$scope.productGroup = {
-		'products': []
+		'products': [
+			{
+				'variation': '',
+				'main_variation': '',
+				'price': 0,
+				'price_unit': 0,
+				'price_pallete': 0,
+				'in_stock': 0
+			}
+		]
 	};
 	$scope.id = 0;
 
@@ -31,6 +46,10 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.categories = [];
 	$scope.currentCategory = 0;
 	$scope.isStockProductsShown = true;
+
+	$scope.materials = [];
+	$scope.recipes = [];
+
 
 	$scope.colors = [
 		{
@@ -78,6 +97,29 @@ angular.module('tctApp').controller('ProductsController', [
 		}
 	];
 
+	$scope.units = [
+		{
+			'key': 'volume_l',
+			'main_key': 'volume_l',
+			'name': 'Объем в литрах (л)'
+		},
+		{
+			'key': 'volume_ml',
+			'main_key': 'volume_ml',
+			'name': 'Объем в миллилитрах (мл)'
+		},
+		{
+			'key': 'weight_kg',
+			'main_key': 'weight_kg',
+			'name': 'Вес в килограммах (кг)'
+		},
+		{
+			'key': 'weight_t',
+			'main_key': 'weight_t',
+			'name': 'Вес в тоннах (т)'
+		},
+	];
+
 
 	$scope.init = function()
 	{
@@ -88,6 +130,7 @@ angular.module('tctApp').controller('ProductsController', [
 		
 		$scope.loadCategories();
 		$scope.loadProducts();
+		$scope.loadMaterials();
 	}
 
 
@@ -120,6 +163,11 @@ angular.module('tctApp').controller('ProductsController', [
 				$scope.productCategory = $scope.productGroup.category;
 			});
 		}
+
+		RecipesRepository.query(function(response) 
+		{
+			$scope.recipes = response;
+		});
 	}
 
 
@@ -127,22 +175,25 @@ angular.module('tctApp').controller('ProductsController', [
 	{
 		ProductsRepository.save({id: $scope.id}, $scope.productGroup, function(response) 
 		{
+			toastr.success($scope.id ? 'Продукт успешно обновлен!' : 'Новый продукт успешно создан!');
+
 			$scope.productGroupErrors = {};
-			if ($scope.id)
-			{
-				$scope.successAlert = 'Продукт успешно обновлен!';
-			}
-			else
-			{
-				$scope.successAlert = 'Новый продукт успешно создан!';
-			}
-			$scope.showAlert = true;
 			$scope.id = response.id;
 			$scope.productGroup.url = response.url;
 		}, 
 		function(response) 
 		{
-            $scope.productGroupErrors = response.data.errors;
+            switch (response.status) 
+            {
+            	case 422:
+            		toastr.error('Проверьте введенные данные');
+            		$scope.productGroupErrors = response.data.errors;
+            		break
+
+            	default:
+            		toastr.error('Произошла ошибка на сервере');
+            		break;
+            }
         });
 	}
 
@@ -157,12 +208,7 @@ angular.module('tctApp').controller('ProductsController', [
 			}
 			else
 			{
-				$scope.successAlert = 'Продукт успешно удален!';
-				$scope.showAlert = true;
-
-				$timeout(function() {
-					$scope.showAlert = false;
-				}, 2000);
+				toastr.success('Продукт успешно удален!');
 
 				$scope.init();
 			}
@@ -200,6 +246,17 @@ angular.module('tctApp').controller('ProductsController', [
 			}
 		});
 	}
+
+
+	$scope.loadMaterials = function()
+	{
+		MaterialsRepository.query(function(response) 
+		{
+			$scope.materials = response;
+		});
+	}
+
+
 
 	$scope.chooseCategory = function(category)
 	{
@@ -254,34 +311,43 @@ angular.module('tctApp').controller('ProductsController', [
 	}
 
 
-	$scope.saveEditField = function(productGroupNum, productNum) 
+	$scope.saveEditField = function(key, groupNum, num) 
 	{
-		var productGroup = $scope.productGroups[productGroupNum];
-
-		ProductsRepository.save({id: productGroup.id}, productGroup, function(response) 
+		if (key == 'products')
 		{
-			$scope.successTopAlert = 'Изменения успешно сохранены!';
-			$scope.showTopAlert = true;
+			var productGroup = $scope.productGroups[groupNum];
 
-			$timeout(function() {
-				$scope.showTopAlert = false;
-			}, 2000);
-
-			
-			if (productNum != undefined)
+			ProductsRepository.save({id: productGroup.id}, productGroup, function(response) 
 			{
-				productGroup.products[productNum].free_in_stock = response.products[productNum].free_in_stock;
-
-				productGroup.in_stock = 0;
-				for (product of productGroup.products)
+				toastr.success('Изменения успешно сохранены!');
+	
+				if (num != undefined)
 				{
-					productGroup.in_stock += product.in_stock;
+					productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
+
+					productGroup.in_stock = 0;
+					for (product of productGroup.products)
+					{
+						productGroup.in_stock += product.in_stock;
+					}
 				}
-			}
-		}, 
-		function(response) 
+			}, 
+			function(response) 
+			{
+	        });
+		}
+		else if (key == 'materials')
 		{
-        });
+			var material = $scope.materials[groupNum];
+
+			MaterialsRepository.save({id: material.id}, material, function(response) 
+			{
+				toastr.success('Изменения успешно сохранены!');
+			}, 
+			function(response) 
+			{
+	        });
+		}
 	}
 
 
@@ -289,7 +355,8 @@ angular.module('tctApp').controller('ProductsController', [
 	{
 		var request = {
 			'category': $scope.currentCategory,
-			'stock': $scope.isStockProductsShown
+			'stock': $scope.isStockProductsShown,
+			'materials': false
 		};
 
 		ExportsRepository.products(request, function(response) 

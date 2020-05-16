@@ -15,21 +15,38 @@ class CategorySeeder extends Seeder
     {
         Category::insert([
             [
-                'name' => 'Тротуарная плитка',
+                'name' => 'Плитка',
+                'main_category' => 'tiles',
+                'units' => 'area',
+                'variations' => 'colors',
+                'adjectives' => 'feminine'
+            ],
+            [
+                'name' => 'Брусчатка',
+                'main_category' => 'tiles',
                 'units' => 'area',
                 'variations' => 'colors',
                 'adjectives' => 'feminine'
             ],
             [
                 'name' => 'Бордюры',
+                'main_category' => 'tiles',
                 'units' => 'unit',
                 'variations' => 'colors',
                 'adjectives' => 'masculine'
             ],
             [
-                'name' => 'Строительные блоки',
+                'name' => 'Водостоки',
+                'main_category' => 'tiles',
+                'units' => 'unit',
+                'variations' => 'colors',
+                'adjectives' => 'masculine'
+            ],
+            [
+                'name' => 'Полистиролбетон',
+                'main_category' => 'blocks',
                 'units' => 'volume',
-                'variations' => 'grades',
+                'variations' => '',
                 'adjectives' => 'masculine'
             ]
         ]);

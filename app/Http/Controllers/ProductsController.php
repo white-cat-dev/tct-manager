@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ProductGroup;
 use App\Product; 
-use App\Exports\ProductsExport;
-use Excel;
-use Storage;
 
 
 class ProductsController extends Controller
@@ -83,7 +80,7 @@ class ProductsController extends Controller
             $productGroupData = $this->getData($request);
             $productGroup->update($productGroupData);
 
-            $productsIds = $productGroup->products()->select('id')->pluck('id');
+            $productsIds = $productGroup->products()->select('id')->pluck('id', 'id');
 
             foreach ($request->get('products', []) as $productData) 
             {
@@ -96,10 +93,7 @@ class ProductsController extends Controller
 
                 $id = !empty($productData['id']) ? $productData['id'] : 0;
                 
-                if ($productsIds->has($id)) 
-                {
-                    $productsIds->forget($id);
-                }
+                $productsIds->forget($id);
 
                 $product = $productGroup->products()->find($id);
 
@@ -112,6 +106,8 @@ class ProductsController extends Controller
                     $product->update($productData);
                 }
             }
+
+            $productGroup->products()->whereIn('products.id', $productsIds)->delete();
 
             $productGroup->products = $productGroup->products;
             $productGroup->category = $productGroup->category;
@@ -173,6 +169,7 @@ class ProductsController extends Controller
             'units_from_batch' => $request->get('units_from_batch', 0),
             'forms' => $request->get('forms', 0),
             'salary_units' => $request->get('salary_units', 0),
+            'recipe_id' => $request->get('recipe_id', 0),
         ];
     }
 }

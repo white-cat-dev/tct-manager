@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             WorkerSeeder::class,
             FacilitySeeder::class,
             ProductSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            MaterialSeeder::class
 	    ]);
     }
 }

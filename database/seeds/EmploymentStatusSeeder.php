@@ -15,68 +15,31 @@ class EmploymentStatusSeeder extends Seeder
     {
         EmploymentStatus::insert([
         	[
-	        	'name' => '1',
-	        	'icon' => 'name',
-	        	'icon_color' => '#28a65b',
-	        	'salary_production' => 1.0,
+	        	'name' => 'Ввод',
+	        	'icon' => '<i class="fas fa-italic"></i>',
+	        	'icon_color' => '#276090',
+	        	'salary_production' => 0,
 	        	'salary_fixed' => 0,
-	        	'salary_team' => 0
+	        	'salary_team' => 0,
+	        	'customable' => true
 	        ],
 	        [
-	        	'name' => '0.9',
-	        	'icon' => 'name',
-	        	'icon_color' => '#4e9e50',
-	        	'salary_production' => 0.9,
+	        	'name' => 'Выходной',
+	        	'icon' => '<i class="fas fa-coffee"></i>',
+	        	'icon_color' => '#9a9a9a',
+	        	'salary_production' => 0,
 	        	'salary_fixed' => 0,
-	        	'salary_team' => 0
+	        	'salary_team' => 0,
+	        	'customable' => false
 	        ],
 	        [
-	        	'name' => '0.8',
-	        	'icon' => 'name',
-	        	'icon_color' => '#749645',
-	        	'salary_production' => 0.8,
-	        	'salary_fixed' => 0,
-	        	'salary_team' => 0
-	        ],
-	        [
-	        	'name' => '0.7',
-	        	'icon' => 'name',
-	        	'icon_color' => '#9a8e39',
-	        	'salary_production' => 0.7,
-	        	'salary_fixed' => 0,
-	        	'salary_team' => 0
-	        ],
-	        [
-	        	'name' => '0.6',
-	        	'icon' => 'name',
-	        	'icon_color' => '#c0862e',
-	        	'salary_production' => 0.6,
-	        	'salary_fixed' => 0,
-	        	'salary_team' => 0
-	        ],
-	        [
-	        	'name' => '0.5',
-	        	'icon' => 'name',
-	        	'icon_color' => '#e67e22',
-	        	'salary_production' => 0.5,
-	        	'salary_fixed' => 0,
-	        	'salary_team' => 0
-	        ],
-	        [
-	        	'name' => 'Бригадир',
-	        	'icon' => '<i class="fas fa-user-tie"></i>',
-	        	'icon_color' => '#28a65b',
-	        	'salary_production' => 1,
-	        	'salary_fixed' => 0,
-	        	'salary_team' => 0.1
-	        ],
-	        [
-	        	'name' => 'Пропуск',
+	        	'name' => 'Прогул',
 	        	'icon' => '<i class="fas fa-times"></i>',
 	        	'icon_color' => '#d35400',
 	        	'salary_production' => -1,
 	        	'salary_fixed' => -2500,
-	        	'salary_team' => 0
+	        	'salary_team' => 0,
+	        	'customable' => false
 	        ]
         ]);
     }

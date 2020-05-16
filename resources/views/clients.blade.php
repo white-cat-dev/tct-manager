@@ -47,15 +47,15 @@
 				@{{ client.email }}
 			</td>
 			<td>
-				<div class="btn-group" role="group">
-					<a ng-href="@{{ client.url }}" class="btn btn-primary">
+				<div class="btn-group">
+					<a ng-href="@{{ client.url }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-eye"></i>
 					</a>
 					@if (Auth::user() && Auth::user()->type == 'admin')
-					<a ng-href="@{{ client.url + '/edit' }}" class="btn btn-primary">
+					<a ng-href="@{{ client.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-primary" ng-click="delete(client.id)">
+					<button type="button" class="btn btn-sm btn-primary" ng-click="delete(client.id)">
 						<i class="far fa-trash-alt"></i>
 					</button>
 					@endif

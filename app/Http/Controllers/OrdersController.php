@@ -155,7 +155,7 @@ class OrdersController extends Controller
     }
 
 
-    public function saveRealizations(Request $request)
+    public function saveRealization(Request $request)
     {
         $realizationsData = $request->get('realizations');
 

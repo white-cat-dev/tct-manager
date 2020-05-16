@@ -31,10 +31,35 @@
 
 	<div class="edit-form-block">
 		<div class="row justify-content-around">
-			<div class="col-6">
+			<div class="col-8">
 				<div class="form-group">
 					<div class="param-label">Название</div>
 					<input type="text" class="form-control" ng-model="category.name" ng-class="{'is-invalid': categoryErrors.name}">
+				</div>
+
+				<div class="form-group">
+					<div class="param-label">Главная категория</div>
+
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioTiles" ng-model="category.main_category" value="tiles">
+						<label class="custom-control-label" for="radioTiles">Плитка</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioBlocks" ng-model="category.main_category" value="blocks">
+						<label class="custom-control-label" for="radioBlocks">Блоки</label>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="param-label">Единицы измерения</div>
+					<ui-select theme="bootstrap" ng-model="category.units" ng-class="{'is-invalid': categoryErrors.units}">
+			            <ui-select-match placeholder="Выберите из списка...">
+				            <span ng-bind-html="$select.selected.name"></span>
+				        </ui-select-match>
+			            <ui-select-choices repeat="unit.key as unit in units">
+			                <span ng-bind-html="unit.name"></span>
+			            </ui-select-choices>
+					</ui-select>
 				</div>
 
 				<div class="form-group">
@@ -55,18 +80,6 @@
 				</div>
 
 				<div class="form-group">
-					<div class="param-label">Единицы измерения</div>
-					<ui-select theme="bootstrap" ng-model="category.units" ng-class="{'is-invalid': categoryErrors.units}">
-			            <ui-select-match placeholder="Выберите из списка...">
-				            <span ng-bind-html="$select.selected.name"></span>
-				        </ui-select-match>
-			            <ui-select-choices repeat="unit.key as unit in units">
-			                <span ng-bind-html="unit.name"></span>
-			            </ui-select-choices>
-					</ui-select>
-				</div>
-
-				<div class="form-group">
 					<div class="param-label">Разновидности</div>
 					<div class="custom-control custom-radio">
 						<input class="custom-control-input" type="radio" id="radioColors" ng-model="category.variations" value="colors">
@@ -74,12 +87,12 @@
 							У товаров категории есть разновидности по цветам
 						</label>
 					</div>
-					<div class="custom-control custom-radio">
+					{{-- <div class="custom-control custom-radio">
 						<input class="custom-control-input" type="radio" id="radioGrades" ng-model="category.variations" value="grades">
 						<label class="custom-control-label" for="radioGrades">
 							У товаров категории есть разновидности по марке бетона
 						</label>
-					</div>
+					</div> --}}
 					<div class="custom-control custom-radio">
 						<input class="custom-control-input" type="radio" id="radioNone" ng-model="category.variations" value="">
 						<label class="custom-control-label" for="radioNone">

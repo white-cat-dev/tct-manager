@@ -49,7 +49,7 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" ng-click="saveRealizations()">
+				<button type="button" class="btn btn-primary" ng-click="saveRealization()">
 					<i class="fas fa-save"></i> Сохранить
 				</button>
 			</div>

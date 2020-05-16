@@ -10,6 +10,7 @@ use App\Product;
 use App\Order;
 use App\Category;
 use App\Facility;
+use App\Material;
 use App\Services\EmploymentsService;
 
 
@@ -37,6 +38,7 @@ class ProductionsController extends Controller
                 $currentDay = 0;
             }
 
+
             $categories = Category::whereHas('productions', function($query) use ($year, $month) {
                     $query->whereYear('date', $year)
                         ->whereMonth('date', $month)
@@ -55,6 +57,24 @@ class ProductionsController extends Controller
                     ->get()
                     ->keyBy('day');
             }
+
+
+
+            $materials = Material::whereHas('applies', function($query) use ($year, $month) {
+                $query->whereYear('date', $year)
+                    ->whereMonth('date', $month);
+                }) 
+                ->get();
+
+            foreach ($materials as $key => $material) 
+            {
+                $materials[$key]->applies = $material->applies()
+                    ->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->get()
+                    ->keyBy('day');
+            }
+
 
 
             $products = Product::whereHas('productions', function($query) use ($year, $month) {
@@ -172,7 +192,8 @@ class ProductionsController extends Controller
                     'products' => $products,
                     'facilities' => $facilities,
                     'orders' => $allOrders->unique('id'),
-                    'categories' => $categories
+                    'categories' => $categories,
+                    'materials' => $materials
                 ];
         }
 
@@ -310,6 +331,8 @@ class ProductionsController extends Controller
 
                 $this->updateCategoryRealization($production, $productionPerformed);
 
+                $this->updateMaterialsApply($production, $productionPerformed);
+
                 $production->product->update([
                     'in_stock' => $production->product->in_stock + $productionPerformed
                 ]);
@@ -426,6 +449,48 @@ class ProductionsController extends Controller
                 'batches' => 0,
                 'salary' => $performed * $production->product->product_group->salary_units
             ]);
+        }
+    }
+
+
+    protected function updateMaterialsApply($production, $performed)
+    {
+        $recipe = $production->product_group->recipe;
+
+        if (!$recipe)
+        {
+            return;
+        }
+
+        foreach ($recipe->material_groups as $materialGroup) 
+        {
+            if ($materialGroup->variations)
+            {
+                $material = $materialGroup->materials->where('variation', $production->product->variation)->first();
+            }
+            else
+            {
+                $material = $materialGroup->materials->first();
+            }
+
+            $planned = $materialGroup->pivot->count * $performed;
+
+            $materialAppy = $material->applies()->where(['date' => $production->date])->first();
+
+            if ($materialAppy)
+            {
+                $materialAppy->update([
+                    'planned' => $planned
+                ]);
+            }
+            else
+            {
+                $materialAppy = $material->applies()->create([
+                    'date' => $production->date,
+                    'performed' => 0,
+                    'planned' => $planned
+                ]);
+            }
         }
     }
 }

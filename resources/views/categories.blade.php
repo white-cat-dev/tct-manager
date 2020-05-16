@@ -6,7 +6,7 @@
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
-				<input type="text" class="form-control" placeholder="Введите запрос для поиска..." ng-model="tempSearchQuery">
+				<input type="text" class="form-control" placeholder="Введите запрос для поиска..." ng-model="tempSearchQuery" ng-keypress="searchInputKeyPressed($event)">
 				<div class="input-group-append">
 			    	<button class="btn btn-primary" type="button" ng-click="searchQuery = tempSearchQuery">
 			    		<i class="fas fa-search"></i> Поиск
@@ -18,13 +18,13 @@
 		<div class="right-buttons">
 			@if (Auth::user() && Auth::user()->type == 'admin')
 			<a href="{{ route('category-create') }}" class="btn btn-primary">
-				<i class="fas fa-plus"></i> Добавить новую категорию
+				<i class="fas fa-plus"></i> Создать категорию
 			</a>
 			@endif
 		</div>
 	</div>
 
-	<table class="table table-with-buttons" ng-if="categories.length > 0">
+	<table class="table table-with-buttons" ng-if="(categories | filter: {'name': searchQuery}).length > 0">
 		<tr>
 			<th>№</th>
 			<th>Название</th>
@@ -33,7 +33,7 @@
 			<th></th>
 		</tr>
 
-		<tr ng-repeat="category in categories | filter: searchQuery">
+		<tr ng-repeat="category in categories | filter: {'name': searchQuery}">
 			<td>
 				@{{ category.id }}
 			</td>
@@ -53,14 +53,14 @@
 			</td>
 			<td>
 				<div class="btn-group" role="group">
-					<a ng-href="@{{ category.url }}" class="btn btn-primary">
+					<a ng-href="@{{ category.url }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-eye"></i>
 					</a>
 					@if (Auth::user() && Auth::user()->type == 'admin')
-					<a ng-href="@{{ category.url + '/edit' }}" class="btn btn-primary">
+					<a ng-href="@{{ category.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-primary" ng-click="delete(category.id)">
+					<button type="button" class="btn btn-sm btn-primary" ng-click="delete(category.id)">
 						<i class="far fa-trash-alt"></i>
 					</button>
 					@endif
@@ -68,4 +68,19 @@
 			</td>
 		</tr>
 	</table>
+
+	<div class="no-data-block" ng-if="(categories | filter: {'name': searchQuery}).length == 0">
+		<div class="icon">
+			<i class="fas fa-th"></i>
+		</div>
+		Не найдено ни одной категории
+
+		@if (Auth::user() && Auth::user()->type == 'admin')
+		<div>
+			<a href="{{ route('category-create') }}" class="btn btn-primary">
+				<i class="fas fa-plus"></i> Создать категорию
+			</a>
+		</div>
+		@endif
+	</div>
 </div>

@@ -74,20 +74,22 @@ class CategoriesController extends Controller
     protected $validationRules = [
         'name' => 'required',
         'units' => 'required',
-        'adjectives' => 'required'
+        'adjectives' => 'required',
+        'main_category' => 'required'
     ];
 
     protected function getData(Request $request)
     {
-        $variation = $request->get('variations', '');
-        if ($variation === null)
+        $variations = $request->get('variations', '');
+        if ($variations === null)
         {
-            $variation = '';
+            $variations = '';
         }
         return [
             'name' => $request->get('name', ''),
+            'main_category' => $request->get('main_category', 'tiles'),
             'units' => $request->get('units', 'area'),
-            'variations' => $variation,
+            'variations' => $variations,
             'adjectives' => $request->get('adjectives', 'feminine')
         ];
     }

@@ -13,7 +13,8 @@ class EmploymentStatus extends Model
         'name',
         'salary_production',
         'salary_fixed',
-        'salary_team'
+        'salary_team',
+        'customable'
     ];
 
     protected $casts = [

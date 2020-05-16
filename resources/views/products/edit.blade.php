@@ -32,7 +32,7 @@
 	<div class="edit-form-block">
 		<div class="params-section">
 			<div class="row justify-content-around">
-				<div class="col-5">
+				<div class="col-6 col-xl-5">
 					<div class="params-title">
 						Общая информация
 					</div>
@@ -41,6 +41,9 @@
 						<div class="form-group">
 							<div class="param-label">Полное название продукта</div>
 							<input type="text" class="form-control" ng-model="productGroup.wp_name" ng-class="{'is-invalid': productGroupErrors.wp_name}">
+							<small class="form-text">
+								Введите название, которое используется в WordPress
+							</small>
 						</div>
 
 						<div class="form-group">
@@ -79,7 +82,7 @@
 					</div>
 				</div>
 
-				<div class="col-5">
+				<div class="col-6 col-xl-5">
 					<div class="params-title">
 						Характеристики
 					</div>
@@ -120,9 +123,9 @@
 			</div>
 		</div>
 
-		<div class="params-section">
+		<div class="params-section" ng-if="productCategory">
 			<div class="row justify-content-around" ng-if="productCategory && productCategory.variations">
-				<div class="col-11">
+				<div class="col-12 col-xl-11">
 					<div class="params-title">
 						<span ng-switch on="productCategory.variations">
 							<span ng-switch-when="colors">Разновидности по цветам</span>
@@ -188,7 +191,7 @@
 			</div>
 
 			<div class="row justify-content-around" ng-if="productCategory && !productCategory.variations">
-				<div class="col-5">
+				<div class="col-6 col-xl-5">
 					<div class="param-label">Цена, руб</div>
 					<div class="input-group divided-input-group">
 						<input type="text" class="form-control" ng-model="productGroup.products[0].price">
@@ -197,35 +200,44 @@
 					</div>
 				</div>
 
-				<div class="col-5">
+				<div class="col-6 col-xl-5">
 					<div class="param-label">Наличие</div>
 					<input type="text" class="form-control" ng-model="productGroup.products[0].in_stock">
 				</div>
 			</div>
 		</div>
 
-		<div class="row justify-content-around">
-			<div class="col-5">
+		<div class="row justify-content-around" ng-if="productCategory">
+			<div class="col-6 col-xl-5">
 				<div class="params-title">
 					Данные для производства
 				</div>
 
 				<div class="params-block">	
 					<div class="form-group">
-						<div class="param-label">
-							Количество из одного замеса
-						</div>
+						<div class="param-label">Количество из одного замеса</div>
 						<input type="text" class="form-control" ng-model="productGroup.units_from_batch" ng-class="{'is-invalid': productGroupErrors.units_from_batch}">
 					</div>
 
 					<div class="form-group">
-						<div class="param-label">Количество форм, шт.</div>
+						<div class="param-label">Количество форм</div>
 						<input type="text" class="form-control" ng-model="productGroup.forms" ng-class="{'is-invalid': productGroupErrors.forms}">
+					</div>
+					<div class="form-group">
+						<div class="param-label">Рецепт</div>
+						<ui-select ng-model="productGroup.recipe_id" ng-class="{'is-invalid': productGroupErrors.recipe_id}" skip-focusser="true">
+				            <ui-select-match placeholder="Выберите из списка...">
+					            @{{ $select.selected.name }}
+					        </ui-select-match>
+				            <ui-select-choices repeat="recipe.id as recipe in recipes | filter: {'name': $select.search, 'category_id': productGroup.category_id}">
+				                <span ng-bind-html="recipe.name | highlight: $select.search"></span>
+				            </ui-select-choices>
+						</ui-select>
 					</div>
 				</div>
 			</div>
 
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="params-title">
 					Данные для расчета зарплаты
 				</div>
@@ -243,6 +255,14 @@
 						<input type="text" class="form-control" ng-model="productGroup.salary_units" ng-class="{'is-invalid': productGroupErrors.salary_units}">
 					</div>
 				</div>	
+			</div>
+		</div>
+
+		<div class="row justify-content-around" ng-if="!productCategory">
+			<div class="col-12 col-xl-11">
+				<div class="alert alert-warning">
+					Выберите категорию продукта, чтобы продолжить заполнение формы
+				</div>
 			</div>
 		</div>
 

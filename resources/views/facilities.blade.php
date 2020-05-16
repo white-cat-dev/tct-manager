@@ -28,7 +28,7 @@
 	<div class="row">
 		<div class="col-12 col-lg-6 col-xl-4" ng-repeat="facility in facilities | filter: searchQuery">
 			<div class="facility-block" ng-class="{'paused': facility.status == 'paused'}">
-				<div class="btn-group" role="group">
+				<div class="btn-group">
 					<a ng-href="@{{ facility.url }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-eye"></i>
 					</a>

@@ -14,10 +14,6 @@ use App\Services\EmploymentsService;
 
 class EmploymentsController extends Controller
 {
-    protected $validationRules = [
-        'name' => 'required'
-    ];
-
     public function index(Request $request)
     {
         if ($request->wantsJson())
@@ -136,7 +132,8 @@ class EmploymentsController extends Controller
                 {
                     $employment->update([
                         'status_id' => $employmentData['status_id'],
-                        'facility_id' => $employmentData['facility_id']
+                        'status_custom' => $employmentData['status_custom'],
+                        'main_category' => $employmentData['main_category']
                     ]); 
                 }
                 else
@@ -145,14 +142,15 @@ class EmploymentsController extends Controller
                         'date' => $date,
                         'worker_id' => $employmentData['worker_id'],
                         'status_id' => $employmentData['status_id'],
-                        'facility_id' =>  $employmentData['facility_id'],
+                        'status_custom' => $employmentData['status_custom'],
+                        'main_category' => $employmentData['main_category'],
                         'salary' => 0
                     ]);
                 }
             }
         }
 
-        EmploymentsService::getInstance()->updateEmployments($year, $month);
+        // EmploymentsService::getInstance()->updateEmployments($year, $month);
     }
 
 

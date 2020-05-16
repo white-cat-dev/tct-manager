@@ -3,12 +3,14 @@ angular.module('tctApp').controller('EmploymentsController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
+	'toastr',
 	'EmploymentsRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
 		$timeout,
+		toastr,
 		EmploymentsRepository
 	){
 
@@ -27,7 +29,6 @@ angular.module('tctApp').controller('EmploymentsController', [
 	$scope.worker = {};
 	$scope.workers = [];
 	$scope.statuses = {};
-	$scope.facilities = {};
 
 	$scope.isSalariesShown = false;
 
@@ -56,7 +57,6 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 			$scope.workers = response.workers;
 			$scope.statuses = response.statuses;
-			$scope.facilities = response.facilities;
 		});
 	};
 
@@ -87,15 +87,25 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 		EmploymentsRepository.save(request, function(response) 
 		{
-			$scope.successTopAlert = 'Все изменения успешно сохранены!';
-			$scope.showTopAlert = true;
-
-			$timeout(function() {
-				$scope.showTopAlert = false;
-			}, 2000);
+			toastr.success('Все изменения успешно сохранены!');
 
 			$scope.init();
 		});
+	};
+
+
+
+	$scope.mainCategories = {
+		'tiles': {
+			'key': 'tiles',
+			'name': 'Плитка',
+			'icon_color': '#55d98c'
+		},
+		'blocks': {
+			'key': 'blocks',
+			'name': 'Блоки',
+			'icon_color': '#5faee3'
+		}
 	};
 
 
@@ -105,34 +115,20 @@ angular.module('tctApp').controller('EmploymentsController', [
 	{
 		$scope.isSalariesShown = false;
 
-		if ($scope.currentEmploymentStatus == status)
-		{
-			$scope.currentEmploymentStatus = null;
-		}
-		else
-		{	
-			$scope.currentEmploymentStatus = status;
-		}
+		$scope.currentEmploymentStatus = ($scope.currentEmploymentStatus != status) ? status : null;
 
-		$scope.currentFacility = null;
+		$scope.currentMainCategory = null;
 		$scope.cleanCurrent = false;
 	}
 
 
-	$scope.currentFacility = null;
+	$scope.currentMainCategory = null;
 
-	$scope.chooseCurrentFacility = function(facility)
+	$scope.chooseCurrentMainCategory = function(category)
 	{
 		$scope.isSalariesShown = false;
 
-		if ($scope.currentFacility == facility)
-		{
-			$scope.currentFacility = null;
-		}
-		else
-		{	
-			$scope.currentFacility = facility;
-		}
+		$scope.currentMainCategory = ($scope.currentMainCategory != category) ? category : null;
 
 		$scope.currentEmploymentStatus = null;
 		$scope.cleanCurrent = false;
@@ -151,7 +147,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 		}
 		else
 		{
-			$scope.currentFacility = null;
+			$scope.currentMainCategory = null;
 			$scope.currentEmploymentStatus = null;
 			$scope.cleanCurrent = true;
 		}
@@ -179,32 +175,33 @@ angular.module('tctApp').controller('EmploymentsController', [
 		if (!worker.employments[day])
 		{
 			var statusId = ($scope.currentEmploymentStatus !== null) ? $scope.currentEmploymentStatus : -1;
-			var facilityId = ($scope.currentFacility !== null) ? $scope.currentFacility : 0;
+			var mainCategory = ($scope.currentMainCategory !== null) ? $scope.currentMainCategory : 0;
 
 			worker.employments[day] = {
 				'worker_id': worker.id,
 				'day': day,
-				'status_id':  statusId,
-				'facility_id': facilityId,
+				'status_id': statusId,
+				'status_custom': 0, 
+				'main_category': mainCategory,
 				'salary': 0
 			};
 		}
 		else
 		{
 			var statusId = worker.employments[day].status_id;
-			var facilityId = worker.employments[day].facility_id;
+			var mainCategory = worker.employments[day].main_category;
 
 			if ($scope.currentEmploymentStatus !== null)
 			{
 				statusId = $scope.currentEmploymentStatus;
 			}
 
-			if ($scope.currentFacility !== null)
+			if ($scope.currentMainCategory !== null)
 			{
-				facilityId = $scope.currentFacility;
+				mainCategory = $scope.currentMainCategory;
 			}
 			worker.employments[day].status_id = statusId;
-			worker.employments[day].facility_id = facilityId;
+			worker.employments[day].main_category = mainCategory;
 		}
 	};
 
@@ -231,14 +228,9 @@ angular.module('tctApp').controller('EmploymentsController', [
 	{
 		EmploymentsRepository.saveSalary({id: $scope.modalWorker.salary.id}, $scope.modalWorker.salary, function(response) 
 		{
-			$scope.successTopAlert = 'Все изменения успешно сохранены!';
-			$scope.showTopAlert = true;
+			toastr.success('Все изменения успешно сохранены!');
 
 			$scope.isSalaryModalShown = false;
-
-			$timeout(function() {
-				$scope.showTopAlert = false;
-			}, 2000);
 
 			$scope.init();
 		});

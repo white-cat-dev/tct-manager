@@ -132,8 +132,8 @@
 									<div class="production-planned"  ng-if="product.productions[$index+1].performed == 0">
 										@{{ product.productions[$index+1] ? product.productions[$index+1].planned : 0 }} 
 									</div>
-									<div class="production-facility" ng-style="{'border-bottom-color': product.productions[$index+1] ? facilities[product.productions[$index+1].facility_id].icon_color : ''}">
-									</div>
+									{{-- <div class="production-facility" ng-style="{'border-bottom-color': product.productions[$index+1] ? facilities[product.productions[$index+1].facility_id].icon_color : ''}">
+									</div> --}}
 								</div>
 							</td>
 						</tr>
@@ -152,7 +152,7 @@
 					<button type="button" class="btn btn-primary" ng-click="showAllProductions()" ng-if="productionProducts.length > 0 && !shownFull">
 						Посмотреть полный график
 					</button>
-					<button type="button" class="btn btn-primary" ng-click="showModal(1)" ng-if="productionProducts.length == 0">
+					<button type="button" class="btn btn-primary" ng-click="showModal(currentDate.day)" ng-if="productionProducts.length == 0">
 						Начать производство
 					</button>
 				</div>
@@ -466,7 +466,7 @@
 						</div>
 
 						<div class="block-title">
-							Итоги дня
+							Оплата
 						</div>
 
 						<table class="table" ng-if="modalProductionCategories.length > 0">
@@ -495,6 +495,39 @@
 
 						<div class="alert alert-secondary" ng-if="modalProductionCategories.length == 0">
 							<i class="far fa-calendar-times"></i> За этот день ничего не было произведено
+						</div>
+
+						<div class="block-title">
+							Расход материалов
+						</div>
+
+						<table class="table" ng-if="modalProductionMaterials.length > 0">
+							<tr>
+								<th>Материал</th>
+								<th>Расчетный</th>
+								<th>Фактический</th>
+							</tr>
+							<tr ng-repeat="material in modalProductionMaterials">
+								<td>
+									@{{ material.material_group.name }} @{{ material.variation_text }}
+								</td>
+								<td>
+									@{{ material.apply.planned }} 
+									<span ng-switch on="material.material_group.units">
+										<span ng-switch-when="volume_l">л</span>
+										<span ng-switch-when="volume_ml">мл</span>
+										<span ng-switch-when="weight_kg">кг</span>
+										<span ng-switch-when="weight_t">т</span>
+									</span>
+								</td>
+								<td>
+									@{{ material.apply.performed }}
+								</td>
+							</tr>
+						</table>
+
+						<div class="alert alert-secondary" ng-if="modalProductionMaterials.length == 0">
+							<i class="far fa-calendar-times"></i> В этот день ни один материал не был использован
 						</div>
 					</div>
 				</div>

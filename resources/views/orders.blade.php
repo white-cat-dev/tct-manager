@@ -37,7 +37,7 @@
 	<div class="row">
 		<div class="col-12 col-md-6 col-lg-4" ng-repeat="order in orders | filter: searchQuery">
 			<div class="order-block">
-				<div class="btn-group" role="group">
+				<div class="btn-group">
 					<a ng-href="@{{ order.url }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-eye"></i>
 					</a>

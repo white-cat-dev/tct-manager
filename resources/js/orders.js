@@ -334,9 +334,9 @@ angular.module('tctApp').controller('OrdersController', [
     }
 
 
-    $scope.saveRealizations = function()
+    $scope.saveRealization = function()
     {
-    	OrdersRepository.saveRealizations({'realizations': $scope.modalOrder.realizations}, function(response) 
+    	OrdersRepository.saveRealization({'realizations': $scope.modalOrder.realizations}, function(response) 
 		{
 			$scope.successTopAlert = 'Все изменения успешно сохранены!';
 			$scope.showTopAlert = true;

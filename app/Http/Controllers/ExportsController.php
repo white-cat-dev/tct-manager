@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
+use App\Exports\MaterialsExport;
 use Excel;
 use Storage;
 
@@ -23,13 +24,26 @@ class ExportsController extends Controller
     {
         $category = $request->get('category', 0);
         $onlyInStock = $request->get('stock', false);
+        $withMaterials = $request->get('materials', false);
 
-        $fileName = 'Склад_' . date('d_m_Y') . '.xlsx';
+        $fileName = 'products_' . date('d_m_Y') . '.xlsx';
 
-        Excel::store(new ProductsExport($category, $onlyInStock), 'exports/products/' . $fileName);
+        Excel::store(new ProductsExport($category, $onlyInStock, $withMaterials), 'exports/products/' . $fileName);
 
         return [
             'file' => route('export', ['file' => $fileName, 'type' => 'products'])
+        ];
+    }
+
+
+    public function materials(Request $request)
+    {
+        $fileName = 'materials_' . date('d_m_Y') . '.xlsx';
+
+        Excel::store(new MaterialsExport(), 'exports/materials/' . $fileName);
+
+        return [
+            'file' => route('export', ['file' => $fileName, 'type' => 'materials'])
         ];
     }
 }

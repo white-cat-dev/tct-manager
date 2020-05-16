@@ -1,0 +1,85 @@
+.materials-page {
+	position: relative;
+
+	.main-table {
+		@include media-breakpoint-down(md) {
+			margin-bottom: 0px;
+		}
+
+		td {
+			cursor: default;
+			vertical-align: top;
+
+			@include media-breakpoint-down(md) {
+				border: none;
+				font-size: 14px;
+			}
+
+			&:last-child {
+				@include media-breakpoint-up(lg) {
+					padding: 8px 0px;
+				}
+			}
+		}
+
+		.form-control {
+			display: inline;
+		    padding: 0px;
+		    height: auto;
+		    width: 70px;
+		    border: none;
+		    border-bottom: solid 1px $primary;
+		    color: $primary;
+
+		    @include media-breakpoint-down(md) {
+				font-size: 14px;
+		    }
+		}
+
+		.edit-field {
+			cursor: text;
+			border-bottom: solid 1px transparent;
+			transition: 0.1s;
+
+			&:hover {
+				color: $primary;
+			}
+		}
+	}
+
+	.materials-table {
+		td {
+			width: 30%;
+		}
+	}
+
+	.supply-modal {
+		.table, .form-group {
+			margin-bottom: 5px;
+		}
+
+		.param-label {
+	    	color: darken($grey, 75%);
+	    	margin-bottom: 10px;
+	    	font-weight: 500;
+	    }
+
+		.ui-select-container {
+			.form-control {
+				height: calc(1.5em + 0.5rem + 2px);
+			    padding: 0.25rem 0.5rem;
+			    font-size: 0.875rem;
+			    line-height: 1.5;
+			}
+
+			.ui-select-choices-row > span {
+			    padding: 0.25rem 0.5rem;
+			    font-size: 0.875rem;
+			}
+
+			.ui-select-choices {
+				padding: 5px 0px;
+			}
+		}
+	}
+}

@@ -84,7 +84,7 @@
 					    font-weight: 500;
 					    position: relative;
 
-						.employment-facility {
+						.employment-category {
 							position: absolute;
 							bottom: 0px;
 							right: 0px;
@@ -99,6 +99,23 @@
 							color: #000000;
 							font-size: 12px;
 							font-weight: normal;
+						}
+
+						.form-control {
+							display: inline;
+						    padding: 0px;
+						    height: auto;
+						    width: 30px;
+						    text-align: center;
+						    border: none;
+						    color: $primary;
+						    font-size: 14px;
+						    font-weight: 500;
+						}
+
+						.edit-field {
+							cursor: text;
+							transition: 0.1s;
 						}
 					}
 				}
@@ -162,12 +179,16 @@
 			tr {
 				cursor: pointer;
 
-				&.active {
-					background: lighten($grey, 1%);
-				}
-
 				&:last-child td {
 					border-bottom: solid 1px darken($grey, 10%);
+				}
+
+				&.active {
+					background: lighten($grey, 1%);
+
+					td {
+						border-bottom: solid 1px  $primary;
+					}
 				}
 			}
 
@@ -198,6 +219,7 @@
 
 			&.active {
 				background: lighten($grey, 1%);
+				border-bottom-color: $primary;
 			}
 		}
 	}
@@ -271,6 +293,22 @@
 }
 
 .statuses-page {
+	.table {
+		td {
+			vertical-align: top;
+		}
+	}
+	.custom-checkbox {
+		font-size: 14px;
+		color: darken($grey, 50%);
+		margin-top: 5px;
+
+		.custom-control-label::before,
+		.custom-control-label::after {
+			top: 3px;
+		}
+	}
+
 	.ui-select-container {
 		.btn,
 		.ui-select-match-text {

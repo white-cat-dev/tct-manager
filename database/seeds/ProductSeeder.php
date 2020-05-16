@@ -33,6 +33,7 @@ class ProductSeeder extends Seeder
 		    	'units_from_batch' => 8,
 		    	'forms' => 10,
 		    	'salary_units' => 80,
+		    	'recipe_id' => 0,
 		    	'products' => [
 		    		[
 		    			'category_id' => 1,
@@ -75,6 +76,7 @@ class ProductSeeder extends Seeder
 		    	'units_from_batch' => 8,
 		    	'forms' => 10,
 		    	'salary_units' => 80,
+		    	'recipe_id' => 0,
 		    	'products' => [
 		    		[
 		    			'category_id' => 1,
@@ -102,7 +104,7 @@ class ProductSeeder extends Seeder
         		'wp_id' => 0,
         		'wp_name' => 'Бордюр (500×200×30)',
         		'name' => 'Бордюр',
-		        'category_id' => 2,
+		        'category_id' => 3,
 		    	'set_pair_id' => 0,
 		    	'width' => 500,
 		    	'length' => 200,
@@ -117,9 +119,10 @@ class ProductSeeder extends Seeder
 		    	'units_from_batch' => 20,
 		    	'forms' => 20,
 		    	'salary_units' => 10,
+		    	'recipe_id' => 0,
 		    	'products' => [
 		    		[
-		    			'category_id' => 2,
+		    			'category_id' => 3,
 				        'product_group_id' => 3,
 				    	'variation' => 'grey',
 				    	'main_variation' => 'grey',
@@ -129,7 +132,7 @@ class ProductSeeder extends Seeder
 				    	'in_stock' => 5
 		    		],
 		    		[
-		    			'category_id' => 2,
+		    			'category_id' => 3,
 				        'product_group_id' => 3,
 				    	'variation' => 'red',
 				    	'main_variation' => 'red',
@@ -143,8 +146,8 @@ class ProductSeeder extends Seeder
         	[
         		'wp_id' => 0,
         		'wp_name' => 'Полистиролбетонный блок (большой)',
-        		'name' => 'Полистиролбетон',
-		        'category_id' => 3,
+        		'name' => 'Полистиролбетон D500',
+		        'category_id' => 5,
 		    	'set_pair_id' => 0,
 		    	'width' => 600,
 		    	'length' => 300,
@@ -159,22 +162,13 @@ class ProductSeeder extends Seeder
 		    	'units_from_batch' => 10,
 		    	'forms' => 10,
 		    	'salary_units' => 350,
+		    	'recipe_id' => 0,
 		    	'products' => [
 		    		[
-		    			'category_id' => 3,
+		    			'category_id' => 5,
 				        'product_group_id' => 4,
-				    	'variation' => 'd400',
-				    	'main_variation' => 'd400',
-				    	'price' => 400,
-				    	'price_unit' => 144,
-				    	'price_pallete' => 4610,
-				    	'in_stock' => 40
-		    		],
-		    		[
-		    			'category_id' => 3,
-				        'product_group_id' => 4,
-				    	'variation' => 'd500',
-				    	'main_variation' => 'd400',
+				    	'variation' => '',
+				    	'main_variation' => '',
 				    	'price' => 420,
 				    	'price_unit' => 154,
 				    	'price_pallete' => 4710,
