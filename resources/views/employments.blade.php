@@ -84,6 +84,12 @@
 							<td>@{{ worker.name }}</td>
 						</tr>
 					</table>
+
+					<table class="table">
+						<tr>
+							<td>@{{ manager.name }}</td>
+						</tr>
+					</table>
 				</div>
 
 				<div class="employments">
@@ -119,8 +125,41 @@
 									</div>
 								</div>
 							</td>
-							<td ng-if="isSalariesShown">
+							<td ng-if="isSalariesShown" style="min-width: 70px">
 								@{{ worker.salary.employments }}
+							</td>
+						</tr>
+					</table>
+
+					<table class="table">			
+						<tr>
+							<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(manager, $index+1)" ng-style="{'color': manager.employments[$index+1] ? statuses[manager.employments[$index+1].status_id].icon_color : ''}">
+								<div class="employment" ng-if="manager.employments[$index+1]">
+									<div ng-if="!isSalariesShown">
+										<div ng-bind-html="statuses[manager.employments[$index+1].status_id].icon" ng-if="!statuses[manager.employments[$index+1].status_id].customable"></div>
+
+										<div ng-if="statuses[manager.employments[$index+1].status_id].customable">
+											<div ng-if="!statuses[currentEmploymentStatus].customable">
+												@{{ manager.employments[$index+1].status_custom }} 
+											</div>
+											<div ng-if="statuses[currentEmploymentStatus].customable">
+												<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
+													@{{ manager.employments[$index+1].status_custom }} 
+												</div>
+												<input type="text" class="form-control" ng-model="manager.employments[$index+1].status_custom" ng-show="isEditFieldShown" ng-blur="isEditFieldShown = false" ng-keypress="inputKeyPressed($event)">
+											</div>
+										</div>
+
+										<div class="employment-category" ng-style="{'border-bottom-color': mainCategories[manager.employments[$index+1].main_category].icon_color}"></div>
+									</div>
+
+									<div class="employment-salary" ng-if="isSalariesShown">
+										@{{ manager.employments[$index+1].salary }}
+									</div>
+								</div>
+							</td>
+							<td ng-if="isSalariesShown" style="min-width: 70px">
+								@{{ manager.salary.employments }}
 							</td>
 						</tr>
 					</table>
@@ -199,9 +238,11 @@
 			<table class="table table-with-buttons">
 				<tr>
 					<th>Работник</th>
-					<th>Зарплата по графику</th>
+					<th>По графику</th>
 					<th>Аванс</th>
+					<th>Налоги</th>
 					<th>Премия</th>
+					<th>Доплата</th>
 					<th>Итого</th>
 					<th></th>
 				</tr>
@@ -217,10 +258,16 @@
 						@{{ worker.salary.advance | number }} руб.
 					</td>
 					<td>
+						@{{ worker.salary.tax | number }} руб.
+					</td>
+					<td>
 						@{{ worker.salary.bonus | number }} руб.
 					</td>
 					<td>
-						@{{ (worker.salary.employments - worker.salary.advance + +worker.salary.bonus) | number }} руб.
+						@{{ worker.salary.surcharge | number }} руб.
+					</td>
+					<td>
+						@{{ (worker.salary.employments - worker.salary.advance - worker.salary.tax - worker.salary.lunch + +worker.salary.bonus + +worker.salary.surcharge) | number }} руб.
 					</td>
 					<td>
 						@if (Auth::user() && Auth::user()->type == 'admin')

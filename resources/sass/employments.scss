@@ -18,6 +18,9 @@
 	    	box-shadow: 1px 0px 5px darken($grey, 10%);
 	    	border-right: solid 1px darken($grey, 10%);
 	    	background: $grey;
+	    	display: flex;
+	    	flex-direction: column;
+	    	justify-content: space-between;
 
 			.table {
 				flex: none;
@@ -25,6 +28,12 @@
 		    	z-index: 1;
 		    	border-right: solid 1px darken($grey, 10%);
 		    	background: $grey;
+		    	margin-bottom: 0px;
+
+		    	&:last-child {
+		    		margin-bottom: 17px;
+		    		margin-top: 27px;
+		    	}
 
 		    	th {
 		    		height: 41px;
@@ -45,11 +54,18 @@
 		.employments {
 			overflow-x: scroll;
 			border-right: solid 1px darken($grey, 10%);
+			display: flex;
+	    	flex-direction: column;
+	    	justify-content: space-between;
 
 			.table {
 				margin: 0px -1px;
 				font-size: 14px;
 				border-bottom: solid 1px darken($grey, 10%);
+
+				&:last-child {
+		    		margin-top: 27px;
+		    	}
 
 				th, td {
 					padding: 10px;

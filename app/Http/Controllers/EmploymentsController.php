@@ -54,9 +54,41 @@ class EmploymentsController extends Controller
                         'worker_id' => $worker->id,
                         'employments' => 0,
                         'advance' => 0,
-                        'bonus' => 0
+                        'bonus' => 0,
+                        'tax' => 0,
+                        'lunch' => 0,
+                        'surcharge' => 0
                     ]);
                 }
+            }
+
+            
+            $manager = (object)[
+                'id' => 0,
+                'name' => 'Менеджер',
+                'employments' => Employment::where('worker_id', 0)
+                    ->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->get()
+                    ->keyBy('day'),
+                'salary' => WorkerSalary::where('worker_id', 0)
+                    ->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->first()
+            ];
+
+            if (!$manager->salary)
+            {
+                $manager->salary = WorkerSalary::create([
+                    'date' => Carbon::createFromDate($year, $month, 1)->format('Y-m-d'),
+                    'worker_id' => 0,
+                    'employments' => 0,
+                    'advance' => 0,
+                    'bonus' => 0,
+                    'tax' => 0,
+                    'lunch' => 0,
+                    'surcharge' => 0
+                ]);
             }
 
 
@@ -99,6 +131,7 @@ class EmploymentsController extends Controller
                     'year' => (int)$year,
                     'month' => (int)$month,
                     'workers' => $workers,
+                    'manager' => $manager,
                     'statuses' => $statuses,
                     'facilities' => $facilities
                 ];
@@ -150,7 +183,7 @@ class EmploymentsController extends Controller
             }
         }
 
-        // EmploymentsService::getInstance()->updateEmployments($year, $month);
+        EmploymentsService::getInstance()->updateEmployments($year, $month);
     }
 
 

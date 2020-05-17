@@ -88,6 +88,7 @@ class WorkersController extends Controller
             'surname' => $request->get('surname', ''),
             'full_name' => $request->get('full_name', ''),
             'patronymic' => $request->get('patronymic', ''),
+            'phone' => $request->get('phone', ''),
             'status' => $request->get('status', Worker::STATUS_ACTIVE),
             'status_date' => $request->get('status_date_raw', -1),
             'status_date_next' => $request->get('status_date_next_raw', -1)

@@ -18,7 +18,10 @@ class CreateWorkerSalariesTable extends Migration
             $table->date('date');
             $table->integer('worker_id');
             $table->decimal('employments', 10, 2);
+            $table->decimal('lunch', 10, 2);
+            $table->decimal('tax', 10, 2);
             $table->decimal('bonus', 10, 2);
+            $table->decimal('surcharge', 10, 2);
             $table->decimal('advance', 10, 2);
             $table->timestamps();
         });

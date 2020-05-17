@@ -11,13 +11,19 @@ class WorkerSalary extends Model
     	'worker_id',
     	'date',
     	'employments',
+        'tax',
+        'lunch',
     	'advance',
-    	'bonus'
+    	'bonus',
+        'surcharge'
     ];
 
     protected $casts = [
         'employments' => 'float',
         'advance' => 'float',
-        'bonus' => 'float'
+        'bonus' => 'float',
+        'lunch' => 'float',
+        'tax' => 'float',
+        'surcharge' => 'float'
     ];
 }

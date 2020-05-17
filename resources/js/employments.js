@@ -28,6 +28,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 	$scope.worker = {};
 	$scope.workers = [];
+	$scope.manager = [];
 	$scope.statuses = {};
 
 	$scope.isSalariesShown = false;
@@ -56,6 +57,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 			$scope.currentDate.year = response.year;
 
 			$scope.workers = response.workers;
+			$scope.manager = response.manager;
 			$scope.statuses = response.statuses;
 		});
 	};
@@ -75,6 +77,14 @@ angular.module('tctApp').controller('EmploymentsController', [
 						employments.push(worker.employments[i]);
 					}
 				}
+			}
+		}
+
+		for (i in $scope.manager.employments)
+		{
+			if ($scope.manager.employments[i].status_id >= 0)
+			{
+				employments.push($scope.manager.employments[i]);
 			}
 		}
 

@@ -45,6 +45,11 @@ class Production extends Model
         return $this->belongsTo(ProductGroup::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function order()
     {
         return $this->belongsTo(Order::class);
