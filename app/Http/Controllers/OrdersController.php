@@ -240,7 +240,7 @@ class OrdersController extends Controller
             'date' => $date,
             'number' => $number,
             'client_id' => $request->get('client_id', 0),
-            'priority' => $request->get('priority', 1),
+            'priority' => $request->get('priority', Order::PRIORITY_NORMAL),
             'comment' => $request->get('comment', 0),
             'status' => $request->get('status', Order::STATUS_PRODUCTION),
             'cost' => $request->get('cost', 0),

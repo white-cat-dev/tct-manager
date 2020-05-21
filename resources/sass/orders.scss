@@ -19,8 +19,18 @@
 	}
 	
 	.order-name {
-		font-size: 30px;
-    	margin-bottom: 20px;
+		position: relative;
+    	padding-right: 35px;
+
+		.order-priority {
+			background: $danger;
+		    color: #FFFFFF;
+		    position: absolute;
+		    top: 3px;
+		    right: 0;
+		    font-size: 10px;
+		    padding: 0px 3px;
+		}
 	}
 
 	.order-progress {
@@ -114,13 +124,83 @@
 	}
 
 
-	.order-block {
-		border: solid 1px darken($grey, 10%);
+	.main-orders-block {
 		box-shadow: 1px 1px 5px darken($grey, 5%);
-		border-radius: 5px;
+		border: solid 1px darken($grey, 10%);
+
+		.table {
+			font-size: 14px;
+			margin-bottom: 0px;
+
+			tr {
+				cursor: pointer;
+
+				&:hover,
+				&.active {
+					background: $grey;
+				}
+
+				&:first-child {
+					cursor: default;
+
+					&:hover,
+					&.active {
+						background: none;
+					}
+				}
+			}
+
+			th, td {
+				padding: 10px;
+			}
+		}
+
+		.no-current-order {
+			text-align: center;
+   			padding: 20px 0px;
+
+   			.icon {
+   				font-size: 40px;
+   			}
+		}
+	}
+
+	.main-products-block {
+		box-shadow: 1px 1px 5px darken($grey, 5%);
+		border: solid 1px darken($grey, 10%);
 		padding: 15px;
 		position: relative;
-		margin-bottom: 30px;
+
+		.table {
+			font-size: 14px;
+			margin-bottom: 0px;
+
+			tr td:first-child,
+			tr th:first-child {
+				padding-left: 0px;
+				text-align: left;
+			}
+
+			tr td:first-child {
+				font-size: 12px;
+			}
+
+			.product-color {
+				color: darken($grey, 35%);
+			}
+
+			th, td {
+				text-align: center;
+				padding: 7px;
+			}
+		}
+
+		.title-block {
+			font-size: 20px;
+		    font-weight: 500;
+		    margin-bottom: 10px;
+		    color: $primary;
+		}
 
 		.btn-group {
 			position: absolute;
@@ -128,88 +208,8 @@
 		    right: 15px;
 		}
 
-		.order-title {
-			font-weight: 500;
-			font-size: 18px;
-			margin-bottom: 15px;
-
-			.order-date {
-				font-weight: normal;
-				font-size: 14px;
-				color: darken($grey, 35%);
-			}
-		}
-
-		.order-icon {
-			position: relative;
-			margin-bottom: 5px;
-
-			img {
-				width: 100%;
-
-				&:nth-child(2),
-				&:nth-child(3) {
-					height: 0%;
-					position: absolute;
-				    bottom: 0;
-				    left: 0;
-				    object-fit: cover;
-					object-position: bottom;
-					transition: height 0.3s;
-				}
-			}
-		}
-
-		.order-status {
-			text-align: center;
-		    color: darken($grey, 35%);
-		    font-size: 14px;
-		    margin-bottom: 10px;
-		    white-space: nowrap;
-		}
-
-		.order-params {
-			font-size: 14px;
-
-			.param-name {
-				color: darken($grey, 75%);
-				font-size: 16px;
-				font-weight: 500;
-				margin-bottom: 3px;
-			}
-
-			.param-value {
-				margin-bottom: 10px;
-    			font-size: 13px;
-			}
-
-			.table {
-				margin-top: 5px;
-				margin-bottom: 0px;
-
-				td:first-child {
-					font-size: 12px;
-
-					.product-color {
-						color: darken($grey, 35%);
-					}
-				}
-			}
-
-			.product-progress {
-				height: 30px;
-
-				.progress-realization,
-				.progress-ready,
-				.progress-left {
-					line-height: 30px;
-					min-width: 30%;
-				}
-			}
-		}
-		
 		.buttons-block {
-			margin-top: 15px;
+			margin-top: 10px;
 		}
 	}
 

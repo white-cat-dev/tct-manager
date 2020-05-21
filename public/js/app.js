@@ -81570,7 +81570,7 @@ tctApp.run(function ($rootScope) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('CategoriesController', ['$scope', '$routeParams', '$location', '$timeout', 'CategoriesRepository', function ($scope, $routeParams, $location, $timeout, CategoriesRepository) {
+angular.module('tctApp').controller('CategoriesController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'CategoriesRepository', function ($scope, $routeParams, $location, $timeout, toastr, CategoriesRepository) {
   $scope.baseUrl = '';
   $scope.categories = [];
   $scope.category = {};
@@ -81620,19 +81620,21 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
     CategoriesRepository.save({
       id: $scope.id
     }, $scope.category, function (response) {
+      toastr.success($scope.id ? 'Категория успешно обновлена!' : 'Новая категория успешно создана!');
       $scope.categoryErrors = {};
-
-      if ($scope.id) {
-        $scope.successAlert = 'Категория успешно обновлена!';
-      } else {
-        $scope.successAlert = 'Новая категория успешно создана!';
-      }
-
-      $scope.showAlert = true;
       $scope.id = response.id;
       $scope.category.url = response.url;
     }, function (response) {
-      $scope.categoryErrors = response.data.errors;
+      switch (response.status) {
+        case 422:
+          toastr.error('Проверьте введенные данные');
+          $scope.categoryErrors = response.data.errors;
+          break;
+
+        default:
+          toastr.error('Произошла ошибка на сервере');
+          break;
+      }
     });
   };
 
@@ -81643,11 +81645,7 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
-        $scope.successAlert = 'Категория успешно удалена!';
-        $scope.showAlert = true;
-        $timeout(function () {
-          $scope.showAlert = false;
-        }, 2000);
+        toastr.success('Категория успешно удалена!');
         $scope.init();
       }
     }, function (response) {});
@@ -81955,7 +81953,7 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routeParams', '$location', '$filter', '$timeout', 'FacilitiesRepository', 'CategoriesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $filter, $timeout, FacilitiesRepository, CategoriesRepository, WorkersRepository) {
+angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routeParams', '$location', '$filter', '$timeout', 'toastr', 'FacilitiesRepository', 'CategoriesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $filter, $timeout, toastr, FacilitiesRepository, CategoriesRepository, WorkersRepository) {
   $scope.baseUrl = '';
   $scope.facilities = [];
   $scope.facility = {
@@ -82066,19 +82064,21 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
     FacilitiesRepository.save({
       id: facility.id
     }, facility, function (response) {
+      toastr.success($scope.id ? 'Цех успешно обновлена!' : 'Новый цех успешно создан!');
       $scope.facilityErrors = {};
-
-      if ($scope.id) {
-        $scope.successAlert = 'Данные цеха успешно сохранены!';
-      } else {
-        $scope.successAlert = 'Новый цех успешно создан!';
-      }
-
-      $scope.showAlert = true;
       $scope.id = response.id;
       $scope.facility.url = response.url;
     }, function (response) {
-      $scope.facilityErrors = response.data.errors;
+      switch (response.status) {
+        case 422:
+          toastr.error('Проверьте введенные данные');
+          $scope.facilityErrors = response.data.errors;
+          break;
+
+        default:
+          toastr.error('Произошла ошибка на сервере');
+          break;
+      }
     });
   };
 
@@ -82086,7 +82086,12 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
     FacilitiesRepository["delete"]({
       id: id
     }, function (response) {
-      $scope.init();
+      if ($scope.baseUrl) {
+        $location.path($scope.baseUrl).replace();
+      } else {
+        toastr.success('Цех успешно удален!');
+        $scope.init();
+      }
     }, function (response) {});
   };
 
@@ -82345,11 +82350,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
-        $scope.successAlert = 'Материал успешно удален!';
-        $scope.showAlert = true;
-        $timeout(function () {
-          $scope.showAlert = false;
-        }, 2000);
+        toastr.success('Материал успешно удален!');
         $scope.init();
       }
     }, function (response) {});
@@ -82373,11 +82374,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
       MaterialsRepository.save({
         id: materialGroup.id
       }, materialGroup, function (response) {
-        $scope.successTopAlert = 'Изменения успешно сохранены!';
-        $scope.showTopAlert = true;
-        $timeout(function () {
-          $scope.showTopAlert = false;
-        }, 2000);
+        toastr.success('Изменения успешно сохранены!');
       }, function (response) {});
     }
   };
@@ -82444,11 +82441,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
     MaterialsRepository.saveSupply({
       'supplies': $scope.modalSupply.supplies
     }, function (response) {
-      $scope.successTopAlert = 'Все изменения успешно сохранены!';
-      $scope.showTopAlert = true;
-      $timeout(function () {
-        $scope.showTopAlert = false;
-      }, 2000);
+      toastr.success('Все изменения успешно сохранены!');
       $scope.hideSupplyModal();
       $scope.init();
     });
@@ -82467,7 +82460,8 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
 angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', 'ProductsRepository', 'OrdersRepository', function ($scope, $routeParams, $location, $timeout, ProductsRepository, OrdersRepository) {
   $scope.Math = window.Math;
   $scope.baseUrl = '';
-  $scope.currentStatuses = [1, 2];
+  $scope.currentStatus = 0;
+  $scope.currentOrder = null;
   $scope.orders = [];
   $scope.order = {
     'cost': 0,
@@ -82509,7 +82503,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     }]
   };
 
-  $scope.init = function () {
+  $scope.init = function (status) {
+    $scope.chooseStatus(status);
     $scope.loadOrders();
   };
 
@@ -82595,29 +82590,26 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.loadOrders = function () {
-    var status = $scope.currentStatuses.join(',');
     OrdersRepository.query({
-      'status': status
+      'status': $scope.currentStatus
     }, function (response) {
       $scope.orders = response;
     });
   };
 
   $scope.chooseStatus = function (status) {
-    if (status == 0) {
-      $scope.currentStatuses = [0];
-      return;
-    }
-
-    var index = $scope.currentStatuses.indexOf(status);
-
-    if (index != -1) {
-      $scope.currentStatuses.splice(index, 1);
-    } else {
-      $scope.currentStatuses.push(status);
-    }
-
+    $scope.currentStatus = status;
     $scope.loadOrders();
+  };
+
+  $scope.chooseOrder = function (order) {
+    console.log(order);
+
+    if ($scope.currentOrder && $scope.currentOrder.id == order.id) {
+      $scope.currentOrder = null;
+    } else {
+      $scope.currentOrder = order;
+    }
   };
 
   $scope.addProduct = function () {
@@ -83741,10 +83733,15 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
   };
 
   $scope["delete"] = function (id) {
-    OrdersRepository["delete"]({
+    RecipesRepository["delete"]({
       id: id
     }, function (response) {
-      $scope.init();
+      if ($scope.baseUrl) {
+        $location.path($scope.baseUrl).replace();
+      } else {
+        toastr.success('Рецепт успешно удален!');
+        $scope.init();
+      }
     }, function (response) {});
   };
 
@@ -83799,8 +83796,7 @@ angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '
     EmploymentStatusesRepository.save({
       'statuses': $scope.statuses
     }, function (response) {
-      $scope.successAlert = 'Статусы успешно сохранены!';
-      $scope.showAlert = true;
+      toastr.success('Статусы успешно сохранены!');
     });
   };
 }]);
@@ -83814,7 +83810,7 @@ angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParams', '$location', '$timeout', 'FacilitiesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $timeout, FacilitiesRepository, WorkersRepository) {
+angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'FacilitiesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $timeout, toastr, FacilitiesRepository, WorkersRepository) {
   $scope.Object = Object;
   $scope.baseUrl = '';
   $scope.worker = {};
@@ -83858,18 +83854,21 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
     WorkersRepository.save({
       id: $scope.id
     }, $scope.worker, function (response) {
+      toastr.success($scope.id ? 'Работник успешно обновлен!' : 'Новый работник успешно создан!');
       $scope.workerErrors = {};
-
-      if ($scope.id) {
-        $scope.successAlert = 'Данные работника успешно сохранены!';
-      } else {
-        $scope.successAlert = 'Новый работник успешно создан!';
-      }
-
       $scope.id = response.id;
       $scope.worker.url = response.url;
     }, function (response) {
-      $scope.workerErrors = response.data.errors;
+      switch (response.status) {
+        case 422:
+          toastr.error('Проверьте введенные данные');
+          $scope.workerErrors = response.data.errors;
+          break;
+
+        default:
+          toastr.error('Произошла ошибка на сервере');
+          break;
+      }
     });
   };
 
@@ -83905,7 +83904,6 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
   $scope.saveStatus = function () {
     if ($scope.worker.status == $scope.modalWorker.status) {
       $scope.modalWorker.status_date_raw = null;
-      $scope.modalWorker.status_date_next_raw = null;
     } else if ($scope.modalWorker.status_date_raw) {
       $scope.modalWorker.status = ($scope.modalWorker.status + 1) % 2;
     }
@@ -83914,11 +83912,7 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
       id: $scope.modalWorker.id
     }, $scope.modalWorker, function (response) {
       $scope.modalStatusErrors = {};
-      $scope.successTopAlert = 'Изменения успешно сохранены!';
-      $scope.showTopAlert = true;
-      $timeout(function () {
-        $scope.showTopAlert = false;
-      }, 2000);
+      toastr.success('Изменения успешно сохранены!');
 
       if (!$scope.baseUrl) {
         $scope.init();

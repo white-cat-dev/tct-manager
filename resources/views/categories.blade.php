@@ -73,12 +73,13 @@
 		<div class="icon">
 			<i class="fas fa-th"></i>
 		</div>
-		Не найдено ни одной категории
+		Не найдено ни одной категории <br>
+		<small ng-if="searchQuery"> по запросу "@{{ searchQuery }}"</small>
 
 		@if (Auth::user() && Auth::user()->type == 'admin')
 		<div>
 			<a href="{{ route('category-create') }}" class="btn btn-primary">
-				<i class="fas fa-plus"></i> Создать категорию
+				<i class="fas fa-plus"></i> Создать новую категорию
 			</a>
 		</div>
 		@endif

@@ -16,7 +16,7 @@
 			</div>
 
 			<div class="modal-body">
-				<div class="form-group">
+				<div class="form-group" ng-init="shownTab = 'begin'">
 					<div class="param-label">
 						Выберите дату
 						<span ng-if="modalWorker.status == {{ App\Worker::STATUS_ACTIVE }}">
@@ -26,7 +26,8 @@
 							отстранения от работы
 						</span>
 					</div>
-					<ul class="nav nav-tabs" ng-init="shownTab = 'begin'">
+
+					{{-- <ul class="nav nav-tabs">
 						<li class="nav-item">
 							<button type="button" class="nav-link" ng-click="shownTab = 'begin'" ng-class="{'active': shownTab == 'begin'}">Начало</button>
 						</li>
@@ -45,15 +46,30 @@
 								<div date-picker view="date" min-view="date" ng-model="modalWorker.status_date_next_raw"></div>
 							</div>
 						</div>
+					</div> --}}
+
+					<div class="datepicker-block">
+						<div date-picker view="date" min-view="date" ng-model="modalWorker.status_date_raw"></div>
 					</div>
 				</div>
 
-				<div class="date-group">
+				<small class="form-text">
+					Если хотите 
+					<span ng-if="modalWorker.status == {{ App\Worker::STATUS_ACTIVE }}">
+						вернуть на работу
+					</span>
+					<span ng-if="modalWorker.status == {{ App\Worker::STATUS_INACTIVE }}">
+						отстранить от работы
+					</span>
+					сейчас, выберите текущую дату
+				</small>
+
+				{{-- <div class="date-group">
 					<div class="date-label">с</div>
 					<input type="text" class="form-control" date-time format="dd.MM.yyyy" ng-model="modalWorker.status_date_raw">
 					<div class="date-label">до</div>
 					<input type="text" class="form-control" date-time format="dd.MM.yyyy" ng-model="modalWorker.status_date_next_raw">
-				</div>
+				</div> --}}
 
 				{{-- <div class="custom-control custom-checkbox">
 					<input type="checkbox" class="custom-control-input" ng-model="isPlanDateNow" ng-change="updateStatusNow()" id="checkbox">

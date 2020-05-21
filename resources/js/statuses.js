@@ -51,8 +51,7 @@ angular.module('tctApp').controller('EmploymentStatusesController', [
 	{
 		EmploymentStatusesRepository.save({'statuses': $scope.statuses}, function(response) 
 		{
-			$scope.successAlert = 'Статусы успешно сохранены!';
-			$scope.showAlert = true;
+			toastr.success('Статусы успешно сохранены!');
 		});
 	}
 }]);

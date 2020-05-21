@@ -17,14 +17,14 @@ class FacilitySeeder extends Seeder
             [
                 'name' => 'Цех с плиткой',
                 'status' => Facility::STATUS_ACTIVE,
-                'categories' => [1, 2],
+                'categories' => [1, 2, 3, 4],
                 'performance' => 10,
                 'icon_color' => '#55d98c'
             ],
             [
                 'name' => 'Цех с блоками',
                 'status' => Facility::STATUS_ACTIVE,
-                'categories' => [3],
+                'categories' => [5],
                 'performance' => 5,
                 'icon_color' => '#5faee3'
             ]

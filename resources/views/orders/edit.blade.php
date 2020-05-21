@@ -78,10 +78,6 @@
 					<div class="param-label">Приоритет заказа</div>
 
 					<div class="custom-control custom-radio custom-control-inline">
-						<input class="custom-control-input" type="radio" ng-model="order.priority" id="radioLow" value="0">
-						<label class="custom-control-label" for="radioLow">Низкий</label>
-					</div>
-					<div class="custom-control custom-radio custom-control-inline">
 						<input class="custom-control-input" type="radio" ng-model="order.priority" id="radioNormal" value="1">
 						<label class="custom-control-label" for="radioNormal">Обычный</label>
 					</div>

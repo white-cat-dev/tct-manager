@@ -118,9 +118,18 @@ angular.module('tctApp').controller('RecipesController', [
 
 	$scope.delete = function(id)
 	{
-		OrdersRepository.delete({id: id}, function(response) 
+		RecipesRepository.delete({id: id}, function(response) 
 		{
-			$scope.init();
+			if ($scope.baseUrl)
+			{
+				$location.path($scope.baseUrl).replace();
+			}
+			else
+			{
+				toastr.success('Рецепт успешно удален!');
+
+				$scope.init();
+			}
 		}, 
 		function(response) 
 		{

@@ -96,12 +96,13 @@
 		<div class="icon">
 			<i class="fas fa-th"></i>
 		</div>
-		Не найдено ни одного материала
+		Не найдено ни одного материала <br>
+		<small ng-if="searchQuery"> по запросу "@{{ searchQuery }}"</small>
 
 		@if (Auth::user() && Auth::user()->type == 'admin')
 		<div>
 			<a href="{{ route('material-create') }}" class="btn btn-primary">
-				<i class="fas fa-plus"></i> Создать материал
+				<i class="fas fa-plus"></i> Создать новый материал
 			</a>
 		</div>
 		@endif

@@ -18,7 +18,8 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.baseUrl = '';
 
-	$scope.currentStatuses = [1, 2];
+	$scope.currentStatus = 0;
+	$scope.currentOrder = null;
 
 	$scope.orders = [];
 	$scope.order = {
@@ -76,8 +77,9 @@ angular.module('tctApp').controller('OrdersController', [
 	};
 
 
-	$scope.init = function()
+	$scope.init = function(status)
 	{
+		$scope.chooseStatus(status);
 		$scope.loadOrders();
 	}
 
@@ -166,8 +168,7 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.loadOrders = function()
 	{
-		var status = $scope.currentStatuses.join(',');
-		OrdersRepository.query({'status': status}, function(response) 
+		OrdersRepository.query({'status': $scope.currentStatus}, function(response) 
 		{
 			$scope.orders = response;
 		});
@@ -176,22 +177,23 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.chooseStatus = function(status)
 	{
-		if (status == 0)
-		{
-			$scope.currentStatuses = [0];
-			return;
-		}
+		$scope.currentStatus = status;
 
-		var index = $scope.currentStatuses.indexOf(status);
-		if (index != -1)
+		$scope.loadOrders();
+	}
+
+
+	$scope.chooseOrder = function(order)
+	{
+		console.log(order);
+		if ($scope.currentOrder && $scope.currentOrder.id == order.id)
 		{
-			$scope.currentStatuses.splice(index, 1);
+			$scope.currentOrder = null;
 		}
 		else
 		{
-			$scope.currentStatuses.push(status);
+			$scope.currentOrder = order;
 		}
-		$scope.loadOrders();
 	}
 
 

@@ -30,7 +30,8 @@ class Product extends Model
         'free_in_stock',
         'variation_text',
         'variation_noun_text',
-        'main_variation_text'
+        'main_variation_text',
+        'units_text'
     ];
 
     protected $with = [
@@ -132,6 +133,29 @@ class Product extends Model
     public function getFreeInStockAttribute()
     {
         return $this->in_stock - $this->realize_in_stock;
+    }
+
+
+    public function getUnitsTextAttribute()
+    {
+        switch ($this->category->units) 
+        {
+            case 'area':
+                return 'м<sup>2</sup>';
+                break;
+
+            case 'volume':
+                return 'м<sup>3</sup>';
+                break;
+
+            case 'unit':
+                return 'шт.';
+                break;
+            
+            default:
+                return '';
+                break;
+        }
     }
 
 

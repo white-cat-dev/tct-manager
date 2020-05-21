@@ -172,12 +172,7 @@ angular.module('tctApp').controller('MaterialsController', [
 			}
 			else
 			{
-				$scope.successAlert = 'Материал успешно удален!';
-				$scope.showAlert = true;
-
-				$timeout(function() {
-					$scope.showAlert = false;
-				}, 2000);
+				toastr.success('Материал успешно удален!');
 
 				$scope.init();
 			}
@@ -213,12 +208,7 @@ angular.module('tctApp').controller('MaterialsController', [
 
 			MaterialsRepository.save({id: materialGroup.id}, materialGroup, function(response) 
 			{
-				$scope.successTopAlert = 'Изменения успешно сохранены!';
-				$scope.showTopAlert = true;
-
-				$timeout(function() {
-					$scope.showTopAlert = false;
-				}, 2000);
+				toastr.success('Изменения успешно сохранены!');
 			}, 
 			function(response) 
 			{
@@ -286,12 +276,7 @@ angular.module('tctApp').controller('MaterialsController', [
 
     	MaterialsRepository.saveSupply({'supplies': $scope.modalSupply.supplies}, function(response) 
 		{
-			$scope.successTopAlert = 'Все изменения успешно сохранены!';
-			$scope.showTopAlert = true;
-
-			$timeout(function() {
-				$scope.showTopAlert = false;
-			}, 2000);
+			toastr.success('Все изменения успешно сохранены!');
 
 			$scope.hideSupplyModal();
 			$scope.init();

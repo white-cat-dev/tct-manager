@@ -1,13 +1,5 @@
-<div class="product-excerpt-block">
-    <div>
-        <strong>Размер: </strong>{{ $productGroup->size }} мм
-    </div>
+<span class="tct-manager-post-excerpt" data-post-title="{{ $wpSlug }}"><strong>Размер: </strong>{{ $productGroup->size }} мм <br>
     @foreach ($productGroup->products as $product)
-    <div>
-        <strong>Цена: </strong>{{ $product->main_color_text }} — {{ $product->price }}  руб/
-        @if ($productGroup->category->units == 'area') м<sup>2</sup> @endif
-        @if ($productGroup->category->units == 'volume') м<sup>3</sup> @endif
-        @if ($productGroup->category->units == 'units') шт. @endif
-    </div>
+    <strong>{{ $product->main_variation_text }}</strong> – {{ $product->price }} руб/{!! $product->units_text !!} <br>
     @endforeach
-</div>
+</span><!-- tct-manager-post-excerpt -->

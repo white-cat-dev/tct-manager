@@ -101,9 +101,7 @@ footer {
 	}
 
 	.menu-item {
-		background: $primary;
 		border-bottom: solid 1px darken($grey, 10%);
-		transition: 0.3s;
 		position: relative;
 
 		@include media-breakpoint-down(md) {
@@ -112,18 +110,25 @@ footer {
 			}
 		}
 
-		& > a {
+		& > a,
+		& > .link {
+			background: $primary;
 			display: block;
 			padding: 15px 17px;
-			margin-right: 10px;
 			color: #FFFFFF;
 			text-decoration: none;
 			white-space: nowrap;
 			text-overflow: ellipsis;
-		}
+			cursor: pointer;
+			transition: 0.3s;
 
-		&:hover {
-			background: darken($primary, 4%);
+			&:hover {
+				background: darken($primary, 4%);
+			}
+
+			@include media-breakpoint-only(lg) {
+				padding: 15px 12px;
+			}
 		}
 
 		&.has-submenu {
@@ -135,11 +140,15 @@ footer {
 			.toggle {
 				position: absolute;
 				top: 12px;
-				right: 20px;
+				right: 17px;
 				font-size: 20px;
 				color: #FFFFFF;
 				transition: transform 0.3s;
 				cursor: pointer;
+
+				@include media-breakpoint-only(lg) {
+					right: 10px;
+				}
 			}
 
 			&.submenu-opened {
@@ -149,6 +158,8 @@ footer {
 
 				.submenu-block {
 					max-height: 500px;
+					padding: 5px 0px;
+					border-top: solid 1px darken($grey, 10%);
 				}
 			}
 		}
@@ -156,25 +167,33 @@ footer {
 
 	.submenu-block {
 		max-height: 0px;
-		transition: max-height 0.3s;
+		transition: 0.3s;
+		border-top: solid 0px darken($grey, 10%);
+		padding: 0px;
+		background: $primary;
 
 		.submenu-item {
 			display: block;
-			background: lighten($primary, 30%);
-			border-top: solid 1px darken($grey, 10%);
+			border-top: solid 1px transparent;
 			transition: 0.3s;
 
 			& > a {
 				display: block;
-				padding: 15px 20px;
-				color: black;
+				padding: 10px 20px;
+				color: #FFFFFF;
 				text-decoration: none;
 				white-space: nowrap;
 				text-overflow: ellipsis;
-			}
+				background: $primary;
+				transition: 0.3s;
 
-			&:hover {
-				background: lighten($primary, 26%);
+				@include media-breakpoint-only(lg) {
+					padding: 10px 15px;
+				}
+
+				&:hover {
+					background: darken($primary, 4%);
+				}
 			}
 		}
 	}
@@ -216,6 +235,10 @@ button:focus,
 	background: $grey;
 	color: darken($grey, 35%);
 	background-clip: unset;
+}
+
+small {
+	color: darken($grey, 35%);
 }
 
 

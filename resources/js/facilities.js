@@ -4,6 +4,7 @@ angular.module('tctApp').controller('FacilitiesController', [
 	'$location',
 	'$filter',
 	'$timeout',
+	'toastr',
 	'FacilitiesRepository',
 	'CategoriesRepository',
 	'WorkersRepository',
@@ -13,6 +14,7 @@ angular.module('tctApp').controller('FacilitiesController', [
 		$location,
 		$filter,
 		$timeout,
+		toastr,
 		FacilitiesRepository,
 		CategoriesRepository,
 		WorkersRepository
@@ -111,22 +113,25 @@ angular.module('tctApp').controller('FacilitiesController', [
 
 		FacilitiesRepository.save({id: facility.id}, facility, function(response) 
 		{
+			toastr.success($scope.id ? 'Цех успешно обновлена!' : 'Новый цех успешно создан!');
+
 			$scope.facilityErrors = {};
-			if ($scope.id)
-			{
-				$scope.successAlert = 'Данные цеха успешно сохранены!';
-			}
-			else
-			{
-				$scope.successAlert = 'Новый цех успешно создан!';
-			}
-			$scope.showAlert = true;
 			$scope.id = response.id;
 			$scope.facility.url = response.url;
 		}, 
 		function(response) 
 		{
-            $scope.facilityErrors = response.data.errors;
+            switch (response.status) 
+            {
+            	case 422:
+            		toastr.error('Проверьте введенные данные');
+            		$scope.facilityErrors = response.data.errors;
+            		break
+
+            	default:
+            		toastr.error('Произошла ошибка на сервере');
+            		break;
+            }
         });
 	}
 
@@ -135,7 +140,16 @@ angular.module('tctApp').controller('FacilitiesController', [
 	{
 		FacilitiesRepository.delete({id: id}, function(response) 
 		{
-			$scope.init();
+			if ($scope.baseUrl)
+			{
+				$location.path($scope.baseUrl).replace();
+			}
+			else
+			{
+				toastr.success('Цех успешно удален!');
+
+				$scope.init();
+			}
 		}, 
 		function(response) 
 		{

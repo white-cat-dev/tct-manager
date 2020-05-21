@@ -15,8 +15,8 @@ class ProductSeeder extends Seeder
     {
         $productGroups = [
         	[
-        		'wp_id' => 0,
         		'wp_name' => 'Тротуарная плитка "Паутина"',
+        		'wp_slug' => '',
         		'name' => 'Паутина',
 		        'category_id' => 1,
 		    	'set_pair_id' => 0,
@@ -58,8 +58,8 @@ class ProductSeeder extends Seeder
 		    	]
         	],
         	[
-        		'wp_id' => 0,
         		'wp_name' => 'Тротуарная плитка «Калифорния» (300×300×30 мм)',
+        		'wp_slug' => '',
         		'name' => 'Калифорния',
 		        'category_id' => 1,
 		    	'set_pair_id' => 0,
@@ -101,8 +101,8 @@ class ProductSeeder extends Seeder
 		    	]
         	],
         	[
-        		'wp_id' => 0,
         		'wp_name' => 'Бордюр (500×200×30)',
+        		'wp_slug' => '',
         		'name' => 'Бордюр',
 		        'category_id' => 3,
 		    	'set_pair_id' => 0,
@@ -144,8 +144,8 @@ class ProductSeeder extends Seeder
 		    	]
         	],
         	[
-        		'wp_id' => 0,
         		'wp_name' => 'Полистиролбетонный блок (большой)',
+        		'wp_slug' => '',
         		'name' => 'Полистиролбетон D500',
 		        'category_id' => 5,
 		    	'set_pair_id' => 0,

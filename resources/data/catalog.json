@@ -6,50 +6,127 @@
         "adjectives": "feminine",
         "product_groups": [
             {
-                "wp_id": 0,
-                "wp_name": "Тротуарная плитка \"Паутина\"",
-                "name": "Паутина",
+                "wp_name": "Тротуарная плитка «Радиус»",
+                "name": "Радиус",
                 "set_pair_id": 0,
-                "width": 300,
-                "length": 300,
-                "depth": 30,
-                "adjectives": "feminine",
-                "weight_unit": 5.5,
-                "weight_units": 61,
+                "width": 250,
+                "length": 250,
+                "depth": 25,
+                "weight_unit": 3.2,
+                "weight_units": 0,
                 "weight_pallete": 750,
-                "unit_in_units": 11.1,
-                "unit_in_pallete": 132,
-                "units_in_pallete": 11.9,
-                "units_from_batch": 8,
-                "forms": 10,
+                "unit_in_units": 16,
+                "unit_in_pallete": 225,
+                "units_in_pallete": 14.1,
+                "units_from_batch": 7,
+                "forms": 19.3,
                 "salary_units": 80,
                 "products": [
                     {
                         "variation": "grey",
                         "main_variation": "grey",
-                        "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 4525,
-                        "in_stock": 5
+                        "price": 350,
+                        "price_unit": 22,
+                        "price_pallete": 0
                     },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 440,
+                        "price_unit": 28,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 480,
+                        "price_unit": 30,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 480,
+                        "price_unit": 30,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 480,
+                        "price_unit": 30,
+                        "price_pallete": 0
+                    }
                 ]
             },
             {
-                "wp_id": 0,
-                "wp_name": "Тротуарная плитка \"Паутина\"",
-                "name": "Паутина",
+                "wp_name": "Тротуарная плитка «Паркет»",
+                "name": "Радиус",
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
                 "depth": 30,
-                "adjectives": "feminine",
                 "weight_unit": 5.5,
-                "weight_units": 61,
+                "weight_units": 0,
                 "weight_pallete": 750,
                 "unit_in_units": 11.1,
                 "unit_in_pallete": 132,
                 "units_in_pallete": 11.9,
-                "units_from_batch": 8,
+                "units_from_batch": 7,
+                "forms": 52.7,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «8 кирпичей»",
+                "name": "8 кирпичей",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
                 "forms": 10,
                 "salary_units": 80,
                 "products": [
@@ -58,12 +135,1550 @@
                         "main_variation": "grey",
                         "price": 380,
                         "price_unit": 35,
-                        "price_pallete": 4525,
-                        "in_stock": 5
+                        "price_pallete": 0
                     },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Рваная сетка»",
+                "name": "Рваная сетка",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 30,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Тучка»",
+                "name": "Тучка",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 157,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Калифорния»",
+                "name": "Калифорния",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 14,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Солнце»",
+                "name": "Солнце",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 38.2,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «2 доски»",
+                "name": "2 доски",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 19.3,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «3 доски»",
+                "name": "3 доски",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 18.4,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Срез»",
+                "name": "Срез",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Гладкая»",
+                "name": "Гладкая",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 9.9,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Ялта»",
+                "name": "Ялта",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 24.3,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Черноморская»",
+                "name": "Черноморская",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 5.5,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_unit": 35,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_unit": 43,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «8 кирпичей»",
+                "name": "8 кирпичей",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 50,
+                "weight_unit": 9,
+                "weight_units": 0,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 30,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 54,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 57,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 57,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 57,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Гладкая»",
+                "name": "Гладкая",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 50,
+                "weight_unit": 9,
+                "weight_units": 0,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 5,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 54,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 57,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 57,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 57,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Калифорния»",
+                "name": "Калифорния",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 50,
+                "weight_unit": 9,
+                "weight_units": 0,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 30,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 46,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 54,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 57,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 57,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 57,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «8 кирпичей шагрень»",
+                "name": "8 кирпичей шагрень",
+                "set_pair_id": 0,
+                "width": 400,
+                "length": 400,
+                "depth": 50,
+                "weight_unit": 17.5,
+                "weight_units": 0,
+                "weight_pallete": 860,
+                "unit_in_units": 6.25,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 7.84,
+                "units_from_batch": 7,
+                "forms": 77.7,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 80,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 95,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 101,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 101,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 101,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «8 кирпичей гладкая»",
+                "name": "8 кирпичей гладкая",
+                "set_pair_id": 0,
+                "width": 400,
+                "length": 400,
+                "depth": 50,
+                "weight_unit": 17.5,
+                "weight_units": 0,
+                "weight_pallete": 860,
+                "unit_in_units": 6.25,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 7.84,
+                "units_from_batch": 7,
+                "forms": 37.4,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 80,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 95,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 101,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 101,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 101,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Рапида»",
+                "name": "Рапида",
+                "set_pair_id": 0,
+                "width": 400,
+                "length": 400,
+                "depth": 50,
+                "weight_unit": 17.5,
+                "weight_units": 0,
+                "weight_pallete": 860,
+                "unit_in_units": 6.25,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 7.84,
+                "units_from_batch": 7,
+                "forms": 19.2,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 80,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 95,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 101,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 101,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 101,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Радиус»",
+                "name": "Радиус",
+                "set_pair_id": 0,
+                "width": 350,
+                "length": 350,
+                "depth": 50,
+                "weight_unit": 13.5,
+                "weight_units": 0,
+                "weight_pallete": 860,
+                "unit_in_units": 8.15,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 6.63,
+                "units_from_batch": 7,
+                "forms": 9.8,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 63,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 73,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 78,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 78,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 78,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Бабочка»",
+                "name": "Бабочка",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 500,
+                "depth": 60,
+                "weight_unit": 30,
+                "weight_units": 0,
+                "weight_pallete": 840,
+                "unit_in_units": 4,
+                "unit_in_pallete": 28,
+                "units_in_pallete": 7,
+                "units_from_batch": 7,
+                "forms": 18,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 138,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 160,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Армированная тротуарная плитка «Бабочка»",
+                "name": "Бабочка армированная",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 500,
+                "depth": 60,
+                "weight_unit": 30,
+                "weight_units": 0,
+                "weight_pallete": 840,
+                "unit_in_units": 4,
+                "unit_in_pallete": 28,
+                "units_in_pallete": 7,
+                "units_from_batch": 7,
+                "forms": 18,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 650,
+                        "price_unit": 163,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 740,
+                        "price_unit": 185,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 780,
+                        "price_unit": 195,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 780,
+                        "price_unit": 195,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 780,
+                        "price_unit": 195,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тротуарная плитка «Доска»",
+                "name": "Доска",
+                "set_pair_id": 0,
+                "width": 600,
+                "length": 150,
+                "depth": 60,
+                "weight_unit": 10.8,
+                "weight_units": 0,
+                "weight_pallete": 1000,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 92,
+                "units_in_pallete": 8.29,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 50,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 58,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тактильная тротуарная плитка «Диагональные рифы»",
+                "name": "Тактильная (диагональные)",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 500,
+                "depth": 50,
+                "weight_unit": 25,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 4,
+                "unit_in_pallete": 30,
+                "units_in_pallete": 7.5,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 138,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 160,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тактильная тротуарная плитка «Продольные рифы»",
+                "name": "Тактильная (продольные)",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 500,
+                "depth": 50,
+                "weight_unit": 25,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 4,
+                "unit_in_pallete": 30,
+                "units_in_pallete": 7.5,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 138,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 160,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тактильная тротуарная плитка «Квадратные рифы»",
+                "name": "Тактильная (квадратные)",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 500,
+                "depth": 50,
+                "weight_unit": 25,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 4,
+                "unit_in_pallete": 30,
+                "units_in_pallete": 7.5,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 138,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 160,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тактильная тротуарная плитка «Конусообразные рифы»",
+                "name": "Тактильная (конусообразные)",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 500,
+                "depth": 50,
+                "weight_unit": 25,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 4,
+                "unit_in_pallete": 30,
+                "units_in_pallete": 7.5,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 138,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 160,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 170,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тактильная тротуарная плитка «Диагональные рифы»",
+                "name": "Тактильная (диагональные)",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 50,
+                "weight_unit": 9,
+                "weight_units": 0,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 45,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 58,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тактильная тротуарная плитка «Продольные рифы»",
+                "name": "Тактильная (продольные)",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 50,
+                "weight_unit": 9,
+                "weight_units": 0,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 45,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 58,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тактильная тротуарная плитка «Квадратные рифы»",
+                "name": "Тактильная (квадратные)",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 50,
+                "weight_unit": 9,
+                "weight_units": 0,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 45,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 58,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Тактильная тротуарная плитка «Конусообразные рифы»",
+                "name": "Тактильная (конусообразные)",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 300,
+                "depth": 50,
+                "weight_unit": 9,
+                "weight_units": 0,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 45,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 58,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 62,
+                        "price_pallete": 0
+                    }
                 ]
             }
-
         ]
     },
     {
@@ -73,7 +1688,6 @@
         "adjectives": "feminine",
         "product_groups": [
             {
-                "wp_id": 0,
                 "wp_name": "Брусчатка «Волна шагрень»",
                 "name": "Волна",
                 "set_pair_id": 0,
@@ -81,7 +1695,7 @@
                 "length": 110,
                 "depth": 45,
                 "weight_unit": 2,
-                "weight_units": 61,
+                "weight_units": 0,
                 "weight_pallete": 920,
                 "unit_in_units": 43,
                 "unit_in_pallete": 418,
@@ -95,7 +1709,1469 @@
                         "main_variation": "grey",
                         "price": 500,
                         "price_unit": 12,
-                        "price_pallete": 4850,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 14,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 15,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 15,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 15,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Кирпичик шагрень»",
+                "name": "Кирпичик",
+                "set_pair_id": 0,
+                "width": 200,
+                "length": 100,
+                "depth": 45,
+                "weight_unit": 1.8,
+                "weight_units": 0,
+                "weight_pallete": 960,
+                "unit_in_units": 50,
+                "unit_in_pallete": 528,
+                "units_in_pallete": 10.6,
+                "units_from_batch": 7,
+                "forms": 35,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 10,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 12,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 13,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 13,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 13,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Шестигранник шагрень»",
+                "name": "Шестигранник шагрень",
+                "set_pair_id": 0,
+                "width": 186,
+                "length": 161,
+                "depth": 45,
+                "weight_unit": 2.3,
+                "weight_units": 0,
+                "weight_pallete": 890,
+                "unit_in_units": 44,
+                "unit_in_pallete": 385,
+                "units_in_pallete": 8.75,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 12,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 14,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 15,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 15,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 15,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Шестигранник рельеф»",
+                "name": "Шестигранник рельеф",
+                "set_pair_id": 0,
+                "width": 186,
+                "length": 161,
+                "depth": 45,
+                "weight_unit": 2.3,
+                "weight_units": 0,
+                "weight_pallete": 890,
+                "unit_in_units": 44,
+                "unit_in_pallete": 385,
+                "units_in_pallete": 8.75,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 12,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 14,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 15,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 15,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 15,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Шестигранник большой»",
+                "name": "Шестигранник большой",
+                "set_pair_id": 0,
+                "width": 225,
+                "length": 260,
+                "depth": 55,
+                "weight_unit": 4.3,
+                "weight_units": 0,
+                "weight_pallete": 880,
+                "unit_in_units": 22.7,
+                "unit_in_pallete": 165,
+                "units_in_pallete": 7.27,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 25,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 29,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 30,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 30,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 30,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Восьмигранник»",
+                "name": "Восьмигранник",
+                "set_pair_id": 0,
+                "width": 240,
+                "length": 240,
+                "depth": 45,
+                "weight_unit": 4.7,
+                "weight_units": 0,
+                "weight_pallete": 780,
+                "unit_in_units": 21,
+                "unit_in_pallete": 165,
+                "units_in_pallete": 7.86,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 31,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 33,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 33,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 33,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Брук»",
+                "name": "Брук",
+                "set_pair_id": 0,
+                "width": 100,
+                "length": 100,
+                "depth": 45,
+                "weight_unit": 0.9,
+                "weight_units": 0,
+                "weight_pallete": 960,
+                "unit_in_units": 100,
+                "unit_in_pallete": 1056,
+                "units_in_pallete": 10.6,
+                "units_from_batch": 7,
+                "forms": 1,
+                "salary_units": 0,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 6,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 7,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 7,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 7,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 7,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Брук»",
+                "name": "Брук",
+                "set_pair_id": 0,
+                "width": 100,
+                "length": 100,
+                "depth": 45,
+                "weight_unit": 0.9,
+                "weight_units": 0,
+                "weight_pallete": 960,
+                "unit_in_units": 100,
+                "unit_in_pallete": 1056,
+                "units_in_pallete": 10.6,
+                "units_from_batch": 7,
+                "forms": 1,
+                "salary_units": 0,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 6,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 7,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 7,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 7,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 7,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Ромб фигурный»",
+                "name": "Ромб фигурный",
+                "set_pair_id": 0,
+                "width": 140,
+                "length": 235,
+                "depth": 45,
+                "weight_unit": 2.4,
+                "weight_units": 0,
+                "weight_pallete": 850,
+                "unit_in_units": 42,
+                "unit_in_pallete": 352,
+                "units_in_pallete": 8.38,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 14,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 16,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 17,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 17,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 17,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Ромб штамп»",
+                "name": "Ромб штамп",
+                "set_pair_id": 0,
+                "width": 190,
+                "length": 330,
+                "depth": 45,
+                "weight_unit": 3.1,
+                "weight_units": 0,
+                "weight_pallete": 800,
+                "unit_in_units": 32,
+                "unit_in_pallete": 264,
+                "units_in_pallete": 8.25,
+                "units_from_batch": 7,
+                "forms": 19,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 16,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 19,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 20,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 20,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 20,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Ретро»",
+                "name": "Ретро",
+                "set_pair_id": 0,
+                "width": 295,
+                "length": 185,
+                "depth": 45,
+                "weight_unit": 4.2,
+                "weight_units": 0,
+                "weight_pallete": 820,
+                "unit_in_units": 23.8,
+                "unit_in_pallete": 193,
+                "units_in_pallete": 8.11,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 22,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 25,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Мостовая»",
+                "name": "Мостовая (мал)",
+                "set_pair_id": 0,
+                "width": 295,
+                "length": 185,
+                "depth": 45,
+                "weight_unit": 4.2,
+                "weight_units": 0,
+                "weight_pallete": 820,
+                "unit_in_units": 23.8,
+                "unit_in_pallete": 193,
+                "units_in_pallete": 8.11,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 22,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 25,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Мерседес»",
+                "name": "Мерседес",
+                "set_pair_id": 0,
+                "width": 278,
+                "length": 240,
+                "depth": 45,
+                "weight_unit": 3.7,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 24,
+                "unit_in_pallete": 198,
+                "units_in_pallete": 8.3,
+                "units_from_batch": 7,
+                "forms": 5,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 21,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 25,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 27,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Клевер цветок»",
+                "name": "Клевер цветок",
+                "set_pair_id": 0,
+                "width": 270,
+                "length": 220,
+                "depth": 45,
+                "weight_unit": 3.2,
+                "weight_units": 0,
+                "weight_pallete": 850,
+                "unit_in_units": 28,
+                "unit_in_pallete": 264,
+                "units_in_pallete": 9.4,
+                "units_from_batch": 7,
+                "forms": 40,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 18,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 22,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 23,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 23,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 23,
+                        "price_pallete": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Клевер шагрень»",
+                "name": "Клевер шагрень",
+                "set_pair_id": 0,
+                "width": 270,
+                "length": 220,
+                "depth": 45,
+                "weight_unit": 3.2,
+                "weight_units": 0,
+                "weight_pallete": 850,
+                "unit_in_units": 28,
+                "unit_in_pallete": 264,
+                "units_in_pallete": 9.4,
+                "units_from_batch": 7,
+                "forms": 40,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 18,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 22,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 23,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 23,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 23,
+                        "price_pallete": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Краковский клевер»",
+                "name": "Ромашка (бол)",
+                "set_pair_id": 0,
+                "width": 295,
+                "length": 295,
+                "depth": 45,
+                "weight_unit": 5.6,
+                "weight_units": 0,
+                "weight_pallete": 740,
+                "unit_in_units": 17,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 7.8,
+                "units_from_batch": 7,
+                "forms": 30,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 33,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 38,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 40,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 40,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 40,
+                        "price_pallete": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Краковский клевер»",
+                "name": "Ромашка (мал)",
+                "set_pair_id": 0,
+                "width": 210,
+                "length": 210,
+                "depth": 45,
+                "weight_unit": 2.7,
+                "weight_units": 0,
+                "weight_pallete": 740,
+                "unit_in_units": 34,
+                "unit_in_pallete": 264,
+                "units_in_pallete": 7.8,
+                "units_from_batch": 7,
+                "forms": 16,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_unit": 17,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_unit": 19,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 20,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 20,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_unit": 20,
+                        "price_pallete": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Клевер»",
+                "name": "Клевер",
+                "set_pair_id": 0,
+                "width": 270,
+                "length": 220,
+                "depth": 25,
+                "weight_unit": 1.8,
+                "weight_units": 0,
+                "weight_pallete": 700,
+                "unit_in_units": 28,
+                "unit_in_pallete": 360,
+                "units_in_pallete": 12.2,
+                "units_from_batch": 7,
+                "forms": 40,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 450,
+                        "price_unit": 17,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 540,
+                        "price_unit": 20,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_unit": 21,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_unit": 21,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_unit": 21,
+                        "price_pallete": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Клевер (половинки)»",
+                "name": "Клевер (половинки)",
+                "set_pair_id": 0,
+                "width": 270,
+                "length": 220,
+                "depth": 25,
+                "weight_unit": 1.8,
+                "weight_units": 0,
+                "weight_pallete": 700,
+                "unit_in_units": 28,
+                "unit_in_pallete": 360,
+                "units_in_pallete": 12.2,
+                "units_from_batch": 7,
+                "forms": 40,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 450,
+                        "price_unit": 10,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 540,
+                        "price_unit": 12,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_unit": 13,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_unit": 13,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_unit": 13,
+                        "price_pallete": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Ёлочка»",
+                "name": "Ёлочка",
+                "set_pair_id": 0,
+                "width": 290,
+                "length": 220,
+                "depth": 50,
+                "weight_unit": 7,
+                "weight_units": 0,
+                "weight_pallete": 1100,
+                "unit_in_units": 15.7,
+                "unit_in_pallete": 156,
+                "units_in_pallete": 9.94,
+                "units_from_batch": 7,
+                "forms": 21.6,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 32,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_unit": 37,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 40,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 40,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_unit": 40,
+                        "price_pallete": 0
+                    },
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Изделия из бетона",
+        "units": "unit",
+        "variations": "colors",
+        "adjectives": "masculine",
+        "product_groups": [
+            {
+                "wp_name": "Бордюр (поребрик)",
+                "name": "Бордюр",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 300,
+                "depth": 30,
+                "weight_unit": 7,
+                "weight_units": 0,
+                "weight_pallete": 350,
+                "unit_in_units": 2,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 120,
+                "salary_units": 8,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 50,
+                        "price_unit": 50,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 70,
+                        "price_unit": 70,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 80,
+                        "price_unit": 80,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 80,
+                        "price_unit": 80,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 80,
+                        "price_unit": 80,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Бордюр",
+                "name": "Бордюр",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 210,
+                "depth": 50,
+                "weight_unit": 11,
+                "weight_units": 0,
+                "weight_pallete": 550,
+                "unit_in_units": 2,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 85,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 90,
+                        "price_unit": 90,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 125,
+                        "price_unit": 125,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_unit": 140,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_unit": 140,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_unit": 140,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Бордюр",
+                "name": "Бордюр",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 210,
+                "depth": 70,
+                "weight_unit": 16,
+                "weight_units": 0,
+                "weight_pallete": 800,
+                "unit_in_units": 2,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 14,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 120,
+                        "price_unit": 120,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 175,
+                        "price_unit": 175,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 195,
+                        "price_unit": 195,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 195,
+                        "price_unit": 195,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 195,
+                        "price_unit": 195,
+                        "price_pallete": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Бордюр дорожный",
+                "name": "Бордюр",
+                "set_pair_id": 0,
+                "width": 1000,
+                "length": 220,
+                "depth": 75,
+                "weight_unit": 36,
+                "weight_units": 0,
+                "weight_pallete": 750,
+                "unit_in_units": 1,
+                "unit_in_pallete": 20,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 47,
+                "salary_units": 30,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 220,
+                        "price_unit": 220,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 330,
+                        "price_unit": 330,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 370,
+                        "price_unit": 370,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 370,
+                        "price_unit": 370,
+                        "price_pallete": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 370,
+                        "price_unit": 370,
+                        "price_pallete": 0
+                    }
+                ]
+            },{
+                "wp_name": "Водосток тротуарный",
+                "name": "Водосток",
+                "set_pair_id": 0,
+                "width": 330,
+                "length": 180,
+                "depth": 60,
+                "weight_unit": 6.5,
+                "weight_units": 0,
+                "weight_pallete": 400,
+                "unit_in_units": 3,
+                "unit_in_pallete": 63,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 42,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 65,
+                        "price_unit": 65,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 80,
+                        "price_unit": 80,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 90,
+                        "price_unit": 90,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 90,
+                        "price_unit": 90,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 90,
+                        "price_unit": 90,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                ]
+            },
+            {
+                "wp_name": "Водосток тротуарный",
+                "name": "Водосток",
+                "set_pair_id": 0,
+                "width": 500,
+                "length": 160,
+                "depth": 50,
+                "weight_unit": 7,
+                "weight_units": 0,
+                "weight_pallete": 450,
+                "unit_in_units": 2,
+                "unit_in_pallete": 63,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 49,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 100,
+                        "price_unit": 100,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 120,
+                        "price_unit": 120,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_unit": 140,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_unit": 140,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_unit": 140,
+                        "price_pallete": 0,
                         "in_stock": 0
                     },
                 ]
@@ -103,21 +3179,9 @@
         ]
     },
     {
-        "name": "Бордюры",
-        "units": "unit",
-        "variations": "colors",
-        "adjectives": "masculine"
-    },
-    {
-        "name": "Водостоки",
-        "units": "unit",
-        "variations": "colors",
-        "adjectives": "masculine"
-    },
-    {
         "name": "Полистиролбетон",
         "units": "volume",
         "variations": "grades",
-        "adjectives": "masculine"
+        "adjectives": "masculine",
     }
 ]

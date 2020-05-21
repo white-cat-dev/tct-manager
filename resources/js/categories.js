@@ -3,12 +3,14 @@ angular.module('tctApp').controller('CategoriesController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
+	'toastr',
 	'CategoriesRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
 		$timeout,
+		toastr,
 		CategoriesRepository
 	){
 
@@ -78,22 +80,25 @@ angular.module('tctApp').controller('CategoriesController', [
 	{
 		CategoriesRepository.save({id: $scope.id}, $scope.category, function(response) 
 		{
+			toastr.success($scope.id ? 'Категория успешно обновлена!' : 'Новая категория успешно создана!');
+
 			$scope.categoryErrors = {};
-			if ($scope.id)
-			{
-				$scope.successAlert = 'Категория успешно обновлена!';
-			}
-			else
-			{
-				$scope.successAlert = 'Новая категория успешно создана!';
-			}
-			$scope.showAlert = true;
 			$scope.id = response.id;
 			$scope.category.url = response.url;
 		}, 
 		function(response) 
 		{
-            $scope.categoryErrors = response.data.errors;
+            switch (response.status) 
+            {
+            	case 422:
+            		toastr.error('Проверьте введенные данные');
+            		$scope.categoryErrors = response.data.errors;
+            		break
+
+            	default:
+            		toastr.error('Произошла ошибка на сервере');
+            		break;
+            }
         });
 	}
 
@@ -108,12 +113,7 @@ angular.module('tctApp').controller('CategoriesController', [
 			}
 			else
 			{
-				$scope.successAlert = 'Категория успешно удалена!';
-				$scope.showAlert = true;
-
-				$timeout(function() {
-					$scope.showAlert = false;
-				}, 2000);
+				toastr.success('Категория успешно удалена!');
 
 				$scope.init();
 			}

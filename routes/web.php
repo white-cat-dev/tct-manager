@@ -249,6 +249,15 @@ Auth::routes(['register' => false, 'password.request' => false]);;
 
 Route::prefix('wp-api')->namespace('WpApi')->group(function()
 {
-	Route::get('excerpt', 'ProductsController@excerpt');
-	Route::get('content', 'ProductsController@content');
+	Route::prefix('product')->group(function ()
+	{
+		Route::get('post', 'ProductsController@getPost');
+		Route::get('stock', 'ProductsController@getStock');
+	});
+
+	Route::prefix('order')->group(function ()
+	{
+		Route::get('/', 'OrdersController@getOrder');
+		Route::post('add', 'OrdersController@addToOrder');
+	});
 });

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ProductGroup extends Model
 {
     protected $fillable = [
-        'wp_id',
         'wp_name',
+        'wp_slug',
     	'name',
         'category_id',
     	'set_pair_id',
@@ -88,6 +88,6 @@ class ProductGroup extends Model
 
     public function getSizeAttribute()
     {
-        return $this->length . 'x' . $this->width . 'x' . $this->depth;
+        return $this->length . '×' . $this->width . '×' . $this->depth;
     }
 }

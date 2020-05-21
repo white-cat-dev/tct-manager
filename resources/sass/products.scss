@@ -49,18 +49,24 @@
 			.btn {
 				background: #FFFFFF;
 				border: solid 1px darken($grey, 5%);
+				margin-right: 3px;
 
 				@include media-breakpoint-down(sm) {
 					display: block;
 					width: 100%;
 					text-align: left;
 					padding: 8px 12px;
+					margin-right: 0px;
 				}
 
 				&.active {
 					background: $primary;
 					color: #FFFFFF;
 					border-color: $primary;
+				}
+
+				&:first-of-type {
+					margin-right: 0px;
 				}
 			}
 

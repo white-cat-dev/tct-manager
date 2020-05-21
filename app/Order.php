@@ -14,6 +14,10 @@ class Order extends Model
     const STATUS_NEW = 3;
     const STATUS_PAUSED = 4;
     const STATUS_FINISHED = 5;
+    const STATUS_CART = 6;
+
+    const PRIORITY_NORMAL = 1;
+    const PRIORITY_HIGH = 2;
 
     protected $fillable = [
         'date',

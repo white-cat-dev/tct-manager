@@ -16,8 +16,8 @@ class CreateProductGroupsTable extends Migration
     {
         Schema::create('product_groups', function (Blueprint $table) {
             $table->id();
-            $table->integer('wp_id');
             $table->string('wp_name');
+            $table->string('wp_slug');
             $table->string('name');
             $table->integer('category_id');
             $table->integer('set_pair_id');

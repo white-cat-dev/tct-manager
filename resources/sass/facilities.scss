@@ -8,6 +8,10 @@
 		padding: 15px;
 		position: relative;
 		margin-bottom: 30px;
+		height: calc(100% - 30px);
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: space-between;
 
 		.facility-content {
 			transition: 0.3s;
@@ -28,7 +32,7 @@
 		.facility-title {
 			font-weight: 500;
 			font-size: 20px;
-			margin-bottom: 20px;
+			margin-bottom: 15px;
 		}
 
 		.facility-params {
@@ -57,7 +61,7 @@
 		}
 
 		.buttons-block {
-			margin-top: 20px;
+			margin-top: 15px;
 		}
 	}
 
@@ -84,7 +88,10 @@
 		text-align: center;
 	    color: darken($grey, 35%);
 	    font-size: 14px;
-	    margin-bottom: 15px;
+
+	    &.active {
+	    	color: $green;
+	    }
 	}
 
 	.add-worker-block {
@@ -97,12 +104,20 @@
 		.modal-dialog {
 			max-width: 380px;
 		}
+
+		.form-group {
+			margin-bottom: 0px;
+		}
+
+		.form-text {
+			margin-top: 5px;
+		}
     }
 
     .datepicker-block {
 		padding: 10px 30px;
 	    max-width: 350px;
-	    margin-top: 15px;
+	    margin-top: 10px;
 	    border: solid 1px darken($grey, 10%);
 	    position: relative;
 

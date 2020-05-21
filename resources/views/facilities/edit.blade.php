@@ -10,29 +10,6 @@
 		</div>
 
 		<div class="right-buttons">
-			<button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<i class="fas fa-cog"></i> Доступные действия
-			</button>
-			<div class="dropdown-menu" aria-labelledby="actionsButton">
-				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_ACTIVE }} && !facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_INACTIVE }})">
-					Приостановить работу цеха
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_INACTIVE }} && !facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_ACTIVE }})">
-					Возобновить работу цеха
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_INACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_INACTIVE }})">
-					Отменить возобновление работы цеха
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_INACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_ACTIVE }})">
-					Изменить дату возобновления работы цеха
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_ACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_ACTIVE }})">
-					Отменить приостановку работы цеха
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Worker::STATUS_ACTIVE }} && facility.status_date" ng-click="showStatusModal(facility, {{ App\Worker::STATUS_INACTIVE }})">
-					Изменить дату приостановки работы цеха
-				</button>
-			</div>
 			<a ng-href="@{{ facility.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
@@ -42,23 +19,9 @@
 		</div>
 	</div>
 
-	<div class="alerts-block" ng-class="{'shown': showAlert}">
-		<div class="alert alert-success" role="alert" ng-if="successAlert">
-			@{{ successAlert }} <br>
-			Вы можете <a href="{{ route('facilities') }}" class="btn-link">перейти к списку цехов</a> или <a href="{{ route('facility-create') }}" class="btn-link">создать новый цех</a>
-		</div>
-		<div class="alert alert-danger" role="alert" ng-if="errorAlert">
-			@{{ errorAlert }}
-		</div>
-	</div>
-
 	<div class="edit-form-block">
 		<div class="row justify-content-around">
-			<div class="col-5">
-				<div class="params-title">
-					Общая информация
-				</div>
-
+			<div class="col-12 col-lg-8 col-xl-6">
 				<div class="form-group">
 					<div class="param-label">Название цеха</div>
 					<input type="text" class="form-control" ng-model="facility.name" ng-class="{'is-invalid': facilityErrors.name}">
@@ -124,10 +87,16 @@
 						</div>
 					</div> --}}
 				</div>
+
+				<div class="form-group">
+					<div class="param-label">Цвет цеха</div>
+					<color-picker ng-model="facility.icon_color">
+					</color-picker>
+				</div>
 			</div>
 
-			<div class="col-6">
-				{{-- <div class="params-title">
+			{{-- <div class="col-6">
+				<div class="params-title">
 					Список работников
 				</div>
 
@@ -183,11 +152,8 @@
 
 				<button type="button" class="btn btn-primary" ng-click="showAddWorker()" ng-if="!isAddWorkerShown">
 					<i class="fas fa-plus"></i> Добавить работника в цех	
-				</button> --}}
-
-				<color-picker ng-model="facility.icon_color">
-					</color-picker>
-			</div>
+				</button>
+			</div> --}}
 		</div>
 
 		<div class="buttons-block">

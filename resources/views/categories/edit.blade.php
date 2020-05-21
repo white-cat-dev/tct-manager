@@ -19,16 +19,6 @@
 		</div>
 	</div>
 
-	<div class="alerts-block" ng-class="{'shown': showAlert}">
-		<div class="alert alert-success" role="alert" ng-if="successAlert">
-			@{{ successAlert }} <br>
-			Вы можете <a href="{{ route('categories') }}" class="btn-link">перейти к списку категорий</a> или <a href="{{ route('category-create') }}" class="btn-link">создать новую категорию</a>
-		</div>
-		<div class="alert alert-danger" role="alert" ng-if="errorAlert">
-			@{{ errorAlert }}
-		</div>
-	</div>
-
 	<div class="edit-form-block">
 		<div class="row justify-content-around">
 			<div class="col-8">

@@ -15,7 +15,8 @@ class FacilitiesController extends Controller
     {
         if ($request->wantsJson())
         {
-            $facilities = Facility::orderBy('status', 'desc')->orderBy('status_date')->get();
+            // $facilities = Facility::orderBy('status', 'desc')->orderBy('status_date')->get();
+            $facilities = Facility::all();
             return $facilities;
         }
 

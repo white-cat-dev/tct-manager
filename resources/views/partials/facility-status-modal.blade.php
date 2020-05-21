@@ -26,10 +26,20 @@
 							приостановки работы цеха
 						</span>
 					</div>
-					<div class="datepicker-block" ng-class="{'disabled': isPlanDateNow}">
-						<div class="disabled-block" ng-if="isPlanDateNow"></div>
+					<div class="datepicker-block">
 						<div date-picker view="date" min-view="date" ng-model="modalFacility.status_date_raw"></div>
 					</div>
+
+					<small class="form-text">
+						Если хотите 
+						<span ng-if="modalFacility.status == {{ App\Facility::STATUS_ACTIVE }}">
+							возобновить работу цеха
+						</span>
+						<span ng-if="modalFacility.status == {{ App\Facility::STATUS_INACTIVE }}">
+							приостановить работу цеха
+						</span>
+						сейчас, выберите текущую дату
+					</small>
 				</div>
 
 				{{-- <div class="custom-control custom-checkbox">

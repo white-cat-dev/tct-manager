@@ -77,12 +77,13 @@
 		<div class="icon">
 			<i class="fas fa-th"></i>
 		</div>
-		Не найдено ни одного рецепта
+		Не найдено ни одного рецепта <br>
+		<small ng-if="searchQuery"> по запросу "@{{ searchQuery }}"</small>
 
 		@if (Auth::user() && Auth::user()->type == 'admin')
 		<div>
 			<a href="{{ route('recipe-create') }}" class="btn btn-primary">
-				<i class="fas fa-plus"></i> Создать рецепт
+				<i class="fas fa-plus"></i> Создать новый рецепт
 			</a>
 		</div>
 		@endif

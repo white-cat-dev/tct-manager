@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ProductGroup;
 use App\Product; 
+use Str;
 
 
 class ProductsController extends Controller
@@ -150,9 +151,16 @@ class ProductsController extends Controller
 
     protected function getData(Request $request)
     {
+        $wpName = $request->get('wp_name', '');
+        $wpSlug = $request->get('wp_slug', '');
+        if (!$wpSlug)
+        {
+            $wpSlug = Str::slug($wpName);
+        }
+
         return [
-            'wp_id' => $request->get('wp_id', 0),
-            'wp_name' => $request->get('wp_name', ''),
+            'wp_name' => $wpName,
+            'wp_slug' => $wpSlug,
             'name' => $request->get('name', ''),
             'set_pair_id' => $request->get('set_pair_id', 0),
             'category_id' => $request->get('category_id', 0),

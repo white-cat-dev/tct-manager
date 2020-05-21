@@ -10,29 +10,6 @@
 		</div>
 
 		<div class="right-buttons">
-			<button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<i class="fas fa-cog"></i> Доступные действия
-			</button>
-			<div class="dropdown-menu" aria-labelledby="actionsButton">
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && !worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
-					Отстранить от работы
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_INACTIVE }} && !worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_ACTIVE }})">
-					Вернуть на работу
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_INACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
-					Отменить возвращение на работу
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_INACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_ACTIVE }})">
-					Изменить дату возвращения на работу
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_ACTIVE }})">
-					Отменить отстранение от работы
-				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
-					Изменить дату отстранения от работы
-				</button>
-			</div>
 			<a ng-href="@{{ worker.url }}" class="btn btn-primary" ng-if="worker.id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>

@@ -3,6 +3,7 @@ angular.module('tctApp').controller('WorkersController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
+	'toastr',
 	'FacilitiesRepository',
 	'WorkersRepository',
 	function(
@@ -10,6 +11,7 @@ angular.module('tctApp').controller('WorkersController', [
 		$routeParams,
 		$location,
 		$timeout,
+		toastr,
 		FacilitiesRepository,
 		WorkersRepository
 	){
@@ -71,21 +73,25 @@ angular.module('tctApp').controller('WorkersController', [
 	{
 		WorkersRepository.save({id: $scope.id}, $scope.worker, function(response) 
 		{
+			toastr.success($scope.id ? 'Работник успешно обновлен!' : 'Новый работник успешно создан!');
+
 			$scope.workerErrors = {};
-			if ($scope.id)
-			{
-				$scope.successAlert = 'Данные работника успешно сохранены!';
-			}
-			else
-			{
-				$scope.successAlert = 'Новый работник успешно создан!';
-			}
 			$scope.id = response.id;
 			$scope.worker.url = response.url;
 		}, 
 		function(response) 
 		{
-            $scope.workerErrors = response.data.errors;
+            switch (response.status) 
+            {
+            	case 422:
+            		toastr.error('Проверьте введенные данные');
+            		$scope.workerErrors = response.data.errors;
+            		break
+
+            	default:
+            		toastr.error('Произошла ошибка на сервере');
+            		break;
+            }
         });
 	}
 
@@ -138,7 +144,6 @@ angular.module('tctApp').controller('WorkersController', [
 		if ($scope.worker.status == $scope.modalWorker.status)
 		{
 			$scope.modalWorker.status_date_raw = null;
-			$scope.modalWorker.status_date_next_raw = null;
 		}
 		else if ($scope.modalWorker.status_date_raw)
 		{
@@ -148,12 +153,7 @@ angular.module('tctApp').controller('WorkersController', [
 		WorkersRepository.save({id: $scope.modalWorker.id}, $scope.modalWorker, function(response) 
 		{
 			$scope.modalStatusErrors = {};
-			$scope.successTopAlert = 'Изменения успешно сохранены!';
-			$scope.showTopAlert = true;
-
-			$timeout(function() {
-				$scope.showTopAlert = false;
-			}, 2000);
+			toastr.success('Изменения успешно сохранены!');
 
 			if (!$scope.baseUrl)
 			{

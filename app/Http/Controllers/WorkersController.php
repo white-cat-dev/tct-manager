@@ -15,7 +15,8 @@ class WorkersController extends Controller
     {
         if ($request->wantsJson())
         {
-            $workers = Worker::orderBy('status', 'desc')->orderBy('status_date')->get();
+            // $workers = Worker::orderBy('status', 'desc')->orderBy('status_date')->get();
+            $workers = Worker::all();
             return $workers;
         }
 
@@ -91,8 +92,9 @@ class WorkersController extends Controller
             'phone' => $request->get('phone', ''),
             'status' => $request->get('status', Worker::STATUS_ACTIVE),
             'status_date' => $request->get('status_date_raw', -1),
-            'status_date_next' => $request->get('status_date_next_raw', -1)
+            'status_date_next' => $request->get('status_date_next_raw', null)
         ];
+
 
         if ($data['status_date'] == -1)
         {
@@ -103,19 +105,9 @@ class WorkersController extends Controller
             $data['status_date'] = $data['status_date'] ? substr($data['status_date'], 0, 10) : null;
         }
 
-        if ($data['status_date_next'] == -1)
-        {
-            $data['status_date_next'] = $request->get('status_date_next', null); 
-        }
-        else
-        {
-            $data['status_date_next'] = $data['status_date_next'] ? substr($data['status_date_next'], 0, 10) : null;
-        }
-
         if (($data['status_date']) && ($data['status_date'] <= date('Y-m-d')))
         {
-            $data['status_date'] = $data['status_date_next'];
-            $data['status_date_next'] = null;
+            $data['status_date'] = null;
             $data['status'] = ($data['status'] + 1) % 2;
         }
 

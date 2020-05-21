@@ -105,11 +105,7 @@
 					<div ng-repeat="(productNum, product) in productGroup.products" ng-if="!isStockProductsShown || product.in_stock > 0">
 						<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
 							@{{ product.in_stock }} 
-							<span ng-switch on="productGroup.category.units">
-								<span ng-switch-when="area">м<sup>2</sup></span>
-								<span ng-switch-when="volume">м<sup>3</sup></span>
-								<span ng-switch-when="unit">шт.</span>
-							</span>
+							<span ng-bind-html="product.units_text"></span>
 						</div>
 						<input type="text" class="form-control" ng-model="product.new_in_stock" ng-init="product.new_in_stock = product.in_stock" ng-show="isEditFieldShown" ng-blur="product.in_stock = product.new_in_stock; saveEditField('products', productGroupNum, productNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
 					</div>
@@ -117,11 +113,7 @@
 				<td style="width: 12%;">
 					<div ng-repeat="product in productGroup.products" ng-if="!isStockProductsShown || product.in_stock > 0">
 						@{{ product.free_in_stock }} 
-						<span ng-switch on="productGroup.category.units">
-							<span ng-switch-when="area">м<sup>2</sup></span>
-							<span ng-switch-when="volume">м<sup>3</sup></span>
-							<span ng-switch-when="unit">шт.</span>
-						</span>
+						<span ng-bind-html="product.units_text"></span>
 					</div>
 				</td>
 				<td>
@@ -181,21 +173,13 @@
 					<td ng-if="true">
 						<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
 							@{{ product.in_stock }} 
-							<span ng-switch on="productGroup.category.units">
-								<span ng-switch-when="area">м<sup>2</sup></span>
-								<span ng-switch-when="volume">м<sup>3</sup></span>
-								<span ng-switch-when="unit">шт.</span>
-							</span>
+							<span ng-bind-html="product.units_text"></span>
 						</div>
 						<input type="text" class="form-control" ng-model="product.new_in_stock" ng-init="product.new_in_stock = product.in_stock" ng-show="isEditFieldShown" ng-blur="product.in_stock = product.new_in_stock; saveEditField('products', productGroupNum, productNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
 					</td>
 					<td>
 						@{{ product.free_in_stock }} 
-						<span ng-switch on="productGroup.category.units">
-							<span ng-switch-when="area">м<sup>2</sup></span>
-							<span ng-switch-when="volume">м<sup>3</sup></span>
-							<span ng-switch-when="unit">шт.</span>
-						</span>
+						<span ng-bind-html="product.units_text"></span>
 					</td>
 				</tr>
 			</table>
@@ -206,12 +190,14 @@
 		<div class="icon">
 			<i class="fas fa-th"></i>
 		</div>
-		Не найдено ни одного продукта
+		Не найдено ни одного продукта <br>
+		<small ng-if="searchQuery"> по запросу "@{{ searchQuery }}"</small>
+		<small ng-if="currentCategory != 0">в категории "<span ng-repeat="category in categories" ng-if="category.id == currentCategory">@{{ category.name }}</span>"</small>
 
 		@if (Auth::user() && Auth::user()->type == 'admin')
 		<div>
 			<a href="{{ route('product-create') }}" class="btn btn-primary">
-				<i class="fas fa-plus"></i> Создать продукт
+				<i class="fas fa-plus"></i> Создать новый продукт
 			</a>
 		</div>
 		@endif

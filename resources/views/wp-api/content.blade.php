@@ -1,18 +1,18 @@
-@if ($productGroup)
+<div class="tct-manager-post-content" data-post-title="{{ $wpSlug }}">
 	<div>
-		<strong>Размер:</strong>
-		<table border="1" cellspacing="2">
+		<h3>Размер:</h3>
+		<table>
 			<tbody>
 				<tr>
-					<td><strong>длина:</strong></td>
+					<td><strong>длина</strong></td>
 					<td><em>{{ $productGroup->length }}</em> мм</td>
 				</tr>
 				<tr>
-					<td><strong>ширина: </strong></td>
+					<td><strong>ширина</strong></td>
 					<td><em>{{ $productGroup->width }}</em> мм</td>
 				</tr>
 				<tr>
-					<td><strong>высота:</strong></td>
+					<td><strong>высота</strong></td>
 					<td><em>{{ $productGroup->depth }}</em> мм</td>
 				</tr>
 			</tbody>
@@ -20,16 +20,16 @@
 	</div>
 
 	<div>
-		<strong>Цена:</strong>
-		<table border="1" cellspacing="2">
+		<h3>Цена:</h3>
+		<table>
 			<tbody>
 				<tr>
 					<td>
-						<strong>цвет: </strong>
+						<strong>цвет </strong>
 					</td>
 					@foreach ($productGroup->products as $product)
 					<td>
-						<strong>{{ $product->main_color_text }}</strong>
+						<strong>{{ $product->main_variation_text }}</strong>
 					</td>
 					@endforeach
 				</tr>
@@ -39,17 +39,17 @@
 					</td>
 					@foreach ($productGroup->products as $product)
 					<td>
-						<strong>{{ $product->price_unit }}</strong> руб.
+						{{ $product->price_unit }} руб.
 					</td>
 					@endforeach
 				</tr>
 				<tr>
 					<td>
-						<strong>кв.м.</strong>
+						<strong>кв. м</strong>
 					</td>
 					@foreach ($productGroup->products as $product)
 					<td>
-						<strong>{{ $product->price }}</strong> руб.
+						{{ $product->price }} руб.
 					</td>
 					@endforeach
 				</tr>
@@ -59,7 +59,7 @@
 					</td>
 					@foreach ($productGroup->products as $product)
 						<td>
-							<strong>{{ $product->price_pallete }}</strong> руб.
+							{{ $product->price_pallete }} руб.
 						</td>
 					@endforeach
 				</tr>
@@ -68,20 +68,20 @@
 	</div>
 
 	<div>
-		<strong>Вес:</strong>
+		<h3>Вес:</h3>
 
-		<table border="1" cellspacing="2">
+		<table>
 			<tbody>
 				<tr>
-					<td><strong> шт. </strong></td>
+					<td><strong>шт.</strong></td>
 					<td><em>{{ $productGroup->weight_unit }}</em> кг</td>
 				</tr>
 				<tr>
-					<td><strong> кв.м</strong></td>
+					<td><strong>кв. м</strong></td>
 					<td><em>{{ $productGroup->weight_units }}</em> кг</td>
 				</tr>
 				<tr>
-					<td><strong> поддона </strong></td>
+					<td><strong>поддона</strong></td>
 					<td><em>{{ $productGroup->weight_pallete }}</em> кг</td>
 				</tr>
 			</tbody>
@@ -89,38 +89,8 @@
 	</div>
 
 	<div>
-		<strong>  Дополнительная информация:</strong>
-		В <strong><em>1</em></strong><strong> кв. м</strong> - {{ $productGroup->unit_in_units }} шт.
-		В <strong><em>1</em></strong><strong> поддоне</strong> - {{ $productGroup->unit_in_pallete }} шт., {{ $productGroup->units_in_pallete }} кв.м
+		<h3>Дополнительная информация:</h3>
+		В <strong><em>1</em> кв. м</strong> – {{ $productGroup->unit_in_units }} шт.
+		В <strong><em>1</em> поддоне</strong> – {{ $productGroup->unit_in_pallete }} шт., {{ $productGroup->units_in_pallete }} м<sup>2</sup>
 	</div>
-
-	<div>
-		<strong>Информация о наличии:</strong>
-
-		<table border="1" cellspacing="2">
-			<thead>
-				<th>Цвет</th>
-				<th>В наличии</th>
-			</thead>
-			<tbody>
-				@foreach ($productGroup->products as $product)
-				<tr>
-					<td>
-						<strong>{{ $product->main_color_text }}</strong>
-					</td>
-					<td>
-						@if ($product->main_color == 'color')
-							Производится на заказ
-						@else
-							{{ $product->in_stock }} 
-							@if ($product->category->units == 'area') кв.м @endif
-							@if ($product->category->units == 'volume') куб.м @endif
-							@if ($product->category->units == 'unit') шт. @endif
-						@endif
-					</td>
-				</tr>
-				@endforeach
-			</tbody>
-		</table>
-	</div>
-@endif
+</div><!-- tct-manager-post-content -->

@@ -18,7 +18,7 @@
 		.worker-title {
 			font-weight: 500;
 			font-size: 20px;
-			margin-bottom: 15px;
+			margin-bottom: 5px;
 		}
 
 		.worker-param {
@@ -38,34 +38,27 @@
 		}
 	}
 
-	.worker-icon {
-		position: relative;
-		margin-bottom: 5px;
-
-		img {
-			width: 100%;
-
-			&:nth-child(2) {
-				position: absolute;
-			    bottom: 0;
-			    left: 0;
-			    object-fit: cover;
-				object-position: bottom;
-				transition: height 0.3s;
-			}
-		}
-	}
-
 	.worker-status {
-		text-align: center;
 	    color: darken($grey, 35%);
 	    font-size: 14px;
-	    padding-right: 10px;
+	    margin-bottom: 5px;
+
+	    &.active {
+	    	color: $green;
+	    }
 	}
 
-	.worker-modal {
+	.worker-modal {		
 		.modal-dialog {
 			max-width: 380px;
+		}
+
+		.form-group {
+			margin-bottom: 0px;
+		}
+
+		.form-text {
+			margin-top: 5px;
 		}
     }
 
@@ -91,7 +84,7 @@
 		padding: 10px 30px;
 	    max-width: 350px;
 	    border: solid 1px darken($grey, 10%);
-	    border-top: none;
+		margin-top: 10px;
 	    position: relative;
 
 	    table {
