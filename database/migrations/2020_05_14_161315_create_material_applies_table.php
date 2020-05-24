@@ -17,8 +17,8 @@ class CreateMaterialAppliesTable extends Migration
             $table->id();
             $table->date('date');
             $table->integer('material_id');
-            $table->decimal('planned', 10, 2)->unsigned();
-            $table->decimal('performed', 10, 2)->unsigned();
+            $table->decimal('planned', 10, 3)->unsigned();
+            $table->decimal('performed', 10, 3)->unsigned();
             $table->timestamps();
         });
     }

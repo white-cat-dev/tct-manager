@@ -14,15 +14,21 @@ class Product extends Model
     	'variation',
         'main_variation',
     	'price',
+        'price_vat',
+        'price_cashless',
     	'price_unit',
-    	'price_pallete',
+        'price_unit_vat',
+        'price_unit_cashless',
     	'in_stock'
     ];
 
     protected $casts = [
         'price' => 'float',
+        'price_vat' => 'float',
+        'price_cashless' => 'float',
         'price_unit' => 'float',
-        'price_pallete' => 'float'
+        'price_unit_vat' => 'float',
+        'price_unit_cashless' => 'float'
     ];
 
     protected $appends = [

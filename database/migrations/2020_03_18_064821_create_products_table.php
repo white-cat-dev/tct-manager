@@ -21,8 +21,11 @@ class CreateProductsTable extends Migration
             $table->string('variation');
             $table->string('main_variation');
             $table->decimal('price', 8, 2)->unsigned();
+            $table->decimal('price_vat', 8, 2)->unsigned();
+            $table->decimal('price_cashless', 8, 2)->unsigned();
             $table->decimal('price_unit', 8, 2)->unsigned();
-            $table->decimal('price_pallete', 8, 2)->unsigned();
+            $table->decimal('price_unit_vat', 8, 2)->unsigned();
+            $table->decimal('price_unit_cashless', 8, 2)->unsigned();
             $table->integer('in_stock');
             $table->timestamps();
         });

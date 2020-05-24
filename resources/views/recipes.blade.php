@@ -28,7 +28,6 @@
 		<tr>
 			<th>№</th>
 			<th>Название</th>
-			<th>Категория</th>
 			<th>Материалы</th>
 			<th></th>
 		</tr>
@@ -39,9 +38,6 @@
 			</td>
 			<td>
 				@{{ recipe.name }}
-			</td>
-			<td>
-				@{{ recipe.category.name }}
 			</td>
 			<td>
 				<div ng-repeat="materialGroup in recipe.material_groups">

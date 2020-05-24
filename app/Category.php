@@ -20,7 +20,7 @@ class Category extends Model
     ];
 
 
-    public function productGroups()
+    public function product_groups()
     {
         return $this->hasMany(ProductGroup::class);
     }

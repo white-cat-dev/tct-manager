@@ -107,16 +107,14 @@ class RecipesController extends Controller
 
 
     protected $validationRules = [
-        'name' => 'required',
-        'category_id' => 'required'
+        'name' => 'required'
     ];
 
 
     protected function getData(Request $request)
     {
         return [
-            'name' => $request->get('name', ''),
-            'category_id' => $request->get('category_id', 0)
+            'name' => $request->get('name', '')
         ];
     }
 }

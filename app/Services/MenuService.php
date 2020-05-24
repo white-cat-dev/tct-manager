@@ -35,7 +35,8 @@ class MenuService
                         'icon' => '<i class="fas fa-user-tie"></i>',
                         'url' => route('workers')
                     ]
-                ]
+                ],
+                'submenu_opened' => true
             ],
             (object)[
                 'name' => 'Продукты',

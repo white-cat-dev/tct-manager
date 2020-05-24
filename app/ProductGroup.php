@@ -13,18 +13,20 @@ class ProductGroup extends Model
     	'name',
         'category_id',
     	'set_pair_id',
+        'set_pair_ratio',
+        'set_pair_ratio_to',
     	'width',
     	'length',
-    	'depth',
+    	'height',
         'adjectives',
     	'weight_unit',
-    	'weight_units',
     	'weight_pallete',
     	'unit_in_units',
     	'unit_in_pallete',
     	'units_in_pallete',
     	'units_from_batch',
     	'forms',
+        'forms_add',
         'salary_units',
         'recipe_id'
     ];
@@ -39,6 +41,8 @@ class ProductGroup extends Model
     ];
 
     protected $casts = [
+        'set_pair_ratio' => 'float',
+        'set_pair_ratio_to' => 'float',
         'weight_unit' => 'float',
         'weight_units' => 'float',
         'weight_pallete' => 'float',
@@ -46,7 +50,8 @@ class ProductGroup extends Model
         'unit_in_pallete' => 'float',
         'units_in_pallete' => 'float',
         'units_from_batch' => 'float',
-        'salary_units' => 'float'
+        'salary_units' => 'float',
+        'forms' => 'float'
     ];
 
 
@@ -88,6 +93,6 @@ class ProductGroup extends Model
 
     public function getSizeAttribute()
     {
-        return $this->length . '×' . $this->width . '×' . $this->depth;
+        return $this->length . '×' . $this->width . '×' . $this->height;
     }
 }

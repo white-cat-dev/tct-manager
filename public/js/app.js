@@ -83326,8 +83326,11 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       'variation': '',
       'main_variation': '',
       'price': 0,
+      'price_vat': 0,
+      'price_cashless': 0,
       'price_unit': 0,
-      'price_pallete': 0,
+      'price_unit_vat': 0,
+      'price_unit_cashless': 0,
       'in_stock': 0
     }]
   };
@@ -83420,7 +83423,11 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
         id: $scope.id
       }, function (response) {
         $scope.productGroup = response;
-        $scope.productCategory = $scope.productGroup.category;
+        $scope.chooseProductCategory($scope.productGroup.category);
+
+        if ($scope.productGroup.set_pair_id) {
+          $scope.showSetPair();
+        }
       });
     }
 
@@ -83551,7 +83558,11 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
           $scope.productGroup.adjectives = category.adjectives;
           break;
         }
-      }
+      } // if (!$scope.productCategory.variations) 
+      // {
+      // 	$scope.addProduct();
+      // }
+
     } catch (err) {
       _didIteratorError3 = true;
       _iteratorError3 = err;
@@ -83567,9 +83578,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       }
     }
 
-    if (!$scope.productCategory.variations) {
-      $scope.addProduct();
-    }
+    $scope.loadProducts();
   };
 
   $scope.addProduct = function () {
@@ -83577,18 +83586,74 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       'variation': '',
       'main_variation': '',
       'price': 0,
+      'price_vat': 0,
+      'price_cashless': 0,
       'price_unit': 0,
-      'price_pallete': 0,
+      'price_unit_vat': 0,
+      'price_unit_cashless': 0,
       'in_stock': 0
     });
   };
 
   $scope.chooseProductVariation = function (product, variation) {
     product.main_variation = variation.main_key;
+
+    if (product.main_variation == 'color' && $scope.mainVariation) {
+      product.price = $scope.mainVariation.price;
+      product.price_vat = $scope.mainVariation.price_vat;
+      product.price_cashless = $scope.mainVariation.price_cashless;
+      product.price_unit = $scope.mainVariation.price_unit;
+      product.price_unit_vat = $scope.mainVariation.price_unit_vat;
+      product.price_unit_cashless = $scope.mainVariation.price_unit_cashless;
+    }
   };
 
   $scope.deleteProduct = function (index) {
     $scope.productGroup.products.splice(index, 1);
+  };
+
+  $scope.changePrice = function (currentProduct, key) {
+    if (currentProduct.main_variation == 'color') {
+      $scope.mainVariation = currentProduct;
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = $scope.productGroup.products[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          product = _step4.value;
+
+          if (product.main_variation == 'color') {
+            product[key] = currentProduct[key];
+          }
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+            _iterator4["return"]();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+    }
+  };
+
+  $scope.isSetPairShown = false;
+
+  $scope.showSetPair = function () {
+    $scope.isSetPairShown = !$scope.isSetPairShown;
+
+    if (!$scope.isSetPairShown) {
+      $scope.productGroup.set_pair_id = null;
+      $scope.productGroup.set_pair_ratio = 0;
+      $scope.productGroup.set_pair_ratio_to = 0;
+    }
   };
 
   $scope.saveEditField = function (key, groupNum, num) {
@@ -83602,26 +83667,26 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
         if (num != undefined) {
           productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
           productGroup.in_stock = 0;
-          var _iteratorNormalCompletion4 = true;
-          var _didIteratorError4 = false;
-          var _iteratorError4 = undefined;
+          var _iteratorNormalCompletion5 = true;
+          var _didIteratorError5 = false;
+          var _iteratorError5 = undefined;
 
           try {
-            for (var _iterator4 = productGroup.products[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-              product = _step4.value;
+            for (var _iterator5 = productGroup.products[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+              product = _step5.value;
               productGroup.in_stock += product.in_stock;
             }
           } catch (err) {
-            _didIteratorError4 = true;
-            _iteratorError4 = err;
+            _didIteratorError5 = true;
+            _iteratorError5 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-                _iterator4["return"]();
+              if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+                _iterator5["return"]();
               }
             } finally {
-              if (_didIteratorError4) {
-                throw _iteratorError4;
+              if (_didIteratorError5) {
+                throw _iteratorError5;
               }
             }
           }

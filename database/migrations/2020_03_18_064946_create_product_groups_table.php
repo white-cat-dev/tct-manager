@@ -16,25 +16,27 @@ class CreateProductGroupsTable extends Migration
     {
         Schema::create('product_groups', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('wp_name');
             $table->string('wp_slug');
-            $table->string('name');
             $table->integer('category_id');
-            $table->integer('set_pair_id');
+            $table->integer('set_pair_id')->nullable();
+            $table->decimal('set_pair_ratio', 4, 2)->unsigned();
+            $table->decimal('set_pair_ratio_to', 4, 2)->unsigned();
             $table->integer('width');
             $table->integer('length');
-            $table->integer('depth');
+            $table->integer('height');
             $table->string('adjectives');
-            $table->decimal('weight_unit', 6, 2)->unsigned();
-            $table->decimal('weight_units', 6, 2)->unsigned();
-            $table->decimal('weight_pallete', 6, 2)->unsigned();
-            $table->decimal('unit_in_units', 5, 2)->unsigned();
-            $table->decimal('unit_in_pallete', 5, 2)->unsigned();
-            $table->decimal('units_in_pallete', 5, 2)->unsigned();
-            $table->decimal('units_from_batch', 5, 2)->unsigned();
-            $table->integer('forms')->unsigned();
-            $table->decimal('salary_units', 5, 2)->unsigned();
-            $table->integer('recipe_id');
+            $table->decimal('weight_unit', 6, 3)->unsigned();
+            $table->decimal('weight_pallete', 7, 3)->unsigned();
+            $table->decimal('unit_in_units', 6, 3)->unsigned();
+            $table->decimal('unit_in_pallete', 6, 3)->unsigned();
+            $table->decimal('units_in_pallete', 6, 3)->unsigned();
+            $table->decimal('units_from_batch', 6, 3)->unsigned();
+            $table->decimal('forms', 6, 3)->unsigned();
+            $table->decimal('forms_add', 6, 3)->unsigned();
+            $table->decimal('salary_units', 6, 2)->unsigned();
+            $table->integer('recipe_id')->nullable();
             $table->timestamps();
         });
     }

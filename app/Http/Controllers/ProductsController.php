@@ -53,12 +53,8 @@ class ProductsController extends Controller
 
             foreach ($request->get('products') as $productData) 
             {
-                $productData['category_id'] = $productGroup->category_id;
-                if (!$productGroup->category->variations)
-                {
-                    $productData['variation'] = '';
-                    $productData['main_variation'] = '';
-                }
+                $productData = $this->getProductData($productData, $productGroup);
+
                 $product = $productGroup->products()->create($productData);
             }
 
@@ -85,18 +81,13 @@ class ProductsController extends Controller
 
             foreach ($request->get('products', []) as $productData) 
             {
-                $productData['category_id'] = $productGroup->category_id;
-                if (!$productGroup->category->variations)
-                {
-                    $productData['variation'] = '';
-                    $productData['main_variation'] = '';
-                }
-
                 $id = !empty($productData['id']) ? $productData['id'] : 0;
                 
                 $productsIds->forget($id);
 
                 $product = $productGroup->products()->find($id);
+
+                $productData = $this->getProductData($productData, $productGroup);
 
                 if (!$product) 
                 {
@@ -134,9 +125,8 @@ class ProductsController extends Controller
         'category_id' => 'required',
         'width' => 'required',
         'length' => 'required',
-        'depth' => 'required',
+        'height' => 'required',
         'weight_unit' => 'required',
-        'weight_units' => 'required',
         'weight_pallete' => 'required',
         'unit_in_units' => 'required',
         'unit_in_pallete' => 'required',
@@ -152,32 +142,55 @@ class ProductsController extends Controller
     protected function getData(Request $request)
     {
         $wpName = $request->get('wp_name', '');
-        $wpSlug = $request->get('wp_slug', '');
-        if (!$wpSlug)
-        {
-            $wpSlug = Str::slug($wpName);
-        }
+        $wpSlug = Str::slug($wpName);
 
         return [
             'wp_name' => $wpName,
             'wp_slug' => $wpSlug,
             'name' => $request->get('name', ''),
-            'set_pair_id' => $request->get('set_pair_id', 0),
+            'set_pair_id' => $request->get('set_pair_id', null),
+            'set_pair_ratio' => $request->get('set_pair_ratio', 0),
+            'set_pair_ratio_to' => $request->get('set_pair_ratio_to', 0),
             'category_id' => $request->get('category_id', 0),
             'width' => $request->get('width', 0),
             'length' => $request->get('length', 0),
-            'depth' => $request->get('depth', 0),
+            'height' => $request->get('height', 0),
             'adjectives' => $request->get('noun', 'feminine'),
             'weight_unit' => $request->get('weight_unit', 0),
-            'weight_units' => $request->get('weight_units', 0),
             'weight_pallete' => $request->get('weight_pallete', 0),
             'unit_in_units' => $request->get('unit_in_units', 0),
             'unit_in_pallete' => $request->get('unit_in_pallete', 0),
             'units_in_pallete' => $request->get('units_in_pallete', 0),
             'units_from_batch' => $request->get('units_from_batch', 0),
             'forms' => $request->get('forms', 0),
+            'forms_add' => $request->get('forms_add', 0),
             'salary_units' => $request->get('salary_units', 0),
-            'recipe_id' => $request->get('recipe_id', 0),
+            'recipe_id' => $request->get('recipe_id', null)
+        ];
+    }
+
+
+    protected function getProductData($data, $productGroup)
+    {
+        $categoryId = $productGroup->category_id;
+
+        if (!$productGroup->category->variations)
+        {
+            $data['variation'] = '';
+            $data['main_variation'] = '';
+        }
+
+        return [
+            'category_id' => $categoryId,
+            'variation' => !empty($data['variation']) ? $data['variation'] : '',
+            'main_variation' => !empty($data['main_variation']) ? $data['main_variation'] : '',
+            'price' => !empty($data['price']) ? $data['price'] : 0,
+            'price_vat' => !empty($data['price_vat']) ? $data['price_vat'] : 0,
+            'price_cashless' => !empty($data['price_cashless']) ? $data['price_cashless'] : 0,
+            'price_unit' => !empty($data['price_unit']) ? $data['price_unit'] : 0,
+            'price_unit_vat' => !empty($data['price_unit_vat']) ? $data['price_unit_vat'] : 0,
+            'price_unit_cashless' => !empty($data['price_unit_cashless']) ? $data['price_unit_cashless'] : 0,
+            'in_stock' => !empty($data['in_stock']) ? $data['in_stock'] : 0
         ];
     }
 }

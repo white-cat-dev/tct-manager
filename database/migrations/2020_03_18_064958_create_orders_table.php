@@ -22,8 +22,8 @@ class CreateOrdersTable extends Migration
             $table->string('comment');
             $table->string('status');
             $table->tinyInteger('priority');
-            $table->decimal('cost', 10, 2)->unsigned();
-            $table->decimal('weight', 7, 2)->unsigned();
+            $table->decimal('cost', 10, 3)->unsigned();
+            $table->decimal('weight', 7, 3)->unsigned();
             $table->integer('pallets');
             $table->timestamps();
         });

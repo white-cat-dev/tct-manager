@@ -17,7 +17,7 @@ class CreateRecipesMaterialGroupsTable extends Migration
             $table->id();
             $table->integer('recipe_id');
             $table->integer('material_group_id');
-            $table->decimal('count', 8, 2)->unsigned();
+            $table->decimal('count', 8, 3)->unsigned();
             $table->timestamps();
         });
     }

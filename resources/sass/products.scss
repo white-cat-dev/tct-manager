@@ -90,17 +90,6 @@
 		}
 	}
 
-	.products-table {
-		tr {
-			td:first-child {
-				width: 25%;
-			}
-			td:nth-child(2) {
-				width: 45%;
-			}
-		}
-	}
-
 	.main-table {
 		@include media-breakpoint-down(md) {
 			margin-bottom: 0px;

@@ -17,7 +17,7 @@ class CreateFacilitiesTable extends Migration
             $table->id();
             $table->string('name');
             $table->tinyInteger('status');
-            $table->decimal('performance', 4, 2)->unsigned();
+            $table->decimal('performance', 6, 3)->unsigned();
             $table->date('status_date')->nullable();
             $table->string('icon_color');
             $table->timestamps();

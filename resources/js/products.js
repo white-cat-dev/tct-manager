@@ -33,8 +33,11 @@ angular.module('tctApp').controller('ProductsController', [
 				'variation': '',
 				'main_variation': '',
 				'price': 0,
+				'price_vat': 0,
+				'price_cashless': 0,
 				'price_unit': 0,
-				'price_pallete': 0,
+				'price_unit_vat': 0,
+				'price_unit_cashless': 0,
 				'in_stock': 0
 			}
 		]
@@ -160,7 +163,12 @@ angular.module('tctApp').controller('ProductsController', [
 			ProductsRepository.get({id: $scope.id}, function(response) 
 			{
 				$scope.productGroup = response;
-				$scope.productCategory = $scope.productGroup.category;
+				$scope.chooseProductCategory($scope.productGroup.category);
+
+				if ($scope.productGroup.set_pair_id) 
+				{
+					$scope.showSetPair();
+				}
 			});
 		}
 
@@ -280,10 +288,12 @@ angular.module('tctApp').controller('ProductsController', [
 			}
 		}
 
-		if (!$scope.productCategory.variations) 
-		{
-			$scope.addProduct();
-		}
+		// if (!$scope.productCategory.variations) 
+		// {
+		// 	$scope.addProduct();
+		// }
+
+		$scope.loadProducts();
 	}
 
 
@@ -293,8 +303,11 @@ angular.module('tctApp').controller('ProductsController', [
 			'variation': '',
 			'main_variation': '',
 			'price': 0,
+			'price_vat': 0,
+			'price_cashless': 0,
 			'price_unit': 0,
-			'price_pallete': 0,
+			'price_unit_vat': 0,
+			'price_unit_cashless': 0,
 			'in_stock': 0
 		});
 	}
@@ -302,12 +315,55 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.chooseProductVariation = function(product, variation)
 	{
 		product.main_variation = variation.main_key;
+
+		if ((product.main_variation == 'color') && ($scope.mainVariation))
+		{
+			product.price = $scope.mainVariation.price;
+			product.price_vat = $scope.mainVariation.price_vat;
+			product.price_cashless = $scope.mainVariation.price_cashless;
+
+			product.price_unit = $scope.mainVariation.price_unit;
+			product.price_unit_vat = $scope.mainVariation.price_unit_vat;
+			product.price_unit_cashless = $scope.mainVariation.price_unit_cashless;
+		}
 	}
 
 
 	$scope.deleteProduct = function(index)
 	{
 		$scope.productGroup.products.splice(index, 1);
+	}
+
+
+	$scope.changePrice = function(currentProduct, key)
+	{
+		if (currentProduct.main_variation == 'color')
+		{
+			$scope.mainVariation = currentProduct;
+
+			for (product of $scope.productGroup.products)
+			{
+				if (product.main_variation == 'color')
+				{
+					product[key] = currentProduct[key];
+				}
+			}
+		}
+	}
+
+
+	$scope.isSetPairShown = false;
+
+	$scope.showSetPair = function()
+	{
+		$scope.isSetPairShown = !$scope.isSetPairShown;
+		
+		if (!$scope.isSetPairShown)
+		{
+			$scope.productGroup.set_pair_id = null;
+			$scope.productGroup.set_pair_ratio = 0;
+			$scope.productGroup.set_pair_ratio_to = 0;
+		}
 	}
 
 

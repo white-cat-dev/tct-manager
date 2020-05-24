@@ -12274,7 +12274,7 @@ footer {
   white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background 0.3s;
 }
 
 .main-menu-block .menu-item > a:hover,
@@ -12315,14 +12315,14 @@ footer {
 }
 
 .main-menu-block .menu-item.has-submenu.submenu-opened .submenu-block {
-  max-height: 500px;
+  max-height: 300px;
   padding: 5px 0px;
   border-top: solid 1px #dadada;
 }
 
 .main-menu-block .submenu-block {
   max-height: 0px;
-  transition: 0.3s;
+  transition: height 0.3s;
   border-top: solid 0px #dadada;
   padding: 0px;
   background: #276090;
@@ -12331,7 +12331,6 @@ footer {
 .main-menu-block .submenu-block .submenu-item {
   display: block;
   border-top: solid 1px transparent;
-  transition: 0.3s;
 }
 
 .main-menu-block .submenu-block .submenu-item > a {
@@ -12342,7 +12341,7 @@ footer {
   white-space: nowrap;
   text-overflow: ellipsis;
   background: #276090;
-  transition: 0.3s;
+  transition: background 0.3s;
 }
 
 @media (min-width: 1210px) and (max-width: 1509.98px) {
@@ -12590,13 +12589,8 @@ i.far {
 }
 
 .edit-form-block .params-section {
-  margin-bottom: 30px;
-  padding-bottom: 30px;
-  border-bottom: solid 1px #dadada;
-}
-
-.edit-form-block .params-section .alert {
-  margin-bottom: 0px;
+  padding-top: 20px;
+  border-top: solid 1px #dadada;
 }
 
 .show-block {
@@ -12729,6 +12723,14 @@ i.far {
   height: 100%;
 }
 
+.input-group.divided-input-group {
+  margin-bottom: 5px;
+}
+
+.input-group.divided-input-group:last-child {
+  margin-bottom: 0px;
+}
+
 .input-group.divided-input-group .form-control {
   margin: 0px 5px;
 }
@@ -12739,6 +12741,11 @@ i.far {
 
 .input-group.divided-input-group .form-control:last-child {
   margin-right: 0px;
+}
+
+.input-group.divided-input-group > span {
+  padding: 7px 0px;
+  display: inline-block;
 }
 
 .alerts-block {
@@ -12931,14 +12938,6 @@ i.far {
   right: 12px;
   font-size: 22px;
   transition: 0.3s;
-}
-
-.products-page .products-table tr td:first-child {
-  width: 25%;
-}
-
-.products-page .products-table tr td:nth-child(2) {
-  width: 45%;
 }
 
 @media (max-width: 1209.98px) {

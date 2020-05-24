@@ -1,19 +1,18 @@
 [
     {
         "name": "Плитка",
+        "main_category": "tiles",
         "units": "area",
         "variations": "colors",
         "adjectives": "feminine",
         "product_groups": [
             {
-                "wp_name": "Тротуарная плитка «Радиус»",
                 "name": "Радиус",
-                "set_pair_id": 0,
-                "width": 250,
+                "wp_name": "Тротуарная плитка «Радиус»",
                 "length": 250,
-                "depth": 25,
+                "width": 250,
+                "height": 25,
                 "weight_unit": 3.2,
-                "weight_units": 0,
                 "weight_pallete": 750,
                 "unit_in_units": 16,
                 "unit_in_pallete": 225,
@@ -26,46 +25,45 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 350,
-                        "price_unit": 22,
-                        "price_pallete": 0
+                        "price_vat": 420, 
+                        "price_cashless": 400
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 440,
-                        "price_unit": 28,
-                        "price_pallete": 0
+                        "price_vat": 530, 
+                        "price_cashless": 500
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 480,
-                        "price_unit": 30,
-                        "price_pallete": 0
+                        "price_vat": 585, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 480,
-                        "price_unit": 30,
-                        "price_pallete": 0
+                        "price_vat": 585, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 480,
-                        "price_unit": 30,
-                        "price_pallete": 0
+                        "price_vat": 585, 
+                        "price_cashless": 550
                     }
                 ]
             },
             {
-                "wp_name": "Тротуарная плитка «Паркет»",
                 "name": "Радиус",
-                "set_pair_id": 0,
-                "width": 300,
+                "wp_name": "Тротуарная плитка «Паркет»",
                 "length": 300,
-                "depth": 30,
+                "width": 300,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -80,46 +78,45 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
             {
-                "wp_name": "Тротуарная плитка «8 кирпичей»",
                 "name": "8 кирпичей",
-                "set_pair_id": 0,
+                "wp_name": "Тротуарная плитка «8 кирпичей»",
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -134,46 +131,45 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
             {
-                "wp_name": "Тротуарная плитка «Рваная сетка»",
                 "name": "Рваная сетка",
-                "set_pair_id": 0,
+                "wp_name": "Тротуарная плитка «Рваная сетка»",
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -188,46 +184,45 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
             {
-                "wp_name": "Тротуарная плитка «Тучка»",
                 "name": "Тучка",
-                "set_pair_id": 0,
+                "wp_name": "Тротуарная плитка «Тучка»",
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -242,36 +237,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
@@ -281,7 +276,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -296,36 +291,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
@@ -335,7 +330,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -350,36 +345,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
@@ -389,7 +384,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -404,36 +399,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
@@ -443,7 +438,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -458,36 +453,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
@@ -497,7 +492,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -512,36 +507,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
@@ -551,7 +546,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -566,36 +561,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
@@ -605,7 +600,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -620,36 +615,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
@@ -659,7 +654,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 5.5,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -674,36 +669,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 380,
-                        "price_unit": 35,
-                        "price_pallete": 0
+                        "price_vat": 460, 
+                        "price_cashless": 420
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 470,
-                        "price_unit": 43,
-                        "price_pallete": 0
+                        "price_vat": 570, 
+                        "price_cashless": 520
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 510,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 625, 
+                        "price_cashless": 570
                     }
                 ]
             },
@@ -713,7 +708,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 9,
                 "weight_units": 0,
                 "weight_pallete": 500,
@@ -728,36 +723,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 580, 
+                        "price_cashless": 525
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 54,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 57,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 57,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 57,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     }
                 ]
             },
@@ -767,7 +762,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 9,
                 "weight_units": 0,
                 "weight_pallete": 500,
@@ -782,36 +777,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 580, 
+                        "price_cashless": 525
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 54,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 57,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 57,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 57,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     }
                 ]
             },
@@ -821,7 +816,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 9,
                 "weight_units": 0,
                 "weight_pallete": 500,
@@ -836,36 +831,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 46,
-                        "price_pallete": 0
+                        "price_vat": 580, 
+                        "price_cashless": 525
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 54,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 57,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 57,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 57,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     }
                 ]
             },
@@ -875,7 +870,7 @@
                 "set_pair_id": 0,
                 "width": 400,
                 "length": 400,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 17.5,
                 "weight_units": 0,
                 "weight_pallete": 860,
@@ -890,36 +885,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 80,
-                        "price_pallete": 0
+                        "price_vat": 580, 
+                        "price_cashless": 525
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 95,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 101,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 101,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 101,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     }
                 ]
             },
@@ -929,7 +924,7 @@
                 "set_pair_id": 0,
                 "width": 400,
                 "length": 400,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 17.5,
                 "weight_units": 0,
                 "weight_pallete": 860,
@@ -944,36 +939,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 80,
-                        "price_pallete": 0
+                        "price_vat": 580, 
+                        "price_cashless": 525
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 95,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 101,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 101,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 101,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     }
                 ]
             },
@@ -983,7 +978,7 @@
                 "set_pair_id": 0,
                 "width": 400,
                 "length": 400,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 17.5,
                 "weight_units": 0,
                 "weight_pallete": 860,
@@ -998,36 +993,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 80,
-                        "price_pallete": 0
+                        "price_vat": 580, 
+                        "price_cashless": 525
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 95,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 101,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 101,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 101,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     }
                 ]
             },
@@ -1037,7 +1032,7 @@
                 "set_pair_id": 0,
                 "width": 350,
                 "length": 350,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 13.5,
                 "weight_units": 0,
                 "weight_pallete": 860,
@@ -1052,36 +1047,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 63,
-                        "price_pallete": 0
+                        "price_vat": 580, 
+                        "price_cashless": 525
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 73,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 78,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 78,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 78,
-                        "price_pallete": 0
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     }
                 ]
             },
@@ -1091,7 +1086,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 500,
-                "depth": 60,
+                "height": 60,
                 "weight_unit": 30,
                 "weight_units": 0,
                 "weight_pallete": 840,
@@ -1106,36 +1101,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 138,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 160,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             },
@@ -1145,7 +1140,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 500,
-                "depth": 60,
+                "height": 60,
                 "weight_unit": 30,
                 "weight_units": 0,
                 "weight_pallete": 840,
@@ -1160,36 +1155,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 650,
-                        "price_unit": 163,
-                        "price_pallete": 0
+                        "price_vat": 770, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 740,
-                        "price_unit": 185,
-                        "price_pallete": 0
+                        "price_vat": 880, 
+                        "price_cashless": 810
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 780,
-                        "price_unit": 195,
-                        "price_pallete": 0
+                        "price_vat": 935, 
+                        "price_cashless": 860
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 780,
-                        "price_unit": 195,
-                        "price_pallete": 0
+                        "price_vat": 935, 
+                        "price_cashless": 860
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 780,
-                        "price_unit": 195,
-                        "price_pallete": 0
+                        "price_vat": 935, 
+                        "price_cashless": 860
                     }
                 ]
             },
@@ -1199,7 +1194,7 @@
                 "set_pair_id": 0,
                 "width": 600,
                 "length": 150,
-                "depth": 60,
+                "height": 60,
                 "weight_unit": 10.8,
                 "weight_units": 0,
                 "weight_pallete": 1000,
@@ -1214,36 +1209,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 50,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 58,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             },
@@ -1253,7 +1248,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 500,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 25,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -1268,36 +1263,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 138,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 160,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             },
@@ -1307,7 +1302,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 500,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 25,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -1322,36 +1317,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 138,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 160,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             },
@@ -1361,7 +1356,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 500,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 25,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -1376,36 +1371,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 138,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 160,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             },
@@ -1415,7 +1410,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 500,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 25,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -1430,36 +1425,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 138,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 160,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 170,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             },
@@ -1469,7 +1464,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 9,
                 "weight_units": 0,
                 "weight_pallete": 500,
@@ -1484,36 +1479,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 45,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 58,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             },
@@ -1523,7 +1518,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 9,
                 "weight_units": 0,
                 "weight_pallete": 500,
@@ -1538,36 +1533,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 45,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 58,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             },
@@ -1577,7 +1572,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 9,
                 "weight_units": 0,
                 "weight_pallete": 500,
@@ -1592,36 +1587,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 45,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 58,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             },
@@ -1631,7 +1626,7 @@
                 "set_pair_id": 0,
                 "width": 300,
                 "length": 300,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 9,
                 "weight_units": 0,
                 "weight_pallete": 500,
@@ -1646,36 +1641,36 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 45,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 58,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 62,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     }
                 ]
             }
@@ -1683,6 +1678,7 @@
     },
     {
         "name": "Брусчатка",
+        "main_category": "tiles",
         "units": "area",
         "variations": "colors",
         "adjectives": "feminine",
@@ -1693,7 +1689,7 @@
                 "set_pair_id": 0,
                 "width": 220,
                 "length": 110,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 2,
                 "weight_units": 0,
                 "weight_pallete": 920,
@@ -1708,42 +1704,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 12,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 14,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 15,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 15,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 15,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             },
             {
@@ -1752,7 +1743,7 @@
                 "set_pair_id": 0,
                 "width": 200,
                 "length": 100,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 1.8,
                 "weight_units": 0,
                 "weight_pallete": 960,
@@ -1767,42 +1758,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 10,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 12,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 13,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 13,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 13,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             },
             {
@@ -1811,7 +1797,7 @@
                 "set_pair_id": 0,
                 "width": 186,
                 "length": 161,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 2.3,
                 "weight_units": 0,
                 "weight_pallete": 890,
@@ -1826,42 +1812,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 12,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 14,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 15,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 15,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 15,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             },
             {
@@ -1870,7 +1851,7 @@
                 "set_pair_id": 0,
                 "width": 186,
                 "length": 161,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 2.3,
                 "weight_units": 0,
                 "weight_pallete": 890,
@@ -1885,42 +1866,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 12,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 14,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 15,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 15,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 15,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             },
             {
@@ -1929,7 +1905,7 @@
                 "set_pair_id": 0,
                 "width": 225,
                 "length": 260,
-                "depth": 55,
+                "height": 55,
                 "weight_unit": 4.3,
                 "weight_units": 0,
                 "weight_pallete": 880,
@@ -1944,42 +1920,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 25,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 29,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 30,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 30,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 30,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
                 ]
             },
             {
@@ -1988,7 +1959,7 @@
                 "set_pair_id": 0,
                 "width": 240,
                 "length": 240,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 4.7,
                 "weight_units": 0,
                 "weight_pallete": 780,
@@ -2003,42 +1974,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 31,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 33,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 33,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 33,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
                 ]
             },
             {
@@ -2047,7 +2013,7 @@
                 "set_pair_id": 0,
                 "width": 100,
                 "length": 100,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 0.9,
                 "weight_units": 0,
                 "weight_pallete": 960,
@@ -2062,101 +2028,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 6,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 7,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 7,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 7,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 7,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
-                ]
-            },
-            {
-                "wp_name": "Брусчатка «Брук»",
-                "name": "Брук",
-                "set_pair_id": 0,
-                "width": 100,
-                "length": 100,
-                "depth": 45,
-                "weight_unit": 0.9,
-                "weight_units": 0,
-                "weight_pallete": 960,
-                "unit_in_units": 100,
-                "unit_in_pallete": 1056,
-                "units_in_pallete": 10.6,
-                "units_from_batch": 7,
-                "forms": 1,
-                "salary_units": 0,
-                "products": [
-                    {
-                        "variation": "grey",
-                        "main_variation": "grey",
-                        "price": 550,
-                        "price_unit": 6,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
-                    {
-                        "variation": "red",
-                        "main_variation": "red",
-                        "price": 640,
-                        "price_unit": 7,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
-                    {
-                        "variation": "yellow",
-                        "main_variation": "color",
-                        "price": 680,
-                        "price_unit": 7,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
-                    {
-                        "variation": "brown",
-                        "main_variation": "color",
-                        "price": 680,
-                        "price_unit": 7,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
-                    {
-                        "variation": "black",
-                        "main_variation": "color",
-                        "price": 680,
-                        "price_unit": 7,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
                 ]
             },
             {
@@ -2165,7 +2067,7 @@
                 "set_pair_id": 0,
                 "width": 140,
                 "length": 235,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 2.4,
                 "weight_units": 0,
                 "weight_pallete": 850,
@@ -2180,42 +2082,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 14,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 16,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 17,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 17,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 17,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
                 ]
             },
             {
@@ -2224,7 +2121,7 @@
                 "set_pair_id": 0,
                 "width": 190,
                 "length": 330,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 3.1,
                 "weight_units": 0,
                 "weight_pallete": 800,
@@ -2239,42 +2136,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 16,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 19,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 20,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 20,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 20,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             },
             {
@@ -2283,7 +2175,7 @@
                 "set_pair_id": 0,
                 "width": 295,
                 "length": 185,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 4.2,
                 "weight_units": 0,
                 "weight_pallete": 820,
@@ -2298,42 +2190,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 22,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 25,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             },
             {
@@ -2342,7 +2229,7 @@
                 "set_pair_id": 0,
                 "width": 295,
                 "length": 185,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 4.2,
                 "weight_units": 0,
                 "weight_pallete": 820,
@@ -2356,43 +2243,38 @@
                     {
                         "variation": "grey",
                         "main_variation": "grey",
-                        "price": 500,
-                        "price_unit": 22,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
-                        "price": 590,
-                        "price_unit": 25,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
-                        "price": 630,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
-                        "price": 630,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
-                        "price": 630,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
                 ]
             },
             {
@@ -2401,7 +2283,7 @@
                 "set_pair_id": 0,
                 "width": 278,
                 "length": 240,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 3.7,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -2416,42 +2298,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 21,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 25,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 27,
-                        "price_pallete": 0,
-                        "in_stock": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             },
             {
@@ -2460,7 +2337,7 @@
                 "set_pair_id": 0,
                 "width": 270,
                 "length": 220,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 3.2,
                 "weight_units": 0,
                 "weight_pallete": 850,
@@ -2475,40 +2352,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 18,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 22,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 23,
-                        "price_pallete": 0,
-                        "in_stock": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 23,
-                        "price_pallete": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 23,
-                        "price_pallete": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             },
             {
@@ -2517,7 +2391,7 @@
                 "set_pair_id": 0,
                 "width": 270,
                 "length": 220,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 3.2,
                 "weight_units": 0,
                 "weight_pallete": 850,
@@ -2532,37 +2406,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 18,
-                        "price_pallete": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 22,
-                        "price_pallete": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 23,
-                        "price_pallete": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 23,
-                        "price_pallete": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 23,
-                        "price_pallete": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             },
             {
@@ -2571,7 +2445,7 @@
                 "set_pair_id": 0,
                 "width": 295,
                 "length": 295,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 5.6,
                 "weight_units": 0,
                 "weight_pallete": 740,
@@ -2586,37 +2460,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 33,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 38,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 40,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 40,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 40,
-                        "price_pallete": 0
-                    },
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
                 ]
             },
             {
@@ -2625,7 +2499,7 @@
                 "set_pair_id": 0,
                 "width": 210,
                 "length": 210,
-                "depth": 45,
+                "height": 45,
                 "weight_unit": 2.7,
                 "weight_units": 0,
                 "weight_pallete": 740,
@@ -2640,37 +2514,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 550,
-                        "price_unit": 17,
-                        "price_pallete": 0
+                        "price_vat": 670, 
+                        "price_cashless": 610
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 640,
-                        "price_unit": 19,
-                        "price_pallete": 0
+                        "price_vat": 780, 
+                        "price_cashless": 710
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 20,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 20,
-                        "price_pallete": 0
+                        "price_vat": 835, 
+                        "price_cashless": 760
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 680,
-                        "price_unit": 20,
-                        "price_pallete": 0
-                    },
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
                 ]
             },
             {
@@ -2679,7 +2553,7 @@
                 "set_pair_id": 0,
                 "width": 270,
                 "length": 220,
-                "depth": 25,
+                "height": 25,
                 "weight_unit": 1.8,
                 "weight_units": 0,
                 "weight_pallete": 700,
@@ -2694,37 +2568,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 450,
-                        "price_unit": 17,
-                        "price_pallete": 0
+                        "price_vat": 525, 
+                        "price_cashless": 500
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 540,
-                        "price_unit": 20,
-                        "price_pallete": 0
+                        "price_vat": 635, 
+                        "price_cashless": 600
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 580,
-                        "price_unit": 21,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 580,
-                        "price_unit": 21,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 580,
-                        "price_unit": 21,
-                        "price_pallete": 0
-                    },
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    }
                 ]
             },
             {
@@ -2733,7 +2607,7 @@
                 "set_pair_id": 0,
                 "width": 270,
                 "length": 220,
-                "depth": 25,
+                "height": 25,
                 "weight_unit": 1.8,
                 "weight_units": 0,
                 "weight_pallete": 700,
@@ -2748,37 +2622,37 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 450,
-                        "price_unit": 10,
-                        "price_pallete": 0
+                        "price_vat": 525, 
+                        "price_cashless": 500
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 540,
-                        "price_unit": 12,
-                        "price_pallete": 0
+                        "price_vat": 635, 
+                        "price_cashless": 600
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 580,
-                        "price_unit": 13,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 580,
-                        "price_unit": 13,
-                        "price_pallete": 0
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 580,
-                        "price_unit": 13,
-                        "price_pallete": 0
-                    },
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    }
                 ]
             },
             {
@@ -2787,7 +2661,7 @@
                 "set_pair_id": 0,
                 "width": 290,
                 "length": 220,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 7,
                 "weight_units": 0,
                 "weight_pallete": 1100,
@@ -2802,43 +2676,44 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_unit": 32,
-                        "price_pallete": 0
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_unit": 37,
-                        "price_pallete": 0
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 40,
-                        "price_pallete": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 40,
-                        "price_pallete": 0
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_unit": 40,
-                        "price_pallete": 0
-                    },
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
                 ]
             }
         ]
     },
     {
         "name": "Изделия из бетона",
+        "main_category": "tiles",
         "units": "unit",
         "variations": "colors",
         "adjectives": "masculine",
@@ -2849,7 +2724,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 300,
-                "depth": 30,
+                "height": 30,
                 "weight_unit": 7,
                 "weight_units": 0,
                 "weight_pallete": 350,
@@ -2903,7 +2778,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 210,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 11,
                 "weight_units": 0,
                 "weight_pallete": 550,
@@ -2957,7 +2832,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 210,
-                "depth": 70,
+                "height": 70,
                 "weight_unit": 16,
                 "weight_units": 0,
                 "weight_pallete": 800,
@@ -3011,7 +2886,7 @@
                 "set_pair_id": 0,
                 "width": 1000,
                 "length": 220,
-                "depth": 75,
+                "height": 75,
                 "weight_unit": 36,
                 "weight_units": 0,
                 "weight_pallete": 750,
@@ -3058,13 +2933,14 @@
                         "price_pallete": 0
                     }
                 ]
-            },{
+            },
+            {
                 "wp_name": "Водосток тротуарный",
                 "name": "Водосток",
                 "set_pair_id": 0,
                 "width": 330,
                 "length": 180,
-                "depth": 60,
+                "height": 60,
                 "weight_unit": 6.5,
                 "weight_units": 0,
                 "weight_pallete": 400,
@@ -3114,7 +2990,7 @@
                         "price_unit": 90,
                         "price_pallete": 0,
                         "in_stock": 0
-                    },
+                    }
                 ]
             },
             {
@@ -3123,7 +2999,7 @@
                 "set_pair_id": 0,
                 "width": 500,
                 "length": 160,
-                "depth": 50,
+                "height": 50,
                 "weight_unit": 7,
                 "weight_units": 0,
                 "weight_pallete": 450,
@@ -3173,9 +3049,127 @@
                         "price_unit": 140,
                         "price_pallete": 0,
                         "in_stock": 0
-                    },
+                    }
                 ]
             },
+            {
+                "wp_name": "Ограничитель проезда",
+                "name": "Ограничитель проезда",
+                "set_pair_id": 0,
+                "width": 400,
+                "length": 0,
+                "height": 220,
+                "weight_unit": 43,
+                "weight_units": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 0,
+                "unit_in_pallete": 0,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 10,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_unit": 500,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 700,
+                        "price_unit": 700,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 800,
+                        "price_unit": 800,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 800,
+                        "price_unit": 800,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 800,
+                        "price_unit": 800,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Пенек",
+                "name": "Пенек",
+                "set_pair_id": 0,
+                "width": 300,
+                "length": 0,
+                "height": 50,
+                "weight_unit": 7,
+                "weight_units": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 0,
+                "unit_in_pallete": 0,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 10,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 40,
+                        "price_unit": 40,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 47,
+                        "price_unit": 47,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 50,
+                        "price_unit": 50,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 50,
+                        "price_unit": 50,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 50,
+                        "price_unit": 50,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    }
+                ]
+            }
         ]
     },
     {
@@ -3183,5 +3177,163 @@
         "units": "volume",
         "variations": "grades",
         "adjectives": "masculine",
+        "product_groups": [
+            {
+                "wp_name": "Полистиролбетон D400",
+                "name": "Полистиролбетон D400",
+                "width": 200,
+                "length": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_units": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 27.78,
+                "unit_in_pallete": 32,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4000,
+                        "price_unit": 144,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Полистиролбетон D500",
+                "name": "Полистиролбетон D500",
+                "width": 200,
+                "length": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_units": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 27.78,
+                "unit_in_pallete": 32,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4200,
+                        "price_unit": 152,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Полистиролбетон D600",
+                "name": "Полистиролбетон D600",
+                "width": 200,
+                "length": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_units": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 27.78,
+                "unit_in_pallete": 32,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4400,
+                        "price_unit": 159,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Полистиролбетон D400",
+                "name": "Полистиролбетон D400",
+                "width": 400,
+                "length": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_units": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 13.89,
+                "unit_in_pallete": 16,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4000,
+                        "price_unit": 288,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Полистиролбетон D500",
+                "name": "Полистиролбетон D500",
+                "width": 400,
+                "length": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_units": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 13.89,
+                "unit_in_pallete": 16,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4200,
+                        "price_unit": 303,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    }
+                ]
+            },
+            {
+                "wp_name": "Полистиролбетон D600",
+                "name": "Полистиролбетон D600",
+                "width": 400,
+                "length": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_units": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 13.89,
+                "unit_in_pallete": 16,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4400,
+                        "price_unit": 317,
+                        "price_pallete": 0,
+                        "in_stock": 0
+                    }
+                ]
+            }
+        ]
     }
 ]

@@ -18,9 +18,9 @@ class CreateEmploymentStatusesTable extends Migration
             $table->string('icon');
             $table->string('icon_color');
             $table->string('name');
-            $table->decimal('salary_production', 5, 2);
-            $table->decimal('salary_fixed', 10, 2);
-            $table->decimal('salary_team', 10, 2);
+            $table->decimal('salary_production', 5, 3);
+            $table->decimal('salary_fixed', 10, 3);
+            $table->decimal('salary_team', 10, 3);
             $table->boolean('customable');
             $table->timestamps();
         });

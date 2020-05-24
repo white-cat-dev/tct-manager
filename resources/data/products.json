@@ -1,0 +1,247 @@
+[
+    {
+        "name": "Плитка",
+        "main_category": "tiles",
+        "units": "area",
+        "variations": "colors",
+        "adjectives": "feminine",
+        "product_groups": [
+            {
+                "wp_name": "Брусчатка «Краковский клевер»",
+                "name": "Ромашка (бол)",
+                "set_pair": "next",
+                "set_pair_ratio": 1,
+                "set_pair_ratio_to": 2,
+                "width": 295,
+                "length": 295,
+                "height": 45,
+                "weight_unit": 5.6,
+                "weight_units": 0,
+                "weight_pallete": 740,
+                "unit_in_units": 17,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 7.8,
+                "units_from_batch": 7,
+                "forms": 30,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    }
+                ]
+            },
+            {
+                "wp_name": "Брусчатка «Краковский клевер»",
+                "name": "Ромашка (мал)",
+                "set_pair": "prev",
+                "set_pair_ratio": 2,
+                "set_pair_ratio_to": 1,
+                "width": 210,
+                "length": 210,
+                "height": 45,
+                "weight_unit": 2.7,
+                "weight_units": 0,
+                "weight_pallete": 740,
+                "unit_in_units": 34,
+                "unit_in_pallete": 264,
+                "units_in_pallete": 7.8,
+                "units_from_batch": 7,
+                "forms": 16,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Брусчатка",
+        "main_category": "tiles",
+        "units": "area",
+        "variations": "colors",
+        "adjectives": "feminine",
+        "product_groups": [
+            {
+                "name": "Волна",
+                "wp_name": "Брусчатка «Волна шагрень»",
+                "width": 220,
+                "length": 110,
+                "height": 45,
+                "weight_unit": 2,
+                "weight_units": 0,
+                "weight_pallete": 920,
+                "unit_in_units": 43,
+                "unit_in_pallete": 418,
+                "units_in_pallete": 9.7,
+                "units_from_batch": 7,
+                "forms": 90,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 500,
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 590,
+                        "price_cashless": 590
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 630,
+                        "price_cashless": 630
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 630,
+                        "price_cashless": 630
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 630,
+                        "price_cashless": 630
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Изделия из бетона",
+        "main_category": "tiles",
+        "units": "unit",
+        "variations": "colors",
+        "adjectives": "masculine",
+        "product_groups": [
+            {
+                "name": "Бордюр",
+                "wp_name": "Бордюр (поребрик)",
+                "width": 500,
+                "length": 300,
+                "height": 30,
+                "weight_unit": 7,
+                "weight_units": 0,
+                "weight_pallete": 350,
+                "unit_in_units": 2,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 120,
+                "salary_units": 8,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 50,
+                        "price_vat": 50,
+                        "price_cashless": 50
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 70,
+                        "price_vat": 70,
+                        "price_cashless": 70
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 80,
+                        "price_vat": 80,
+                        "price_cashless": 80
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 80,
+                        "price_vat": 80,
+                        "price_cashless": 80
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 80,
+                        "price_vat": 80,
+                        "price_cashless": 80
+                    }
+                ]
+            }
+        ]
+    }
+]

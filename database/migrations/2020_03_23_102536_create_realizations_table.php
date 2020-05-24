@@ -19,8 +19,8 @@ class CreateRealizationsTable extends Migration
             $table->integer('category_id');
             $table->integer('product_id');
             $table->integer('order_id');
-            $table->decimal('planned', 10, 2)->unsigned();
-            $table->decimal('performed', 10, 2)->unsigned();
+            $table->decimal('planned', 10, 3)->unsigned();
+            $table->decimal('performed', 10, 3)->unsigned();
             $table->timestamps();
         });
     }

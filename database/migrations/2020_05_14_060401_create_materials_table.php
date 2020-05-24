@@ -17,8 +17,8 @@ class CreateMaterialsTable extends Migration
             $table->id();
             $table->integer('material_group_id');
             $table->string('variation');
-            $table->decimal('price', 10, 2);
-            $table->decimal('in_stock', 10, 2);
+            $table->decimal('price', 10, 3);
+            $table->decimal('in_stock', 10, 3);
             $table->timestamps();
         });
     }

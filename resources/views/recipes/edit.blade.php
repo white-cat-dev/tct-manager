@@ -27,18 +27,6 @@
 					<input type="text" class="form-control" ng-model="recipe.name" ng-class="{'is-invalid': recipeErrors.name}">
 				</div>
 
-				<div class="form-group">
-					<div class="param-label">Категория</div>
-					<ui-select ng-model="recipe.category_id" ng-class="{'is-invalid': recipeErrors.category_id}" skip-focusser="true">
-			            <ui-select-match placeholder="Выберите из списка...">
-				            @{{ $select.selected.name }}
-				        </ui-select-match>
-			            <ui-select-choices repeat="category.id as category in categories | filter: $select.search">
-			                <span ng-bind-html="category.name | highlight: $select.search"></span>
-			            </ui-select-choices>
-					</ui-select>
-				</div>
-
 				<div class="params-title">
 					Состав рецепта
 				</div>

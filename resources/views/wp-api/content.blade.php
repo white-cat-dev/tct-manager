@@ -5,15 +5,15 @@
 			<tbody>
 				<tr>
 					<td><strong>длина</strong></td>
-					<td><em>{{ $productGroup->length }}</em> мм</td>
+					<td>{{ $productGroup->length }} мм</td>
 				</tr>
 				<tr>
 					<td><strong>ширина</strong></td>
-					<td><em>{{ $productGroup->width }}</em> мм</td>
+					<td>{{ $productGroup->width }} мм</td>
 				</tr>
 				<tr>
 					<td><strong>высота</strong></td>
-					<td><em>{{ $productGroup->depth }}</em> мм</td>
+					<td>{{ $productGroup->depth }} мм</td>
 				</tr>
 			</tbody>
 		</table>
@@ -74,15 +74,15 @@
 			<tbody>
 				<tr>
 					<td><strong>шт.</strong></td>
-					<td><em>{{ $productGroup->weight_unit }}</em> кг</td>
+					<td>{{ $productGroup->weight_unit }} кг</td>
 				</tr>
 				<tr>
 					<td><strong>кв. м</strong></td>
-					<td><em>{{ $productGroup->weight_units }}</em> кг</td>
+					<td>{{ $productGroup->weight_units }} кг</td>
 				</tr>
 				<tr>
 					<td><strong>поддона</strong></td>
-					<td><em>{{ $productGroup->weight_pallete }}</em> кг</td>
+					<td>{{ $productGroup->weight_pallete }} кг</td>
 				</tr>
 			</tbody>
 		</table>

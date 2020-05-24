@@ -8,13 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Recipe extends Model
 {
     protected $fillable = [
-        'name',
-        'category_id'
+        'name'
     ];
 
     protected $with = [
-    	'material_groups',
-        'category'
+    	'material_groups'
     ];
 
     protected $appends = [
@@ -26,11 +24,6 @@ class Recipe extends Model
 	{
 		return $this->belongsToMany(MaterialGroup::class, 'recipes_material_groups')->withPivot('count')->using(RecipeMaterialGroup::class);
 	}
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
 
 
     public function getUrlAttribute()

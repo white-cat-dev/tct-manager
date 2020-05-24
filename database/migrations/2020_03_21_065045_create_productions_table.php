@@ -21,11 +21,11 @@ class CreateProductionsTable extends Migration
             $table->integer('product_id');
             $table->integer('order_id');
             $table->integer('facility_id');
-            $table->decimal('auto_planned', 10, 2)->unsigned();
-            $table->decimal('manual_planned', 10, 2)->unsigned();
-            $table->decimal('performed', 10, 2)->unsigned();
-            $table->decimal('batches', 4, 2)->unsigned();
-            $table->decimal('salary', 8, 2)->unsigned();
+            $table->decimal('auto_planned', 10, 3)->unsigned();
+            $table->decimal('manual_planned', 10, 3)->unsigned();
+            $table->decimal('performed', 10, 3)->unsigned();
+            $table->decimal('batches', 4, 3)->unsigned();
+            $table->decimal('salary', 8, 3)->unsigned();
             $table->timestamps();
         });
     }

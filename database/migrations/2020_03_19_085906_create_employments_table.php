@@ -18,9 +18,9 @@ class CreateEmploymentsTable extends Migration
             $table->date('date');
             $table->integer('worker_id');
             $table->integer('status_id');
-            $table->decimal('status_custom', 4, 2);
+            $table->decimal('status_custom', 4, 3);
             $table->string('main_category');
-            $table->decimal('salary', 8, 2);
+            $table->decimal('salary', 8, 3);
             $table->timestamps();
         });
     }

@@ -120,7 +120,7 @@ footer {
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			cursor: pointer;
-			transition: 0.3s;
+			transition: background 0.3s;
 
 			&:hover {
 				background: darken($primary, 4%);
@@ -157,7 +157,7 @@ footer {
 				}
 
 				.submenu-block {
-					max-height: 500px;
+					max-height: 300px;
 					padding: 5px 0px;
 					border-top: solid 1px darken($grey, 10%);
 				}
@@ -167,7 +167,7 @@ footer {
 
 	.submenu-block {
 		max-height: 0px;
-		transition: 0.3s;
+		transition: height 0.3s;
 		border-top: solid 0px darken($grey, 10%);
 		padding: 0px;
 		background: $primary;
@@ -175,7 +175,6 @@ footer {
 		.submenu-item {
 			display: block;
 			border-top: solid 1px transparent;
-			transition: 0.3s;
 
 			& > a {
 				display: block;
@@ -185,7 +184,7 @@ footer {
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				background: $primary;
-				transition: 0.3s;
+				transition: background 0.3s;
 
 				@include media-breakpoint-only(lg) {
 					padding: 10px 15px;
@@ -437,13 +436,8 @@ i.fas, i.far {
     }
 
     .params-section {
-		margin-bottom: 30px;
-		padding-bottom: 30px;
-		border-bottom: solid 1px darken($grey, 10%);
-
-		.alert {
-			margin-bottom: 0px;
-		}
+		padding-top: 20px;
+    	border-top: solid 1px #dadada;
 	}
 }
 
@@ -588,6 +582,12 @@ i.fas, i.far {
 	}
 
 	&.divided-input-group {
+		margin-bottom: 5px;
+
+		&:last-child {
+			margin-bottom: 0px;
+		}
+
 		.form-control {
 			margin: 0px 5px;
 
@@ -598,6 +598,11 @@ i.fas, i.far {
 			&:last-child {
 				margin-right: 0px;
 			}
+		}
+
+		& > span {
+			padding: 7px 0px;
+    		display: inline-block;
 		}
 	}
 }
