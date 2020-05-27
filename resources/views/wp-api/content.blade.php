@@ -122,18 +122,22 @@
 	@endif
 
 
-	@if ($productGroup->unit_in_units || $productGroup->unit_in_pallete)
+	@if ($productGroup->unit_in_units || $productGroup->unit_in_pallete || $productGroup->units_in_pallete)
 	<p>
 		<strong>Дополнительная информация:</strong><br>
 	</p>
 
 	<p>
-		@if ($productGroup->category->units != 'unit') В <strong>1 @switch($productGroup->category->units) @case('area')кв. м@break @case('volume')куб. м@break @endswitch</strong> – {{ $productGroup->unit_in_units }}@if ($productGroup->set_pair) и {{ $productGroup->set_pair->unit_in_units }} @endif шт. @endif
+		@if ($productGroup->unit_in_units) 
+		В <strong>1 @switch($productGroup->category->units) @case('area')кв. м@break @case('volume')куб. м@break @endswitch</strong> – {{ $productGroup->unit_in_units }}@if ($productGroup->set_pair) и {{ $productGroup->set_pair->unit_in_units }} @endif шт. 
+		@endif
 		
-		@if ($productGroup->category->units != 'unit')
+		@if ($productGroup->unit_in_pallete && $productGroup->units_in_pallete)
 		На <strong>1 поддоне</strong> – {{ $productGroup->unit_in_pallete }}@if ($productGroup->set_pair) и {{ $productGroup->set_pair->unit_in_pallete }} @endif шт, {{ $productGroup->units_in_pallete }} @switch($productGroup->category->units) @case('area')м<sup>2</sup>@break @case('volume')м<sup>3</sup>@break @endswitch
-		@else
-		На <strong>1 поддоне</strong> – {{ $productGroup->unit_in_pallete }} шт
+		@elseif ($productGroup->unit_in_pallete)
+		На <strong>1 поддоне</strong> – {{ $productGroup->unit_in_pallete }}@if ($productGroup->set_pair) и {{ $productGroup->set_pair->unit_in_pallete }} @endif шт
+		@elseif ($productGroup->units_in_pallete)
+		На <strong>1 поддоне</strong> – {{ $productGroup->units_in_pallete }} @switch($productGroup->category->units) @case('area')м<sup>2</sup>@break @case('volume')м<sup>3</sup>@break @endswitch
 		@endif
 	</p>
 	@endif
