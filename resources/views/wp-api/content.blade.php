@@ -71,7 +71,7 @@
 				</td>
 				@foreach ($productGroup->products as $product)
 				<td>
-					{{ $product->price_unit }} @if ($productGroup->set_pair) и {{ $productGroup->set_pair->products->where('variation', $product->variation)->first()->price_unit }} @endif руб.
+					{{ $product->price_unit }}@if ($productGroup->set_pair) и {{ $productGroup->set_pair->products->where('variation', $product->variation)->first()->price_unit }} @endif руб.
 				</td>
 				@endforeach
 			</tr>
@@ -88,7 +88,7 @@
 		<tbody>
 			<tr>
 				<td><strong>шт</strong></td>
-				<td>{{ $productGroup->weight_unit }} @if ($productGroup->set_pair) и {{ $productGroup->set_pair->weight_unit }} @endif кг</td>
+				<td>{{ $productGroup->weight_unit }}@if ($productGroup->set_pair) и {{ $productGroup->set_pair->weight_unit }} @endif кг</td>
 			</tr>
 			@if ($productGroup->weight_pallete)
 			<tr>
@@ -128,7 +128,7 @@
 	</p>
 
 	<p>
-		@if ($productGroup->category->units != 'unit') В <strong>1 @switch($productGroup->category->units) @case('area')кв. м@break @case('volume')куб. м@break @endswitch</strong> – {{ $productGroup->unit_in_units }} @if ($productGroup->set_pair) и {{ $productGroup->set_pair->unit_in_units }} @endif шт. @endif
+		@if ($productGroup->category->units != 'unit') В <strong>1 @switch($productGroup->category->units) @case('area')кв. м@break @case('volume')куб. м@break @endswitch</strong> – {{ $productGroup->unit_in_units }}@if ($productGroup->set_pair) и {{ $productGroup->set_pair->unit_in_units }} @endif шт. @endif
 		
 		@if ($productGroup->category->units != 'unit')
 		На <strong>1 поддоне</strong> – {{ $productGroup->unit_in_pallete }}@if ($productGroup->set_pair) и {{ $productGroup->set_pair->unit_in_pallete }} @endif шт, {{ $productGroup->units_in_pallete }} @switch($productGroup->category->units) @case('area')м<sup>2</sup>@break @case('volume')м<sup>3</sup>@break @endswitch
