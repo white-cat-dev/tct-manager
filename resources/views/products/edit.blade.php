@@ -47,6 +47,9 @@
 				<div class="form-group">
 					<div class="param-label">Короткое название продукта</div>
 					<input type="text" class="form-control" ng-model="productGroup.name" ng-class="{'is-invalid': productGroupErrors.name}">
+					<small class="form-text">
+						Введите название, которое будет использоваться в панели
+					</small>
 				</div>
 
 				<div class="form-group">
@@ -88,13 +91,30 @@
 					Характеристики
 				</div>
 
-				<div class="form-group">
+				<div class="form-group" ng-init="productGroup.size_params = productGroup.size_params ? productGroup.size_params : 'lwh'">
 					<div class="param-label">Размеры, мм</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioLwh" ng-model="productGroup.size_params" value="lwh">
+						<label class="custom-control-label" for="radioLwh">Д×Ш×В</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioLhw" ng-model="productGroup.size_params" value="lhw">
+						<label class="custom-control-label" for="radioLhw">Д×В×Ш</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioLh" ng-model="productGroup.size_params" value="lh">
+						<label class="custom-control-label" for="radioLh">Д×В</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioWhl" ng-model="productGroup.size_params" value="whl">
+						<label class="custom-control-label" for="radioWhl">Ш×В×Д</label>
+					</div>
+
 					<div class="input-group divided-input-group">
 						<input type="text" class="form-control" ng-model="productGroup.length" ng-class="{'is-invalid': productGroupErrors.length}">
 						<span>×</span>
-						<input type="text" class="form-control" ng-model="productGroup.width" ng-class="{'is-invalid': productGroupErrors.width}">
-						<span>×</span>
+						<input type="text" class="form-control" ng-model="productGroup.width" ng-class="{'is-invalid': productGroupErrors.width}" ng-if="productGroup.size_params != 'lh'">
+						<span ng-if="productGroup.size_params != 'lh'">×</span>
 						<input type="text" class="form-control" ng-model="productGroup.height" ng-class="{'is-invalid': productGroupErrors.height}">
 					</div>
 				</div>
@@ -197,27 +217,27 @@
 										<span ng-switch-when="volume">м<sup>3</sup></span>
 										<span ng-switch-when="unit">шт</span>
 									</span>	
-									<input type="text" class="form-control" ng-model="product.price" ng-change="changePrice(product, 'price')">
+									<input type="text" class="form-control" ng-model="product.price" ng-change="changePrice(product, 'price'); inputFloat(product, 'price')">
 									<span>/</span>
-									<input type="text" class="form-control" ng-model="product.price_cashless" ng-change="changePrice(product, 'price_cashless')">
+									<input type="text" class="form-control" ng-model="product.price_cashless" ng-change="changePrice(product, 'price_cashless'); inputFloat(product, 'price_cashless')">
 									<span>/</span>
-									<input type="text" class="form-control" ng-model="product.price_vat" ng-change="changePrice(product, 'price_vat')">
+									<input type="text" class="form-control" ng-model="product.price_vat" ng-change="changePrice(product, 'price_vat'); inputFloat(product, 'price_vat')">
 								</div>
 
 								<div class="input-group divided-input-group" ng-if="productCategory.units != 'unit'">
 									<span style="width: 25px;">шт</span>
-									<input type="text" class="form-control" ng-model="product.price_unit" ng-change="changePrice(product, 'price_unit')">
+									<input type="text" class="form-control" ng-model="product.price_unit" ng-change="changePrice(product, 'price_unit'); inputFloat(product, 'price_unit')">
 									<span>/</span>
-									<input type="text" class="form-control" ng-model="product.price_unit_cashless" ng-change="changePrice(product, 'price_unit_cashless')">
+									<input type="text" class="form-control" ng-model="product.price_unit_cashless" ng-change="changePrice(product, 'price_unit_cashless'); inputFloat(product, 'price_unit_cashless')">
 									<span>/</span>
-									<input type="text" class="form-control" ng-model="product.price_unit_vat" ng-change="changePrice(product, 'price_unit_vat')">
+									<input type="text" class="form-control" ng-model="product.price_unit_vat" ng-change="changePrice(product, 'price_unit_vat'); inputFloat(product, 'price_unit_vat')">
 								</div>
 							</td>
 							<td style="width: 22%;">
 								<input type="text" class="form-control" ng-model="product.in_stock">
 							</td>
 							<td>
-								<button type="button" class="btn btn-primary" ng-click="deleteProduct($index)">
+								<button type="button" class="btn btn-primary" ng-click="deleteProduct($index)" ng-change="inputFloat(product, 'in_stock')">
 									<i class="far fa-trash-alt"></i>
 								</button>
 							</td>
@@ -240,20 +260,20 @@
 								<span ng-switch-when="volume">м<sup>3</sup></span>
 								<span ng-switch-when="unit">шт</span>
 							</span>	
-							<input type="text" class="form-control" ng-model="productGroup.products[0].price">
+							<input type="text" class="form-control" ng-model="productGroup.products[0].price" ng-change="inputFloat(productGroup.products[0], 'price')">
 							<span>/</span>
-							<input type="text" class="form-control" ng-model="productGroup.products[0].price_cashless">
+							<input type="text" class="form-control" ng-model="productGroup.products[0].price_cashless" ng-change="inputFloat(productGroup.products[0], 'price_cashless')">
 							<span>/</span>
-							<input type="text" class="form-control" ng-model="productGroup.products[0].price_vat">
+							<input type="text" class="form-control" ng-model="productGroup.products[0].price_vat" ng-change="inputFloat(productGroup.products[0], 'price_vat')">
 						</div>
 
 						<div class="input-group divided-input-group" ng-if="productCategory.units != 'unit'">
 							<span style="width: 25px;">шт</span>
-							<input type="text" class="form-control" ng-model="productGroup.products[0].price_unit">
+							<input type="text" class="form-control" ng-model="productGroup.products[0].price_unit" ng-change="inputFloat(productGroup.products[0], 'price_unit')">
 							<span>/</span>
-							<input type="text" class="form-control" ng-model="productGroup.products[0].price_unit_cashless">
+							<input type="text" class="form-control" ng-model="productGroup.products[0].price_unit_cashless" ng-change="inputFloat(productGroup.products[0], 'price_unit_cashless')">
 							<span>/</span>
-							<input type="text" class="form-control" ng-model="productGroup.products[0].price_unit_vat">
+							<input type="text" class="form-control" ng-model="productGroup.products[0].price_unit_vat" ng-change="inputFloat(productGroup.products[0], 'price_unit_vat')">
 						</div>
 					</div>
 				</div>
@@ -261,7 +281,7 @@
 				<div class="col-4 col-xl-4" ng-show="!productCategory.variations">
 					<div class="form-group">
 						<div class="param-label">Наличие</div>
-						<input type="text" class="form-control" ng-model="productGroup.products[0].in_stock">
+						<input type="text" class="form-control" ng-model="productGroup.products[0].in_stock" ng-change="inputFloat(productGroup.products[0], 'in_stock')">
 					</div>
 				</div>
 			</div>

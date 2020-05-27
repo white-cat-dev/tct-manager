@@ -59,6 +59,11 @@ angular.module('tctApp').controller('WorkersController', [
 			WorkersRepository.get({id: $scope.id}, function(response) 
 			{
 				$scope.worker = response;
+				if ($scope.worker.birthdate)
+				{
+					var birthdate = $scope.worker.birthdate.split("-");
+					$scope.worker.birthdate_raw = birthdate[2] + birthdate[1] + birthdate[0];
+				}
 			});
 		}
 
@@ -71,6 +76,7 @@ angular.module('tctApp').controller('WorkersController', [
 
 	$scope.save = function() 
 	{
+		console.log($scope.worker);
 		WorkersRepository.save({id: $scope.id}, $scope.worker, function(response) 
 		{
 			toastr.success($scope.id ? 'Работник успешно обновлен!' : 'Новый работник успешно создан!');
@@ -112,6 +118,8 @@ angular.module('tctApp').controller('WorkersController', [
 		$scope.worker = worker || $scope.worker;
 		$scope.modalWorker = angular.copy($scope.worker);
 		$scope.modalWorker.status = status;
+
+		$scope.modalWorker.status_date_raw = new Date();
 		
 		if ($scope.worker.status == $scope.modalWorker.status)
 		{
@@ -131,14 +139,6 @@ angular.module('tctApp').controller('WorkersController', [
 	}
 
 
-
-	// $scope.updateStatusNow = function()
-	// {
-	// 	$scope.worker.status = ($scope.worker.status + 2) % 4;
-	// 	$scope.worker.status_date_raw = new Date();
-	// }
-
-
 	$scope.saveStatus = function()
 	{
 		if ($scope.worker.status == $scope.modalWorker.status)
@@ -147,6 +147,7 @@ angular.module('tctApp').controller('WorkersController', [
 		}
 		else if ($scope.modalWorker.status_date_raw)
 		{
+			$scope.modalWorker.status_date_raw.setHours(12);
 			$scope.modalWorker.status = ($scope.modalWorker.status + 1) % 2;
 		}
 		
@@ -155,16 +156,16 @@ angular.module('tctApp').controller('WorkersController', [
 			$scope.modalStatusErrors = {};
 			toastr.success('Изменения успешно сохранены!');
 
+			$scope.hideStatusModal();
+
 			if (!$scope.baseUrl)
 			{
 				$scope.init();
 			}
 			else
 			{
-				$scope.worker = $scope.modalWorker;
+				$scope.initShow();
 			}
-
-			$scope.hideStatusModal();
 		}, 
 		function(response) 
 		{

@@ -44,7 +44,7 @@
 	    margin-bottom: 5px;
 
 	    &.active {
-	    	color: $green;
+	    	color: lighten($green, 10%);
 	    }
 	}
 

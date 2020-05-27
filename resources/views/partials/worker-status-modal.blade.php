@@ -27,62 +27,21 @@
 						</span>
 					</div>
 
-					{{-- <ul class="nav nav-tabs">
-						<li class="nav-item">
-							<button type="button" class="nav-link" ng-click="shownTab = 'begin'" ng-class="{'active': shownTab == 'begin'}">Начало</button>
-						</li>
-						<li class="nav-item">
-							<button type="button" class="nav-link" ng-click="shownTab = 'end'" ng-class="{'active': shownTab == 'end'}">Конец</button>
-						</li>
-					</ul>
-					<div class="tab-content">
-						<div class="tab-pane" ng-class="{'active': shownTab == 'begin'}">
-							<div class="datepicker-block">
-								<div date-picker view="date" min-view="date" ng-model="modalWorker.status_date_raw"></div>
-							</div>
-						</div>
-						<div class="tab-pane" ng-class="{'active': shownTab == 'end'}">
-							<div class="datepicker-block">
-								<div date-picker view="date" min-view="date" ng-model="modalWorker.status_date_next_raw"></div>
-							</div>
-						</div>
-					</div> --}}
-
 					<div class="datepicker-block">
-						<div date-picker view="date" min-view="date" ng-model="modalWorker.status_date_raw"></div>
+						<div date-picker view="date" min-view="date" ng-model="modalWorker.status_date_raw" watch-direct-changes="true"></div>
 					</div>
 				</div>
 
 				<small class="form-text">
 					Если хотите 
 					<span ng-if="modalWorker.status == {{ App\Worker::STATUS_ACTIVE }}">
-						вернуть на работу
+						вернуть работника на работу
 					</span>
 					<span ng-if="modalWorker.status == {{ App\Worker::STATUS_INACTIVE }}">
-						отстранить от работы
+						отстранить работника от работы
 					</span>
 					сейчас, выберите текущую дату
 				</small>
-
-				{{-- <div class="date-group">
-					<div class="date-label">с</div>
-					<input type="text" class="form-control" date-time format="dd.MM.yyyy" ng-model="modalWorker.status_date_raw">
-					<div class="date-label">до</div>
-					<input type="text" class="form-control" date-time format="dd.MM.yyyy" ng-model="modalWorker.status_date_next_raw">
-				</div> --}}
-
-				{{-- <div class="custom-control custom-checkbox">
-					<input type="checkbox" class="custom-control-input" ng-model="isPlanDateNow" ng-change="updateStatusNow()" id="checkbox">
-					<label class="custom-control-label" for="checkbox">
-						<span ng-if="worker.status == 'plan-active' || worker.status == 'active'">
-							Вернуть на работу
-						</span>
-						<span ng-if="worker.status == 'plan-paused' || worker.status == 'paused'">
-							Отстранить от работы
-						</span>
-						сейчас
-					</label>
-				</div> --}}
 			</div>
 
 			<div class="modal-footer">

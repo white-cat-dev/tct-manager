@@ -20,6 +20,8 @@ class Worker extends Model
         'patronymic',
         'phone',
         'name',
+        'birthdate',
+        'passport',
         'status',
         'status_date',
         'status_date_next'
@@ -27,7 +29,9 @@ class Worker extends Model
 
     protected $appends = [
         'url',
-        'status_text'
+        'status_text',
+        'surname_name_patronymic',
+        'formatted_phone'
     ];
 
     protected static $statuses = [
@@ -71,5 +75,31 @@ class Worker extends Model
     public function getUrlAttribute()
     {
         return route('worker-show', ['worker' => $this->id]);
+    }
+
+
+    public function getFormattedPhoneAttribute()
+    {
+        return preg_replace('/(\d{3})(\d{3})(\d{2})(\d{2})/', '+7 ($1) $2-$3-$4', $this->phone);
+    }
+
+
+    public function getSurnameNamePatronymicAttribute()
+    {
+        $name = $this->surname . ' ' . $this->full_name . ' ' . $this->patronymic;
+        return ($name != '  ') ? $name : '';
+    }
+
+
+    public function getFormattedBirthdateAttribute()
+    {
+        if ($this->birthdate)
+        {
+            return Carbon::createFromDate($this->birthdate)->format('d.m.Y');
+        }
+        else
+        {
+            return '';
+        }
     }
 }

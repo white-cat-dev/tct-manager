@@ -198,6 +198,8 @@ angular.module('tctApp').controller('FacilitiesController', [
 		$scope.facility = facility || $scope.facility;
 		$scope.modalFacility = angular.copy($scope.facility);
 		$scope.modalFacility.status = status;
+
+		$scope.modalFacility.status_date_raw = new Date();
 		
 		if ($scope.facility.status == $scope.modalFacility.status)
 		{
@@ -233,6 +235,7 @@ angular.module('tctApp').controller('FacilitiesController', [
 		}
 		else if ($scope.modalFacility.status_date_raw)
 		{
+			$scope.modalFacility.status_date_raw.setHours(12);
 			$scope.modalFacility.status = ($scope.modalFacility.status + 1) % 2;
 		}
 
@@ -246,16 +249,17 @@ angular.module('tctApp').controller('FacilitiesController', [
 				$scope.showTopAlert = false;
 			}, 2000);
 
+			$scope.hideStatusModal();
+
 			if (!$scope.baseUrl)
 			{
 				$scope.init();
 			}
 			else
 			{
-				$scope.facility = $scope.modalFacility;
+				$scope.initShow();
 			}
 
-			$scope.hideStatusModal();
 		}, 
 		function(response) 
 		{

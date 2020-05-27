@@ -75,42 +75,49 @@ class WorkersController extends Controller
 
 
     protected $validationRules = [
-        'name' => 'required',
-        'surname' => 'required',
-        'full_name' => 'required',
-        'patronymic' => 'required',
+        'name' => 'required'
     ];
 
 
     protected function getData(Request $request)
     {
-        $data = [
+        $statusDate = $request->get('status_date_raw', -1);
+        if ($statusDate == -1)
+        {
+            $statusDate = $request->get('status_date', null); 
+        }
+        else
+        {
+            $statusDate = $statusDate ? substr($statusDate, 0, 10) : null;
+        }
+
+        $status = $request->get('status', Worker::STATUS_ACTIVE);
+        if ($statusDate && ($statusDate <= date('Y-m-d')))
+        {
+            $statusDate = null;
+            $status = ($status + 1) % 2;
+        }
+
+        $birthdate = $request->get('birthdate_raw', -1); 
+        if ($birthdate == -1)
+        {
+            $birthdate = $request->get('birthdate', null); 
+        }
+        else
+        {
+            $birthdate = $birthdate ? Carbon::createFromFormat('dmY', $birthdate)->format('Y-m-d') : null;
+        }
+
+        return [
             'name' => $request->get('name', ''),
             'surname' => $request->get('surname', ''),
             'full_name' => $request->get('full_name', ''),
             'patronymic' => $request->get('patronymic', ''),
             'phone' => $request->get('phone', ''),
-            'status' => $request->get('status', Worker::STATUS_ACTIVE),
-            'status_date' => $request->get('status_date_raw', -1),
-            'status_date_next' => $request->get('status_date_next_raw', null)
+            'passport' => $request->get('passport', ''),
+            'birthdate' => $birthdate,
+            'status' => $status,
+            'status_date' => $statusDate
         ];
-
-
-        if ($data['status_date'] == -1)
-        {
-            $data['status_date'] = $request->get('status_date', null); 
-        }
-        else
-        {
-            $data['status_date'] = $data['status_date'] ? substr($data['status_date'], 0, 10) : null;
-        }
-
-        if (($data['status_date']) && ($data['status_date'] <= date('Y-m-d')))
-        {
-            $data['status_date'] = null;
-            $data['status'] = ($data['status'] + 1) % 2;
-        }
-
-        return $data;
     }
 }

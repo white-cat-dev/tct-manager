@@ -12300,7 +12300,6 @@ footer {
   right: 17px;
   font-size: 20px;
   color: #FFFFFF;
-  transition: transform 0.3s;
   cursor: pointer;
 }
 
@@ -12322,7 +12321,6 @@ footer {
 
 .main-menu-block .submenu-block {
   max-height: 0px;
-  transition: height 0.3s;
   border-top: solid 0px #dadada;
   padding: 0px;
   background: #276090;
@@ -12596,15 +12594,25 @@ i.far {
 .show-block {
   border-radius: 5px;
   box-shadow: 0px 0px 5px #dadada;
-  padding: 20px;
+  padding: 20px 20px 30px 20px;
   border: solid 1px #dadada;
 }
 
 .show-block .show-block-title {
-  color: #343434;
+  color: #414141;
   font-size: 25px;
   font-weight: 500;
   margin-bottom: 25px;
+  position: relative;
+}
+
+.show-block .show-block-title .status-block {
+  color: #9a9a9a;
+  position: absolute;
+  top: 5px;
+  right: 0;
+  font-weight: 400;
+  font-size: 18px;
 }
 
 .show-block .params-title {
@@ -12831,6 +12839,10 @@ i.far {
   min-width: 40px;
 }
 
+.auth-content-block .form-check {
+  padding-left: 0px;
+}
+
 .categories-block {
   position: relative;
 }
@@ -12964,30 +12976,52 @@ i.far {
   }
 }
 
-.products-page .main-table .form-control {
+.products-page .main-table .edit-field {
+  cursor: pointer;
+  position: relative;
+  transition: 0.1s;
+  display: inline-block;
+}
+
+.products-page .main-table .edit-field:hover .units > span {
+  color: #276090;
+}
+
+.products-page .main-table .edit-field:hover .form-control {
+  color: #276090;
+}
+
+.products-page .main-table .edit-field .units {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  color: transparent;
+  z-index: -1;
+}
+
+.products-page .main-table .edit-field .units > span {
+  color: #000000;
+}
+
+.products-page .main-table .edit-field .form-control {
   display: inline;
   padding: 0px;
   height: auto;
   width: 70px;
   border: none;
+  border-bottom: solid 1px transparent;
+  color: #000000;
+  background: transparent;
+}
+
+.products-page .main-table .edit-field .form-control:focus {
   border-bottom: solid 1px #276090;
-  color: #276090;
 }
 
 @media (max-width: 1209.98px) {
-  .products-page .main-table .form-control {
+  .products-page .main-table .edit-field .form-control {
     font-size: 14px;
   }
-}
-
-.products-page .main-table .edit-field {
-  cursor: text;
-  border-bottom: solid 1px transparent;
-  transition: 0.1s;
-}
-
-.products-page .main-table .edit-field:hover {
-  color: #276090;
 }
 
 .products-page .product-groups-block {
@@ -13007,6 +13041,10 @@ i.far {
   justify-content: space-between;
   margin-bottom: 5px;
   font-weight: 500;
+}
+
+.products-page .custom-control-inline {
+  margin-bottom: 10px;
 }
 
 .materials-page {
@@ -13037,30 +13075,52 @@ i.far {
   }
 }
 
-.materials-page .main-table .form-control {
+.materials-page .main-table .edit-field {
+  cursor: pointer;
+  position: relative;
+  transition: 0.1s;
+  display: inline-block;
+}
+
+.materials-page .main-table .edit-field:hover .units > span {
+  color: #276090;
+}
+
+.materials-page .main-table .edit-field:hover .form-control {
+  color: #276090;
+}
+
+.materials-page .main-table .edit-field .units {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  color: transparent;
+  z-index: -1;
+}
+
+.materials-page .main-table .edit-field .units > span {
+  color: #000000;
+}
+
+.materials-page .main-table .edit-field .form-control {
   display: inline;
   padding: 0px;
   height: auto;
   width: 70px;
   border: none;
+  border-bottom: solid 1px transparent;
+  color: #000000;
+  background: transparent;
+}
+
+.materials-page .main-table .edit-field .form-control:focus {
   border-bottom: solid 1px #276090;
-  color: #276090;
 }
 
 @media (max-width: 1209.98px) {
-  .materials-page .main-table .form-control {
+  .materials-page .main-table .edit-field .form-control {
     font-size: 14px;
   }
-}
-
-.materials-page .main-table .edit-field {
-  cursor: text;
-  border-bottom: solid 1px transparent;
-  transition: 0.1s;
-}
-
-.materials-page .main-table .edit-field:hover {
-  color: #276090;
 }
 
 .materials-page .materials-table td {
@@ -13120,6 +13180,20 @@ i.far {
   .recipes-page .main-table td:last-child {
     padding: 8px 0px;
   }
+}
+
+.recipes-page .materials-list {
+  max-height: 48px;
+  overflow: hidden;
+}
+
+.recipes-page .materials-list.shown {
+  max-height: 300px;
+}
+
+.recipes-page .btn-link {
+  padding: 0px;
+  text-decoration: underline;
 }
 
 .production-page {
@@ -14013,7 +14087,7 @@ i.far {
 }
 
 .workers-page .worker-status.active {
-  color: #28a65b;
+  color: #33ce72;
 }
 
 .workers-page .worker-modal .modal-dialog {
@@ -14531,7 +14605,7 @@ i.far {
 }
 
 .facilities-page .facility-status.active {
-  color: #28a65b;
+  color: #33ce72;
 }
 
 .facilities-page .add-worker-block .divider {

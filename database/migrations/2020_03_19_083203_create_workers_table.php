@@ -20,9 +20,10 @@ class CreateWorkersTable extends Migration
             $table->string('full_name');
             $table->string('patronymic');
             $table->string('phone');
+            $table->string('passport');
+            $table->date('birthdate')->nullable();
             $table->tinyInteger('status');
             $table->date('status_date')->nullable();
-            $table->date('status_date_next')->nullable();
             $table->timestamps();
         });
     }

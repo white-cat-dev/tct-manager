@@ -53,14 +53,24 @@
 					<div class="param-name">
 						Полное имя
 					</div>
-					@{{ worker.surname }} @{{ worker.full_name }} @{{ worker.patronymic }}
+					<span ng-if="worker.surname_name_patronymic">
+						@{{ worker.surname_name_patronymic }}
+					</span>
+					<span ng-if="!worker.surname_name_patronymic">
+						Не указано
+					</span>
 				</div>
 
 				<div class="worker-param">
 					<div class="param-name">
 						Номер телефона
 					</div>
-					79085234132
+					<span ng-if="worker.formatted_phone">
+						@{{ worker.formatted_phone }}
+					</span>
+					<span ng-if="!worker.formatted_phone">
+						Не указан
+					</span>
 				</div>
 
 				<div class="buttons-block">

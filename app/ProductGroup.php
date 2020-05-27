@@ -15,6 +15,7 @@ class ProductGroup extends Model
     	'set_pair_id',
         'set_pair_ratio',
         'set_pair_ratio_to',
+        'size_params',
     	'width',
     	'length',
     	'height',
@@ -33,7 +34,8 @@ class ProductGroup extends Model
 
     protected $appends = [
         'url',
-        'size'
+        'size',
+        'units_text'
     ];
 
     protected $with = [
@@ -83,7 +85,7 @@ class ProductGroup extends Model
 
     public function set_pair()
     {
-        return $this->hasOne(Product::class);
+        return $this->hasOne(ProductGroup::class, 'set_pair_id');
     }
 
     public function getUrlAttribute()
@@ -93,6 +95,35 @@ class ProductGroup extends Model
 
     public function getSizeAttribute()
     {
-        return $this->length . '×' . $this->width . '×' . $this->height;
+        if ($this->size_params == 'lh')
+        {
+            return $this->length . '×' . $this->height;
+        }
+        else
+        {
+            return $this->length . '×' . $this->width . '×' . $this->height;
+        }
+    }
+
+    public function getUnitsTextAttribute()
+    {
+        switch ($this->category->units) 
+        {
+            case 'area':
+                return 'м<sup>2</sup>';
+                break;
+
+            case 'volume':
+                return 'м<sup>3</sup>';
+                break;
+
+            case 'unit':
+                return 'шт.';
+                break;
+            
+            default:
+                return '';
+                break;
+        }
     }
 }

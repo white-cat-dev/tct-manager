@@ -133,30 +133,29 @@ class FacilitiesController extends Controller
 
     protected function getData(Request $request)
     {
-        $data = [
-            'name' => $request->get('name', ''),
-            'performance' => $request->get('performance', 0),
-            'status' => $request->get('status', Facility::STATUS_ACTIVE),
-            'status_date' => $request->get('status_date_raw', -1),
-            'icon_color' => $request->get('icon_color', '#000000')
-        ];
-
-
-        if ($data['status_date'] == -1)
+        $statusDate = $request->get('status_date_raw', -1);
+        if ($statusDate == -1)
         {
-            $data['status_date'] = $request->get('status_date', null); 
+            $statusDate = $request->get('status_date', null); 
         }
         else
         {
-            $data['status_date'] = $data['status_date'] ? substr($data['status_date'], 0, 10) : null;
+            $statusDate = $statusDate ? substr($statusDate, 0, 10) : null;
         }
 
-        if (($data['status_date']) && ($data['status_date'] <= date('Y-m-d')))
+        $status = $request->get('status', Worker::STATUS_ACTIVE);
+        if ($statusDate && ($statusDate <= date('Y-m-d')))
         {
-            $data['status_date'] = null;
-            $data['status'] = ($data['status'] + 1) % 2;
+            $statusDate = null;
+            $status = ($status + 1) % 2;
         }
 
-        return $data;
+        return [
+            'name' => $request->get('name', ''),
+            'performance' => $request->get('performance', 0),
+            'status' => $status,
+            'status_date' => $statusDate,
+            'icon_color' => $request->get('icon_color', '#000000')
+        ];
     }
 }

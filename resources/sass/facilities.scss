@@ -90,7 +90,7 @@
 	    font-size: 14px;
 
 	    &.active {
-	    	color: $green;
+	    	color: lighten($green, 10%);
 	    }
 	}
 

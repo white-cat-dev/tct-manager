@@ -1,9 +1,9 @@
-require('moment');
 require('jquery');
 require('bootstrap');
 require('angular');
 require('angularjs-color-picker');
 require('angular-datepicker');
+window.moment = require('moment');
 
 
 var tctApp = angular.module('tctApp', [
@@ -331,5 +331,11 @@ tctApp.run(function($rootScope)
         	nextInput.focus();
         }, 50);
     };
+
+    $rootScope.inputFloat = function(model, key)
+    {
+		model[key] = model[key].replace(',', '.');
+		model[key] = model[key].replace(/[^.\d]/g, '');
+    }
 });
 

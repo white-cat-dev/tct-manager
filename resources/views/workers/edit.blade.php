@@ -33,6 +33,14 @@
 		<div class="row justify-content-around">
 			<div class="col-5">
 				<div class="form-group">
+					<div class="param-label">Рабочее имя</div>
+					<input type="text" class="form-control" ng-model="worker.name" ng-class="{'is-invalid': workerErrors.name}">
+					<small class="form-text">
+						Введите имя, которое будет использоваться в панели
+					</small>
+				</div>
+
+				<div class="form-group">
 					<div class="param-label">Фамилия</div>
 					<input type="text" class="form-control" ng-model="worker.surname" ng-class="{'is-invalid': workerErrors.surname}">
 				</div>
@@ -46,28 +54,24 @@
 					<div class="param-label">Отчество</div>
 					<input type="text" class="form-control" ng-model="worker.patronymic" ng-class="{'is-invalid': workerErrors.patronymic}">
 				</div>
+
 			</div>
 
 			<div class="col-5">
 				<div class="form-group">
-					<div class="param-label">Рабочее имя</div>
-					<input type="text" class="form-control" ng-model="worker.name" ng-class="{'is-invalid': workerErrors.name}">
-					<small class="form-text">
-						Используется в таблицах
-					</small>
+					<div class="param-label">Номер телефона</div>
+					<input type="text" class="form-control" ui-mask="+7 (9999) 99-99-99" ui-mask-placeholder-char="_" ng-model="worker.phone">
 				</div>
 
-				{{-- <div class="form-group">
-					<div class="param-label">Цех</div>
-					<ui-select theme="bootstrap" ng-model="worker.facility_id">
-			            <ui-select-match placeholder="Выберите цех из списка">
-				            @{{ $select.selected.name }}
-				        </ui-select-match>
-			            <ui-select-choices repeat="facility.id as facility in facilities">
-			                <span ng-bind-html="facility.name | highlight: $select.search"></span>
-			            </ui-select-choices>
-					</ui-select>
-				</div> --}}
+				<div class="form-group">
+					<div class="param-label">Дата рождения</div>
+					<input type="text" class="form-control" ui-mask="99.99.9999" ui-mask-placeholder-char="_" ng-model="worker.birthdate_raw">
+				</div>
+
+				<div class="form-group">
+					<div class="param-label">Паспортные данные</div>
+					<textarea class="form-control" rows="3" ng-model="worker.passport" ng-class="{'is-invalid': workerErrors.passport}"></textarea>
+				</div>
 			</div>
 		</div>
 

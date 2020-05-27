@@ -200,20 +200,27 @@ angular.module('tctApp').controller('MaterialsController', [
 	}
 
 
-	$scope.saveEditField = function(key, groupNum) 
+	$scope.saveEditField = function(groupNum, num, key) 
 	{
-		if (key == 'materials')
-		{
-			var materialGroup = $scope.materialGroups[groupNum]
+		var materialGroup = $scope.materialGroups[groupNum];
+		var material = materialGroup.materials[num];
 
-			MaterialsRepository.save({id: materialGroup.id}, materialGroup, function(response) 
-			{
-				toastr.success('Изменения успешно сохранены!');
-			}, 
-			function(response) 
-			{
-	        });
+		if (material[key] != material['new_' + key])
+		{
+			material[key] = material['new_' + key];
 		}
+		else
+		{
+			return;
+		}
+
+		MaterialsRepository.save({id: materialGroup.id}, materialGroup, function(response) 
+		{
+			toastr.success('Изменения успешно сохранены!');
+		}, 
+		function(response) 
+		{
+        });
 	}
 
 

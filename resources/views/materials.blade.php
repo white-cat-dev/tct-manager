@@ -62,16 +62,18 @@
 			</td>
 			<td>
 				<div ng-repeat="(materialNum, material) in materialGroup.materials">
-					<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
-						@{{ material.in_stock }}
-						<span ng-switch on="materialGroup.units">
-							<span ng-switch-when="volume_l">л</span>
-							<span ng-switch-when="volume_ml">мл</span>
-							<span ng-switch-when="weight_kg">кг</span>
-							<span ng-switch-when="weight_t">т</span>
+					<div class="edit-field" ng-init="material.new_in_stock = material.in_stock">
+						<input type="text" class="form-control" ng-model="material.new_in_stock" ng-blur="saveEditField(materialGroupNum, materialNum, 'in_stock')" ng-keypress="inputKeyPressed($event)">
+						<span class="units">
+							@{{ material.new_in_stock }}
+							<span ng-switch on="materialGroup.units">
+								<span ng-switch-when="volume_l">л</span>
+								<span ng-switch-when="volume_ml">мл</span>
+								<span ng-switch-when="weight_kg">кг</span>
+								<span ng-switch-when="weight_t">т</span>
+							</span>
 						</span>
 					</div>
-					<input type="text" class="form-control" ng-model="material.new_in_stock" ng-init="material.new_in_stock = material.in_stock" ng-show="isEditFieldShown" ng-blur="material.in_stock = material.new_in_stock; saveEditField('materials', materialGroupNum, materialNum); isEditFieldShown = false;" ng-keypress="inputKeyPressed($event)">
 				</div>
 			</td>
 			<td>

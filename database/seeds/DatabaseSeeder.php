@@ -16,8 +16,7 @@ class DatabaseSeeder extends Seeder
 	        EmploymentStatusSeeder::class,
             WorkerSeeder::class,
             FacilitySeeder::class,
-            UserSeeder::class,
-            MaterialSeeder::class
+            UserSeeder::class
 	    ]);
     }
 }

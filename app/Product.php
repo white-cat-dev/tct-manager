@@ -155,7 +155,7 @@ class Product extends Model
                 break;
 
             case 'unit':
-                return 'шт.';
+                return 'шт';
                 break;
             
             default:

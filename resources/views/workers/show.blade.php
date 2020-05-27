@@ -10,26 +10,26 @@
 
 		<div class="right-buttons">
 			@if (Auth::user() && Auth::user()->type == 'admin')
-			<button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button class="btn btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<i class="fas fa-cog"></i> Доступные действия
 			</button>
 			<div class="dropdown-menu" aria-labelledby="actionsButton">
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && !worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
+				<button type="button" class="dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && !worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
 					Отстранить от работы
 				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_INACTIVE }} && !worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_ACTIVE }})">
+				<button type="button" class="dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_INACTIVE }} && !worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_ACTIVE }})">
 					Вернуть на работу
 				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_INACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
+				<button type="button" class="dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_INACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
 					Отменить возвращение на работу
 				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_INACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_ACTIVE }})">
+				<button type="button" class="dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_INACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_ACTIVE }})">
 					Изменить дату возвращения на работу
 				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_ACTIVE }})">
+				<button type="button" class="dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_ACTIVE }})">
 					Отменить отстранение от работы
 				</button>
-				<button type="button" class="btn-sm dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
+				<button type="button" class="dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
 					Изменить дату отстранения от работы
 				</button>
 			</div>
@@ -48,40 +48,15 @@
 		<div class="row justify-content-around">
 			<div class="col-11">
 				<div class="show-block-title">
-					Работник "@{{ worker.name }}"
+					Работник «@{{ worker.name }}»
+
+					<div class="status-block">
+						@{{ worker.status_text }}
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row justify-content-around">
-			<div class="col-5">
-				<div class="param-block">
-					<div class="param-name">
-						Фамилия
-					</div>
-					<div class="param-value">
-						@{{ worker.surname }}
-					</div>
-				</div>
-
-				<div class="param-block">
-					<div class="param-name">
-						Имя
-					</div>
-					<div class="param-value">
-						@{{ worker.full_name }}
-					</div>
-				</div>
-
-				<div class="param-block">
-					<div class="param-name">
-						Отчество
-					</div>
-					<div class="param-value">
-						@{{ worker.patronymic }}
-					</div>
-				</div>
-			</div>
-
 			<div class="col-5">
 				<div class="param-block">
 					<div class="param-name">
@@ -94,12 +69,91 @@
 
 				<div class="param-block">
 					<div class="param-name">
-						Цех
+						Фамилия
 					</div>
 					<div class="param-value">
-						@{{ worker.facility.name }}
+						<span ng-if="worker.surname">
+							@{{ worker.surname }}
+						</span>
+						<span ng-if="!worker.surname">
+							Не указана
+						</span>
 					</div>
 				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Имя
+					</div>
+					<div class="param-value">
+						<span ng-if="worker.full_name">
+							@{{ worker.full_name }}
+						</span>
+						<span ng-if="!worker.full_name">
+							Не указано
+						</span>
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Отчество
+					</div>
+					<div class="param-value">
+						<span ng-if="worker.patronymic">
+							@{{ worker.patronymic }}
+						</span>
+						<span ng-if="!worker.patronymic">
+							Не указано
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-5">
+				<div class="param-block">
+					<div class="param-name">
+						Номер телефона
+					</div>
+					<div class="param-value">
+						<span ng-if="worker.formatted_phone">
+							@{{ worker.formatted_phone }}
+						</span>
+						<span ng-if="!worker.formatted_phone">
+							Не указан
+						</span>
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Дата рождения
+					</div>
+					<div class="param-value">
+						<span ng-if="worker.formatted_birthdate">
+							@{{ worker.formatted_birthdate }}
+						</span>
+						<span ng-if="!worker.formatted_birthdate">
+							Не указана
+						</span>
+					</div>
+				</div>	
+
+				@if (Auth::user() && Auth::user()->type == 'admin')
+				<div class="param-block">
+					<div class="param-name">
+						Паспортные данные
+					</div>
+					<div class="param-value">
+						<span ng-if="worker.passport">
+							@{{ worker.passport }}
+						</span>
+						<span ng-if="!worker.passport">
+							Не указаны
+						</span>
+					</div>
+				</div>	
+				@endif			
 			</div>
 		</div>
 	</div>

@@ -20,7 +20,7 @@
     <div id="app">
         @include('partials.header')
 
-        <div class="content-block">
+        <div class="content-block auth-content-block">
             @yield('content')
         </div>
 

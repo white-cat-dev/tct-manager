@@ -51,7 +51,7 @@ class ProductsController extends Controller
             $productGroupData = $this->getData($request);
             $productGroup = ProductGroup::create($productGroupData);
 
-            foreach ($request->get('products') as $productData) 
+            foreach ($request->get('products', []) as $productData) 
             {
                 $productData = $this->getProductData($productData, $productGroup);
 
@@ -152,6 +152,7 @@ class ProductsController extends Controller
             'set_pair_ratio' => $request->get('set_pair_ratio', 0),
             'set_pair_ratio_to' => $request->get('set_pair_ratio_to', 0),
             'category_id' => $request->get('category_id', 0),
+            'size_params' => $request->get('size_params', 'lwh'),
             'width' => $request->get('width', 0),
             'length' => $request->get('length', 0),
             'height' => $request->get('height', 0),
@@ -179,7 +180,7 @@ class ProductsController extends Controller
             $data['variation'] = '';
             $data['main_variation'] = '';
         }
-
+        
         return [
             'category_id' => $categoryId,
             'variation' => !empty($data['variation']) ? $data['variation'] : '',

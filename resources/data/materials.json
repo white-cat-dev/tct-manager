@@ -1,0 +1,160 @@
+[
+    {
+        "name": "Зола",
+        "variations": "",
+        "units": "weight_kg",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 0.5,
+                "in_stock": 4000
+            }
+        ]
+    },
+    {
+        "name": "Краситель",
+        "variations": "colors",
+        "units": "weight_kg",
+        "input": false,
+        "materials": [
+            {
+                "variation": "red",
+                "price": 130,
+                "in_stock": 100
+            },
+            {
+                "variation": "yellow",
+                "price": 130,
+                "in_stock": 100
+            },
+            {
+                "variation": "brown",
+                "price": 130,
+                "in_stock": 100
+            },
+            {
+                "variation": "black",
+                "price": 130,
+                "in_stock": 100
+            }
+        ]
+    },
+    {
+        "name": "Отсев",
+        "variations": "",
+        "units": "weight_kg",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 0.45,
+                "in_stock": 25000
+            }
+        ]
+    },
+    {
+        "name": "Пенообразователь",
+        "variations": "",
+        "units": "volume_l",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 70,
+                "in_stock": 100
+            }
+        ]
+    },
+    {
+        "name": "Песок",
+        "variations": "",
+        "units": "weight_kg",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 0.45,
+                "in_stock": 10000
+            }
+        ]
+    },
+    {
+        "name": "Пластификатор",
+        "variations": "",
+        "units": "volume_l",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 100,
+                "in_stock": 800
+            }
+        ]
+    },
+    {
+        "name": "Полистирол",
+        "variations": "",
+        "units": "weight_kg",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 130,
+                "in_stock": 900
+            }
+        ]
+    },
+    {
+        "name": "Смазка",
+        "variations": "",
+        "units": "volume_l",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 60,
+                "in_stock": 100
+            }
+        ]
+    },
+    {
+        "name": "Фибра",
+        "variations": "",
+        "units": "weight_kg",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 500,
+                "in_stock": 100
+            }
+        ]
+    },
+    {
+        "name": "Цемент МКР",
+        "variations": "",
+        "units": "weight_kg",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 7.4,
+                "in_stock": 12000
+            }
+        ]
+    },
+    {
+        "name": "Цемент насыпь",
+        "variations": "",
+        "units": "weight_kg",
+        "input": false,
+        "materials": [
+            {
+                "variation": "",
+                "price": 6.8,
+                "in_stock": 1000
+            }
+        ]
+    }
+]

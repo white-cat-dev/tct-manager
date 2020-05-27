@@ -22,4 +22,18 @@
 			}
 		}
 	}
+
+	.materials-list {
+	    max-height: 48px;
+		overflow: hidden;
+
+		&.shown {
+			max-height: 300px;
+		}
+	}
+
+	.btn-link {
+		padding: 0px;
+		text-decoration: underline;
+	}
 }

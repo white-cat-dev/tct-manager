@@ -16,7 +16,8 @@ class Recipe extends Model
     ];
 
     protected $appends = [
-        'url'
+        'url',
+        'cost'
     ];
 
 
@@ -29,5 +30,13 @@ class Recipe extends Model
     public function getUrlAttribute()
     {
         return route('recipe-show', ['recipe' => $this->id]);
+    }
+
+
+    public function getCostAttribute()
+    {
+        return round($this->material_groups->sum(function($materialGroup) {
+            return $materialGroup->materials->first()->price * $materialGroup->pivot->count;
+        }), 3);
     }
 }

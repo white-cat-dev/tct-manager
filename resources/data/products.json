@@ -7,134 +7,1815 @@
         "adjectives": "feminine",
         "product_groups": [
             {
-                "wp_name": "Брусчатка «Краковский клевер»",
-                "name": "Ромашка (бол)",
-                "set_pair": "next",
-                "set_pair_ratio": 1,
-                "set_pair_ratio_to": 2,
-                "width": 295,
-                "length": 295,
-                "height": 45,
-                "weight_unit": 5.6,
-                "weight_units": 0,
-                "weight_pallete": 740,
-                "unit_in_units": 17,
-                "unit_in_pallete": 132,
-                "units_in_pallete": 7.8,
+                "name": "Радиус",
+                "wp_name": "Тротуарная плитка \"Радиус\" (250*250*25)",
+                "size_params": "lwh",
+                "length": 250,
+                "width": 250,
+                "height": 25,
+                "weight_unit": 3.2,
+                "weight_pallete": 750,
+                "unit_in_units": 16,
+                "unit_in_pallete": 225,
+                "units_in_pallete": 14.1,
                 "units_from_batch": 7,
-                "forms": 30,
-                "salary_units": 120,
+                "forms": 19.3,
+                "salary_units": 80,
                 "products": [
                     {
                         "variation": "grey",
                         "main_variation": "grey",
-                        "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price": 350,
+                        "price_vat": 420, 
+                        "price_cashless": 400
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
-                        "price": 500,
-                        "price_vat": 500,
+                        "price": 440,
+                        "price_vat": 530, 
                         "price_cashless": 500
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
-                        "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price": 480,
+                        "price_vat": 585, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
-                        "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price": 480,
+                        "price_vat": 585, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
-                        "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price": 480,
+                        "price_vat": 585, 
+                        "price_cashless": 550
                     }
                 ]
             },
             {
-                "wp_name": "Брусчатка «Краковский клевер»",
-                "name": "Ромашка (мал)",
-                "set_pair": "prev",
-                "set_pair_ratio": 2,
-                "set_pair_ratio_to": 1,
-                "width": 210,
-                "length": 210,
-                "height": 45,
-                "weight_unit": 2.7,
-                "weight_units": 0,
-                "weight_pallete": 740,
-                "unit_in_units": 34,
-                "unit_in_pallete": 264,
-                "units_in_pallete": 7.8,
+                "name": "Паркет",
+                "wp_name": "Тротуарная плитка \"Паркет\"",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
                 "units_from_batch": 7,
-                "forms": 16,
-                "salary_units": 120,
+                "forms": 52.7,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "8 кирпичей",
+                "wp_name": "Тротуарная плитка \"8 кирпичей\" (300*300*30)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Рваная сетка",
+                "wp_name": "Тротуарная плитка \"Рваная сетка\"",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 30,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Тучка",
+                "wp_name": "Тротуарная плитка \"Тучка\"",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 157,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Калифорния",
+                "wp_name": "Тротуарная плитка \"Калифорния\" (300*300*30)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 14,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Солнце",
+                "wp_name": "Тротуарная плитка \"Солнце\"",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 38.2,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "2 доски",
+                "wp_name": "Тротуарная плитка \"2 доски\"",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 19.3,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "3 доски",
+                "wp_name": "Тротуарная плитка \"3 доски\"",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 18.4,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Срез",
+                "wp_name": "Тротуарная плитка \"Срез\"",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Гладкая",
+                "wp_name": "Тротуарная плитка \"Гладкая\" (300*300*30)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 9.9,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Ялта",
+                "wp_name": "Тротуарная плитка \"Ялта\"",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 24.3,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Черноморская",
+                "wp_name": "Тротуарная плитка \"Черноморская\"",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 30,
+                "weight_unit": 5.5,
+                "weight_pallete": 750,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 11.9,
+                "units_from_batch": 7,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "8 кирпичей",
+                "wp_name": "Тротуарная плитка \"8 кирпичей\" (300*300*50)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 50,
+                "weight_unit": 9,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 30,
+                "salary_units": 100,
                 "products": [
                     {
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price_vat": 580, 
+                        "price_cashless": 525
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
-                        "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price": 590,
+                        "price_vat": 690, 
+                        "price_cashless": 625
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
-                        "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
-                        "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
-                        "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
                     }
                 ]
-            }
-        ]
-    },
-    {
-        "name": "Брусчатка",
-        "main_category": "tiles",
-        "units": "area",
-        "variations": "colors",
-        "adjectives": "feminine",
-        "product_groups": [
+            },
+            {
+                "name": "Гладкая",
+                "wp_name": "Тротуарная плитка \"Гладкая\" (300*300*50)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 50,
+                "weight_unit": 9,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 5,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 580, 
+                        "price_cashless": 525
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    }
+                ]
+            },
+            {
+                "name": "Калифорния",
+                "wp_name": "Тротуарная плитка \"Калифорния\" (300*300*50)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 50,
+                "weight_unit": 9,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 30,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 580, 
+                        "price_cashless": 525
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    }
+                ]
+            },
+            {
+                "name": "8 кирпичей шагрень",
+                "wp_name": "Тротуарная плитка \"8 кирпичей шагрень\" (400*400*50)",
+                "size_params": "lwh",
+                "length": 400,
+                "width": 400,
+                "height": 50,
+                "weight_unit": 17.5,
+                "weight_pallete": 860,
+                "unit_in_units": 6.25,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 7.84,
+                "units_from_batch": 7,
+                "forms": 77.7,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 580, 
+                        "price_cashless": 525
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    }
+                ]
+            },
+            {
+                "name": "8 кирпичей гладкая",
+                "wp_name": "Тротуарная плитка \"8 кирпичей гладкая\" (400*400*50)",
+                "size_params": "lwh",
+                "length": 400,
+                "width": 400,
+                "height": 50,
+                "weight_unit": 17.5,
+                "weight_pallete": 860,
+                "unit_in_units": 6.25,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 7.84,
+                "units_from_batch": 7,
+                "forms": 37.4,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 580, 
+                        "price_cashless": 525
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    }
+                ]
+            },
+            {
+                "name": "Рапида",
+                "wp_name": "Тротуарная плитка «Рапида»",
+                "size_params": "lwh",
+                "length": 400,
+                "width": 400,
+                "height": 50,
+                "weight_unit": 17.5,
+                "weight_pallete": 860,
+                "unit_in_units": 6.25,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 7.84,
+                "units_from_batch": 7,
+                "forms": 19.2,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 580, 
+                        "price_cashless": 525
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    }
+                ]
+            },
+            {
+                "name": "Радиус",
+                "wp_name": "Тротуарная плитка \"Радиус\" (350*350*50)",
+                "size_params": "lwh",
+                "length": 350,
+                "width": 350,
+                "height": 50,
+                "weight_unit": 13.5,
+                "weight_pallete": 860,
+                "unit_in_units": 8.15,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 6.63,
+                "units_from_batch": 7,
+                "forms": 9.8,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 580, 
+                        "price_cashless": 525
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 745, 
+                        "price_cashless": 675
+                    }
+                ]
+            },
+            {
+                "name": "Бабочка",
+                "wp_name": "Тротуарная плитка \"Бабочка\"",
+                "size_params": "lwh",
+                "length": 500,
+                "width": 500,
+                "height": 60,
+                "weight_unit": 30,
+                "weight_pallete": 840,
+                "unit_in_units": 4,
+                "unit_in_pallete": 28,
+                "units_in_pallete": 7,
+                "units_from_batch": 7,
+                "forms": 18,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Бабочка армированная",
+                "wp_name": "Армированная тротуарная плитка \"Бабочка\"",
+                "size_params": "lwh",
+                "length": 500,
+                "width": 500,
+                "height": 60,
+                "weight_unit": 30,
+                "weight_pallete": 840,
+                "unit_in_units": 4,
+                "unit_in_pallete": 28,
+                "units_in_pallete": 7,
+                "units_from_batch": 7,
+                "forms": 18,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 650,
+                        "price_vat": 770, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 740,
+                        "price_vat": 880, 
+                        "price_cashless": 810
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 780,
+                        "price_vat": 935, 
+                        "price_cashless": 860
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 780,
+                        "price_vat": 935, 
+                        "price_cashless": 860
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 780,
+                        "price_vat": 935, 
+                        "price_cashless": 860
+                    }
+                ]
+            },
+            {
+                "name": "Доска",
+                "wp_name": "Тротуарная плитка \"Доска\"",
+                "size_params": "lwh",
+                "length": 600,
+                "width": 150,
+                "height": 60,
+                "weight_unit": 10.8,
+                "weight_pallete": 1000,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 92,
+                "units_in_pallete": 8.29,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Тактильная (диагональ)",
+                "wp_name": "Тротуарная плитка \"Тактильная (диагональные рифы)\" (500*500*50)",
+                "size_params": "lwh",
+                "length": 500,
+                "width": 500,
+                "height": 50,
+                "weight_unit": 25,
+                "weight_pallete": 750,
+                "unit_in_units": 4,
+                "unit_in_pallete": 30,
+                "units_in_pallete": 7.5,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Тактильная (продольные)",
+                "wp_name": "Тротуарная плитка \"Тактильная (продольные рифы)\" (500*500*50)",
+                "size_params": "lwh",
+                "length": 500,
+                "width": 500,
+                "height": 50,
+                "weight_unit": 25,
+                "weight_pallete": 750,
+                "unit_in_units": 4,
+                "unit_in_pallete": 30,
+                "units_in_pallete": 7.5,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Тактильная (квадрат)",
+                "wp_name": "Тротуарная плитка \"Тактильная (квадратные рифы)\" (500*500*50)",
+                "size_params": "lwh",
+                "length": 500,
+                "width": 500,
+                "height": 50,
+                "weight_unit": 25,
+                "weight_pallete": 750,
+                "unit_in_units": 4,
+                "unit_in_pallete": 30,
+                "units_in_pallete": 7.5,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Тактильная (конус)",
+                "wp_name": "Тротуарная плитка \"Тактильная (конусообразные рифы)\" (500*500*50)",
+                "size_params": "lwh",
+                "length": 500,
+                "width": 500,
+                "height": 50,
+                "weight_unit": 25,
+                "weight_pallete": 750,
+                "unit_in_units": 4,
+                "unit_in_pallete": 30,
+                "units_in_pallete": 7.5,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Тактильная (диагональ)",
+                "wp_name": "Тротуарная плитка \"Тактильная (диагональные рифы)\" (300*300*50)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 50,
+                "weight_unit": 9,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Тактильная (продольные)",
+                "wp_name": "Тротуарная плитка \"Тактильная (продольные рифы)\" (300*300*50)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 50,
+                "weight_unit": 9,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Тактильная (квадрат)",
+                "wp_name": "Тротуарная плитка \"Тактильная (квадратные рифы)\" (300*300*50)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 50,
+                "weight_unit": 9,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Тактильная (конус)",
+                "wp_name": "Тротуарная плитка \"Тактильная (конусообразные рифы)\" (300*300*50)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 50,
+                "weight_unit": 9,
+                "weight_pallete": 500,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 54,
+                "units_in_pallete": 4.86,
+                "units_from_batch": 7,
+                "forms": 0,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Колотый камень",
+                "wp_name": "Цокольная плитка \"Колотый камень\"",
+                "size_params": "lwh",
+                "length": 330,
+                "width": 260,
+                "height": 25,
+                "weight_unit": 5,
+                "weight_pallete": 0,
+                "unit_in_units": 11.6,
+                "unit_in_pallete": 0,
+                "units_in_pallete": 0,
+                "units_from_batch": 7,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Плитняк мелкий",
+                "wp_name": "Цокольная плитка \"Плитняк мелкий\"",
+                "size_params": "lwh",
+                "length": 500,
+                "width": 160,
+                "height": 25,
+                "weight_unit": 4,
+                "weight_pallete": 0,
+                "unit_in_units": 12.5,
+                "unit_in_pallete": 0,
+                "units_in_pallete": 0,
+                "units_from_batch": 7,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
+            {
+                "name": "Плитняк крупный",
+                "wp_name": "Цокольная плитка \"Плитняк крупный\"",
+                "size_params": "lwh",
+                "length": 500,
+                "width": 160,
+                "height": 25,
+                "weight_unit": 4,
+                "weight_pallete": 0,
+                "unit_in_units": 12.5,
+                "unit_in_pallete": 0,
+                "units_in_pallete": 0,
+                "units_from_batch": 7,
+                "forms": 10,
+                "salary_units": 80,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 380,
+                        "price_vat": 460, 
+                        "price_cashless": 420
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 470,
+                        "price_vat": 570, 
+                        "price_cashless": 520
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 510,
+                        "price_vat": 625, 
+                        "price_cashless": 570
+                    }
+                ]
+            },
             {
                 "name": "Волна",
-                "wp_name": "Брусчатка «Волна шагрень»",
-                "width": 220,
-                "length": 110,
+                "wp_name": "Брусчатка \"Волна шагрень\"",
+                "size_params": "lwh",
+                "length": 220,
+                "width": 110,
                 "height": 45,
                 "weight_unit": 2,
-                "weight_units": 0,
                 "weight_pallete": 920,
                 "unit_in_units": 43,
                 "unit_in_pallete": 418,
@@ -147,43 +1828,1174 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 500,
-                        "price_vat": 500,
-                        "price_cashless": 500
+                        "price_vat": 605, 
+                        "price_cashless": 550
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 590,
-                        "price_vat": 590,
-                        "price_cashless": 590
+                        "price_vat": 715, 
+                        "price_cashless": 650
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 630,
-                        "price_vat": 630,
-                        "price_cashless": 630
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 630,
-                        "price_vat": 630,
-                        "price_cashless": 630
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 630,
-                        "price_vat": 630,
-                        "price_cashless": 630
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
+                ]
+            },
+            {
+                "name": "Кирпичик",
+                "wp_name": "Брусчатка \"Кирпичик шагрень\"",
+                "size_params": "lwh",
+                "length": 200,
+                "width": 100,
+                "height": 45,
+                "weight_unit": 1.8,
+                "weight_pallete": 960,
+                "unit_in_units": 50,
+                "unit_in_pallete": 528,
+                "units_in_pallete": 10.6,
+                "units_from_batch": 7,
+                "forms": 35,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 605, 
+                        "price_cashless": 550
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 715, 
+                        "price_cashless": 650
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
+                ]
+            },
+            {
+                "name": "Шестигранник шагрень",
+                "wp_name": "Брусчатка \"Шестигранник шагрень\" (186*161*45)",
+                "size_params": "lwh",
+                "length": 186,
+                "width": 161,
+                "height": 45,
+                "weight_unit": 2.3,
+                "weight_pallete": 890,
+                "unit_in_units": 44,
+                "unit_in_pallete": 385,
+                "units_in_pallete": 8.75,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 605, 
+                        "price_cashless": 550
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 715, 
+                        "price_cashless": 650
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
+                ]
+            },
+            {
+                "name": "Шестигранник рельеф",
+                "wp_name": "Брусчатка \"Шестигранник рельеф\" (186*161*45)",
+                "size_params": "lwh",
+                "length": 186,
+                "width": 161,
+                "height": 45,
+                "weight_unit": 2.3,
+                "weight_pallete": 890,
+                "unit_in_units": 44,
+                "unit_in_pallete": 385,
+                "units_in_pallete": 8.75,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 605, 
+                        "price_cashless": 550
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 715, 
+                        "price_cashless": 650
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
+                ]
+            },
+            {
+                "name": "Шестигранник большой",
+                "wp_name": "Брусчатка \"Шестигранник большой\" (225*260*55)",
+                "size_params": "lwh",
+                "length": 260,
+                "width": 225,
+                "height": 55,
+                "weight_unit": 4.3,
+                "weight_pallete": 880,
+                "unit_in_units": 22.7,
+                "unit_in_pallete": 165,
+                "units_in_pallete": 7.27,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Восьмигранник",
+                "wp_name": "Брусчатка \"Восьмигранник\"",
+                "size_params": "lwh",
+                "set_pair": "next",
+                "set_pair_ratio": 1,
+                "set_pair_ratio_to": 4.8,
+                "length": 240,
+                "width": 240,
+                "height": 45,
+                "weight_unit": 4.7,
+                "weight_pallete": 780,
+                "unit_in_units": 21,
+                "unit_in_pallete": 165,
+                "units_in_pallete": 7.86,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Брук",
+                "wp_name": "Брусчатка \"Брук\"",
+                "size_params": "lwh",
+                "length": 100,
+                "width": 100,
+                "height": 45,
+                "weight_unit": 0.9,
+                "weight_pallete": 960,
+                "unit_in_units": 100,
+                "unit_in_pallete": 1056,
+                "units_in_pallete": 10.6,
+                "units_from_batch": 7,
+                "forms": 1,
+                "salary_units": 0,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Ромб фигурный",
+                "wp_name": "Брусчатка \"Ромб фигурный\"",
+                "size_params": "lwh",
+                "length": 235,
+                "width": 140,
+                "height": 45,
+                "weight_unit": 2.4,
+                "weight_pallete": 850,
+                "unit_in_units": 42,
+                "unit_in_pallete": 352,
+                "units_in_pallete": 8.38,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Ромб штамп",
+                "wp_name": "Брусчатка \"Ромб штамп\"",
+                "size_params": "lwh",
+                "length": 330,
+                "width": 190,
+                "height": 45,
+                "weight_unit": 3.1,
+                "weight_pallete": 800,
+                "unit_in_units": 32,
+                "unit_in_pallete": 264,
+                "units_in_pallete": 8.25,
+                "units_from_batch": 7,
+                "forms": 19,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 605, 
+                        "price_cashless": 550
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 715, 
+                        "price_cashless": 650
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
+                ]
+            },
+            {
+                "name": "Ретро",
+                "wp_name": "Брусчатка \"Ретро\"",
+                "size_params": "lwh",
+                "length": 295,
+                "width": 185,
+                "height": 45,
+                "weight_unit": 4.2,
+                "weight_pallete": 820,
+                "unit_in_units": 23.8,
+                "unit_in_pallete": 193,
+                "units_in_pallete": 8.11,
+                "units_from_batch": 7,
+                "forms": 15,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 605, 
+                        "price_cashless": 550
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 715, 
+                        "price_cashless": 650
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
+                ]
+            },
+            {
+                "name": "Мостовая (бол)",
+                "wp_name": "Брусчатка «Мостовая»",
+                "size_params": "lwh",
+                "set_pair": "next",
+                "set_pair_ratio": 1,
+                "set_pair_ratio_to": 1,
+                "length": 200,
+                "width": 150,
+                "height": 50,
+                "weight_unit": 3.7,
+                "weight_pallete": 750,
+                "unit_in_units": 33,
+                "unit_in_pallete": 110,
+                "units_in_pallete": 9.9,
+                "units_from_batch": 7,
+                "forms": 5,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Мостовая (мал)",
+                "wp_name": "Брусчатка \"Мостовая\"",
+                "size_params": "lwh",
+                "set_pair": "prev",
+                "set_pair_ratio": 1,
+                "set_pair_ratio_to": 1,
+                "length": 100,
+                "width": 150,
+                "height": 50,
+                "weight_unit": 1.9,
+                "weight_pallete": 750,
+                "unit_in_units": 67,
+                "unit_in_pallete": 110,
+                "units_in_pallete": 9.9,
+                "units_from_batch": 7,
+                "forms": 5,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Мерседес",
+                "wp_name": "Брусчатка \"Мерседес\"",
+                "size_params": "lwh",
+                "length": 278,
+                "width": 240,
+                "height": 45,
+                "weight_unit": 3.7,
+                "weight_pallete": 750,
+                "unit_in_units": 24,
+                "unit_in_pallete": 198,
+                "units_in_pallete": 8.3,
+                "units_from_batch": 7,
+                "forms": 5,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 605, 
+                        "price_cashless": 550
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 715, 
+                        "price_cashless": 650
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
+                ]
+            },
+            {
+                "name": "Клевер цветок",
+                "wp_name": "Брусчатка \"Клевер цветок\" (270*220*45)",
+                "size_params": "lwh",
+                "length": 270,
+                "width": 220,
+                "height": 45,
+                "weight_unit": 3.2,
+                "weight_pallete": 850,
+                "unit_in_units": 28,
+                "unit_in_pallete": 264,
+                "units_in_pallete": 9.4,
+                "units_from_batch": 7,
+                "forms": 40,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 605, 
+                        "price_cashless": 550
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 715, 
+                        "price_cashless": 650
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
+                ]
+            },
+            {
+                "name": "Клевер шагрень",
+                "wp_name": "Брусчатка \"Клевер шагрень\" (270*220*45)",
+                "size_params": "lwh",
+                "length": 270,
+                "width": 220,
+                "height": 45,
+                "weight_unit": 3.2,
+                "weight_pallete": 850,
+                "unit_in_units": 28,
+                "unit_in_pallete": 264,
+                "units_in_pallete": 9.4,
+                "units_from_batch": 7,
+                "forms": 40,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 605, 
+                        "price_cashless": 550
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 715, 
+                        "price_cashless": 650
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    }
+                ]
+            },
+            {
+                "name": "Ромашка (бол)",
+                "wp_name": "Брусчатка \"Краковский клевер\"",
+                "size_params": "lwh",
+                "set_pair": "next",
+                "set_pair_ratio": 1,
+                "set_pair_ratio_to": 2,
+                "length": 295,
+                "width": 295,
+                "height": 45,
+                "weight_unit": 5.6,
+                "weight_pallete": 740,
+                "unit_in_units": 17,
+                "unit_in_pallete": 132,
+                "units_in_pallete": 7.8,
+                "units_from_batch": 7,
+                "forms": 30,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Ромашка (мал)",
+                "wp_name": "Брусчатка \"Краковский клевер\"",
+                "size_params": "lwh",
+                "set_pair": "prev",
+                "set_pair_ratio": 2,
+                "set_pair_ratio_to": 1,
+                "length": 210,
+                "width": 210,
+                "height": 45,
+                "weight_unit": 2.7,
+                "weight_pallete": 740,
+                "unit_in_units": 34,
+                "unit_in_pallete": 264,
+                "units_in_pallete": 7.8,
+                "units_from_batch": 7,
+                "forms": 16,
+                "salary_units": 120,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 550,
+                        "price_vat": 670, 
+                        "price_cashless": 610
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 640,
+                        "price_vat": 780, 
+                        "price_cashless": 710
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 680,
+                        "price_vat": 835, 
+                        "price_cashless": 760
+                    }
+                ]
+            },
+            {
+                "name": "Клевер цветок",
+                "wp_name": "Брусчатка \"Клевер цветок\" (270*220*25)",
+                "size_params": "lwh",
+                "length": 270,
+                "width": 220,
+                "height": 25,
+                "weight_unit": 1.8,
+                "weight_pallete": 700,
+                "unit_in_units": 28,
+                "unit_in_pallete": 360,
+                "units_in_pallete": 12.2,
+                "units_from_batch": 7,
+                "forms": 40,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 450,
+                        "price_vat": 525, 
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 540,
+                        "price_vat": 635, 
+                        "price_cashless": 600
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    }
+                ]
+            },
+            {
+                "name": "Клевер цветок (половинки)",
+                "wp_name": "Брусчатка \"Клевер цветок\" (половинки) (270*220*25)",
+                "size_params": "lwh",
+                "length": 270,
+                "width": 110,
+                "height": 25,
+                "weight_unit": 1.8,
+                "weight_pallete": 700,
+                "unit_in_units": 28,
+                "unit_in_pallete": 360,
+                "units_in_pallete": 12.2,
+                "units_from_batch": 7,
+                "forms": 40,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 450,
+                        "price_vat": 525, 
+                        "price_cashless": 500
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 540,
+                        "price_vat": 635, 
+                        "price_cashless": 600
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 580,
+                        "price_vat": 690, 
+                        "price_cashless": 625
+                    }
+                ]
+            },
+            {
+                "name": "Ёлочка",
+                "wp_name": "Тротуарная плитка \"Ёлочка\"",
+                "size_params": "lwh",
+                "length": 290,
+                "width": 220,
+                "height": 50,
+                "weight_unit": 7,
+                "weight_pallete": 1100,
+                "unit_in_units": 15.7,
+                "unit_in_pallete": 156,
+                "units_in_pallete": 9.94,
+                "units_from_batch": 7,
+                "forms": 21.6,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 605, 
+                        "price_cashless": 550
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 590,
+                        "price_vat": 715, 
+                        "price_cashless": 650
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 630,
+                        "price_vat": 770, 
+                        "price_cashless": 700
                     }
                 ]
             }
         ]
     },
     {
-        "name": "Изделия из бетона",
+        "name": "Блоки",
+        "main_category": "blocks",
+        "units": "volume",
+        "variations": "grades",
+        "adjectives": "masculine",
+        "product_groups": [
+            {
+                "name": "Полистиролбетон D600",
+                "wp_name": "Полистиролбетонный блок D600 (200*300*600)",
+                "size_params": "whl",
+                "length": 200,
+                "width": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 27.78,
+                "unit_in_pallete": 32,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4400,
+                        "price_vat": 4800, 
+                        "price_cashless": 4600
+                    }
+                ]
+            },
+            {
+                "name": "Полистиролбетон D400",
+                "wp_name": "Полистиролбетонный блок D400 (400*300*600)",
+                "size_params": "whl",
+                "length": 400,
+                "width": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 13.89,
+                "unit_in_pallete": 16,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4000,
+                        "price_vat": 4400, 
+                        "price_cashless": 4200
+                    }
+                ]
+            },
+            {
+                "name": "Полистиролбетон D500",
+                "wp_name": "Полистиролбетонный блок D500 (400*300*600)",
+                "size_params": "whl",
+                "length": 400,
+                "width": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 13.89,
+                "unit_in_pallete": 16,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4200,
+                        "price_vat": 4600, 
+                        "price_cashless": 4400
+                    }
+                ]
+            },
+            {
+                "name": "Полистиролбетон D600",
+                "wp_name": "Полистиролбетонный блок D600 (400*300*600)",
+                "size_params": "whl",
+                "length": 400,
+                "width": 300,
+                "height": 600,
+                "weight_unit": 0,
+                "weight_pallete": 0,
+                "unit_in_units": 13.89,
+                "unit_in_pallete": 16,
+                "units_in_pallete": 1.152,
+                "units_from_batch": 20,
+                "forms": 5.184,
+                "salary_units": 350,
+                "products": [
+                    {
+                        "variation": "",
+                        "main_variation": "",
+                        "price": 4400,
+                        "price_vat": 4800, 
+                        "price_cashless": 4600
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Изделия",
         "main_category": "tiles",
         "units": "unit",
         "variations": "colors",
@@ -191,14 +3003,14 @@
         "product_groups": [
             {
                 "name": "Бордюр",
-                "wp_name": "Бордюр (поребрик)",
-                "width": 500,
-                "length": 300,
+                "wp_name": "Бордюр (500*200*30)",
+                "size_params": "lhw",
+                "length": 500,
+                "width": 200,
                 "height": 30,
                 "weight_unit": 7,
-                "weight_units": 0,
                 "weight_pallete": 350,
-                "unit_in_units": 2,
+                "unit_in_units": 0,
                 "unit_in_pallete": 49,
                 "units_in_pallete": 0,
                 "units_from_batch": 20,
@@ -209,36 +3021,460 @@
                         "variation": "grey",
                         "main_variation": "grey",
                         "price": 50,
-                        "price_vat": 50,
-                        "price_cashless": 50
+                        "price_vat": 70, 
+                        "price_cashless": 63
                     },
                     {
                         "variation": "red",
                         "main_variation": "red",
                         "price": 70,
-                        "price_vat": 70,
-                        "price_cashless": 70
+                        "price_vat": 93, 
+                        "price_cashless": 84
                     },
                     {
                         "variation": "yellow",
                         "main_variation": "color",
                         "price": 80,
-                        "price_vat": 80,
-                        "price_cashless": 80
+                        "price_vat": 105, 
+                        "price_cashless": 95
                     },
                     {
                         "variation": "brown",
                         "main_variation": "color",
                         "price": 80,
-                        "price_vat": 80,
-                        "price_cashless": 80
+                        "price_vat": 105, 
+                        "price_cashless": 95
                     },
                     {
                         "variation": "black",
                         "main_variation": "color",
                         "price": 80,
-                        "price_vat": 80,
-                        "price_cashless": 80
+                        "price_vat": 105, 
+                        "price_cashless": 95
+                    }
+                ]
+            },
+            {
+                "name": "Бордюр",
+                "wp_name": "Бордюр (500*210*50)",
+                "size_params": "lhw",
+                "length": 500,
+                "width": 210,
+                "height": 50,
+                "weight_unit": 11,
+                "weight_pallete": 550,
+                "unit_in_units": 0,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 85,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 90,
+                        "price_vat": 116, 
+                        "price_cashless": 105
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 125,
+                        "price_vat": 160, 
+                        "price_cashless": 145
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_vat": 176, 
+                        "price_cashless": 160
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_vat": 176, 
+                        "price_cashless": 160
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_vat": 176, 
+                        "price_cashless": 160
+                    }
+                ]
+            },
+            {
+                "name": "Бордюр",
+                "wp_name": "Бордюр (500*210*70)",
+                "size_params": "lhw",
+                "length": 500,
+                "width": 210,
+                "height": 70,
+                "weight_unit": 16,
+                "weight_pallete": 800,
+                "unit_in_units": 0,
+                "unit_in_pallete": 49,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 14,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 120,
+                        "price_vat": 154, 
+                        "price_cashless": 140
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 175,
+                        "price_vat": 215, 
+                        "price_cashless": 195
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 195,
+                        "price_vat": 237, 
+                        "price_cashless": 215
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 195,
+                        "price_vat": 237, 
+                        "price_cashless": 215
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 195,
+                        "price_vat": 237, 
+                        "price_cashless": 215
+                    }
+                ]
+            },
+            {
+                "name": "Бордюр",
+                "wp_name": "Бордюр дорожный (1000*200*75)",
+                "size_params": "lhw",
+                "length": 1000,
+                "width": 220,
+                "height": 75,
+                "weight_unit": 36,
+                "weight_pallete": 750,
+                "unit_in_units": 0,
+                "unit_in_pallete": 20,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 47,
+                "salary_units": 30,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 220,
+                        "price_vat": 280, 
+                        "price_cashless": 255
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 330,
+                        "price_vat": 407, 
+                        "price_cashless": 370
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 370,
+                        "price_vat": 451, 
+                        "price_cashless": 410
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 370,
+                        "price_vat": 451, 
+                        "price_cashless": 410
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 370,
+                        "price_vat": 451, 
+                        "price_cashless": 410
+                    }
+                ]
+            },
+            {
+                "name": "Водосток",
+                "wp_name": "Тротуарный водосток (330*180*60)",
+                "size_params": "lwh",
+                "length": 330,
+                "width": 180,
+                "height": 60,
+                "weight_unit": 6.5,
+                "weight_pallete": 400,
+                "unit_in_units": 0,
+                "unit_in_pallete": 63,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 42,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 65,
+                        "price_vat": 77, 
+                        "price_cashless": 70
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 80,
+                        "price_vat": 94, 
+                        "price_cashless": 85
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 90,
+                        "price_vat": 105, 
+                        "price_cashless": 95
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 90,
+                        "price_vat": 105, 
+                        "price_cashless": 95
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 90,
+                        "price_vat": 105, 
+                        "price_cashless": 95
+                    }
+                ]
+            },
+            {
+                "name": "Водосток",
+                "wp_name": "Тротуарный водосток (500*160*50)",
+                "size_params": "lwh",
+                "length": 500,
+                "width": 160,
+                "height": 50,
+                "weight_unit": 7,
+                "weight_pallete": 450,
+                "unit_in_units": 0,
+                "unit_in_pallete": 63,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 49,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 100,
+                        "price_vat": 116, 
+                        "price_cashless": 105
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 120,
+                        "price_vat": 160, 
+                        "price_cashless": 145
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_vat": 176, 
+                        "price_cashless": 160
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_vat": 176, 
+                        "price_cashless": 160
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 140,
+                        "price_vat": 176, 
+                        "price_cashless": 160
+                    }
+                ]
+            },
+            {
+                "name": "Ограничитель проезда",
+                "wp_name": "Парковочный ограничитель",
+                "size_params": "lh",
+                "length": 400,
+                "width": 0,
+                "height": 220,
+                "weight_unit": 43,
+                "weight_pallete": 0,
+                "unit_in_units": 0,
+                "unit_in_pallete": 0,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 10,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 500,
+                        "price_vat": 580, 
+                        "price_cashless": 525
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 700,
+                        "price_vat": 810, 
+                        "price_cashless": 735
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 800,
+                        "price_vat": 925, 
+                        "price_cashless": 840
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 800,
+                        "price_vat": 925, 
+                        "price_cashless": 840
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 800,
+                        "price_vat": 925, 
+                        "price_cashless": 840
+                    }
+                ]
+            },
+            {
+                "name": "Пенек",
+                "wp_name": "\"Пенек\" (300*50)",
+                "size_params": "lh",
+                "length": 300,
+                "width": 0,
+                "height": 50,
+                "weight_unit": 7,
+                "weight_pallete": 0,
+                "unit_in_units": 0,
+                "unit_in_pallete": 0,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 24,
+                "salary_units": 10,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 40,
+                        "price_vat": 53, 
+                        "price_cashless": 48
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 47,
+                        "price_vat": 61, 
+                        "price_cashless": 55
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 50,
+                        "price_vat": 64, 
+                        "price_cashless": 58
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 50,
+                        "price_vat": 64, 
+                        "price_cashless": 58
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 50,
+                        "price_vat": 64, 
+                        "price_cashless": 58
+                    }
+                ]
+            },
+            {
+                "name": "Ступенька",
+                "wp_name": "Ступенька (300*300*50)",
+                "size_params": "lwh",
+                "length": 300,
+                "width": 300,
+                "height": 50,
+                "weight_unit": 9,
+                "weight_pallete": 0,
+                "unit_in_units": 11.1,
+                "unit_in_pallete": 0,
+                "units_in_pallete": 0,
+                "units_from_batch": 20,
+                "forms": 10,
+                "salary_units": 100,
+                "products": [
+                    {
+                        "variation": "grey",
+                        "main_variation": "grey",
+                        "price": 50,
+                        "price_vat": 61, 
+                        "price_cashless": 55
+                    },
+                    {
+                        "variation": "red",
+                        "main_variation": "red",
+                        "price": 58,
+                        "price_vat": 71, 
+                        "price_cashless": 64
+                    },
+                    {
+                        "variation": "yellow",
+                        "main_variation": "color",
+                        "price": 61,
+                        "price_vat": 76, 
+                        "price_cashless": 69
+                    },
+                    {
+                        "variation": "brown",
+                        "main_variation": "color",
+                        "price": 61,
+                        "price_vat": 76, 
+                        "price_cashless": 69
+                    },
+                    {
+                        "variation": "black",
+                        "main_variation": "color",
+                        "price": 61,
+                        "price_vat": 76, 
+                        "price_cashless": 69
                     }
                 ]
             }

@@ -41,10 +41,10 @@ class ProductsController extends Controller
 
     public function getStock(Request $request) 
     {
-        $wpName = $request->get('title');
-        if ($wpName)
+        $wpSlug = Str::slug($request->get('title', ''));
+        if ($wpSlug)
         {
-            $productGroup = ProductGroup::where('wp_name', $wpName)->first();
+            $productGroup = ProductGroup::where('wp_slug', $wpSlug)->first();
         }
         else
         {
@@ -55,15 +55,25 @@ class ProductsController extends Controller
 
         if ($productGroup)
         {
+            $response['id'] = $productGroup->id;
+            $response['name'] = $productGroup->wp_name;
+            $response['units'] = $productGroup->units_text;
+            $response['set_pair'] = null;
+
+            $products = [];
+
             foreach ($productGroup->products as $product) 
             {
-                $response[] = [
+                
+                $products[] = [
                     'id' => $product->id,
                     'variation' => $product->variation_text,
                     'stock' => $product->in_stock > 0,
                     'default' => $product->variation == 'grey'
                 ];
             }
+
+            $response['products'] = $products;
         }
 
         return $response;

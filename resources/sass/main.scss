@@ -143,7 +143,6 @@ footer {
 				right: 17px;
 				font-size: 20px;
 				color: #FFFFFF;
-				transition: transform 0.3s;
 				cursor: pointer;
 
 				@include media-breakpoint-only(lg) {
@@ -167,7 +166,6 @@ footer {
 
 	.submenu-block {
 		max-height: 0px;
-		transition: height 0.3s;
 		border-top: solid 0px darken($grey, 10%);
 		padding: 0px;
 		background: $primary;
@@ -445,14 +443,24 @@ i.fas, i.far {
 .show-block {
 	border-radius: 5px;
     box-shadow: 0px 0px 5px darken($grey, 10%);
-    padding: 20px;
+    padding: 20px 20px 30px 20px;
     border: solid 1px darken($grey, 10%);
 
     .show-block-title {
-    	color: darken($grey, 75%);
+    	color: darken($grey, 70%);
     	font-size: 25px;
     	font-weight: 500;
     	margin-bottom: 25px;
+    	position: relative;
+
+    	.status-block {
+    		color: darken($grey, 35%);
+    		position: absolute;
+		    top: 5px;
+		    right: 0;
+		    font-weight: 400;
+		    font-size: 18px;
+    	}
     }
 
     .params-title {
@@ -690,5 +698,11 @@ i.fas, i.far {
 	}
 	.btn-sm {
 		min-width: 40px;
+	}
+}
+
+.auth-content-block {
+	.form-check {
+		padding-left: 0px;
 	}
 }

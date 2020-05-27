@@ -15,17 +15,17 @@ class FacilitySeeder extends Seeder
     {
         $facilities = [
             [
-                'name' => 'Цех с плиткой',
+                'name' => 'Цех плитки',
                 'status' => Facility::STATUS_ACTIVE,
-                'categories' => [1, 2, 3, 4],
-                'performance' => 10,
+                'categories' => [1, 3],
+                'performance' => 30,
                 'icon_color' => '#55d98c'
             ],
             [
-                'name' => 'Цех с блоками',
+                'name' => 'Цех блоков',
                 'status' => Facility::STATUS_ACTIVE,
-                'categories' => [5],
-                'performance' => 5,
+                'categories' => [2],
+                'performance' => 8,
                 'icon_color' => '#5faee3'
             ]
         ];

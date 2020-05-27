@@ -81295,8 +81295,6 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-
 __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
@@ -81307,6 +81305,7 @@ __webpack_require__(/*! angularjs-color-picker */ "./node_modules/angularjs-colo
 
 __webpack_require__(/*! angular-datepicker */ "./node_modules/angular-datepicker/dist/index.js");
 
+window.moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var tctApp = angular.module('tctApp', [__webpack_require__(/*! angular-sanitize */ "./node_modules/angular-sanitize/index.js"), __webpack_require__(/*! angular-route */ "./node_modules/angular-route/index.js"), __webpack_require__(/*! angular-resource */ "./node_modules/angular-resource/index.js"), __webpack_require__(/*! angular-toastr */ "./node_modules/angular-toastr/index.js"), __webpack_require__(/*! angular-ui-mask */ "./node_modules/angular-ui-mask/index.js"), __webpack_require__(/*! ui-select */ "./node_modules/ui-select/index.js"), 'color.picker', 'datePicker']);
 tctApp.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode({
@@ -81558,6 +81557,11 @@ tctApp.run(function ($rootScope) {
     setTimeout(function () {
       nextInput.focus();
     }, 50);
+  };
+
+  $rootScope.inputFloat = function (model, key) {
+    model[key] = model[key].replace(',', '.');
+    model[key] = model[key].replace(/[^.\d]/g, '');
   };
 });
 
@@ -82124,6 +82128,7 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
     $scope.facility = facility || $scope.facility;
     $scope.modalFacility = angular.copy($scope.facility);
     $scope.modalFacility.status = status;
+    $scope.modalFacility.status_date_raw = new Date();
 
     if ($scope.facility.status == $scope.modalFacility.status) {
       $scope.saveStatus();
@@ -82147,6 +82152,7 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
     if ($scope.facility.status == $scope.modalFacility.status) {
       $scope.modalFacility.status_date_raw = null;
     } else if ($scope.modalFacility.status_date_raw) {
+      $scope.modalFacility.status_date_raw.setHours(12);
       $scope.modalFacility.status = ($scope.modalFacility.status + 1) % 2;
     }
 
@@ -82159,14 +82165,13 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
       $timeout(function () {
         $scope.showTopAlert = false;
       }, 2000);
+      $scope.hideStatusModal();
 
       if (!$scope.baseUrl) {
         $scope.init();
       } else {
-        $scope.facility = $scope.modalFacility;
+        $scope.initShow();
       }
-
-      $scope.hideStatusModal();
     }, function (response) {
       $scope.modalStatusErrors = response.data.errors;
     });
@@ -82368,15 +82373,21 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
     $scope.materialGroup.materials.splice(index, 1);
   };
 
-  $scope.saveEditField = function (key, groupNum) {
-    if (key == 'materials') {
-      var materialGroup = $scope.materialGroups[groupNum];
-      MaterialsRepository.save({
-        id: materialGroup.id
-      }, materialGroup, function (response) {
-        toastr.success('Изменения успешно сохранены!');
-      }, function (response) {});
+  $scope.saveEditField = function (groupNum, num, key) {
+    var materialGroup = $scope.materialGroups[groupNum];
+    var material = materialGroup.materials[num];
+
+    if (material[key] != material['new_' + key]) {
+      material[key] = material['new_' + key];
+    } else {
+      return;
     }
+
+    MaterialsRepository.save({
+      id: materialGroup.id
+    }, materialGroup, function (response) {
+      toastr.success('Изменения успешно сохранены!');
+    }, function (response) {});
   };
 
   $scope.loadExportFile = function () {
@@ -83613,6 +83624,8 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   };
 
   $scope.changePrice = function (currentProduct, key) {
+    nextKey = key.indexOf('unit') !== -1 ? key.replace('price_unit', 'price') : key.replace('price', 'price_unit');
+
     if (currentProduct.main_variation == 'color') {
       $scope.mainVariation = currentProduct;
       var _iteratorNormalCompletion4 = true;
@@ -83625,6 +83638,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 
           if (product.main_variation == 'color') {
             product[key] = currentProduct[key];
+            product[nextKey] = currentProduct[nextKey];
           }
         }
       } catch (err) {
@@ -83642,6 +83656,10 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
         }
       }
     }
+
+    if (currentProduct.productGroup.category.units != 'unit') {
+      if (key == 'price') {}
+    }
   };
 
   $scope.isSetPairShown = false;
@@ -83656,50 +83674,46 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     }
   };
 
-  $scope.saveEditField = function (key, groupNum, num) {
-    if (key == 'products') {
-      var productGroup = $scope.productGroups[groupNum];
-      ProductsRepository.save({
-        id: productGroup.id
-      }, productGroup, function (response) {
-        toastr.success('Изменения успешно сохранены!');
+  $scope.saveEditField = function (groupNum, num, key) {
+    var productGroup = $scope.productGroups[groupNum];
+    var product = productGroup.products[num];
 
-        if (num != undefined) {
-          productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
-          productGroup.in_stock = 0;
-          var _iteratorNormalCompletion5 = true;
-          var _didIteratorError5 = false;
-          var _iteratorError5 = undefined;
+    if (product[key] != product['new_' + key]) {
+      product[key] = product['new_' + key];
+    } else {
+      return;
+    }
 
-          try {
-            for (var _iterator5 = productGroup.products[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-              product = _step5.value;
-              productGroup.in_stock += product.in_stock;
-            }
-          } catch (err) {
-            _didIteratorError5 = true;
-            _iteratorError5 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
-                _iterator5["return"]();
-              }
-            } finally {
-              if (_didIteratorError5) {
-                throw _iteratorError5;
-              }
-            }
+    ProductsRepository.save({
+      id: productGroup.id
+    }, productGroup, function (response) {
+      toastr.success('Изменения успешно сохранены!');
+      productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
+      productGroup.in_stock = 0;
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = productGroup.products[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          product = _step5.value;
+          productGroup.in_stock += product.in_stock;
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+            _iterator5["return"]();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
           }
         }
-      }, function (response) {});
-    } else if (key == 'materials') {
-      var material = $scope.materials[groupNum];
-      MaterialsRepository.save({
-        id: material.id
-      }, material, function (response) {
-        toastr.success('Изменения успешно сохранены!');
-      }, function (response) {});
-    }
+      }
+    }, function (response) {});
   };
 
   $scope.loadExportFile = function () {
@@ -83907,6 +83921,11 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
         id: $scope.id
       }, function (response) {
         $scope.worker = response;
+
+        if ($scope.worker.birthdate) {
+          var birthdate = $scope.worker.birthdate.split("-");
+          $scope.worker.birthdate_raw = birthdate[2] + birthdate[1] + birthdate[0];
+        }
       });
     }
 
@@ -83916,6 +83935,7 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
   };
 
   $scope.save = function () {
+    console.log($scope.worker);
     WorkersRepository.save({
       id: $scope.id
     }, $scope.worker, function (response) {
@@ -83947,6 +83967,7 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
     $scope.worker = worker || $scope.worker;
     $scope.modalWorker = angular.copy($scope.worker);
     $scope.modalWorker.status = status;
+    $scope.modalWorker.status_date_raw = new Date();
 
     if ($scope.worker.status == $scope.modalWorker.status) {
       $scope.saveStatus();
@@ -83959,17 +83980,13 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
   $scope.hideStatusModal = function () {
     $scope.isStatusModalShown = false;
     $scope.modalStatusErrors = {};
-  }; // $scope.updateStatusNow = function()
-  // {
-  // 	$scope.worker.status = ($scope.worker.status + 2) % 4;
-  // 	$scope.worker.status_date_raw = new Date();
-  // }
-
+  };
 
   $scope.saveStatus = function () {
     if ($scope.worker.status == $scope.modalWorker.status) {
       $scope.modalWorker.status_date_raw = null;
     } else if ($scope.modalWorker.status_date_raw) {
+      $scope.modalWorker.status_date_raw.setHours(12);
       $scope.modalWorker.status = ($scope.modalWorker.status + 1) % 2;
     }
 
@@ -83978,14 +83995,13 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
     }, $scope.modalWorker, function (response) {
       $scope.modalStatusErrors = {};
       toastr.success('Изменения успешно сохранены!');
+      $scope.hideStatusModal();
 
       if (!$scope.baseUrl) {
         $scope.init();
       } else {
-        $scope.worker = $scope.modalWorker;
+        $scope.initShow();
       }
-
-      $scope.hideStatusModal();
     }, function (response) {
       $scope.modalStatusErrors = response.data.errors;
     });

@@ -75,6 +75,8 @@ class ImportProducts extends Command
                 }
 
                 $prevProductGroup = $productGroup;
+
+                $this->info($productGroup->name . ' ' . $productGroup->size);
             }
         }
     }

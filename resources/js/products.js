@@ -337,6 +337,8 @@ angular.module('tctApp').controller('ProductsController', [
 
 	$scope.changePrice = function(currentProduct, key)
 	{
+		nextKey = (key.indexOf('unit') !== -1) ? key.replace('price_unit', 'price') : key.replace('price', 'price_unit');
+
 		if (currentProduct.main_variation == 'color')
 		{
 			$scope.mainVariation = currentProduct;
@@ -346,7 +348,16 @@ angular.module('tctApp').controller('ProductsController', [
 				if (product.main_variation == 'color')
 				{
 					product[key] = currentProduct[key];
+					product[nextKey] = currentProduct[nextKey];
 				}
+			}
+		}
+
+		if (currentProduct.productGroup.category.units != 'unit')
+		{
+			if (key == 'price') 
+			{
+
 			}
 		}
 	}
@@ -367,43 +378,35 @@ angular.module('tctApp').controller('ProductsController', [
 	}
 
 
-	$scope.saveEditField = function(key, groupNum, num) 
+	$scope.saveEditField = function(groupNum, num, key) 
 	{
-		if (key == 'products')
+		var productGroup = $scope.productGroups[groupNum];
+		var product = productGroup.products[num];
+		
+		if (product[key] != product['new_' + key])
 		{
-			var productGroup = $scope.productGroups[groupNum];
-
-			ProductsRepository.save({id: productGroup.id}, productGroup, function(response) 
-			{
-				toastr.success('Изменения успешно сохранены!');
-	
-				if (num != undefined)
-				{
-					productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
-
-					productGroup.in_stock = 0;
-					for (product of productGroup.products)
-					{
-						productGroup.in_stock += product.in_stock;
-					}
-				}
-			}, 
-			function(response) 
-			{
-	        });
+			product[key] = product['new_' + key];
 		}
-		else if (key == 'materials')
+		else
 		{
-			var material = $scope.materials[groupNum];
-
-			MaterialsRepository.save({id: material.id}, material, function(response) 
-			{
-				toastr.success('Изменения успешно сохранены!');
-			}, 
-			function(response) 
-			{
-	        });
+			return;
 		}
+
+		ProductsRepository.save({id: productGroup.id}, productGroup, function(response) 
+		{
+			toastr.success('Изменения успешно сохранены!');
+
+			productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
+
+			productGroup.in_stock = 0;
+			for (product of productGroup.products)
+			{
+				productGroup.in_stock += product.in_stock;
+			}
+		}, 
+		function(response) 
+		{
+        });
 	}
 
 

@@ -22,27 +22,51 @@
 			}
 		}
 
-		.form-control {
-			display: inline;
-		    padding: 0px;
-		    height: auto;
-		    width: 70px;
-		    border: none;
-		    border-bottom: solid 1px $primary;
-		    color: $primary;
-
-		    @include media-breakpoint-down(md) {
-				font-size: 14px;
-		    }
-		}
-
 		.edit-field {
-			cursor: text;
-			border-bottom: solid 1px transparent;
+			cursor: pointer;
+			position: relative;
 			transition: 0.1s;
+			display: inline-block;
 
 			&:hover {
-				color: $primary;
+				.units > span {
+					color: $primary;
+				}
+
+				.form-control {
+					color: $primary;
+			    }
+			}
+
+			.units {
+				position: absolute;
+			    top: 0;
+			    left: 0px;
+			    color: transparent;
+			    z-index: -1;
+
+			    & > span {
+			    	color: #000000;
+			    }
+			}
+
+			.form-control {
+				display: inline;
+			    padding: 0px;
+			    height: auto;
+			    width: 70px;
+			    border: none;
+			    border-bottom: solid 1px transparent;
+			    color: #000000;
+			    background: transparent;
+
+			    &:focus {
+			    	border-bottom: solid 1px $primary;
+			    }
+
+			    @include media-breakpoint-down(md) {
+					font-size: 14px;
+			    }
 			}
 		}
 	}

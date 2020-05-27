@@ -29,6 +29,7 @@
 			<th>№</th>
 			<th>Название</th>
 			<th>Материалы</th>
+			<th>Стоимость</th>
 			<th></th>
 		</tr>
 
@@ -39,17 +40,29 @@
 			<td>
 				@{{ recipe.name }}
 			</td>
-			<td>
-				<div ng-repeat="materialGroup in recipe.material_groups">
-					@{{ materialGroup.name }} –
-					@{{ materialGroup.pivot.count }}
-					<span ng-switch on="materialGroup.units">
-						<span ng-switch-when="volume_l">л</span>
-						<span ng-switch-when="volume_ml">мл</span>
-						<span ng-switch-when="weight_kg">кг</span>
-						<span ng-switch-when="weight_t">т</span>
-					</span>
+			<td ng-init="isMaterialsListShown = false">
+				<div class="materials-list" ng-class="{'shown': isMaterialsListShown || recipe.material_groups.length <= 3}">
+					<div ng-repeat="materialGroup in recipe.material_groups">
+						@{{ materialGroup.name }} –
+						@{{ materialGroup.pivot.count }}
+						<span ng-switch on="materialGroup.units">
+							<span ng-switch-when="volume_l">л</span>
+							<span ng-switch-when="volume_ml">мл</span>
+							<span ng-switch-when="weight_kg">кг</span>
+							<span ng-switch-when="weight_t">т</span>
+						</span>
+					</div>
 				</div>
+				<button type="button" class="btn btn-link" ng-show="recipe.material_groups.length > 3" ng-click="isMaterialsListShown = !isMaterialsListShown">
+					<span ng-if="!isMaterialsListShown">Показать все материалы</span>
+					<span ng-if="isMaterialsListShown">Скрыть все материалы</span>
+				</button>
+				<div ng-if="recipe.material_groups.length == 0">
+					Нет материалов
+				</div>
+			</td>
+			<td>
+				@{{ recipe.cost }} руб
 			</td>
 			<td>
 				<div class="btn-group">
