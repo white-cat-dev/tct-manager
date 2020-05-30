@@ -81,9 +81,14 @@ class OrdersController extends Controller
 
             $order = Order::create($orderData);
 
-            foreach ($request->get('products') as $productData) 
+            foreach ($request->get('products', []) as $productData) 
             {
-            	$order->products()->attach([
+            	if (!$productData['id'])
+                {
+                    continue;
+                }
+
+                $order->products()->attach([
                     $productData['id'] => [
                     	'price' => $productData['pivot']['price'],
                         'count' => $productData['pivot']['count'],
@@ -213,15 +218,14 @@ class OrdersController extends Controller
 
     protected function getData(Request $request)
     {
-        $date = $request->get('date', -1);
-
+        $date = $request->get('date_raw', -1); 
         if ($date == -1)
         {
             $date = $request->get('date', date('Y-m-d')); 
         }
         else
         {
-            $date = $date ? substr($date, 0, 10) : date('Y-m-d');
+            $date = $date ? Carbon::createFromFormat('dmY', $date)->format('Y-m-d') : date('Y-m-d');
         }
 
         $number = $request->get('number', '');
@@ -238,12 +242,17 @@ class OrdersController extends Controller
 
         return [
             'date' => $date,
+            'date_to' => $date,
             'number' => $number,
+            'main_category' => $request->get('main_category', 'tiles'),
+            'delivery' => $request->get('delivery', ''),
+            'delivery_distance' => $request->get('delivery_distance', 0),
             'client_id' => $request->get('client_id', 0),
             'priority' => $request->get('priority', Order::PRIORITY_NORMAL),
             'comment' => $request->get('comment', 0),
             'status' => $request->get('status', Order::STATUS_PRODUCTION),
             'cost' => $request->get('cost', 0),
+            'paid' => $request->get('paid', 0),
             'weight' => $request->get('weight', 0),
             'pallets' => $request->get('pallets', 0)
         ];

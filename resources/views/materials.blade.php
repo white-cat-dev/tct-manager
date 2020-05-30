@@ -1,8 +1,6 @@
 <div class="materials-page" ng-init="init()">
 	<h1>Материалы</h1>
 
-	@include('partials.top-alerts')
-
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -85,7 +83,7 @@
 					<a ng-href="@{{ materialGroup.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-sm btn-primary" ng-click="delete(materialGroup.id)">
+					<button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(materialGroup)">
 						<i class="far fa-trash-alt"></i>
 					</button>
 					@endif
@@ -171,4 +169,6 @@
 			</div>
 		</div>
 	</div>
+
+	@include('partials.delete-modal')
 </div>

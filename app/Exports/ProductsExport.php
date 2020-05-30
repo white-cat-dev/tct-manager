@@ -46,7 +46,7 @@ class ProductsExport implements FromCollection, ShouldAutoSize
         foreach ($products as $product) 
         {
             $collection->push([
-                $product->product_group->name . ' ' . $product->variation_text,
+                $product->product_group->name .  ' ' . $product->product_group->size . ' ' . $product->variation_text,
                 $product->in_stock > 0 ? $product->in_stock : '0'
             ]);
         }

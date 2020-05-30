@@ -1,8 +1,6 @@
 <div class="facilities-page" ng-init="init()">
 	<h1>Цехи</h1>
 
-	@include('partials.top-alerts')
-
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -36,7 +34,7 @@
 					<a ng-href="@{{ facility.url + '/edit' }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-primary btn-sm" ng-click="delete(facility.id)">
+					<button type="button" class="btn btn-primary btn-sm" ng-click="showDelete(facility)">
 						<i class="far fa-trash-alt"></i>
 					</button>
 					@endif
@@ -44,6 +42,7 @@
 
 				<div class="facility-title">
 					@{{ facility.name }}
+					<span ng-style="{'background': facility.icon_color}"></span>
 				</div>
 				<div class="row align-items-center">
 					<div class="col-5">
@@ -124,4 +123,5 @@
 	</div>
 
 	@include('partials.facility-status-modal')
+	@include('partials.delete-modal')
 </div>

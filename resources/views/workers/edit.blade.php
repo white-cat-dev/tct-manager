@@ -13,7 +13,7 @@
 			<a ng-href="@{{ worker.url }}" class="btn btn-primary" ng-if="worker.id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="worker.id" ng-click="delete(worker.id)">
+			<button type="button" class="btn btn-primary" ng-if="worker.id" ng-click="showDelete(worker)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 		</div>
@@ -83,4 +83,5 @@
 	</div>
 
 	@include('partials.worker-status-modal')
+	@include('partials.delete-modal')
 </div>

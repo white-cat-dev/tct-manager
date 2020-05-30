@@ -12157,6 +12157,7 @@ body {
 
 body.modal-open {
   overflow-y: hidden;
+  padding-right: 17px;
 }
 
 .modal-open .modal {
@@ -12615,6 +12616,19 @@ i.far {
   font-size: 18px;
 }
 
+.show-block .show-block-title.facility-show-block-title {
+  padding-left: 40px;
+}
+
+.show-block .show-block-title.facility-show-block-title > span {
+  display: block;
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  top: 8px;
+  left: 0px;
+}
+
 .show-block .params-title {
   color: #4d4d4d;
   font-size: 20px;
@@ -12657,6 +12671,11 @@ i.far {
 .show-block .param-block .param-value {
   color: #000000;
   font-size: 16px;
+}
+
+.show-block .param-block .color-block {
+  height: 38px;
+  border: solid 1px #dadada;
 }
 
 .table th {
@@ -12709,6 +12728,10 @@ i.far {
   justify-content: center;
   border-top: solid 1px #dadada;
   border-radius: 0px 0px 5px 5px;
+}
+
+.modal.delete-modal .modal-content {
+  margin-top: 15vh;
 }
 
 .ui-select-container {
@@ -13047,6 +13070,22 @@ i.far {
   margin-bottom: 10px;
 }
 
+.products-page .products-list {
+  max-height: 50px;
+  overflow: hidden;
+}
+
+.products-page .products-list.shown {
+  max-height: 300px;
+}
+
+.products-page .btn-link {
+  padding: 0px;
+  text-decoration: underline;
+  border: none;
+  display: block;
+}
+
 .materials-page {
   position: relative;
 }
@@ -13194,6 +13233,7 @@ i.far {
 .recipes-page .btn-link {
   padding: 0px;
   text-decoration: underline;
+  border: none;
 }
 
 .production-page {
@@ -13985,16 +14025,70 @@ i.far {
 }
 
 .orders-page .products-table tr td {
-  width: 14%;
+  vertical-align: top;
+  position: relative;
 }
 
-.orders-page .products-table tr td:first-child,
-.orders-page .products-table tr td:nth-child(2) {
-  width: 20%;
+.orders-page .products-table tr td .btn-default {
+  white-space: nowrap;
 }
 
-.orders-page .products-table tr td:last-child {
-  width: 4%;
+.orders-page .products-table tr td .btn-default:focus {
+  border-color: transparent;
+}
+
+.orders-page .products-table tr td.number-col {
+  padding: 18px 12px;
+}
+
+.orders-page .products-table tr td .form-control {
+  background: transparent;
+}
+
+.orders-page .products-table tr td .form-control:focus {
+  background: transparent;
+}
+
+.orders-page .products-table tr td .product-stock {
+  color: #9a9a9a;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.orders-page .products-table tr td .product-units {
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  color: transparent;
+  z-index: -1;
+}
+
+.orders-page .products-table tr td .product-units > span {
+  color: #000000;
+}
+
+.orders-page .products-table tr td:first-child .btn-default {
+  width: 200px;
+}
+
+.orders-page .products-table tr td:nth-child(2) .btn-default {
+  width: 100px;
+}
+
+.orders-page .delivery-distance-block {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+
+.orders-page .delivery-distance-block .form-control {
+  width: 100px;
+}
+
+.orders-page .delivery-distance-block > span {
+  padding-left: 10px;
+  white-space: nowrap;
 }
 
 .orders-page .realization-modal .table .product-color {
@@ -14056,6 +14150,7 @@ i.far {
   position: absolute;
   top: 15px;
   right: 15px;
+  z-index: 1;
 }
 
 .workers-page .worker-block .worker-title {
@@ -14539,12 +14634,24 @@ i.far {
   position: absolute;
   top: 15px;
   right: 15px;
+  z-index: 1;
 }
 
 .facilities-page .facility-block .facility-title {
   font-weight: 500;
   font-size: 20px;
   margin-bottom: 15px;
+  padding-left: 28px;
+  position: relative;
+}
+
+.facilities-page .facility-block .facility-title > span {
+  display: block;
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  top: 7px;
+  left: 0px;
 }
 
 .facilities-page .facility-block .facility-params {

@@ -214,20 +214,76 @@
 	}
 
 	.products-table {
-		tr {
-			td {
-				width: 14%;
+		tr td {
+			vertical-align: top;
+			position: relative;
+
+			.btn-default {
+   				white-space: nowrap;
+
+   				&:focus {
+   					border-color: transparent;
+   				}
 			}
 
-			td:first-child,
-			td:nth-child(2) {
-				width: 20%;
+			&.number-col {
+				padding: 18px 12px;
 			}
 
-			td:last-child {
-				width: 4%;
+			.form-control {
+				background: transparent;
+
+				&:focus {
+					background: transparent;
+				}
+			}
+
+			.product-stock {
+				color: darken($grey, 35%);
+    			font-size: 12px;
+    			margin-top: 3px;
+			}
+
+			.product-units {
+				position: absolute;
+			    top: 20px;
+    			left: 25px;
+			    color: transparent;
+			    z-index: -1;
+
+			    & > span {
+			    	color: #000000;
+			    }
+			}
+
+			&:first-child {
+				.btn-default {
+					width: 200px;
+				}
+			}
+
+			&:nth-child(2) {
+				.btn-default {
+					width: 100px;
+				}
 			}
 		}
+	}
+
+	.delivery-distance-block {
+		display: flex;
+    	align-items: center;
+    	margin-top: 10px;
+    	margin-bottom: 25px;
+
+    	.form-control {
+    		width: 100px;
+    	}
+
+    	& > span {
+    		padding-left: 10px;
+    		white-space: nowrap;
+    	}
 	}
 
 

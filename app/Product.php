@@ -28,7 +28,8 @@ class Product extends Model
         'price_cashless' => 'float',
         'price_unit' => 'float',
         'price_unit_vat' => 'float',
-        'price_unit_cashless' => 'float'
+        'price_unit_cashless' => 'float',
+        'in_stock' => 'float'
     ];
 
     protected $appends = [
@@ -69,6 +70,11 @@ class Product extends Model
     public function productions()
     {
         return $this->hasMany(Production::class);
+    }
+
+    public function stocks()
+    {
+        return $this->morphMany(Stock::class, 'model');
     }
 
 

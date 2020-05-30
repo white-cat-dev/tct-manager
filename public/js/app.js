@@ -81354,7 +81354,7 @@ tctApp.config(function ($provide) {
     },
     "NUMBER_FORMATS": {
       "CURRENCY_SYM": "\u20BD",
-      "DECIMAL_SEP": ",",
+      "DECIMAL_SEP": ".",
       "GROUP_SEP": "\xA0",
       "PATTERNS": [{
         "gSize": 3,
@@ -81482,7 +81482,12 @@ tctApp.factory('CategoriesRepository', ['$resource', function ($resource) {
   return $resource('/categories/:id');
 }]);
 tctApp.factory('ProductsRepository', ['$resource', function ($resource) {
-  return $resource('/products/:id');
+  return $resource('/products/:id', null, {
+    copy: {
+      method: 'POST',
+      url: '/products/:id/copy'
+    }
+  });
 }]);
 tctApp.factory('MaterialsRepository', ['$resource', function ($resource) {
   return $resource('/materials/:id', null, {
@@ -81642,7 +81647,20 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
     });
   };
 
+  $scope.showDelete = function (category) {
+    $scope.isDeleteModalShown = true;
+    $scope.deleteType = 'category';
+    $scope.deleteData = category;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideDelete = function () {
+    $scope.isDeleteModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
   $scope["delete"] = function (id) {
+    $scope.hideDelete();
     CategoriesRepository["delete"]({
       id: id
     }, function (response) {
@@ -81652,7 +81670,9 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
         toastr.success('Категория успешно удалена!');
         $scope.init();
       }
-    }, function (response) {});
+    }, function (response) {
+      toastr.error('Произошла ошибка на сервере');
+    });
   };
 }]);
 
@@ -82086,17 +82106,32 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
     });
   };
 
+  $scope.showDelete = function (facility) {
+    $scope.isDeleteModalShown = true;
+    $scope.deleteType = 'facility';
+    $scope.deleteData = facility;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideDelete = function () {
+    $scope.isDeleteModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
   $scope["delete"] = function (id) {
+    $scope.hideDelete();
     FacilitiesRepository["delete"]({
       id: id
     }, function (response) {
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
-        toastr.success('Цех успешно удален!');
+        toastr.success('Категория успешно удалена!');
         $scope.init();
       }
-    }, function (response) {});
+    }, function (response) {
+      toastr.error('Произошла ошибка на сервере');
+    });
   };
 
   $scope.isAddWorkerShown = false;
@@ -82348,7 +82383,20 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
     });
   };
 
+  $scope.showDelete = function (material) {
+    $scope.isDeleteModalShown = true;
+    $scope.deleteType = 'material';
+    $scope.deleteData = material;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideDelete = function () {
+    $scope.isDeleteModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
   $scope["delete"] = function (id) {
+    $scope.hideDelete();
     MaterialsRepository["delete"]({
       id: id
     }, function (response) {
@@ -82358,7 +82406,9 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
         toastr.success('Материал успешно удален!');
         $scope.init();
       }
-    }, function (response) {});
+    }, function (response) {
+      toastr.error('Произошла ошибка на сервере');
+    });
   };
 
   $scope.addMaterial = function () {
@@ -82468,7 +82518,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', 'ProductsRepository', 'OrdersRepository', function ($scope, $routeParams, $location, $timeout, ProductsRepository, OrdersRepository) {
+angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'ProductsRepository', 'OrdersRepository', function ($scope, $routeParams, $location, $timeout, toastr, ProductsRepository, OrdersRepository) {
   $scope.Math = window.Math;
   $scope.baseUrl = '';
   $scope.currentStatus = 0;
@@ -82476,9 +82526,12 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   $scope.orders = [];
   $scope.order = {
     'cost': 0,
+    'paid': 0,
     'weight': 0,
     'pallets': 0,
-    'priority': 1,
+    'priority': '1',
+    'delivery': '',
+    'delivery_distance': 0,
     'products': []
   };
   $scope.id = 0;
@@ -82569,6 +82622,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
           }
         }
       });
+    } else {
+      $scope.addProduct();
     }
   };
 
@@ -82576,28 +82631,50 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     OrdersRepository.save({
       id: $scope.id
     }, $scope.order, function (response) {
+      toastr.success($scope.id ? 'Заказ успешно обновлен!' : 'Новый заказ успешно создан!');
       $scope.orderErrors = {};
-
-      if ($scope.id) {
-        $scope.successAlert = 'Заказ успешно обновлен!';
-      } else {
-        $scope.successAlert = 'Новый заказ успешно создан!';
-      }
-
-      $scope.showAlert = true;
       $scope.id = response.id;
       $scope.order.url = response.url;
     }, function (response) {
-      $scope.orderErrors = response.data.errors;
+      switch (response.status) {
+        case 422:
+          toastr.error('Проверьте введенные данные');
+          $scope.orderErrors = response.data.errors;
+          break;
+
+        default:
+          toastr.error('Произошла ошибка на сервере');
+          break;
+      }
     });
   };
 
+  $scope.showDelete = function (order) {
+    $scope.isDeleteModalShown = true;
+    $scope.deleteType = 'order';
+    $scope.deleteData = order;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideDelete = function () {
+    $scope.isDeleteModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
   $scope["delete"] = function (id) {
+    $scope.hideDelete();
     OrdersRepository["delete"]({
       id: id
     }, function (response) {
-      $scope.init();
-    }, function (response) {});
+      if ($scope.baseUrl) {
+        $location.path($scope.baseUrl).replace();
+      } else {
+        toastr.success('Заказ успешно удален!');
+        $scope.init();
+      }
+    }, function (response) {
+      toastr.error('Произошла ошибка на сервере');
+    });
   };
 
   $scope.loadOrders = function () {
@@ -82643,7 +82720,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   $scope.chooseProductGroup = function (productData, productGroup) {
     productData.id = null;
     productData.category = productGroup.category;
-    productData.weight_units = productGroup.weight_units;
+    productData.weight_unit = productGroup.weight_unit;
+    productData.unit_in_units = productGroup.unit_in_units;
     productData.units_in_pallete = productGroup.units_in_pallete;
 
     for (key in $scope.productGroups) {
@@ -82664,26 +82742,40 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     productData.id = product.id;
     productData.in_stock = product.in_stock;
     productData.free_in_stock = product.free_in_stock;
+    productData.units_text = product.units_text;
     productData.pivot.price = product.price;
     productData.pivot.cost = product.price * productData.pivot.count;
     $scope.updateOrderInfo();
   };
 
-  $scope.changeCount = function (productData, count) {
-    productData.pivot.count = parseInt(productData.pivot.count) + count;
-
-    if (isNaN(productData.pivot.count) || productData.pivot.count < 0) {
-      productData.pivot.count = 0;
+  $scope.updateCount = function (product) {
+    if (product.pivot.count.length > 10) {
+      product.pivot.count = product.pivot.count.substring(0, 10);
     }
 
-    productData.pivot.cost = productData.pivot.price * productData.pivot.count;
+    product.pivot.count = product.pivot.count.replace(/[^,.\d]/g, '');
+    product.pivot.count = product.pivot.count.replace(',', '.');
+
+    if (product.pivot.count.split('.').length - 1 > 1) {
+      var index = product.pivot.count.lastIndexOf('.');
+      var count = product.pivot.count.substring(0, index);
+      product.pivot.count = product.pivot.count.substring(index).replace('.', '');
+      product.pivot.count = count + product.pivot.count;
+    }
+
+    product.pivot.cost = product.pivot.price * product.pivot.count;
     $scope.updateOrderInfo();
   };
 
-  $scope.updateOrderInfo = function () {
+  $scope.updateOrderInfo = function (pallets) {
     $scope.order.cost = 0;
     $scope.order.weight = 0;
-    $scope.order.pallets = 0;
+
+    if (!pallets) {
+      $scope.order.pallets = 0;
+    }
+
+    $scope.order.main_category = '';
     var _iteratorNormalCompletion2 = true;
     var _didIteratorError2 = false;
     var _iteratorError2 = undefined;
@@ -82691,9 +82783,19 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     try {
       for (var _iterator2 = $scope.order.products[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
         product = _step2.value;
-        $scope.order.cost += product.pivot.cost;
-        $scope.order.weight += product.weight_units * product.pivot.count;
-        $scope.order.pallets += Math.ceil(product.pivot.count / product.units_in_pallete);
+
+        if (product.pivot.price) {
+          $scope.order.cost += product.pivot.cost;
+          $scope.order.weight += product.weight_unit * product.unit_in_units * product.pivot.count;
+
+          if (!pallets) {
+            $scope.order.pallets += Math.ceil(product.pivot.count / product.units_in_pallete);
+          }
+
+          if (product.category) {
+            $scope.order.main_category = product.category.main_category;
+          }
+        }
       }
     } catch (err) {
       _didIteratorError2 = true;
@@ -82709,6 +82811,27 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         }
       }
     }
+
+    $scope.order.cost += $scope.order.pallets * 150;
+
+    if ($scope.order.delivery) {
+      switch ($scope.order.delivery) {
+        case 'sverdlovsk':
+          $scope.order.cost += 2500;
+          break;
+
+        case 'other':
+          $scope.order.cost += 3000;
+          break;
+      }
+
+      if ($scope.order.delivery_distance) {
+        $scope.order.cost += 50 * $scope.order.delivery_distance;
+      }
+    }
+
+    $scope.order.cost = Math.ceil($scope.order.cost);
+    $scope.order.weight = Math.ceil($scope.order.weight);
   };
 
   $scope.isRealizationModalShown = false;
@@ -83427,19 +83550,22 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   $scope.initEdit = function () {
     $scope.baseUrl = 'products';
     $scope.id = $routeParams['id'];
-    $scope.loadCategories();
+    $scope.isStockProductsShown = false;
 
     if ($scope.id) {
       ProductsRepository.get({
         id: $scope.id
       }, function (response) {
         $scope.productGroup = response;
-        $scope.chooseProductCategory($scope.productGroup.category);
 
         if ($scope.productGroup.set_pair_id) {
           $scope.showSetPair();
         }
+
+        $scope.loadCategories();
       });
+    } else {
+      $scope.loadCategories();
     }
 
     RecipesRepository.query(function (response) {
@@ -83469,7 +83595,20 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     });
   };
 
+  $scope.showDelete = function (product) {
+    $scope.isDeleteModalShown = true;
+    $scope.deleteType = 'product';
+    $scope.deleteData = product;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideDelete = function () {
+    $scope.isDeleteModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
   $scope["delete"] = function (id) {
+    $scope.hideDelete();
     ProductsRepository["delete"]({
       id: id
     }, function (response) {
@@ -83479,66 +83618,47 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
         toastr.success('Продукт успешно удален!');
         $scope.init();
       }
+    }, function (response) {
+      toastr.error('Произошла ошибка на сервере');
+    });
+  };
+
+  $scope.copy = function (id) {
+    ProductsRepository.copy({
+      id: id
+    }, {}, function (response) {
+      if ($scope.baseUrl) {
+        $location.path($scope.baseUrl + '/' + response.id + '/edit').replace();
+      } else {
+        toastr.success('Копия успешно создана');
+        $scope.init();
+      }
     }, function (response) {});
   };
 
   $scope.loadCategories = function () {
     CategoriesRepository.query(function (response) {
       $scope.categories = response;
+
+      if ($scope.productGroup && $scope.productGroup.category) {
+        $scope.chooseProductCategory($scope.productGroup.category);
+      }
     });
   };
 
   $scope.loadProducts = function () {
-    ProductsRepository.query({
-      'category': $scope.currentCategory
-    }, function (response) {
+    var request = {};
+
+    if ($scope.currentCategory) {
+      request['category'] = $scope.currentCategory;
+    }
+
+    if ($scope.isStockProductsShown) {
+      request['stock'] = $scope.isStockProductsShown;
+    }
+
+    ProductsRepository.query(request, function (response) {
       $scope.productGroups = response;
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = $scope.productGroups[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          productGroup = _step.value;
-          productGroup.in_stock = 0;
-          var _iteratorNormalCompletion2 = true;
-          var _didIteratorError2 = false;
-          var _iteratorError2 = undefined;
-
-          try {
-            for (var _iterator2 = productGroup.products[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-              product = _step2.value;
-              productGroup.in_stock += product.in_stock;
-            }
-          } catch (err) {
-            _didIteratorError2 = true;
-            _iteratorError2 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-                _iterator2["return"]();
-              }
-            } finally {
-              if (_didIteratorError2) {
-                throw _iteratorError2;
-              }
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
     });
   };
 
@@ -83556,35 +83676,31 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   $scope.productCategory = null;
 
   $scope.chooseProductCategory = function () {
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
 
     try {
-      for (var _iterator3 = $scope.categories[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        category = _step3.value;
+      for (var _iterator = $scope.categories[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        category = _step.value;
 
         if (category.id == $scope.productGroup.category_id) {
-          $scope.productCategory = category;
+          $scope.productGroup.category = category;
           $scope.productGroup.adjectives = category.adjectives;
           break;
         }
-      } // if (!$scope.productCategory.variations) 
-      // {
-      // 	$scope.addProduct();
-      // }
-
+      }
     } catch (err) {
-      _didIteratorError3 = true;
-      _iteratorError3 = err;
+      _didIteratorError = true;
+      _iteratorError = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-          _iterator3["return"]();
+        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+          _iterator["return"]();
         }
       } finally {
-        if (_didIteratorError3) {
-          throw _iteratorError3;
+        if (_didIteratorError) {
+          throw _iteratorError;
         }
       }
     }
@@ -83628,13 +83744,13 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 
     if (currentProduct.main_variation == 'color') {
       $scope.mainVariation = currentProduct;
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator4 = $scope.productGroup.products[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          product = _step4.value;
+        for (var _iterator2 = $scope.productGroup.products[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          product = _step2.value;
 
           if (product.main_variation == 'color') {
             product[key] = currentProduct[key];
@@ -83642,16 +83758,16 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
           }
         }
       } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-            _iterator4["return"]();
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
           }
         } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
+          if (_didIteratorError2) {
+            throw _iteratorError2;
           }
         }
       }
@@ -83690,26 +83806,26 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       toastr.success('Изменения успешно сохранены!');
       productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
       productGroup.in_stock = 0;
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator5 = productGroup.products[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          product = _step5.value;
+        for (var _iterator3 = productGroup.products[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          product = _step3.value;
           productGroup.in_stock += product.in_stock;
         }
       } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
-            _iterator5["return"]();
+          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+            _iterator3["return"]();
           }
         } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
+          if (_didIteratorError3) {
+            throw _iteratorError3;
           }
         }
       }
@@ -83765,7 +83881,7 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
     RecipesRepository.get({
       id: $scope.id
     }, function (response) {
-      $scope.order = response;
+      $scope.recipe = response;
     });
   };
 
@@ -83811,7 +83927,20 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
     });
   };
 
+  $scope.showDelete = function (recipe) {
+    $scope.isDeleteModalShown = true;
+    $scope.deleteType = 'recipe';
+    $scope.deleteData = recipe;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideDelete = function () {
+    $scope.isDeleteModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
   $scope["delete"] = function (id) {
+    $scope.hideDelete();
     RecipesRepository["delete"]({
       id: id
     }, function (response) {
@@ -83821,7 +83950,9 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
         toastr.success('Рецепт успешно удален!');
         $scope.init();
       }
-    }, function (response) {});
+    }, function (response) {
+      toastr.error('Произошла ошибка на сервере');
+    });
   };
 
   $scope.addMaterialGroup = function () {
@@ -83957,7 +84088,33 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
     });
   };
 
-  $scope["delete"] = function () {};
+  $scope.showDelete = function (worker) {
+    $scope.isDeleteModalShown = true;
+    $scope.deleteType = 'worker';
+    $scope.deleteData = worker;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideDelete = function () {
+    $scope.isDeleteModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
+  $scope["delete"] = function (id) {
+    $scope.hideDelete();
+    WorkersRepository["delete"]({
+      id: id
+    }, function (response) {
+      if ($scope.baseUrl) {
+        $location.path($scope.baseUrl).replace();
+      } else {
+        toastr.success('Работник успешно удален!');
+        $scope.init();
+      }
+    }, function (response) {
+      toastr.error('Произошла ошибка на сервере');
+    });
+  };
 
   $scope.isStatusModalShown = false;
   $scope.modalStatusErrors = {};

@@ -27,12 +27,24 @@
 			position: absolute;
 		    top: 15px;
 		    right: 15px;
+		    z-index: 1;
 		}
 
 		.facility-title {
 			font-weight: 500;
 			font-size: 20px;
 			margin-bottom: 15px;
+			padding-left: 28px;
+			position: relative;
+
+			& > span {
+				display: block;
+			    position: absolute;
+			    height: 18px;
+			    width: 18px;
+			    top: 7px;
+			    left: 0px;
+			}
 		}
 
 		.facility-params {

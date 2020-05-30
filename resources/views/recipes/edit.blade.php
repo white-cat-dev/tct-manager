@@ -13,7 +13,7 @@
 			<a ng-href="@{{ recipe.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="id" ng-click="delete(id)">
+			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(recipe)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 		</div>
@@ -78,4 +78,6 @@
 			</button>
 		</div>
 	</div>
+
+	@include('partials.delete-modal')
 </div>

@@ -1,8 +1,6 @@
 <div class="categories-block" ng-init="init()">
 	<h1>Категории</h1>
 
-	@include('partials.top-alerts')
-
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -60,7 +58,7 @@
 					<a ng-href="@{{ category.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-sm btn-primary" ng-click="delete(category.id)">
+					<button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(category)">
 						<i class="far fa-trash-alt"></i>
 					</button>
 					@endif
@@ -84,4 +82,6 @@
 		</div>
 		@endif
 	</div>
+
+	@include('partials.delete-modal')
 </div>

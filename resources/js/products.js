@@ -156,20 +156,25 @@ angular.module('tctApp').controller('ProductsController', [
 
 		$scope.id = $routeParams['id'];
 
-		$scope.loadCategories();
+		$scope.isStockProductsShown = false;
 
 		if ($scope.id)
 		{
 			ProductsRepository.get({id: $scope.id}, function(response) 
 			{
 				$scope.productGroup = response;
-				$scope.chooseProductCategory($scope.productGroup.category);
 
 				if ($scope.productGroup.set_pair_id) 
 				{
 					$scope.showSetPair();
 				}
+
+				$scope.loadCategories();
 			});
+		}
+		else
+		{
+			$scope.loadCategories();
 		}
 
 		RecipesRepository.query(function(response) 
@@ -206,8 +211,28 @@ angular.module('tctApp').controller('ProductsController', [
 	}
 
 
+	$scope.showDelete = function(product)
+	{
+		$scope.isDeleteModalShown = true;
+		$scope.deleteType = 'product';
+		$scope.deleteData = product;
+
+		document.querySelector('body').classList.add('modal-open');
+	}
+
+
+	$scope.hideDelete = function()
+	{
+		$scope.isDeleteModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
+	}
+
+
 	$scope.delete = function(id)
 	{
+		$scope.hideDelete();
+
 		ProductsRepository.delete({id: id}, function(response) 
 		{
 			if ($scope.baseUrl)
@@ -217,6 +242,28 @@ angular.module('tctApp').controller('ProductsController', [
 			else
 			{
 				toastr.success('Продукт успешно удален!');
+
+				$scope.init();
+			}
+		}, 
+		function(response) 
+		{
+        	toastr.error('Произошла ошибка на сервере');
+        });
+	}
+
+
+	$scope.copy = function(id)
+	{
+		ProductsRepository.copy({id: id}, {}, function(response) 
+		{
+			if ($scope.baseUrl)
+			{
+				$location.path($scope.baseUrl + '/' + response.id + '/edit').replace();
+			}
+			else
+			{
+				toastr.success('Копия успешно создана');
 
 				$scope.init();
 			}
@@ -234,24 +281,31 @@ angular.module('tctApp').controller('ProductsController', [
 		CategoriesRepository.query(function(response) 
 		{
 			$scope.categories = response;
+
+			if ($scope.productGroup && $scope.productGroup.category)
+			{
+				$scope.chooseProductCategory($scope.productGroup.category);
+			}
 		});
 	}
 
 
 	$scope.loadProducts = function()
 	{
-		ProductsRepository.query({'category': $scope.currentCategory}, function(response) 
+		var request = {};
+
+		if ($scope.currentCategory)
+		{
+			request['category'] = $scope.currentCategory;
+		}
+		if ($scope.isStockProductsShown)
+		{
+			request['stock'] = $scope.isStockProductsShown;
+		}
+
+		ProductsRepository.query(request, function(response) 
 		{
 			$scope.productGroups = response;
-
-			for (productGroup of $scope.productGroups) 
-			{
-				productGroup.in_stock = 0;
-				for (product of productGroup.products)
-				{
-					productGroup.in_stock += product.in_stock;
-				}
-			}
 		});
 	}
 
@@ -282,16 +336,11 @@ angular.module('tctApp').controller('ProductsController', [
 		{
 			if (category.id == $scope.productGroup.category_id)
 			{
-				$scope.productCategory = category;
+				$scope.productGroup.category = category;
 				$scope.productGroup.adjectives = category.adjectives;
 				break;
 			}
 		}
-
-		// if (!$scope.productCategory.variations) 
-		// {
-		// 	$scope.addProduct();
-		// }
 
 		$scope.loadProducts();
 	}

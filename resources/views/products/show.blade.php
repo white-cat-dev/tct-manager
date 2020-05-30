@@ -13,7 +13,10 @@
 			<a ng-href="@{{ productGroup.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
-			<button type="button" class="btn btn-primary" ng-click="delete(id)">
+			<button type="button" class="btn btn-primary" ng-click="copy(id)">
+				<i class="fas fa-copy"></i> Копировать
+			</button>
+			<button type="button" class="btn btn-primary" ng-click="showDelete(productGroup)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 			@endif
@@ -23,7 +26,7 @@
 
 	<div class="show-block">
 		<div class="row justify-content-around">
-			<div class="col-11">
+			<div class="col-12 col-xl-11">
 				<div class="show-block-title m-0">
 					Продукт "@{{ productGroup.name }}"
 				</div>
@@ -31,7 +34,7 @@
 		</div>
 
 		<div class="row justify-content-around">
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="params-title">
 					Общая информация
 				</div>
@@ -71,23 +74,33 @@
 				</div>
 			</div>
 
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="params-title">
 					Характеристики
 				</div>
 
 				<div class="param-block">
 					<div class="param-name">
-						Размеры
+						Размеры, 
+						<span ng-switch on="productGroup.size_params">
+							<span ng-switch-when="lwh">Д×Ш×В</span>
+							<span ng-switch-when="lhw">Д×В×Ш</span>
+							<span ng-switch-when="lh">Д×В</span>
+							<span ng-switch-when="whl">Ш×В×Д</span>
+						</span>
 					</div>
 					<div class="param-value">
 						@{{ productGroup.size }} мм
 					</div>
 				</div>
 
-				<div class="param-block">
+				<div class="param-block" ng-show="productGroup.category.units != 'unit'">
 					<div class="param-name">
-						Количество в 1 квадрате
+						Количество 
+						<span ng-switch on="productGroup.category.units">
+							<span ng-switch-when="area">в м<sup>2</sup></span>
+							<span ng-switch-when="volume">в м<sup>3</sup></span>
+						</span>
 					</div>
 					<div class="param-value">
 						@{{ productGroup.unit_in_units }} шт.
@@ -96,7 +109,7 @@
 
 				<div class="param-block">
 					<div class="param-name">
-						Количество в 1 поддоне
+						Количество на поддоне
 					</div>
 					<div class="param-value">
 						@{{ productGroup.unit_in_pallete }} шт. / @{{ productGroup.units_in_pallete }} 
@@ -108,109 +121,91 @@
 
 				<div class="param-block">
 					<div class="param-name">
-						Вес
+						Вес шт / поддона
 					</div>
 					<div class="param-value">
-						@{{ productGroup.weight_unit }} кг / @{{ productGroup.weight_units }} кг / @{{ productGroup.weight_pallete }} кг
+						@{{ productGroup.weight_unit }} кг / @{{ productGroup.weight_pallete }} кг
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="row justify-content-around" ng-if="productGroup.category.variations">
-			<div class="col-11">
+			<div class="col-12 col-xl-11">
 				<div class="params-title">
-					<span ng-switch on="productGroup.category.variations">
-						<span ng-switch-when="colors">Разновидности по цветам</span>
-						<span ng-switch-when="grades">Разновидности по марке бетона</span>
-					</span>
+					Разновидности и цены
 				</div>
 
-				<table class="table">
+				<table class="table m-0">
 					<tr>
-						<th>
-							<span ng-switch on="productGroup.category.variations">
-								<span ng-switch-when="colors">Цвет</span>
-								<span ng-switch-when="grades">Марка</span>
-							</span>
-						</th>
-						<th>Цена</th>
+						<th ng-if="productGroup.category.variations">Вид</th>
+						<th>Цена (наличный / безнал / НДС), руб</th>
 						<th>В наличии</th>
-						<th class="product-in-stock-col">
-							<span>К выдаче</span>
-							<span>Свободно</span>
-						</th>
+						<th>Свободно</th>
 					</tr>
 					<tr ng-repeat="product in productGroup.products">
-						<td>
+						<td ng-if="productGroup.category.variations">
 							@{{ product.variation_text }}
 						</td>
 						<td>
-							@{{ product.price_unit }} руб. /
-							@{{ product.price }} руб. /
-							@{{ product.price_pallete }} руб.
-						</td>
-						<td>
-							@{{ product.in_stock }} шт.
-						</td>
-						<td>
-							<div class="product-in-stock">
-								<div class="realize-in-stock" ng-style="{'width': Math.round(product.realize_in_stock / product.in_stock * 100) + '%'}" ng-if="product.realize_in_stock">
-									<div class="in-stock-number">@{{ product.realize_in_stock }} м<sup>2</sup></div>
-								</div>
-								<div class="free-in-stock" ng-style="{'width': (!product.realize_in_stock) ? '100%' : Math.round(product.free_in_stock / product.in_stock * 100) + '%'}" ng-if="product.free_in_stock || !product.realize_in_stock">
-									<div class="in-stock-number">@{{ product.free_in_stock }} м<sup>2</sup></div>
-								</div>
+							<div>
+								<span ng-switch on="productGroup.category.units">
+									<span ng-switch-when="area">м<sup>2</sup></span>
+									<span ng-switch-when="volume">м<sup>3</sup></span>
+									<span ng-switch-when="unit">шт</span>
+								</span>	–
+								@{{ product.price }} /
+								@{{ product.price_cashless }} /
+								@{{ product.price_vat }} руб
 							</div>
+							<div ng-if="productGroup.category.units != 'unit'">
+								шт –
+								@{{ product.price_unit }} /
+								@{{ product.price_unit_cashless }} /
+								@{{ product.price_unit_vat }} руб
+							</div>
+						</td>
+						<td>
+							@{{ product.in_stock }} 
+							<span ng-switch on="productGroup.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт</span>
+							</span>
+						</td>
+						<td>
+							@{{ product.free_in_stock }}
+							<span ng-switch on="productGroup.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт</span>
+							</span>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
 
-		<div class="row" ng-if="!productGroup.category.variations">
-			<div class="col-3">
-				<div class="param-block">
-					<div class="param-name">
-						Цена
-					</div>
-					<div class="param-value">
-						@{{ productGroup.products[0].price_unit }} руб / 
-						@{{ productGroup.products[0].price }} руб / 
-						@{{ productGroup.products[0].price_pallete }} руб
-					</div>
+		<div class="row justify-content-around">	
+			<div class="col-12 col-xl-11">
+				<div class="params-title">
+					Парный элемент
 				</div>
-			</div>
-
-			<div class="col-3">
-				<div class="param-block">
-					<div class="param-name">
-						В наличии
-					</div>
-					<div class="param-value">
-						@{{ productGroup.products[0].in_stock }}
-					</div>
-				</div>
-			</div>
-
-			<div class="col-5">
-				<div class="product-in-stock">
-					<div class="realize-in-stock" ng-style="{'width': Math.round(productGroup.products[0].realize_in_stock / productGroup.products[0].in_stock * 100) + '%'}" ng-if="productGroup.products[0].realize_in_stock">
-						<div class="in-stock-number">@{{ productGroup.products[0].realize_in_stock }} м<sup>2</sup></div>
-					</div>
-					<div class="free-in-stock" ng-style="{'width': (!productGroup.products[0].realize_in_stock) ? '100%' : Math.round(productGroup.products[0].free_in_stock / productGroup.products[0].in_stock * 100) + '%'}" ng-if="productGroup.products[0].free_in_stock || !productGroup.products[0].realize_in_stock">
-						<div class="in-stock-number">@{{ productGroup.products[0].free_in_stock }} м<sup>2</sup></div>
-					</div>
+				<div class="param-value">
+					<span ng-if="productGroup.set_pair">@{{ productGroup.set_pair.name }} (@{{ productGroup.set_pair_ratio }}:@{{ productGroup.set_pair_ratio_to }})</span>
+					<span ng-if="!productGroup.set_pair">Нет парного элемента</span>
 				</div>
 			</div>
 		</div>
 
 		<div class="row justify-content-around">	
-			<div class="col-5">
+			<div class="col-12 col-xl-11">
 				<div class="params-title">
 					Данные для производства
 				</div>
+			</div>
 
+			<div class="col-6 col-xl-5">
 				<div class="param-block">
 					<div class="param-name">
 						Количество из одного замеса
@@ -227,10 +222,12 @@
 
 				<div class="param-block">
 					<div class="param-name">
-						Количество форм
+						<span ng-if="productGroup.category.variations != 'colors'">Количество форм</span>
+						<span ng-if="productGroup.category.variations == 'colors'">Количество серых / красных форм</span>
 					</div>
 					<div class="param-value">
 						@{{ productGroup.forms }} 
+						<span ng-if="productGroup.category.variations == 'colors'">/ @{{ productGroup.forms_add }} </span>
 						<span ng-switch on="productGroup.category.units">
 							<span ng-switch-when="area">м<sup>2</sup></span>
 							<span ng-switch-when="volume">м<sup>3</sup></span>
@@ -239,11 +236,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-5">
-				<div class="params-title">
-					Данные для расчета зарплаты
-				</div>
 
+			<div class="col-6 col-xl-5">
 				<div class="param-block">
 					<div class="param-name">
 						Стоимость работы 
@@ -254,10 +248,22 @@
 						</span>	
 					</div>
 					<div class="param-value">
-						@{{ productGroup.salary_units }}
+						@{{ productGroup.salary_units }} руб
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Рецепт
+					</div>
+					<div class="param-value">
+						<span ng-if="productGroup.recipe">@{{ productGroup.recipe.name }}</span>
+						<span ng-if="!productGroup.recipe">Рецепт не указан</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	@include('partials.delete-modal')
 </div>

@@ -13,7 +13,7 @@
 			<a ng-href="@{{ category.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="id" ng-click="delete(id)">
+			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(category)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 		</div>
@@ -21,7 +21,7 @@
 
 	<div class="edit-form-block">
 		<div class="row justify-content-around">
-			<div class="col-8">
+			<div class="col-12 col-lg-8 col-xl-6">
 				<div class="form-group">
 					<div class="param-label">Название</div>
 					<input type="text" class="form-control" ng-model="category.name" ng-class="{'is-invalid': categoryErrors.name}">
@@ -99,4 +99,6 @@
 			</button>
 		</div>
 	</div>
+
+	@include('partials.delete-modal')
 </div>

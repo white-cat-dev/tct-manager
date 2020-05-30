@@ -1,8 +1,6 @@
 <div class="products-page" ng-init="init()">
 	<h1>Продукты</h1>
 
-	@include('partials.top-alerts')
-
 	@if (Auth::user() && Auth::user()->type == 'admin')
 	<a href="{{ route('product-create') }}" class="btn btn-primary top-right-button">
 		<i class="fas fa-plus"></i>
@@ -56,7 +54,7 @@
 		</div>
 
 		<div class="custom-control custom-checkbox">
-			<input type="checkbox" class="custom-control-input" ng-model="isStockProductsShown" id="checkboxStock">
+			<input type="checkbox" class="custom-control-input" ng-model="isStockProductsShown" id="checkboxStock" ng-change="init()">
 			<label class="custom-control-label" for="checkboxStock">
 				Только в наличии
 			</label>
@@ -68,7 +66,6 @@
 			<tr>
 				<th>№</th>
 				<th>Название</th>
-				<th>Размер</th>
 				<th>Виды</th>
 				<th>Цена</th>
 				<th>В наличии</th>
@@ -76,42 +73,53 @@
 				<th></th>
 			</tr>
 		
-			<tr ng-repeat="(productGroupNum, productGroup) in productGroups | filter: {'name': searchQuery}" ng-if="!isStockProductsShown || productGroup.in_stock > 0">
+			<tr ng-repeat="(productGroupNum, productGroup) in productGroups | filter: {'name': searchQuery}"  ng-init="isProductsListShown = false">
 				<td>
 					@{{ $index + 1 }}
 				</td>
 				<td>
-					@{{ productGroup.name }}
-				</td>
-				<td>
+					@{{ productGroup.name }} 
 					@{{ productGroup.size }}
 				</td>
 				<td style="width: 12%;">
-					<div ng-repeat="product in productGroup.products" ng-if="!isStockProductsShown || product.in_stock > 0">
-						<span ng-if="product.variation_text">@{{ product.variation_text }}</span>
-						<span ng-if="!product.variation_text">—</span>
+					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
+						<div ng-repeat="product in productGroup.products">
+							<span ng-if="product.variation_text">@{{ product.variation_text }}</span>
+							<span ng-if="!product.variation_text">—</span>
+						</div>
 					</div>
+
+					<button type="button" class="btn btn-link" ng-show="productGroup.products.length > 3" ng-click="isProductsListShown = !isProductsListShown">
+						<span ng-if="!isProductsListShown">все виды</span>
+						<span ng-if="isProductsListShown">скрыть</span>
+					</button>
 				</td>
 				<td style="width: 12%;">
-					<div ng-repeat="product in productGroup.products" ng-if="!isStockProductsShown || product.in_stock > 0">
-						@{{ product.price }} руб.
-					</div>
-				</td>
-				<td style="width: 12%;">
-					<div ng-repeat="(productNum, product) in productGroup.products" ng-if="!isStockProductsShown || product.in_stock > 0">
-						<div class="edit-field" ng-init="product.new_in_stock = product.in_stock">
-							<input type="text" class="form-control" ng-model="product.new_in_stock" ng-blur="saveEditField(productGroupNum, productNum, 'in_stock')" ng-keypress="inputKeyPressed($event)">
-							<span class="units">
-								@{{ product.new_in_stock }}
-								<span ng-bind-html="product.units_text"></span>
-							</span>
+					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
+						<div ng-repeat="product in productGroup.products">
+							@{{ product.price }} руб.
 						</div>
 					</div>
 				</td>
 				<td style="width: 12%;">
-					<div ng-repeat="product in productGroup.products" ng-if="!isStockProductsShown || product.in_stock > 0">
-						@{{ product.free_in_stock }} 
-						<span ng-bind-html="product.units_text"></span>
+					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
+						<div ng-repeat="(productNum, product) in productGroup.products">
+							<div class="edit-field" ng-init="product.new_in_stock = product.in_stock">
+								<input type="text" class="form-control" ng-model="product.new_in_stock" ng-blur="saveEditField(productGroupNum, productNum, 'in_stock')" ng-keypress="inputKeyPressed($event)">
+								<span class="units">
+									@{{ product.new_in_stock }}
+									<span ng-bind-html="product.units_text"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td style="width: 12%;">
+					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
+						<div ng-repeat="product in productGroup.products">
+							@{{ product.free_in_stock }} 
+							<span ng-bind-html="product.units_text"></span>
+						</div>
 					</div>
 				</td>
 				<td>
@@ -123,7 +131,10 @@
 						<a ng-href="@{{ productGroup.url + '/edit' }}" class="btn btn-sm btn-primary">
 							<i class="fas fa-edit"></i>
 						</a>
-						<button type="button" class="btn btn-sm btn-primary" ng-click="delete(productGroup.id)">
+						<button type="button" class="btn btn-sm btn-primary" ng-click="copy(productGroup.id)">
+							<i class="fas fa-copy"></i>
+						</button>
+						<button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(productGroup)">
 							<i class="far fa-trash-alt"></i>
 						</button>
 						@endif
@@ -134,7 +145,7 @@
 	</div>
 	
 	<div class="product-groups-block d-block d-lg-none" ng-if="productGroups.length > 0">
-		<div class="product-group-block" ng-repeat="(productGroupNum, productGroup) in productGroups | filter: {'name': searchQuery}" ng-if="!isStockProductsShown || productGroup.in_stock > 0">
+		<div class="product-group-block" ng-repeat="(productGroupNum, productGroup) in productGroups | filter: {'name': searchQuery}">
 			<div class="product-group-title">
 				<div>
 					@{{ productGroup.name }}
@@ -157,7 +168,7 @@
 			</div>
 
 			<table class="table table-sm main-table">
-				<tr ng-repeat="(productNum, product) in productGroup.products" ng-if="!isStockProductsShown || product.in_stock > 0">
+				<tr ng-repeat="(productNum, product) in productGroup.products">
 					<td>
 						<span ng-if="product.variation_text">@{{ product.variation_text }}</span>
 						<span ng-if="!product.variation_text">—</span>
@@ -188,6 +199,7 @@
 			<i class="fas fa-th"></i>
 		</div>
 		Не найдено ни одного продукта <br>
+		<small ng-if="isStockProductsShown">в наличии</small>
 		<small ng-if="searchQuery"> по запросу "@{{ searchQuery }}"</small>
 		<small ng-if="currentCategory != 0">в категории "<span ng-repeat="category in categories" ng-if="category.id == currentCategory">@{{ category.name }}</span>"</small>
 
@@ -199,4 +211,6 @@
 		</div>
 		@endif
 	</div>
+
+	@include('partials.delete-modal')
 </div>

@@ -182,4 +182,20 @@
 	.custom-control-inline {
 		margin-bottom: 10px;
 	}
+
+	.products-list {
+	    max-height: 50px;
+		overflow: hidden;
+
+		&.shown {
+			max-height: 300px;
+		}
+	}
+
+	.btn-link {
+		padding: 0px;
+		text-decoration: underline;
+		border: none;
+    	display: block;
+	}
 }

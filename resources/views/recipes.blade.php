@@ -1,8 +1,6 @@
 <div class="recipes-page" ng-init="init()">
 	<h1>Рецепты</h1>
 
-	@include('partials.top-alerts')
-
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -44,7 +42,7 @@
 				<div class="materials-list" ng-class="{'shown': isMaterialsListShown || recipe.material_groups.length <= 3}">
 					<div ng-repeat="materialGroup in recipe.material_groups">
 						@{{ materialGroup.name }} –
-						@{{ materialGroup.pivot.count }}
+						@{{ materialGroup.pivot.count | number }}
 						<span ng-switch on="materialGroup.units">
 							<span ng-switch-when="volume_l">л</span>
 							<span ng-switch-when="volume_ml">мл</span>
@@ -62,7 +60,7 @@
 				</div>
 			</td>
 			<td>
-				@{{ recipe.cost }} руб
+				@{{ recipe.cost | number }} руб
 			</td>
 			<td>
 				<div class="btn-group">
@@ -73,7 +71,7 @@
 					<a ng-href="@{{ recipe.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-sm btn-primary" ng-click="delete(recipe.id)">
+					<button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(recipe)">
 						<i class="far fa-trash-alt"></i>
 					</button>
 					@endif
@@ -97,4 +95,6 @@
 		</div>
 		@endif
 	</div>
+
+	@include('partials.delete-modal')
 </div>

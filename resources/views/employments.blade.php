@@ -1,8 +1,6 @@
 <div class="employments-page" ng-init="init()">
 	<h1>График работ</h1>
 
-	@include('partials.top-alerts')
-
 	<div class="row">
 		<div class="col-12 col-lg-9">
 			<div class="top-buttons-block">

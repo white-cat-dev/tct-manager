@@ -21,12 +21,17 @@ class Order extends Model
 
     protected $fillable = [
         'date',
+        'date_to',
+        'main_category',
         'number',
+        'delivery',
+        'delivery_distance',
     	'client_id',
         'status',
         'comment',
         'priority',
         'cost',
+        'paid',
         'weight',
         'pallets'
     ];
@@ -34,7 +39,8 @@ class Order extends Model
     protected $appends = [
     	'url',
         'status_text',
-        'formatted_date'
+        'formatted_date',
+        'formatted_date_to'
     ];
 
     protected $with = [
@@ -94,6 +100,11 @@ class Order extends Model
     public function getFormattedDateAttribute()
     {
         return Carbon::createFromDate($this->date)->format('d.m.Y');
+    }
+
+    public function getFormattedDateToAttribute()
+    {
+        return Carbon::createFromDate($this->date_to)->format('d.m.Y');
     }
 
 

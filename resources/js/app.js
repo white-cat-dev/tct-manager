@@ -69,7 +69,7 @@ tctApp.config(function($provide) {
 		},
 	    "NUMBER_FORMATS": {
 			"CURRENCY_SYM": "\u20bd",
-			"DECIMAL_SEP": ",",
+			"DECIMAL_SEP": ".",
 			"GROUP_SEP": "\u00a0",
 			"PATTERNS": [
 				{
@@ -249,7 +249,9 @@ tctApp.factory('CategoriesRepository', ['$resource', function($resource) {
 }]);
 
 tctApp.factory('ProductsRepository', ['$resource', function($resource) { 
-	return $resource('/products/:id');  
+	return $resource('/products/:id', null, {
+		copy: { method: 'POST', url: '/products/:id/copy' }
+    });  
 }]);
 
 tctApp.factory('MaterialsRepository', ['$resource', function($resource) { 

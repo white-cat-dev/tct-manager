@@ -3,6 +3,7 @@ angular.module('tctApp').controller('OrdersController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
+	'toastr',
 	'ProductsRepository',
 	'OrdersRepository',
 	function(
@@ -10,6 +11,7 @@ angular.module('tctApp').controller('OrdersController', [
 		$routeParams,
 		$location,
 		$timeout,
+		toastr,
 		ProductsRepository,
 		OrdersRepository
 	){
@@ -24,9 +26,12 @@ angular.module('tctApp').controller('OrdersController', [
 	$scope.orders = [];
 	$scope.order = {
 		'cost': 0,
+		'paid': 0,
 		'weight': 0,
 		'pallets': 0,
-		'priority': 1,
+		'priority': '1',
+		'delivery': '',
+		'delivery_distance': 0,
 		'products': []
 	};
 	$scope.id = 0;
@@ -126,6 +131,10 @@ angular.module('tctApp').controller('OrdersController', [
 				}
 			});
 		}
+		else
+		{
+			$scope.addProduct();
+		}
 	}
 
 
@@ -133,35 +142,67 @@ angular.module('tctApp').controller('OrdersController', [
 	{
 		OrdersRepository.save({id: $scope.id}, $scope.order, function(response) 
 		{
+			toastr.success($scope.id ? 'Заказ успешно обновлен!' : 'Новый заказ успешно создан!');
+
 			$scope.orderErrors = {};
-			if ($scope.id)
-			{
-				$scope.successAlert = 'Заказ успешно обновлен!';
-			}
-			else
-			{
-				$scope.successAlert = 'Новый заказ успешно создан!';
-			}
-			$scope.showAlert = true;
 			$scope.id = response.id;
 			$scope.order.url = response.url;
 		}, 
 		function(response) 
 		{
-            $scope.orderErrors = response.data.errors;
+            switch (response.status) 
+            {
+            	case 422:
+            		toastr.error('Проверьте введенные данные');
+            		$scope.orderErrors = response.data.errors;
+            		break
+
+            	default:
+            		toastr.error('Произошла ошибка на сервере');
+            		break;
+            }
         });
+	}
+
+
+	$scope.showDelete = function(order)
+	{
+		$scope.isDeleteModalShown = true;
+		$scope.deleteType = 'order';
+		$scope.deleteData = order;
+
+		document.querySelector('body').classList.add('modal-open');
+	}
+
+
+	$scope.hideDelete = function()
+	{
+		$scope.isDeleteModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
 	}
 
 
 	$scope.delete = function(id)
 	{
+		$scope.hideDelete();
+
 		OrdersRepository.delete({id: id}, function(response) 
 		{
-			$scope.init();
+			if ($scope.baseUrl)
+			{
+				$location.path($scope.baseUrl).replace();
+			}
+			else
+			{
+				toastr.success('Заказ успешно удален!');
+
+				$scope.init();
+			}
 		}, 
 		function(response) 
 		{
-           
+        	toastr.error('Произошла ошибка на сервере');
         });
 	}
 
@@ -223,7 +264,8 @@ angular.module('tctApp').controller('OrdersController', [
 	{
 		productData.id = null;
 		productData.category = productGroup.category;
-		productData.weight_units = productGroup.weight_units;
+		productData.weight_unit = productGroup.weight_unit;
+		productData.unit_in_units = productGroup.unit_in_units;
 		productData.units_in_pallete = productGroup.units_in_pallete;
 
 		for (key in $scope.productGroups)
@@ -249,6 +291,7 @@ angular.module('tctApp').controller('OrdersController', [
 		productData.id = product.id;
 		productData.in_stock = product.in_stock;
 		productData.free_in_stock = product.free_in_stock;
+		productData.units_text = product.units_text;
 		productData.pivot.price = product.price;
 		productData.pivot.cost = product.price * productData.pivot.count;
 
@@ -256,33 +299,80 @@ angular.module('tctApp').controller('OrdersController', [
 	}
 
 
-	$scope.changeCount = function(productData, count) 
+	$scope.updateCount = function(product) 
 	{
-		productData.pivot.count = parseInt(productData.pivot.count) + count;
-
-		if ((isNaN(productData.pivot.count)) || (productData.pivot.count < 0)) 
+		if (product.pivot.count.length > 10)
 		{
-			productData.pivot.count = 0;
+			product.pivot.count = product.pivot.count.substring(0, 10);
+		}
+		product.pivot.count = product.pivot.count.replace(/[^,.\d]/g, '');
+		product.pivot.count = product.pivot.count.replace(',', '.');
+
+		if (product.pivot.count.split('.').length - 1 > 1)
+		{
+			var index = product.pivot.count.lastIndexOf('.');
+			var count = product.pivot.count.substring(0, index);
+			product.pivot.count = product.pivot.count.substring(index).replace('.', '');
+			product.pivot.count = count + product.pivot.count;
 		}
 
-		productData.pivot.cost = productData.pivot.price * productData.pivot.count;
+		product.pivot.cost = product.pivot.price * product.pivot.count;
 
 		$scope.updateOrderInfo();
     }
 
 
-	$scope.updateOrderInfo = function() 
+	$scope.updateOrderInfo = function(pallets) 
 	{
 		$scope.order.cost = 0;
 		$scope.order.weight = 0;
-		$scope.order.pallets = 0;
+		if (!pallets)
+		{
+			$scope.order.pallets = 0;
+		}
+
+		$scope.order.main_category = '';
 
 		for (product of $scope.order.products) 
 		{
-			$scope.order.cost += product.pivot.cost;
-			$scope.order.weight += product.weight_units * product.pivot.count;
-			$scope.order.pallets += Math.ceil(product.pivot.count / product.units_in_pallete); 
+			if (product.pivot.price)
+			{
+				$scope.order.cost += product.pivot.cost;
+				$scope.order.weight += product.weight_unit * product.unit_in_units * product.pivot.count;
+				if (!pallets)
+				{
+					$scope.order.pallets += Math.ceil(product.pivot.count / product.units_in_pallete); 
+				}
+
+				if (product.category)
+				{
+					$scope.order.main_category = product.category.main_category;
+				}
+			}
 		}
+
+		$scope.order.cost += $scope.order.pallets * 150;
+
+		if ($scope.order.delivery)
+		{
+			switch ($scope.order.delivery) {
+				case ('sverdlovsk'):
+					$scope.order.cost += 2500;
+				    break;
+
+				case ('other'):
+					$scope.order.cost += 3000;
+					break;
+			}
+
+			if ($scope.order.delivery_distance)
+			{
+				$scope.order.cost += 50 * $scope.order.delivery_distance;
+			}
+		}
+
+		$scope.order.cost = Math.ceil($scope.order.cost);
+		$scope.order.weight = Math.ceil($scope.order.weight);
     }
 
 

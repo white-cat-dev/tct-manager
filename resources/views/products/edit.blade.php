@@ -13,7 +13,10 @@
 			<a ng-href="@{{ productGroup.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="id" ng-click="delete(id)">
+			<button type="button" class="btn btn-primary" ng-click="copy(id)">
+				<i class="fas fa-copy"></i> Копировать
+			</button>
+			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(productGroup)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 		</div>
@@ -37,7 +40,7 @@
 				</div>
 
 				<div class="form-group">
-					<div class="param-label">Полное название продукта</div>
+					<div class="param-label">Полное название</div>
 					<input type="text" class="form-control" ng-model="productGroup.wp_name" ng-class="{'is-invalid': productGroupErrors.wp_name}">
 					<small class="form-text">
 						Введите название, которое используется в WordPress
@@ -45,7 +48,7 @@
 				</div>
 
 				<div class="form-group">
-					<div class="param-label">Короткое название продукта</div>
+					<div class="param-label">Короткое название</div>
 					<input type="text" class="form-control" ng-model="productGroup.name" ng-class="{'is-invalid': productGroupErrors.name}">
 					<small class="form-text">
 						Введите название, которое будет использоваться в панели
@@ -79,14 +82,18 @@
 						<input class="custom-control-input" type="radio" ng-model="productGroup.adjectives" id="radioNeuter" value="neuter">
 						<label class="custom-control-label" for="radioNeuter">Средний</label>
 					</div>
+
+					<small class="form-text">
+						Необходим для формирования характеристик для WordPress
+					</small>
 				</div>
 
-				<div class="alert alert-warning" ng-show="!productCategory">
+				<div class="alert alert-warning" ng-show="!productGroup.category">
 					Выберите категорию продукта, чтобы продолжить заполнение формы
 				</div>
 			</div>
 
-			<div class="col-6 col-xl-5" ng-show="productCategory">
+			<div class="col-6 col-xl-5" ng-show="productGroup.category">
 				<div class="params-title">
 					Характеристики
 				</div>
@@ -119,10 +126,10 @@
 					</div>
 				</div>
 
-				<div class="form-group" ng-show="productCategory && productCategory.units != 'unit'">
+				<div class="form-group" ng-show="productGroup.category && productGroup.category.units != 'unit'">
 					<div class="param-label">
 						Количество
-						<span ng-switch on="productCategory.units">
+						<span ng-switch on="productGroup.category.units">
 							<span ng-switch-when="area">в м<sup>2</sup>, шт</span>
 							<span ng-switch-when="volume">в м<sup>3</sup>, шт</span>
 						</span>	
@@ -133,7 +140,7 @@
 				<div class="form-group">
 					<div class="param-label">
 						Количество на поддоне,
-						<span ng-switch on="productCategory.units">
+						<span ng-switch on="productGroup.category.units">
 							<span ng-switch-when="area">шт / м<sup>2</sup></span>
 							<span ng-switch-when="volume">шт / м<sup>3</sup></span>
 							<span ng-switch-when="unit">шт</span>
@@ -141,8 +148,8 @@
 					</div>
 
 					<div class="input-group divided-input-group">
-						<input type="text" class="form-control" ng-model="productGroup.unit_in_pallete" ng-class="{'is-invalid': productGroupErrors.unit_in_pallete}" ng-if="productCategory.units != 'unit'">
-						<span ng-if="productCategory.units != 'unit'">/</span>
+						<input type="text" class="form-control" ng-model="productGroup.unit_in_pallete" ng-class="{'is-invalid': productGroupErrors.unit_in_pallete}" ng-if="productGroup.category.units != 'unit'">
+						<span ng-if="productGroup.category.units != 'unit'">/</span>
 						<input type="text" class="form-control" ng-model="productGroup.units_in_pallete" ng-class="{'is-invalid': productGroupErrors.units_in_pallete}">
 					</div>
 				</div>
@@ -160,28 +167,21 @@
 			</div>		
 		</div>
 
-		<div class="params-section" ng-show="productCategory">
+		<div class="params-section" ng-show="productGroup.category">
 			<div class="row justify-content-around">
 				<div class="col-12 col-xl-11">
 					<div class="params-title">
-						<span ng-switch on="productCategory.variations">
-							Разновидности и цены
-						</span>
+						Разновидности и цены
 					</div>
 				</div>
 
-				<div class="col-12 col-xl-11" ng-show="productCategory.variations">
+				<div class="col-12 col-xl-11" ng-show="productGroup.category.variations">
 					<table class="table table-with-buttons" ng-if="productGroup.products.length > 0">
 						<tr>
-							<th>
-								<span ng-switch on="productCategory.variations">
-									<span ng-switch-when="colors">Цвет</span>
-									<span ng-switch-when="grades">Марка</span>
-								</span>
-							</th>
+							<th>Вид</th>
 							<th>Цена (наличный / безнал / НДС), руб</th>
-							<th>Наличие, 
-								<span ng-switch on="productCategory.units">
+							<th>В наличии, 
+								<span ng-switch on="productGroup.category.units">
 									<span ng-switch-when="area">м<sup>2</sup></span>
 									<span ng-switch-when="volume">м<sup>3</sup></span>
 									<span ng-switch-when="unit">шт</span>
@@ -192,7 +192,7 @@
 
 						<tr ng-repeat="product in productGroup.products track by $index">
 							<td style="width: 22%;">
-								<ui-select ng-model="product.variation" ng-change="chooseProductVariation(product, $select.selected)" ng-if="productCategory.variations == 'colors'" skip-focusser="true">
+								<ui-select ng-model="product.variation" ng-change="chooseProductVariation(product, $select.selected)" ng-if="productGroup.category.variations == 'colors'" skip-focusser="true">
 						            <ui-select-match placeholder="Выберите из списка...">
 							            @{{ $select.selected.name }}
 							        </ui-select-match>
@@ -201,7 +201,7 @@
 						            </ui-select-choices>
 								</ui-select>
 
-								<ui-select ng-model="product.variation" ng-change="chooseProductVariation(product, $select.selected)" ng-if="productCategory.variations == 'grades'" skip-focusser="true">
+								<ui-select ng-model="product.variation" ng-change="chooseProductVariation(product, $select.selected)" ng-if="productGroup.category.variations == 'grades'" skip-focusser="true">
 						            <ui-select-match placeholder="Выберите из списка...">
 							            @{{ $select.selected.name }}
 							        </ui-select-match>
@@ -212,7 +212,7 @@
 							</td>
 							<td>
 								<div class="input-group divided-input-group">
-									<span style="width: 25px;" ng-switch on="productCategory.units">
+									<span style="width: 25px;" ng-switch on="productGroup.category.units">
 										<span ng-switch-when="area">м<sup>2</sup></span>
 										<span ng-switch-when="volume">м<sup>3</sup></span>
 										<span ng-switch-when="unit">шт</span>
@@ -224,7 +224,7 @@
 									<input type="text" class="form-control" ng-model="product.price_vat" ng-change="changePrice(product, 'price_vat'); inputFloat(product, 'price_vat')">
 								</div>
 
-								<div class="input-group divided-input-group" ng-if="productCategory.units != 'unit'">
+								<div class="input-group divided-input-group" ng-if="productGroup.category.units != 'unit'">
 									<span style="width: 25px;">шт</span>
 									<input type="text" class="form-control" ng-model="product.price_unit" ng-change="changePrice(product, 'price_unit'); inputFloat(product, 'price_unit')">
 									<span>/</span>
@@ -237,7 +237,7 @@
 								<input type="text" class="form-control" ng-model="product.in_stock">
 							</td>
 							<td>
-								<button type="button" class="btn btn-primary" ng-click="deleteProduct($index)" ng-change="inputFloat(product, 'in_stock')">
+								<button type="button" class="btn btn-primary" ng-click="deleteProduct($index)">
 									<i class="far fa-trash-alt"></i>
 								</button>
 							</td>
@@ -251,11 +251,11 @@
 					</div>
 				</div>
 
-				<div class="col-8 col-xl-6" ng-show="!productCategory.variations">
+				<div class="col-8 col-xl-6" ng-show="!productGroup.category.variations">
 					<div class="form-group">
 						<div class="param-label">Цена (наличный / безнал / НДС), руб</div>
 						<div class="input-group divided-input-group">
-							<span style="width: 25px;" ng-switch on="productCategory.units">
+							<span style="width: 25px;" ng-switch on="productGroup.category.units">
 								<span ng-switch-when="area">м<sup>2</sup></span>
 								<span ng-switch-when="volume">м<sup>3</sup></span>
 								<span ng-switch-when="unit">шт</span>
@@ -267,7 +267,7 @@
 							<input type="text" class="form-control" ng-model="productGroup.products[0].price_vat" ng-change="inputFloat(productGroup.products[0], 'price_vat')">
 						</div>
 
-						<div class="input-group divided-input-group" ng-if="productCategory.units != 'unit'">
+						<div class="input-group divided-input-group" ng-if="productGroup.category.units != 'unit'">
 							<span style="width: 25px;">шт</span>
 							<input type="text" class="form-control" ng-model="productGroup.products[0].price_unit" ng-change="inputFloat(productGroup.products[0], 'price_unit')">
 							<span>/</span>
@@ -278,16 +278,22 @@
 					</div>
 				</div>
 
-				<div class="col-4 col-xl-4" ng-show="!productCategory.variations">
+				<div class="col-4 col-xl-4" ng-show="!productGroup.category.variations">
 					<div class="form-group">
-						<div class="param-label">Наличие</div>
+						<div class="param-label">В наличии, 
+							<span ng-switch on="productGroup.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт</span>
+							</span>	
+						</div>
 						<input type="text" class="form-control" ng-model="productGroup.products[0].in_stock" ng-change="inputFloat(productGroup.products[0], 'in_stock')">
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="params-section" ng-show="productCategory">
+		<div class="params-section" ng-show="productGroup.category">
 			<div class="row justify-content-around">
 				<div class="col-12 col-xl-11">
 					<div class="params-title">
@@ -330,7 +336,7 @@
 			</div>
 		</div>
 
-		<div class="params-section" ng-show="productCategory">
+		<div class="params-section" ng-show="productGroup.category">
 			<div class="row justify-content-around">
 				<div class="col-12 col-xl-11">
 					<div class="params-title">
@@ -342,7 +348,7 @@
 					<div class="form-group">
 						<div class="param-label">
 							Количество из одного замеса,
-							<span ng-switch on="productCategory.units">
+							<span ng-switch on="productGroup.category.units">
 								<span ng-switch-when="area">м<sup>2</sup></span>
 								<span ng-switch-when="volume">м<sup>3</sup></span>
 								<span ng-switch-when="unit">шт</span>
@@ -353,9 +359,9 @@
 
 					<div class="form-group">
 						<div class="param-label">
-							<span ng-if="productCategory.variations != 'colors'">Количество форм,</span>
-							<span ng-if="productCategory.variations == 'colors'">Количество серых / красных форм,</span>
-							<span ng-switch on="productCategory.units">
+							<span ng-if="productGroup.category.variations != 'colors'">Количество форм,</span>
+							<span ng-if="productGroup.category.variations == 'colors'">Количество серых / красных форм,</span>
+							<span ng-switch on="productGroup.category.units">
 								<span ng-switch-when="area">м<sup>2</sup></span>
 								<span ng-switch-when="volume">м<sup>3</sup></span>
 								<span ng-switch-when="unit">шт</span>
@@ -363,8 +369,8 @@
 						</div>
 						<div class="input-group divided-input-group">
 							<input type="text" class="form-control" ng-model="productGroup.forms" ng-class="{'is-invalid': productGroupErrors.forms}">
-							<span ng-if="productCategory.variations == 'colors'">/</span>
-							<input type="text" class="form-control" ng-model="productGroup.forms_add" ng-class="{'is-invalid': productGroupErrors.forms_add}" ng-if="productCategory.variations == 'colors'">
+							<span ng-if="productGroup.category.variations == 'colors'">/</span>
+							<input type="text" class="form-control" ng-model="productGroup.forms_add" ng-class="{'is-invalid': productGroupErrors.forms_add}" ng-if="productGroup.category.variations == 'colors'">
 						</div>
 					</div>
 				</div>
@@ -373,7 +379,7 @@
 					<div class="form-group">
 						<div class="param-label">
 							Стоимость работы 
-							<span ng-switch on="productCategory.units">
+							<span ng-switch on="productGroup.category.units">
 								<span ng-switch-when="area">за м<sup>2</sup>, руб</span>
 								<span ng-switch-when="volume">за м<sup>3</sup>, руб</span>
 								<span ng-switch-when="unit">за шт, руб</span>
@@ -403,4 +409,6 @@
 			</button>
 		</div>
 	</div>
+
+	@include('partials.delete-modal')
 </div>

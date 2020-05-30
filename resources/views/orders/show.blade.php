@@ -12,7 +12,7 @@
 			<a ng-href="@{{ order.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="order.id" ng-click="delete(order.id)">
+			<button type="button" class="btn btn-primary" ng-if="order.id" ng-click="showDelete(order)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 		</div>
@@ -246,4 +246,6 @@
 			</div>
 		</div>
 	</div>
+
+	@include('partials.delete-modal')
 </div>

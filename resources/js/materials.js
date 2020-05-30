@@ -162,8 +162,28 @@ angular.module('tctApp').controller('MaterialsController', [
 	}
 
 
+	$scope.showDelete = function(material)
+	{
+		$scope.isDeleteModalShown = true;
+		$scope.deleteType = 'material';
+		$scope.deleteData = material;
+
+		document.querySelector('body').classList.add('modal-open');
+	}
+
+
+	$scope.hideDelete = function()
+	{
+		$scope.isDeleteModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
+	}
+
+
 	$scope.delete = function(id)
 	{
+		$scope.hideDelete();
+
 		MaterialsRepository.delete({id: id}, function(response) 
 		{
 			if ($scope.baseUrl)
@@ -179,7 +199,7 @@ angular.module('tctApp').controller('MaterialsController', [
 		}, 
 		function(response) 
 		{
-           
+        	toastr.error('Произошла ошибка на сервере');
         });
 	}
 

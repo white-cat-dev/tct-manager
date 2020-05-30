@@ -10,10 +10,10 @@
 
 		<div class="right-buttons">
 			@if (Auth::user() && Auth::user()->type == 'admin')
-			<a ng-href="@{{ material.url + '/edit' }}" class="btn btn-primary">
+			<a ng-href="@{{ materialGroup.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="id" ng-click="delete(id)">
+			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(materialGroup)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 			@endif
@@ -25,7 +25,7 @@
 		<div class="row justify-content-center">
 			<div class="col-6">
 				<div class="show-block-title">
-					Материал "@{{ material.name }}"
+					Материал "@{{ materialGroup.name }}"
 				</div>
 
 				<div class="param-block">
@@ -33,7 +33,7 @@
 						Название
 					</div>
 					<div class="param-value">
-						@{{ material.name }}
+						@{{ materialGroup.name }}
 					</div>
 				</div>
 
@@ -41,7 +41,7 @@
 					<div class="param-name">
 						Единицы измерения
 					</div>
-					<div class="param-value" ng-repeat="unit in units" ng-if="unit.key == material.units">
+					<div class="param-value" ng-repeat="unit in units" ng-if="unit.key == materialGroup.units">
 						<span ng-bind-html="unit.name"></span>
 					</div>
 				</div>
@@ -51,7 +51,7 @@
 						Цена
 					</div>
 					<div class="param-value">
-						@{{ material.price }} руб.
+						@{{ materialGroup.price }} руб.
 					</div>
 				</div>
 
@@ -60,8 +60,8 @@
 						В наличии
 					</div>
 					<div class="param-value">
-						@{{ material.in_stock }} 
-						<span ng-switch on="material.units">
+						@{{ materialGroup.in_stock }} 
+						<span ng-switch on="materialGroup.units">
 							<span ng-switch-when="volume_l">л</span>
 							<span ng-switch-when="volume_ml">мл</span>
 							<span ng-switch-when="weight_kg">кг</span>
@@ -72,4 +72,6 @@
 			</div>
 		</div>
 	</div>
+
+	@include('partials.delete-modal')
 </div>

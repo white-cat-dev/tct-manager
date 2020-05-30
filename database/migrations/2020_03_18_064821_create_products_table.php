@@ -26,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->decimal('price_unit', 8, 2)->unsigned();
             $table->decimal('price_unit_vat', 8, 2)->unsigned();
             $table->decimal('price_unit_cashless', 8, 2)->unsigned();
-            $table->integer('in_stock');
+            $table->decimal('in_stock', 10, 2);
             $table->timestamps();
         });
     }

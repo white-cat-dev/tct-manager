@@ -1,8 +1,6 @@
 <div class="orders-page" ng-init="init({{ App\Order::STATUS_PRODUCTION }})">
 	<h1>Заказы</h1>
 
-	@include('partials.top-alerts')
-
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -61,13 +59,13 @@
 							@{{ order.formatted_date }}
 						</td>
 						<td>
-							@{{ order.formatted_date }}
+							@{{ order.formatted_date_to }}
 						</td>
 						<td>
 							@{{ order.cost | number }} руб.
 						</td>
 						<td>
-							@{{ order.cost | number }} руб.
+							@{{ order.paid | number }} руб.
 						</td>
 					</tr>
 				</table>
@@ -88,7 +86,7 @@
 						<a ng-href="@{{ currentOrder.url + '/edit' }}" class="btn btn-primary btn-sm">
 							<i class="fas fa-edit"></i>
 						</a>
-						<button type="button" class="btn btn-primary btn-sm" ng-click="delete(currentOrder.id)">
+						<button type="button" class="btn btn-primary btn-sm" ng-click="showDelete(currentOrder)">
 							<i class="far fa-trash-alt"></i>
 						</button>
 					</div>
@@ -181,4 +179,5 @@
 	</div>
 
 	@include('partials.order-realization-modal')
+	@include('partials.delete-modal')
 </div>

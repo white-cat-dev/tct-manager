@@ -102,9 +102,45 @@ angular.module('tctApp').controller('WorkersController', [
 	}
 
 
-	$scope.delete = function()
+	$scope.showDelete = function(worker)
 	{
+		$scope.isDeleteModalShown = true;
+		$scope.deleteType = 'worker';
+		$scope.deleteData = worker;
 
+		document.querySelector('body').classList.add('modal-open');
+	}
+
+
+	$scope.hideDelete = function()
+	{
+		$scope.isDeleteModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
+	}
+
+
+	$scope.delete = function(id)
+	{
+		$scope.hideDelete();
+
+		WorkersRepository.delete({id: id}, function(response) 
+		{
+			if ($scope.baseUrl)
+			{
+				$location.path($scope.baseUrl).replace();
+			}
+			else
+			{
+				toastr.success('Работник успешно удален!');
+
+				$scope.init();
+			}
+		}, 
+		function(response) 
+		{
+        	toastr.error('Произошла ошибка на сервере');
+        });
 	}
 
 

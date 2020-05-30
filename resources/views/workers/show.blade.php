@@ -36,7 +36,7 @@
 			<a ng-href="@{{ worker.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="id" ng-click="delete(id)">
+			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(worker)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 			@endif
@@ -159,4 +159,5 @@
 	</div>
 
 	@include('partials.worker-status-modal')
+	@include('partials.delete-modal')
 </div>

@@ -90,12 +90,24 @@ class MaterialsController extends Controller
 
                 $material = $materialGroup->materials()->find($id);
 
+                $materialData = $this->getMaterialData($materialData, $materialGroup);
+
                 if (!$material) 
                 {
                     $material = $materialGroup->materials()->create($materialData);
                 }
                 else 
                 {
+                    if ($material->in_stock != $materialData['in_stock'])
+                    {
+                        $materialStock = $material->stocks()->where('date', date('Y-m-d'))->first();
+                        if ($materialStock)
+                        {
+                            $materialStock->update([
+                                'new_in_stock' => $materialData['in_stock']
+                            ]);
+                        }
+                    }
                     $material->update($materialData);
                 }
             }
@@ -152,6 +164,17 @@ class MaterialsController extends Controller
             'units' => $request->get('units', ''),
         ];
     }
+
+
+    protected function getMaterialData($data, $materialGroup)
+    {
+        return [
+            'variation' => !empty($data['variation']) ? $data['variation'] : '',
+            'price' => !empty($data['price']) ? $data['price'] : 0,
+            'in_stock' => !empty($data['in_stock']) ? $data['in_stock'] : 0
+        ];
+    }
+
 
     protected function getSupplyData($data)
     {

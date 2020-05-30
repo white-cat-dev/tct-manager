@@ -1,8 +1,6 @@
 <div class="clients-page" ng-init="init()">
 	<h1>Клиенты</h1>
 
-	@include('partials.top-alerts')
-
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">

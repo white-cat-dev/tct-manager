@@ -13,7 +13,7 @@
 			<a ng-href="@{{ category.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
-			<button type="button" class="btn btn-primary" ng-if="id" ng-click="delete(id)">
+			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(category)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
 			@endif
@@ -23,9 +23,9 @@
 
 	<div class="show-block">
 		<div class="row justify-content-center">
-			<div class="col-6">
+			<div class="col-12 col-lg-8 col-xl-66">
 				<div class="show-block-title">
-					Категория "@{{ category.name }}"
+					Категория «@{{ category.name }}»
 				</div>
 
 				<div class="param-block">
@@ -34,6 +34,18 @@
 					</div>
 					<div class="param-value">
 						@{{ category.name }}
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Главная категория
+					</div>
+					<div class="param-value">
+						<span ng-switch on="category.main_category">
+							<span ng-switch-when="tiles">Плитка</span>
+							<span ng-switch-when="blocks">Блоки</span>
+						</span>
 					</div>
 				</div>
 
@@ -72,4 +84,6 @@
 			</div>
 		</div>
 	</div>
+
+	@include('partials.delete-modal')
 </div>

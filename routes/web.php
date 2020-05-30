@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function()
 
 		Route::post('/', 'ProductsController@create');
 		Route::post('{productGroup}', 'ProductsController@edit');
+		Route::post('{productGroup}/copy', 'ProductsController@copy');
 
 		Route::delete('{productGroup}', 'ProductsController@delete');
 	});

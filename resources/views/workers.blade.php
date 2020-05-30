@@ -1,8 +1,6 @@
 <div class="workers-page" ng-init="init()">
 	<h1>Работники</h1>
 
-	@include('partials.top-alerts')
-
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -35,7 +33,7 @@
 					<a ng-href="@{{ worker.url + '/edit' }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-primary btn-sm" ng-click="delete(worker.id)">
+					<button type="button" class="btn btn-primary btn-sm" ng-click="showDelete(worker)">
 						<i class="far fa-trash-alt"></i>
 					</button>
 					@endif
@@ -119,4 +117,5 @@
 	</div>
 
 	@include('partials.worker-status-modal')
+	@include('partials.delete-modal')
 </div>

@@ -45,6 +45,11 @@ class Material extends Model
         return $this->hasMany(MaterialApply::class);
     }
 
+    public function stocks()
+    {
+        return $this->morphMany(Stock::class, 'model');
+    }
+
 
     public function getVariationTextAttribute()
     {

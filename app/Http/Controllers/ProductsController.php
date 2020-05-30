@@ -14,13 +14,27 @@ class ProductsController extends Controller
     {
         if ($request->wantsJson())
         {
-            $category = $request->get('category');
+            $category = $request->get('category', 0);
+            $stock = $request->get('stock', false);
+
             $query = ProductGroup::with('products');
+
             if ($category)
             {
                 $query = $query->where('category_id', $category);
             }
+
+            if ($stock)
+            {
+                $query = $query->whereHas('products', function($productsQuery) {
+                    $productsQuery->where('in_stock', '>', 0);
+                })->with(['products' => function($productsQuery) {
+                    $productsQuery->where('in_stock', '>', 0);
+                }]);
+            }
+
             $productGroups = $query->orderBy('name')->get();
+
             return $productGroups;
         }
 
@@ -95,6 +109,16 @@ class ProductsController extends Controller
                 }
                 else 
                 {
+                    if ($product->in_stock != $productData['in_stock'])
+                    {
+                        $productStock = $product->stocks()->where('date', date('Y-m-d'))->first();
+                        if ($productStock)
+                        {
+                            $productStock->update([
+                                'new_in_stock' => $productData['in_stock']
+                            ]);
+                        }
+                    }
                     $product->update($productData);
                 }
             }
@@ -117,6 +141,25 @@ class ProductsController extends Controller
         {
             $productGroup->delete();
         }
+    }
+
+
+    public function copy(Request $request, ProductGroup $productGroup)
+    {
+        $productGroupCopy = $productGroup->replicate()->fill([
+            'name' => $productGroup->name . ' (копия)'
+        ]);
+        $productGroupCopy->save();
+
+        foreach ($productGroup->products as $product) 
+        {
+            $productCopy = $product->replicate()->fill([
+                'product_group_id' => $productGroupCopy->id
+            ]);
+            $productCopy->save();
+        }
+
+        return $productGroupCopy;
     }
 
 

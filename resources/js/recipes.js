@@ -58,7 +58,7 @@ angular.module('tctApp').controller('RecipesController', [
 
 		RecipesRepository.get({id: $scope.id}, function(response) 
 		{
-			$scope.order = response;
+			$scope.recipe = response;
 		});
 	}
 
@@ -116,8 +116,28 @@ angular.module('tctApp').controller('RecipesController', [
 	}
 
 
+	$scope.showDelete = function(recipe)
+	{
+		$scope.isDeleteModalShown = true;
+		$scope.deleteType = 'recipe';
+		$scope.deleteData = recipe;
+
+		document.querySelector('body').classList.add('modal-open');
+	}
+
+
+	$scope.hideDelete = function()
+	{
+		$scope.isDeleteModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
+	}
+
+
 	$scope.delete = function(id)
 	{
+		$scope.hideDelete();
+
 		RecipesRepository.delete({id: id}, function(response) 
 		{
 			if ($scope.baseUrl)
@@ -133,7 +153,7 @@ angular.module('tctApp').controller('RecipesController', [
 		}, 
 		function(response) 
 		{
-           
+        	toastr.error('Произошла ошибка на сервере');
         });
 	}
 
