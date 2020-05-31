@@ -32,6 +32,7 @@ class Order extends Model
         'priority',
         'cost',
         'paid',
+        'pay_type',
         'weight',
         'pallets'
     ];
@@ -50,7 +51,9 @@ class Order extends Model
 
     protected $casts = [
         'cost' => 'float',
-        'weight' => 'float'
+        'paid' => 'float',
+        'weight' => 'float',
+        'delivery_distance' => 'float'
     ];
 
     protected static $statuses = [

@@ -28,6 +28,7 @@ angular.module('tctApp').controller('OrdersController', [
 	$scope.order = {
 		'cost': 0,
 		'paid': 0,
+		'pay_type': 'cash',
 		'weight': 0,
 		'pallets': 0,
 		'priority': '1',
@@ -114,22 +115,45 @@ angular.module('tctApp').controller('OrdersController', [
 
 		$scope.id = $routeParams['id'];
 
-		ProductsRepository.query(function(response) 
-		{
-			$scope.productGroups = response;
-		});
-
 		if ($scope.id)
 		{
 			OrdersRepository.get({id: $scope.id}, function(response) 
 			{
 				$scope.order = response;
 
-				for (product of $scope.order.products)
+				if ($scope.order.date)
 				{
-					$scope.chooseProductGroup(product, product.product_group_id);
-					$scope.chooseProduct(product, product);
+					var date = $scope.order.date.split("-");
+					$scope.order.date_raw = date[2] + date[1] + date[0];
 				}
+
+				if ($scope.order.priority)
+				{
+					$scope.order.priority = '' + $scope.order.priority;
+				}
+
+				ProductsRepository.query(function(response) 
+				{
+					$scope.productGroups = response;
+					
+					for (product of $scope.order.products)
+					{
+						var chosenProductGroup = null;
+						for (productGroup of $scope.productGroups)
+						{
+							if (productGroup.id == product.product_group_id)
+							{
+								chosenProductGroup = productGroup;
+								break;
+							}
+						}
+
+						if (chosenProductGroup) 
+						{
+							$scope.chooseProductGroup(product, chosenProductGroup, product);
+						}
+					}
+				});
 			});
 		}
 		else
@@ -282,6 +306,8 @@ angular.module('tctApp').controller('OrdersController', [
 			'products': [],
 			'pivot': {
 				'price': 0,
+				'price_cashless': 0,
+				'price_vat': 0,
 				'count': 0,
 				'cost': 0
 			}
@@ -297,24 +323,24 @@ angular.module('tctApp').controller('OrdersController', [
 	}
 
 
-	$scope.chooseProductGroup = function(productData, productGroup)
+	$scope.chooseProductGroup = function(productData, productGroup, product)
 	{
-		productData.id = null;
+		if (!product)
+		{
+			productData.id = null;
+		}
 		productData.category = productGroup.category;
 		productData.weight_unit = productGroup.weight_unit;
 		productData.unit_in_units = productGroup.unit_in_units;
 		productData.units_in_pallete = productGroup.units_in_pallete;
 
-		for (key in $scope.productGroups)
-		{
-			if ($scope.productGroups[key].id == productGroup.id)
-			{
-				productData.products = $scope.productGroups[key].products;
-				break;
-			}
-		}
+		productData.products = productGroup.products;
 
-		if (!productGroup.category.variations)
+		if (product)
+		{
+			$scope.chooseProduct(productData, product);
+		}
+		else if (!productGroup.category.variations)
 		{
 			$scope.chooseProduct(productData, productData.products[0]);
 		}
@@ -326,11 +352,28 @@ angular.module('tctApp').controller('OrdersController', [
 	$scope.chooseProduct = function(productData, product)
 	{
 		productData.id = product.id;
+		productData.product_id = product.id;
 		productData.in_stock = product.in_stock;
 		productData.free_in_stock = product.free_in_stock;
 		productData.units_text = product.units_text;
 		productData.pivot.price = product.price;
-		productData.pivot.cost = product.price * productData.pivot.count;
+		productData.pivot.price_cashless = product.price_cashless;
+		productData.pivot.price_vat = product.price_vat;
+
+		switch ($scope.order.pay_type) 
+		{
+			case ('cash'):
+				productData.pivot.cost = productData.pivot.price * productData.pivot.count;
+				break;
+
+			case ('cashless'):
+				productData.pivot.cost = productData.pivot.price_cashless * productData.pivot.count;
+				break;
+
+			case ('vat'):
+				productData.pivot.cost = productData.pivot.price_vat * productData.pivot.count;
+				break;
+		}
 
 		$scope.updateOrderInfo();
 	}
@@ -353,8 +396,6 @@ angular.module('tctApp').controller('OrdersController', [
 			product.pivot.count = count + product.pivot.count;
 		}
 
-		product.pivot.cost = product.pivot.price * product.pivot.count;
-
 		$scope.updateOrderInfo();
     }
 
@@ -374,6 +415,21 @@ angular.module('tctApp').controller('OrdersController', [
 		{
 			if (product.pivot.price)
 			{
+				switch ($scope.order.pay_type) 
+				{
+					case ('cash'):
+						product.pivot.cost = product.pivot.price * product.pivot.count;
+						break;
+
+					case ('cashless'):
+						product.pivot.cost = product.pivot.price_cashless * product.pivot.count;
+						break;
+
+					case ('vat'):
+						product.pivot.cost = product.pivot.price_vat * product.pivot.count;
+						break;
+				}
+
 				$scope.order.cost += product.pivot.cost;
 				$scope.order.weight += product.weight_unit * product.unit_in_units * product.pivot.count;
 				if (!pallets)

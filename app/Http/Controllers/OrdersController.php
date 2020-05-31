@@ -125,32 +125,42 @@ class OrdersController extends Controller
     {
         if ($request->wantsJson())
         {
-            // $this->validate($request, $this->validationRules);
+            $this->validate($request, $this->validationRules);
 
-            // $productGroup->update($this->getData($request));
+            $orderData = $this->getData($request);
+            $order->update($orderData);
 
-            // $productsIds = $productGroup->products()->select('id')->pluck('id');
+            $clientData = $request->get('client');
+            $client = Client::find($clientData['id']);
+            $client->update($this->getClientData($clientData));
 
-            // foreach ($request->get('products') as $productData) 
-            // {
-            //     $id = !empty($productData['id']) ? $productData['id'] : 0;
-                
-            //     if ($productsIds->has($id)) 
-            //     {
-            //         $productsIds->forget($id);
-            //     }
+            $productsIds = $order->products()->select('product_id')->pluck('product_id', 'product_id');
 
-            //     $product = $productGroup->products()->find($id);
+            foreach ($request->get('products', []) as $productData) 
+            {
+                $productsIds->forget($productData['id']);
 
-            //     if (!$product) 
-            //     {
-            //         $product = $productGroup->products()->create($productData);
-            //     }
-            //     else 
-            //     {
-            //         $product->update($productData);
-            //     }
-            // }
+                $product = $order->products()->find($productData['id']);
+
+                if (!$product) 
+                {
+                    $product = $order->products()->attach($productData['id'], [
+                        'count' => $productData['pivot']['count'],
+                        'price' => $productData['pivot']['price'],
+                        'cost' => $productData['pivot']['cost']
+                    ]);
+                }
+                else 
+                {
+                    $order->products()->updateExistingPivot($productData['id'], [
+                        'count' => $productData['pivot']['count'],
+                        'price' => $productData['pivot']['price'],
+                        'cost' => $productData['pivot']['cost']
+                    ]);
+                }
+            }
+
+            $order->products()->whereIn('orders_products.product_id', $productsIds)->delete();
 
             return $order;
         }
@@ -257,10 +267,11 @@ class OrdersController extends Controller
             'delivery_distance' => $request->get('delivery_distance', 0),
             'client_id' => $request->get('client_id', 0),
             'priority' => $request->get('priority', Order::PRIORITY_NORMAL),
-            'comment' => $request->get('comment', 0),
+            'comment' => $request->get('comment', ''),
             'status' => $request->get('status', Order::STATUS_PRODUCTION),
             'cost' => $request->get('cost', 0),
             'paid' => $request->get('paid', 0),
+            'pay_type' => $request->get('pay_type', 'cash'),
             'weight' => $request->get('weight', 0),
             'pallets' => $request->get('pallets', 0)
         ];

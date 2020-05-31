@@ -63,8 +63,8 @@ class RecipesController extends Controller
         {
             $this->validate($request, $this->validationRules);
 
-            $recipesData = $this->getData($request);
-            $recipe->update($recipesData);
+            $recipeData = $this->getData($request);
+            $recipe->update($recipeData);
 
             $materialGroupsIds = $recipe->material_groups()->select('material_group_id')->pluck('material_group_id', 'material_group_id');
 

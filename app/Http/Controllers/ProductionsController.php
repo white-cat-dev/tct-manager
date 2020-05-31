@@ -457,6 +457,8 @@ class ProductionsController extends Controller
     {
         $recipe = $production->product_group->recipe;
 
+        dump($recipe);
+
         if (!$recipe)
         {
             return;
@@ -471,6 +473,11 @@ class ProductionsController extends Controller
             else
             {
                 $material = $materialGroup->materials->first();
+            }
+
+            if (!$material)
+            {
+                continue;
             }
 
             $planned = $materialGroup->pivot->count * $performed;

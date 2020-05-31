@@ -55,7 +55,30 @@
 						<input class="custom-control-input" type="radio" ng-model="order.priority" id="radioHigh" value="2">
 						<label class="custom-control-label" for="radioHigh">Высокий</label>
 					</div>
-				</div>
+				</div>	
+
+				<div class="form-group">
+					<div class="param-label">Способ оплаты</div>
+
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioCash" ng-model="order.pay_type" value="cash" ng-change="updateOrderInfo()">
+						<label class="custom-control-label" for="radioCash">
+							Наличный
+						</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioCashless" ng-model="order.pay_type" value="cashless" ng-change="updateOrderInfo()">
+						<label class="custom-control-label" for="radioCashless">
+							Безнал
+						</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" id="radioVat" ng-model="order.pay_type" value="vat" ng-change="updateOrderInfo()">
+						<label class="custom-control-label" for="radioVat">
+							НДС
+						</label>
+					</div>
+				</div>	
 
 				<div class="form-group">
 					<div class="param-label">Доставка</div>
@@ -83,7 +106,7 @@
 						<input type="text" class="form-control" ng-model="order.delivery_distance" ng-change="updateOrderInfo()">
 						<span>км за городом</span>
 					</div>
-				</div>				
+				</div>		
 			</div>
 
 			<div class="col-6 col-xl-5">
@@ -166,7 +189,17 @@
 							</td>
 							<td class="number-col" style="width: 15%;">
 								<span ng-if="product.id">
-									@{{ product.pivot.price | number }} руб/<span ng-bind-html="product.units_text"></span>
+									<span ng-switch on="order.pay_type">
+										<span ng-switch-when="cash">
+											@{{ product.pivot.price | number }} руб/<span ng-bind-html="product.units_text"></span>
+										</span>
+										<span ng-switch-when="cashless">
+											@{{ product.pivot.price_cashless | number }} руб/<span ng-bind-html="product.units_text"></span>
+										</span>
+										<span ng-switch-when="vat">
+											@{{ product.pivot.price_vat | number }} руб/<span ng-bind-html="product.units_text"></span>
+										</span>
+									</span>
 								</span>
 							</td>
 							<td class="number-col" style="width: 15%;">

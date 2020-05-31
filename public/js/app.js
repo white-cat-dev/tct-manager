@@ -82532,6 +82532,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   $scope.order = {
     'cost': 0,
     'paid': 0,
+    'pay_type': 'cash',
     'weight': 0,
     'pallets': 0,
     'priority': '1',
@@ -82593,39 +82594,79 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   $scope.initEdit = function () {
     $scope.baseUrl = 'orders';
     $scope.id = $routeParams['id'];
-    ProductsRepository.query(function (response) {
-      $scope.productGroups = response;
-    });
 
     if ($scope.id) {
       OrdersRepository.get({
         id: $scope.id
       }, function (response) {
         $scope.order = response;
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
 
-        try {
-          for (var _iterator = $scope.order.products[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            product = _step.value;
-            $scope.chooseProductGroup(product, product.product_group_id);
-            $scope.chooseProduct(product, product);
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-              _iterator["return"]();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
+        if ($scope.order.date) {
+          var date = $scope.order.date.split("-");
+          $scope.order.date_raw = date[2] + date[1] + date[0];
         }
+
+        if ($scope.order.priority) {
+          $scope.order.priority = '' + $scope.order.priority;
+        }
+
+        ProductsRepository.query(function (response) {
+          $scope.productGroups = response;
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = $scope.order.products[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              product = _step.value;
+              var chosenProductGroup = null;
+              var _iteratorNormalCompletion2 = true;
+              var _didIteratorError2 = false;
+              var _iteratorError2 = undefined;
+
+              try {
+                for (var _iterator2 = $scope.productGroups[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                  productGroup = _step2.value;
+
+                  if (productGroup.id == product.product_group_id) {
+                    chosenProductGroup = productGroup;
+                    break;
+                  }
+                }
+              } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+              } finally {
+                try {
+                  if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                    _iterator2["return"]();
+                  }
+                } finally {
+                  if (_didIteratorError2) {
+                    throw _iteratorError2;
+                  }
+                }
+              }
+
+              if (chosenProductGroup) {
+                $scope.chooseProductGroup(product, chosenProductGroup, product);
+              }
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                _iterator["return"]();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+        });
       });
     } else {
       $scope.addProduct();
@@ -82695,13 +82736,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       $scope.orders = response;
 
       if ($scope.currentOrder) {
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
 
         try {
-          for (var _iterator2 = $scope.orders[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            order = _step2.value;
+          for (var _iterator3 = $scope.orders[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            order = _step3.value;
 
             if (order.id == $scope.currentOrder.id) {
               $scope.currentOrder = order;
@@ -82709,16 +82750,16 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
             }
           }
         } catch (err) {
-          _didIteratorError2 = true;
-          _iteratorError2 = err;
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-              _iterator2["return"]();
+            if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+              _iterator3["return"]();
             }
           } finally {
-            if (_didIteratorError2) {
-              throw _iteratorError2;
+            if (_didIteratorError3) {
+              throw _iteratorError3;
             }
           }
         }
@@ -82757,6 +82798,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       'products': [],
       'pivot': {
         'price': 0,
+        'price_cashless': 0,
+        'price_vat': 0,
         'count': 0,
         'cost': 0
       }
@@ -82768,21 +82811,20 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     $scope.updateOrderInfo();
   };
 
-  $scope.chooseProductGroup = function (productData, productGroup) {
-    productData.id = null;
+  $scope.chooseProductGroup = function (productData, productGroup, product) {
+    if (!product) {
+      productData.id = null;
+    }
+
     productData.category = productGroup.category;
     productData.weight_unit = productGroup.weight_unit;
     productData.unit_in_units = productGroup.unit_in_units;
     productData.units_in_pallete = productGroup.units_in_pallete;
+    productData.products = productGroup.products;
 
-    for (key in $scope.productGroups) {
-      if ($scope.productGroups[key].id == productGroup.id) {
-        productData.products = $scope.productGroups[key].products;
-        break;
-      }
-    }
-
-    if (!productGroup.category.variations) {
+    if (product) {
+      $scope.chooseProduct(productData, product);
+    } else if (!productGroup.category.variations) {
       $scope.chooseProduct(productData, productData.products[0]);
     }
 
@@ -82791,11 +82833,28 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
   $scope.chooseProduct = function (productData, product) {
     productData.id = product.id;
+    productData.product_id = product.id;
     productData.in_stock = product.in_stock;
     productData.free_in_stock = product.free_in_stock;
     productData.units_text = product.units_text;
     productData.pivot.price = product.price;
-    productData.pivot.cost = product.price * productData.pivot.count;
+    productData.pivot.price_cashless = product.price_cashless;
+    productData.pivot.price_vat = product.price_vat;
+
+    switch ($scope.order.pay_type) {
+      case 'cash':
+        productData.pivot.cost = productData.pivot.price * productData.pivot.count;
+        break;
+
+      case 'cashless':
+        productData.pivot.cost = productData.pivot.price_cashless * productData.pivot.count;
+        break;
+
+      case 'vat':
+        productData.pivot.cost = productData.pivot.price_vat * productData.pivot.count;
+        break;
+    }
+
     $scope.updateOrderInfo();
   };
 
@@ -82814,7 +82873,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       product.pivot.count = count + product.pivot.count;
     }
 
-    product.pivot.cost = product.pivot.price * product.pivot.count;
     $scope.updateOrderInfo();
   };
 
@@ -82827,15 +82885,29 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     }
 
     $scope.order.main_category = '';
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
+    var _iteratorNormalCompletion4 = true;
+    var _didIteratorError4 = false;
+    var _iteratorError4 = undefined;
 
     try {
-      for (var _iterator3 = $scope.order.products[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        product = _step3.value;
+      for (var _iterator4 = $scope.order.products[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+        product = _step4.value;
 
         if (product.pivot.price) {
+          switch ($scope.order.pay_type) {
+            case 'cash':
+              product.pivot.cost = product.pivot.price * product.pivot.count;
+              break;
+
+            case 'cashless':
+              product.pivot.cost = product.pivot.price_cashless * product.pivot.count;
+              break;
+
+            case 'vat':
+              product.pivot.cost = product.pivot.price_vat * product.pivot.count;
+              break;
+          }
+
           $scope.order.cost += product.pivot.cost;
           $scope.order.weight += product.weight_unit * product.unit_in_units * product.pivot.count;
 
@@ -82849,16 +82921,16 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         }
       }
     } catch (err) {
-      _didIteratorError3 = true;
-      _iteratorError3 = err;
+      _didIteratorError4 = true;
+      _iteratorError4 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-          _iterator3["return"]();
+        if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+          _iterator4["return"]();
         }
       } finally {
-        if (_didIteratorError3) {
-          throw _iteratorError3;
+        if (_didIteratorError4) {
+          throw _iteratorError4;
         }
       }
     }
@@ -82901,26 +82973,26 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
   $scope.chooseAllRealizations = function () {
     if ($scope.isAllRealizationsChosen) {
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
 
       try {
-        for (var _iterator4 = $scope.modalOrder.realizations[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          realization = _step4.value;
+        for (var _iterator5 = $scope.modalOrder.realizations[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          realization = _step5.value;
           realization.performed = realization.planned;
         }
       } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-            _iterator4["return"]();
+          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+            _iterator5["return"]();
           }
         } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
+          if (_didIteratorError5) {
+            throw _iteratorError5;
           }
         }
       }
@@ -82932,13 +83004,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       realization.performed = realization.planned;
     }
 
-    var _iteratorNormalCompletion5 = true;
-    var _didIteratorError5 = false;
-    var _iteratorError5 = undefined;
+    var _iteratorNormalCompletion6 = true;
+    var _didIteratorError6 = false;
+    var _iteratorError6 = undefined;
 
     try {
-      for (var _iterator5 = $scope.modalOrder.realizations[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-        realization = _step5.value;
+      for (var _iterator6 = $scope.modalOrder.realizations[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+        realization = _step6.value;
 
         if (realization.performed < realization.planned) {
           $scope.isAllRealizationsChosen = false;
@@ -82946,16 +83018,16 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         }
       }
     } catch (err) {
-      _didIteratorError5 = true;
-      _iteratorError5 = err;
+      _didIteratorError6 = true;
+      _iteratorError6 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
-          _iterator5["return"]();
+        if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
+          _iterator6["return"]();
         }
       } finally {
-        if (_didIteratorError5) {
-          throw _iteratorError5;
+        if (_didIteratorError6) {
+          throw _iteratorError6;
         }
       }
     }

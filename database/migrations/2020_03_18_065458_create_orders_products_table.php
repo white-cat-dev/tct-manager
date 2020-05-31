@@ -20,7 +20,7 @@ class CreateOrdersProductsTable extends Migration
             $table->integer('product_id');
             $table->decimal('price', 8, 3)->unsigned();
             $table->decimal('count', 8, 3)->unsigned();
-            $table->decimal('cost', 10, 3)->unsigned();
+            $table->decimal('cost', 11, 3)->unsigned();
             $table->timestamps();
         });
     }
