@@ -31,6 +31,7 @@ class CreateOrdersTable extends Migration
             $table->decimal('paid', 11, 3)->unsigned();
             $table->string('pay_type');
             $table->integer('pallets');
+            $table->decimal('pallets_price', 7, 3);
             $table->timestamps();
         });
     }

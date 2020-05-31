@@ -223,8 +223,26 @@
 					<div class="params-title">Итоговая информация</div>
 
 					<div class="form-group">
-						<div class="param-label">Количество поддонов, шт</div>
-						<input type="text" class="form-control" ng-model="order.pallets" ng-change="updateOrderInfo(true)">
+						<div class="param-label">Поддоны</div>
+						<table class="table table-sm small-products-table">
+							<tr>
+								<td>
+									<input type="text" class="form-control" ng-model="order.pallets_price" ng-change="updateOrderInfo(true)">
+									<span class="product-units">
+										@{{ order.pallets_price }} <span>руб</span>
+									</span>
+								</td>
+								<td>
+									<input type="text" class="form-control" ng-model="order.pallets" ng-change="updateOrderInfo(true)">
+									<span class="product-units">
+										@{{ order.pallets }} <span>шт</span>
+									</span>
+								</td>
+								<td>
+									@{{ order.pallets * order.pallets_price }} руб
+								</td>
+							</tr>
+						</table>
 					</div>
 
 					<div class="form-group">

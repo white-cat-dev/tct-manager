@@ -68,6 +68,7 @@ class OrdersController extends Controller
 
             $order->productions = $order->productions()->with('product')->where('performed', '>', 0)->get();
             $order->realizations = $order->realizations()->with('product')->get();
+            $order->payments = $order->payments()->get();
 
             return $order;
         }
@@ -273,7 +274,8 @@ class OrdersController extends Controller
             'paid' => $request->get('paid', 0),
             'pay_type' => $request->get('pay_type', 'cash'),
             'weight' => $request->get('weight', 0),
-            'pallets' => $request->get('pallets', 0)
+            'pallets' => $request->get('pallets', 0),
+            'pallets_price' => $request->get('pallets_price', 150)
         ];
     }
 

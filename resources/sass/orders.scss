@@ -286,6 +286,41 @@
 		}
 	}
 
+	.small-products-table {
+		tr td {
+			border: none;
+			vertical-align: middle;
+			position: relative;
+			white-space: nowrap;
+
+			.form-control {
+				background: transparent;
+
+				&:focus {
+					background: transparent;
+				}
+			}
+
+			.product-units {
+				position: absolute;
+			    top: 12px;
+    			left: 18px;
+			    color: transparent;
+			    z-index: -1;
+
+			    & > span {
+			    	color: #000000;
+			    }
+			}
+
+			&:first-child {
+				.product-units {
+					left: 13px;
+				}
+			}
+		}
+	}
+
 	.delivery-distance-block {
 		display: flex;
     	align-items: center;

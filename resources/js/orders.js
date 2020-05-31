@@ -31,6 +31,7 @@ angular.module('tctApp').controller('OrdersController', [
 		'pay_type': 'cash',
 		'weight': 0,
 		'pallets': 0,
+		'pallets_price': 150,
 		'priority': '1',
 		'delivery': '',
 		'delivery_distance': 0,
@@ -81,6 +82,13 @@ angular.module('tctApp').controller('OrdersController', [
 				'name': 'поддон'
 			},
 		]
+	};
+
+
+	$scope.palletsPrices = {
+		'cash': 150,
+		'cashless': 160,
+		'vat': 175
 	};
 
 
@@ -174,6 +182,8 @@ angular.module('tctApp').controller('OrdersController', [
 
 		OrdersRepository.save({id: $scope.id}, $scope.order, function(response) 
 		{
+			$scope.isSaving = false;
+
 			toastr.success($scope.id ? 'Заказ успешно обновлен!' : 'Новый заказ успешно создан!');
 
 			$location.path($scope.baseUrl).replace();
@@ -184,6 +194,8 @@ angular.module('tctApp').controller('OrdersController', [
 		}, 
 		function(response) 
 		{
+            $scope.isSaving = false;
+
             switch (response.status) 
             {
             	case 422:
@@ -414,7 +426,6 @@ angular.module('tctApp').controller('OrdersController', [
 
     $scope.updatePrice = function(product) 
 	{
-		console.log(123);
 		if (product.pivot.price.length > 10)
 		{
 			product.pivot.price = product.pivot.price.substring(0, 10);
@@ -455,7 +466,7 @@ angular.module('tctApp').controller('OrdersController', [
 				$scope.order.weight += product.weight_unit * product.unit_in_units * product.pivot.count;
 				if (!pallets)
 				{
-					$scope.order.pallets += Math.ceil(product.pivot.count / product.units_in_pallete); 
+					$scope.order.pallets += product.units_in_pallete ? Math.ceil(product.pivot.count / product.units_in_pallete) : 0; 
 				}
 
 				if (product.category)
@@ -465,7 +476,12 @@ angular.module('tctApp').controller('OrdersController', [
 			}
 		}
 
-		$scope.order.cost += $scope.order.pallets * 150;
+		if (!$scope.order.pallets_price)  
+		{
+			$scope.order.pallets_price = $scope.palletsPrices[$scope.order.pay_type];
+		}
+
+		$scope.order.cost += $scope.order.pallets * $scope.order.pallets_price;
 
 		if ($scope.order.delivery)
 		{

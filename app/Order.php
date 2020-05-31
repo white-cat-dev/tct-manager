@@ -34,7 +34,8 @@ class Order extends Model
         'paid',
         'pay_type',
         'weight',
-        'pallets'
+        'pallets',
+        'pallets_price'
     ];
 
     protected $appends = [
@@ -42,6 +43,7 @@ class Order extends Model
         'status_text',
         'delivery_text',
         'priority_text',
+        'pay_type_text',
         'formatted_date',
         'formatted_date_to'
     ];
@@ -54,6 +56,7 @@ class Order extends Model
     protected $casts = [
         'cost' => 'float',
         'paid' => 'float',
+        'pallets_price' => 'float',
         'weight' => 'float',
         'delivery_distance' => 'float'
     ];
@@ -70,6 +73,12 @@ class Order extends Model
     protected static $priorities = [
         1 => 'Обычный',
         2 => 'Высокий'
+    ];
+
+    protected static $payTypes = [
+        'cash' => 'Наличный',
+        'cashless' => 'Безнал',
+        'vat' => 'НДС'
     ];
 
     protected static $deliveries = [
@@ -98,6 +107,11 @@ class Order extends Model
         return $this->hasMany(Production::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(OrderPayment::class);
+    }
+
 
     public function getUrlAttribute()
     {
@@ -117,6 +131,13 @@ class Order extends Model
         $priority = Arr::get(static::$priorities, $this->priority, '');
         
         return $priority;
+    }
+
+    public function getPayTypeTextAttribute()
+    {
+        $payType = Arr::get(static::$payTypes, $this->pay_type, '');
+        
+        return $payType;
     }
 
     public function getFormattedDateAttribute()

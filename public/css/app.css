@@ -14092,6 +14092,37 @@ i.far {
   width: 100px;
 }
 
+.orders-page .small-products-table tr td {
+  border: none;
+  vertical-align: middle;
+  position: relative;
+  white-space: nowrap;
+}
+
+.orders-page .small-products-table tr td .form-control {
+  background: transparent;
+}
+
+.orders-page .small-products-table tr td .form-control:focus {
+  background: transparent;
+}
+
+.orders-page .small-products-table tr td .product-units {
+  position: absolute;
+  top: 12px;
+  left: 18px;
+  color: transparent;
+  z-index: -1;
+}
+
+.orders-page .small-products-table tr td .product-units > span {
+  color: #000000;
+}
+
+.orders-page .small-products-table tr td:first-child .product-units {
+  left: 13px;
+}
+
 .orders-page .delivery-distance-block {
   display: flex;
   align-items: center;

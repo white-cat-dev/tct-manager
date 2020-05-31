@@ -4,7 +4,7 @@
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<a href="{{ route('orders') }}" class="btn btn-primary">
-				<i class="fas fa-chevron-left"></i> Вернуться
+				<i class="fas fa-chevron-left"></i> Вернуться к списку заказов
 			</a>
 		</div>
 
@@ -21,7 +21,7 @@
 
 	<div class="show-block">
 		<div class="row justify-content-around">
-			<div class="col-11">
+			<div class="col-12 col-xl-11">
 				<div class="show-block-title m-0">
 					Заказ №@{{ order.number }} от @{{ order.formatted_date }}
 
@@ -30,11 +30,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="row justify-content-around">
-			
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="params-title">Общая информация</div>
 				<div class="param-block">
 					<div class="param-name">
@@ -49,7 +46,7 @@
 						Дата принятия
 					</div>
 					<div class="param-value">
-						@{{ order.date }}
+						@{{ order.formatted_date }}
 					</div>
 				</div>
 				<div class="param-block">
@@ -58,6 +55,14 @@
 					</div>
 					<div class="param-value">
 						@{{ order.priority_text }}
+					</div>
+				</div>
+				<div class="param-block">
+					<div class="param-name">
+						Способ оплаты
+					</div>
+					<div class="param-value">
+						@{{ order.pay_type_text }}
 					</div>
 				</div>
 				<div class="param-block">
@@ -126,71 +131,40 @@
 		
 
 		<div class="row justify-content-around">
-			<div class="col-11">
+			<div class="col-12 col-xl-11">
 				<div class="params-title">Состав заказа</div>
 
 				<table class="table">
 					<tr>
 						<th>Название</th>
-						<th>Цвет</th>
+						<th>Вид</th>
 						<th>Цена</th>
 						<th>Количество</th>
 						<th>Стоимость</th>
-						<th>Прогресс</th>
+						<th>Отпущено</th>
+						<th>Готово</th>
 					</tr>
 					<tr ng-repeat="product in order.products">
-						<td>@{{ product.product_group.name }}</td>
-						<td>@{{ product.color_text }}</td>
 						<td>
-							@{{ product.pivot.price | number }} руб./
-							<span ng-switch on="product.category.units">
-								<span ng-switch-when="area">м<sup>2</sup></span>
-								<span ng-switch-when="volume">м<sup>3</sup></span>
-								<span ng-switch-when="unit">шт.</span>
-							</span>
+							@{{ product.product_group.name }} @{{ product.product_group.size }}
 						</td>
 						<td>
-							@{{ product.pivot.count | number }} 
-							<span ng-switch on="product.category.units">
-								<span ng-switch-when="area">м<sup>2</sup></span>
-								<span ng-switch-when="volume">м<sup>3</sup></span>
-								<span ng-switch-when="unit">шт.</span>
-							</span>
+							@{{ product.variation_text }}
 						</td>
-						<td>@{{ product.pivot.cost | number }} руб.</td>
-						<td class="product-progress-col">
-							<div class="product-progress">
-								<div class="progress-realization" ng-style="{'width': Math.round(product.progress.realization / product.progress.total * 100) + '%'}" ng-if="product.progress.realization">
-									<div class="progress-number">
-										@{{ product.progress.realization }}
-										<span ng-switch on="product.category.units">
-											<span ng-switch-when="area">м<sup>2</sup></span>
-											<span ng-switch-when="volume">м<sup>3</sup></span>
-											<span ng-switch-when="unit">шт.</span>
-										</span>
-									</div>
-								</div>
-								<div class="progress-ready" ng-style="{'width': Math.round(product.progress.ready / product.progress.total * 100) + '%'}" ng-if="product.progress.ready">
-									<div class="progress-number">
-										@{{ product.progress.ready }} 
-										<span ng-switch on="product.category.units">
-											<span ng-switch-when="area">м<sup>2</sup></span>
-											<span ng-switch-when="volume">м<sup>3</sup></span>
-											<span ng-switch-when="unit">шт.</span>
-										</span>
-									</div>
-								</div>
-								<div class="progress-left" ng-style="{'width': Math.round(product.progress.left / product.progress.total * 100) + '%'}" ng-if="product.progress.left">
-									<div class="progress-number">
-										@{{ product.progress.left }} 
-										<span ng-switch on="product.category.units">
-											<span ng-switch-when="area">м<sup>2</sup></span>
-											<span ng-switch-when="volume">м<sup>3</sup></span>
-											<span ng-switch-when="unit">шт.</span>
-										</span>
-									</div>
-								</div>
-							</div>
+						<td>
+							@{{ product.pivot.price | number }} руб/<span ng-bind-html="product.units_text"></span>
+						</td>
+						<td>
+							@{{ product.pivot.count | number }} <span ng-bind-html="product.units_text"></span>
+						</td>
+						<td>
+							@{{ product.pivot.cost | number }} руб
+						</td>
+						<td>
+							@{{ product.progress.realization | number }} <span ng-bind-html="product.units_text"></span>
+						</td>
+						<td>
+							@{{ product.progress.ready | number }} <span ng-bind-html="product.units_text"></span>
 						</td>
 					</tr>
 				</table>
@@ -198,66 +172,125 @@
 		</div>
 
 		<div class="row justify-content-around">
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="params-title">
-					Производство
+					Итоговая информация
 				</div>
 
-				<table class="table">
+				<div class="param-block">
+					<div class="param-name">
+						Поддоны
+					</div>
+					<div class="param-value">
+						@{{ order.pallets | number }} шт по @{{ order.pallets_price | number }} руб
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Вес заказа
+					</div>
+					<div class="param-value">
+						@{{ order.weight | number }} кг
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Стоимость заказа
+					</div>
+					<div class="param-value">
+						@{{ order.cost | number }} руб
+					</div>
+				</div>
+			</div>
+
+			<div class="col-6 col-xl-5">
+				<div class="params-title">
+					Оплата заказа
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Оплачено
+					</div>
+					<div class="param-value">
+						@{{ order.paid | number }} руб
+					</div>
+				</div>
+
+				<table ng-if="order.payments.length > 0">
+					<tr ng-repeat="payment in order.payments">
+						<td>
+							@{{ payment.formatted_date }}
+						</td>
+						<td>
+							@{{ payment.paid | number }} руб
+						</td>
+					</tr>
+				</table>
+
+				<div class="alert alert-secondary" ng-if="order.payments.length == 0">
+					<i class="far fa-calendar-times"></i> Оплат заказа еще не поступало
+				</div>
+			</div>
+
+			<div class="col-6 col-xl-5">
+				<div class="params-title">
+					История производства
+				</div>
+
+				<table class="table" ng-if="(order.productions | filter: {'performed': '> 0'}).length > 0">
 					<tr>
 						<th>Дата</th>
 						<th>Продукт</th>
 						<th>Количество</th>
 					</tr>
-					<tr ng-repeat="production in order.productions">
-						<td>@{{ production.formatted_date }}</td>
+					<tr ng-repeat="production in order.productions | filter: {'performed': '> 0'}">
 						<td>
-							@{{ production.product.product_group.name }} <br>
+							@{{ production.formatted_date }}
+						</td>
+						<td>
+							@{{ production.product.product_group.name }} @{{ production.product.product_group.size }}<br>
 							@{{ production.product.color_text }}
 						</td>
 						<td>
-							@{{ production.performed }} 
-							<span ng-switch on="production.product.category.units">
-								<span ng-switch-when="area">м<sup>2</sup></span>
-								<span ng-switch-when="volume">м<sup>3</sup></span>
-								<span ng-switch-when="unit">шт.</span>
-							</span>
+							@{{ production.performed }} <span ng-bind-html="realization.product.units_text"></span>
 						</td>
 					</tr>
 				</table>
 
-				<a href="{{ route('productions') }}" class="btn btn-primary">
-					<i class="far fa-calendar-check"></i> Перейти к плану производства
-				</a>
+				<div class="alert alert-secondary" ng-if="(order.productions | filter: {'performed': '> 0'}).length == 0">
+					<i class="far fa-calendar-times"></i> Заказ еще не произведен
+				</div>
 			</div>
 
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="params-title">
-					Выдача
+					История выдачи
 				</div>
 
-				<table class="table">
+				<table class="table" ng-if="(order.realizations | filter: {'performed': '> 0'}).length > 0">
 					<tr>
 						<th>Дата</th>
 						<th>Продукт</th>
 						<th>Количество</th>
 					</tr>
-					<tr ng-repeat="realization in order.realizations" ng-if="realization.performed > 0">
+					<tr ng-repeat="realization in order.realizations | filter: {'performed': '> 0'}">
 						<td>@{{ realization.formatted_date }}</td>
 						<td>
-							@{{ realization.product.product_group.name }} <br>
+							@{{ realization.product.product_group.name }} @{{ production.product.product_group.size }}<br>
 							@{{ realization.product.color_text }}
 						</td>
 						<td>
-							@{{ realization.performed }} 
-							<span ng-switch on="realization.product.category.units">
-								<span ng-switch-when="area">м<sup>2</sup></span>
-								<span ng-switch-when="volume">м<sup>3</sup></span>
-								<span ng-switch-when="unit">шт.</span>
-							</span>
+							@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>
 						</td>
 					</tr>
 				</table>
+
+				<div class="alert alert-secondary" ng-if="(order.realizations | filter: {'performed': '> 0'}).length == 0">
+					<i class="far fa-calendar-times"></i> Заказ еще не выдан
+				</div>
 			</div>
 		</div>
 	</div>
