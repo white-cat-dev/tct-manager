@@ -13996,6 +13996,7 @@ i.far {
 .orders-page .main-orders-block .table th,
 .orders-page .main-orders-block .table td {
   padding: 10px;
+  white-space: nowrap;
 }
 
 .orders-page .main-orders-block .no-current-order {

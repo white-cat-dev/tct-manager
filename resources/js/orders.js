@@ -3,6 +3,7 @@ angular.module('tctApp').controller('OrdersController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
+	'$filter',
 	'toastr',
 	'ProductsRepository',
 	'OrdersRepository',
@@ -11,6 +12,7 @@ angular.module('tctApp').controller('OrdersController', [
 		$routeParams,
 		$location,
 		$timeout,
+		$filter,
 		toastr,
 		ProductsRepository,
 		OrdersRepository
@@ -166,6 +168,9 @@ angular.module('tctApp').controller('OrdersController', [
 		}
 		else
 		{
+			$scope.order.date_raw = $filter('date')(new Date, 'ddMMyyyy');
+			console.log($scope.order.date_raw);
+
 			ProductsRepository.query(function(response) 
 			{
 				$scope.productGroups = response;

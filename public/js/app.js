@@ -82535,7 +82535,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'ProductsRepository', 'OrdersRepository', function ($scope, $routeParams, $location, $timeout, toastr, ProductsRepository, OrdersRepository) {
+angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductsRepository', 'OrdersRepository', function ($scope, $routeParams, $location, $timeout, $filter, toastr, ProductsRepository, OrdersRepository) {
   $scope.Math = window.Math;
   $scope.baseUrl = '';
   $scope.currentStatus = 0;
@@ -82688,6 +82688,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         });
       });
     } else {
+      $scope.order.date_raw = $filter('date')(new Date(), 'ddMMyyyy');
+      console.log($scope.order.date_raw);
       ProductsRepository.query(function (response) {
         $scope.productGroups = response;
       });
