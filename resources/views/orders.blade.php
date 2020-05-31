@@ -20,34 +20,36 @@
 		</div>
 	</div>
 	
-	<div class="statuses-menu-block" ng-init="isStatusesShown = false">	
-		<div class="statuses-menu" ng-class="{'shown': isStatusesShown}" ng-click="isStatusesShown = !isStatusesShown">
-			<button type="button" class="btn" ng-class="{'active': currentStatus == 0 }" ng-click="chooseStatus(0)">
-				Все заказы
-			</button>
-			<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_PRODUCTION }} }" ng-click="chooseStatus({{ App\Order::STATUS_PRODUCTION }})">
-				В работе
-			</button>
-			<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_READY }} }" ng-click="chooseStatus({{ App\Order::STATUS_READY }})">
-				Готовые к выдаче
-			</button>
-			<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_FINISHED }} }" ng-click="chooseStatus({{ App\Order::STATUS_FINISHED }})">
-				Завершенные
-			</button>
-		</div>
-
-		<div class="main-category-block">
-			<div class="custom-control custom-checkbox custom-control-inline">
-				<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('tiles') !== -1" id="checkboxBlocks" ng-click="chooseMainCategory('tiles')">
-				<label class="custom-control-label" for="checkboxBlocks">
-					Плитка
-				</label>
+	<div class="top-statuses-menu-block">
+		<div class="statuses-menu-block" ng-init="isStatusesShown = false">	
+			<div class="statuses-menu" ng-class="{'shown': isStatusesShown}" ng-click="isStatusesShown = !isStatusesShown">
+				<button type="button" class="btn" ng-class="{'active': currentStatus == 0 }" ng-click="chooseStatus(0)">
+					Все заказы
+				</button>
+				<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_PRODUCTION }} }" ng-click="chooseStatus({{ App\Order::STATUS_PRODUCTION }})">
+					В работе
+				</button>
+				<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_READY }} }" ng-click="chooseStatus({{ App\Order::STATUS_READY }})">
+					Готовые к выдаче
+				</button>
+				<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_FINISHED }} }" ng-click="chooseStatus({{ App\Order::STATUS_FINISHED }})">
+					Завершенные
+				</button>
 			</div>
-			<div class="custom-control custom-checkbox custom-control-inline">
-				<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('blocks') !== -1" id="checkboxTiles" ng-click="chooseMainCategory('blocks')">
-				<label class="custom-control-label" for="checkboxTiles">
-					Блоки
-				</label>
+
+			<div class="main-category-block">
+				<div class="custom-control custom-checkbox custom-control-inline">
+					<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('tiles') !== -1" id="checkboxBlocks" ng-click="chooseMainCategory('tiles')">
+					<label class="custom-control-label" for="checkboxBlocks">
+						Плитка
+					</label>
+				</div>
+				<div class="custom-control custom-checkbox custom-control-inline">
+					<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('blocks') !== -1" id="checkboxTiles" ng-click="chooseMainCategory('blocks')">
+					<label class="custom-control-label" for="checkboxTiles">
+						Блоки
+					</label>
+				</div>
 			</div>
 		</div>
 	</div>

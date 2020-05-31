@@ -12217,7 +12217,7 @@ footer {
 }
 
 .content-block {
-  min-height: 100vh;
+  min-height: calc(100vh - 148px);
   margin: 20px auto;
 }
 
@@ -12458,10 +12458,16 @@ i.far {
 }
 
 .top-buttons-block {
-  padding: 20px 0px;
+  padding: 20px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #FFF;
+  margin: 0px -10px;
 }
 
 @media (max-width: 767.98px) {
@@ -13813,7 +13819,6 @@ i.far {
 }
 
 .orders-page .statuses-menu-block {
-  margin-bottom: 20px;
   padding: 10px;
   background: #f3f3f3;
   position: relative;
@@ -13843,6 +13848,16 @@ i.far {
 
 .orders-page .statuses-menu-block .main-category-block .custom-control-inline .custom-control-label {
   cursor: pointer;
+}
+
+.orders-page .top-statuses-menu-block {
+  position: -webkit-sticky;
+  position: sticky;
+  margin: 0px -10px;
+  padding: 0px 10px 20px 10px;
+  top: 78px;
+  background: #FFFFFF;
+  z-index: 10;
 }
 
 .orders-page .order-name {
@@ -13953,8 +13968,6 @@ i.far {
 .orders-page .main-orders-block {
   box-shadow: 1px 1px 5px #e6e6e6;
   border: solid 1px #dadada;
-  max-height: calc(100vh - 310px);
-  overflow-y: auto;
 }
 
 .orders-page .main-orders-block .table {
@@ -13999,6 +14012,9 @@ i.far {
   border: solid 1px #dadada;
   padding: 15px;
   position: relative;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 156px;
 }
 
 .orders-page .main-products-block .table {

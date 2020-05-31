@@ -2,7 +2,6 @@
 	position: relative;
 
 	.statuses-menu-block {
-		margin-bottom: 20px;
 		padding: 10px;
 		background: $grey;
 		position: relative;
@@ -32,6 +31,15 @@
 				}
     		}
 		}
+	}
+
+	.top-statuses-menu-block {
+		position: sticky;
+	    margin: 0px -10px;
+	    padding: 0px 10px 20px 10px;
+	    top: 78px;
+	    background: #FFFFFF;
+	    z-index: 10;
 	}
 	
 	.order-name {
@@ -143,8 +151,6 @@
 	.main-orders-block {
 		box-shadow: 1px 1px 5px darken($grey, 5%);
 		border: solid 1px darken($grey, 10%);
-		max-height: calc(100vh - 310px);
-    	overflow-y: auto;
 
 		.table {
 			font-size: 14px;
@@ -188,6 +194,8 @@
 		border: solid 1px darken($grey, 10%);
 		padding: 15px;
 		position: relative;
+		position: sticky;
+		top: 156px;
 
 		.table {
 			font-size: 14px;

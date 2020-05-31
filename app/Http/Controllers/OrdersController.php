@@ -106,14 +106,14 @@ class OrdersController extends Controller
                 ]);
             }
 
-            ProductionsService::getInstance()->planOrder($order);
+            // ProductionsService::getInstance()->planOrder($order);
 
-            if ($order->productions()->count() == 0)
-            {
-                $order->update([
-                    'status' => Order::STATUS_READY
-                ]);
-            }
+            // if ($order->productions()->count() == 0)
+            // {
+            //     $order->update([
+            //         'status' => Order::STATUS_READY
+            //     ]);
+            // }
             
             return $order;
         }

@@ -67,7 +67,7 @@ footer {
 
 
 .content-block {
-	min-height: 100vh;
+	min-height: calc(100vh - 148px);
     margin: 20px auto;
 }
 
@@ -311,10 +311,15 @@ i.fas, i.far {
 
 
 .top-buttons-block {
-    padding: 20px 0px;
+    padding: 20px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #FFF;
+    margin: 0px -10px;
 
     @include media-breakpoint-down(sm) {
 		display: block;
