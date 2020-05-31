@@ -1185,7 +1185,7 @@
                 "unit_in_pallete": 92,
                 "units_in_pallete": 8.29,
                 "units_from_batch": 7,
-                "forms": 0,
+                "forms": 10,
                 "salary_units": 100,
                 "products": [
                     {
@@ -1238,7 +1238,7 @@
                 "unit_in_pallete": 30,
                 "units_in_pallete": 7.5,
                 "units_from_batch": 7,
-                "forms": 0,
+                "forms": 7.5,
                 "salary_units": 100,
                 "products": [
                     {
@@ -1291,7 +1291,7 @@
                 "unit_in_pallete": 30,
                 "units_in_pallete": 7.5,
                 "units_from_batch": 7,
-                "forms": 0,
+                "forms": 7.5,
                 "salary_units": 100,
                 "products": [
                     {
@@ -1344,7 +1344,7 @@
                 "unit_in_pallete": 30,
                 "units_in_pallete": 7.5,
                 "units_from_batch": 7,
-                "forms": 0,
+                "forms": 7.5,
                 "salary_units": 100,
                 "products": [
                     {
@@ -1397,7 +1397,7 @@
                 "unit_in_pallete": 30,
                 "units_in_pallete": 7.5,
                 "units_from_batch": 7,
-                "forms": 0,
+                "forms": 7.5,
                 "salary_units": 100,
                 "products": [
                     {
@@ -1450,7 +1450,7 @@
                 "unit_in_pallete": 54,
                 "units_in_pallete": 4.86,
                 "units_from_batch": 7,
-                "forms": 0,
+                "forms": 30,
                 "salary_units": 100,
                 "products": [
                     {
@@ -1503,7 +1503,7 @@
                 "unit_in_pallete": 54,
                 "units_in_pallete": 4.86,
                 "units_from_batch": 7,
-                "forms": 0,
+                "forms": 30,
                 "salary_units": 100,
                 "products": [
                     {
@@ -1556,7 +1556,7 @@
                 "unit_in_pallete": 54,
                 "units_in_pallete": 4.86,
                 "units_from_batch": 7,
-                "forms": 0,
+                "forms": 30,
                 "salary_units": 100,
                 "products": [
                     {
@@ -1609,7 +1609,7 @@
                 "unit_in_pallete": 54,
                 "units_in_pallete": 4.86,
                 "units_from_batch": 7,
-                "forms": 0,
+                "forms": 30,
                 "salary_units": 100,
                 "products": [
                     {
