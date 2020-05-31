@@ -5,6 +5,7 @@
 		margin-bottom: 20px;
 		padding: 10px;
 		background: $grey;
+		position: relative;
 
 		.btn {
 			background: #FFFFFF;
@@ -15,6 +16,21 @@
 				color: #FFFFFF;
 				border-color: $primary;
 			}
+		}
+
+		.main-category-block {
+			position: absolute;
+			top: 16px;
+    		right: 15px;
+
+    		.custom-control-inline {
+			    margin-right: 0px;
+				margin-left: 10px;
+
+				.custom-control-label {
+					cursor: pointer;
+				}
+    		}
 		}
 	}
 	
@@ -332,5 +348,20 @@
 		.custom-control-label {
 			font-size: 15px;
 		}
+	}
+
+	.no-current-order {
+		text-align: center;
+	    font-size: 16px;
+	    min-height: 100px;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+
+	    .icon {
+	    	font-size: 35px;
+		    color: #9a9a9a;
+		    margin-bottom: 3px;
+	    }
 	}
 }

@@ -4,7 +4,7 @@
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
-				<input type="text" class="form-control" placeholder="Введите запрос для поиска..." ng-model="tempSearchQuery" ng-keypress="searchInputKeyPressed($event)">
+				<input type="text" class="form-control" placeholder="Введите номер заказа..." ng-model="tempSearchQuery" ng-keypress="searchInputKeyPressed($event)">
 				<div class="input-group-append">
 			    	<button class="btn btn-primary" type="button" ng-click="searchQuery = tempSearchQuery">
 			    		<i class="fas fa-search"></i> Поиск
@@ -19,20 +19,37 @@
 			</a>
 		</div>
 	</div>
+	
+	<div class="statuses-menu-block" ng-init="isStatusesShown = false">	
+		<div class="statuses-menu" ng-class="{'shown': isStatusesShown}" ng-click="isStatusesShown = !isStatusesShown">
+			<button type="button" class="btn" ng-class="{'active': currentStatus == 0 }" ng-click="chooseStatus(0)">
+				Все заказы
+			</button>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_PRODUCTION }} }" ng-click="chooseStatus({{ App\Order::STATUS_PRODUCTION }})">
+				В работе
+			</button>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_READY }} }" ng-click="chooseStatus({{ App\Order::STATUS_READY }})">
+				Готовые к выдаче
+			</button>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_FINISHED }} }" ng-click="chooseStatus({{ App\Order::STATUS_FINISHED }})">
+				Завершенные
+			</button>
+		</div>
 
-	<div class="statuses-menu-block">
-		<button type="button" class="btn" ng-class="{'active': currentStatus == 0 }" ng-click="chooseStatus(0)">
-			Все заказы
-		</button>
-		<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_PRODUCTION }} }" ng-click="chooseStatus({{ App\Order::STATUS_PRODUCTION }})">
-			В работе
-		</button>
-		<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_READY }} }" ng-click="chooseStatus({{ App\Order::STATUS_READY }})">
-			Готовые к выдаче
-		</button>
-		<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_FINISHED }} }" ng-click="chooseStatus({{ App\Order::STATUS_FINISHED }})">
-			Завершенные
-		</button>
+		<div class="main-category-block">
+			<div class="custom-control custom-checkbox custom-control-inline">
+				<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('tiles') !== -1" id="checkboxBlocks" ng-click="chooseMainCategory('tiles')">
+				<label class="custom-control-label" for="checkboxBlocks">
+					Плитка
+				</label>
+			</div>
+			<div class="custom-control custom-checkbox custom-control-inline">
+				<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('blocks') !== -1" id="checkboxTiles" ng-click="chooseMainCategory('blocks')">
+				<label class="custom-control-label" for="checkboxTiles">
+					Блоки
+				</label>
+			</div>
+		</div>
 	</div>
 
 	<div class="row" ng-if="(orders | filter: {'number': searchQuery}).length > 0">
@@ -166,8 +183,12 @@
 			<span ng-switch-when="{{ App\Order::STATUS_FINISHED }}">завершенного заказа</span>
 			<span ng-switch-default>заказа</span>
 		</span><br>
-		<small ng-if="searchQuery"> по запросу "@{{ searchQuery }}"</small>
-
+		<small ng-if="currentMainCategory.length == 1 && currentMainCategory[0] == 'tiles'"> в категории «плитка»</small>
+		<small ng-if="currentMainCategory.length == 1 && currentMainCategory[0] == 'blocks'"> в категории «блоки»</small>
+		<small ng-if="searchQuery"> по запросу «@{{ searchQuery }}»</small>
+		<div ng-if="currentMainCategory.length == 0">
+			<small>Выберите категорию (плитка или блоки)</small>
+		</div>
 
 		@if (Auth::user() && Auth::user()->type == 'admin')
 		<div>

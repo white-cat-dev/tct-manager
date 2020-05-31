@@ -200,8 +200,8 @@
 		</div>
 		Не найдено ни одного продукта <br>
 		<small ng-if="isStockProductsShown">в наличии</small>
-		<small ng-if="searchQuery"> по запросу "@{{ searchQuery }}"</small>
-		<small ng-if="currentCategory != 0">в категории "<span ng-repeat="category in categories" ng-if="category.id == currentCategory">@{{ category.name }}</span>"</small>
+		<small ng-if="searchQuery"> по запросу «@{{ searchQuery }}»</small>
+		<small ng-if="currentCategory != 0">в категории «<span ng-repeat="category in categories" ng-if="category.id == currentCategory">@{{ category.name }}</span>»</small>
 
 		@if (Auth::user() && Auth::user()->type == 'admin')
 		<div>

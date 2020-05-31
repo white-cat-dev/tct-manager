@@ -21,6 +21,7 @@ angular.module('tctApp').controller('OrdersController', [
 	$scope.baseUrl = '';
 
 	$scope.currentStatus = 0;
+	$scope.currentMainCategory = ['tiles', 'blocks'];
 	$scope.currentOrder = null;
 
 	$scope.orders = [];
@@ -197,7 +198,7 @@ angular.module('tctApp').controller('OrdersController', [
 			{
 				toastr.success('Заказ успешно удален!');
 
-				$scope.init();
+				$scope.loadOrders();
 			}
 		}, 
 		function(response) 
@@ -209,9 +210,30 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.loadOrders = function()
 	{
-		OrdersRepository.query({'status': $scope.currentStatus}, function(response) 
+		var request = {
+			'main_category': $scope.currentMainCategory.join(',')
+		};
+
+		if ($scope.currentStatus > 0)
+		{
+			request.status = $scope.currentStatus
+		}
+
+		OrdersRepository.query(request, function(response) 
 		{
 			$scope.orders = response;
+
+			if ($scope.currentOrder)
+			{
+				for (order of $scope.orders)
+				{
+					if (order.id == $scope.currentOrder.id)
+					{
+						$scope.currentOrder = order;
+						break;
+					}
+				}
+			}
 		});
 	}
 
@@ -224,9 +246,24 @@ angular.module('tctApp').controller('OrdersController', [
 	}
 
 
+	$scope.chooseMainCategory = function(category)
+	{
+		var index = $scope.currentMainCategory.indexOf(category);
+		if (index !== -1)
+		{
+			$scope.currentMainCategory.splice(index, 1);
+		}
+		else
+		{
+			$scope.currentMainCategory.push(category);
+		}
+
+		$scope.loadOrders();
+	}
+
+
 	$scope.chooseOrder = function(order)
 	{
-		console.log(order);
 		if ($scope.currentOrder && $scope.currentOrder.id == order.id)
 		{
 			$scope.currentOrder = null;
@@ -440,9 +477,8 @@ angular.module('tctApp').controller('OrdersController', [
 
 			if (!$scope.baseUrl)
 			{
-				$scope.init();
+				$scope.loadOrders();
 			}
-
 
 			$scope.hideRealizationModal();
 		});

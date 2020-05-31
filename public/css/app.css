@@ -13815,6 +13815,7 @@ i.far {
   margin-bottom: 20px;
   padding: 10px;
   background: #f3f3f3;
+  position: relative;
 }
 
 .orders-page .statuses-menu-block .btn {
@@ -13826,6 +13827,21 @@ i.far {
   background: #276090;
   color: #FFFFFF;
   border-color: #276090;
+}
+
+.orders-page .statuses-menu-block .main-category-block {
+  position: absolute;
+  top: 16px;
+  right: 15px;
+}
+
+.orders-page .statuses-menu-block .main-category-block .custom-control-inline {
+  margin-right: 0px;
+  margin-left: 10px;
+}
+
+.orders-page .statuses-menu-block .main-category-block .custom-control-inline .custom-control-label {
+  cursor: pointer;
 }
 
 .orders-page .order-name {
@@ -14131,6 +14147,21 @@ i.far {
 
 .orders-page .realization-modal .custom-control-label {
   font-size: 15px;
+}
+
+.orders-page .no-current-order {
+  text-align: center;
+  font-size: 16px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.orders-page .no-current-order .icon {
+  font-size: 35px;
+  color: #9a9a9a;
+  margin-bottom: 3px;
 }
 
 .workers-page {

@@ -24,12 +24,20 @@ class OrdersController extends Controller
         {
             $query = Order::with('realizations', 'realizations.product');
 
-            $statuses = $request->get('status', 0);
-            if ($statuses != 0)
+            $statuses = $request->get('status', -1);
+            if ($statuses != -1)
             {
                 $statuses = explode(',', $statuses);
                 $query = $query->whereIn('status', $statuses);
             }
+
+            $mainCategories = $request->get('main_category', -1);
+            if ($mainCategories != -1)
+            {
+                $mainCategories = explode(',', $mainCategories);
+                $query = $query->whereIn('main_category', $mainCategories);
+            }
+
 
             $orders = $query->orderBy('status')->orderBy('priority')->orderBy('date')->get();
 
