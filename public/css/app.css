@@ -12706,6 +12706,7 @@ i.far {
 .table.table-with-buttons tr td:last-child {
   text-align: right;
   width: 1%;
+  white-space: nowrap;
 }
 
 .modal {
@@ -14411,6 +14412,7 @@ i.far {
   padding: 9px 0px;
   border: solid 1px #FFFFFF;
   font-size: 14px;
+  line-height: 21px;
   font-weight: 500;
   position: relative;
 }

@@ -18,6 +18,7 @@ class CreateMaterialGroupsTable extends Migration
             $table->string('name');
             $table->string('variations');
             $table->string('units');
+            $table->boolean('control');
             $table->timestamps();
         });
     }

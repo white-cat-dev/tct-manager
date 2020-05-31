@@ -3,7 +3,7 @@
         "name": "Зола",
         "variations": "",
         "units": "weight_kg",
-        "input": false,
+        "control": false,
         "materials": [
             {
                 "variation": "",
@@ -16,7 +16,7 @@
         "name": "Краситель",
         "variations": "colors",
         "units": "weight_kg",
-        "input": false,
+        "control": false,
         "materials": [
             {
                 "variation": "red",
@@ -44,7 +44,7 @@
         "name": "Отсев",
         "variations": "",
         "units": "weight_kg",
-        "input": false,
+        "control": false,
         "materials": [
             {
                 "variation": "",
@@ -57,7 +57,7 @@
         "name": "Пенообразователь",
         "variations": "",
         "units": "volume_l",
-        "input": false,
+        "control": false,
         "materials": [
             {
                 "variation": "",
@@ -70,7 +70,7 @@
         "name": "Песок",
         "variations": "",
         "units": "weight_kg",
-        "input": false,
+        "control": false,
         "materials": [
             {
                 "variation": "",
@@ -83,7 +83,7 @@
         "name": "Пластификатор",
         "variations": "",
         "units": "volume_l",
-        "input": false,
+        "control": false,
         "materials": [
             {
                 "variation": "",
@@ -96,7 +96,7 @@
         "name": "Полистирол",
         "variations": "",
         "units": "weight_kg",
-        "input": false,
+        "control": false,
         "materials": [
             {
                 "variation": "",
@@ -109,7 +109,7 @@
         "name": "Смазка",
         "variations": "",
         "units": "volume_l",
-        "input": false,
+        "control": false,
         "materials": [
             {
                 "variation": "",
@@ -122,7 +122,7 @@
         "name": "Фибра",
         "variations": "",
         "units": "weight_kg",
-        "input": false,
+        "control": false,
         "materials": [
             {
                 "variation": "",
@@ -135,7 +135,7 @@
         "name": "Цемент МКР",
         "variations": "",
         "units": "weight_kg",
-        "input": false,
+        "control": true,
         "materials": [
             {
                 "variation": "",
@@ -148,7 +148,7 @@
         "name": "Цемент насыпь",
         "variations": "",
         "units": "weight_kg",
-        "input": false,
+        "control": true,
         "materials": [
             {
                 "variation": "",

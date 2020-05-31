@@ -81805,6 +81805,10 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       $scope.workers = response.workers;
       $scope.manager = response.manager;
       $scope.statuses = response.statuses;
+
+      if (Object.keys($scope.statuses).length > 0) {
+        $scope.chooseCurrentEmploymentStatus(Object.keys($scope.statuses)[0]);
+      }
     });
   };
 
@@ -84025,7 +84029,7 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '$routeParams', '$location', 'EmploymentStatusesRepository', function ($scope, $routeParams, $location, EmploymentStatusesRepository) {
+angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '$routeParams', '$location', 'toastr', 'EmploymentStatusesRepository', function ($scope, $routeParams, $location, toastr, EmploymentStatusesRepository) {
   $scope.statusTemplates = ['name', '<i class="fas fa-check"></i>', '<i class="fas fa-times"></i>', '<i class="fas fa-question"></i>'];
 
   $scope.init = function () {

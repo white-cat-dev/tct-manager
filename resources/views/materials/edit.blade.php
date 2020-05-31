@@ -50,6 +50,16 @@
 				</div>
 
 				<div class="form-group">
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" ng-model="materialGroup.control" id="checkboxControl">
+						<label class="custom-control-label" for="checkboxControl">
+							Контроллировать расход
+						</label>
+					</div>
+					<small>Информация о расходе этого материала будет вводиться каждый день</small>
+				</div>
+
+				<div class="form-group">
 					<div class="param-label">Разновидности</div>
 					<div class="custom-control custom-radio">
 						<input class="custom-control-input" type="radio" id="radioColors" ng-model="materialGroup.variations" value="colors">
@@ -68,7 +78,7 @@
 				<div ng-if="materialGroup.variations">
 					<table class="table materials-table table-with-buttons" ng-if="materialGroup.materials.length > 0">
 						<tr>
-							<th>Разновидность</th>
+							<th>Вид</th>
 							<th>
 								<span ng-switch on="materialGroup.units">
 									<span ng-switch-when="volume_l">Цена за 1 л, руб.</span>

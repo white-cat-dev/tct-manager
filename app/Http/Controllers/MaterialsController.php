@@ -162,6 +162,7 @@ class MaterialsController extends Controller
             'name' => $request->get('name', ''),
             'variations' => $variations,
             'units' => $request->get('units', ''),
+            'control' => $request->get('control', 0),
         ];
     }
 

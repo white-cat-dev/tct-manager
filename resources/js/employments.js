@@ -59,6 +59,11 @@ angular.module('tctApp').controller('EmploymentsController', [
 			$scope.workers = response.workers;
 			$scope.manager = response.manager;
 			$scope.statuses = response.statuses;
+
+			if (Object.keys($scope.statuses).length > 0)
+			{
+				$scope.chooseCurrentEmploymentStatus(Object.keys($scope.statuses)[0]);
+			}
 		});
 	};
 

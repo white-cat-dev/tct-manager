@@ -2,11 +2,13 @@ angular.module('tctApp').controller('EmploymentStatusesController', [
 	'$scope',
 	'$routeParams',
 	'$location',
+	'toastr',
 	'EmploymentStatusesRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
+		toastr,
 		EmploymentStatusesRepository
 	){
 

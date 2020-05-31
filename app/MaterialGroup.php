@@ -9,7 +9,8 @@ class MaterialGroup extends Model
     protected $fillable = [
     	'name',
         'units',
-        'variations'
+        'variations',
+        'control'
     ];
 
 

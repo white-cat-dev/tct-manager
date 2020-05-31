@@ -44,14 +44,14 @@ class EmploymentStatusesController extends Controller
 
                     if ($status)
                     {
-                        $status->update($statusData);
+                        $status->update($this->getData($statusData));
 
                         $statusesIds[] = $status->id;
                     }
                 }
                 else
                 {
-                    $status = EmploymentStatus::create($statusData);
+                    $status = EmploymentStatus::create($this->getData($statusData));
 
                     $statusesIds[] = $status->id;
                 }
@@ -59,5 +59,19 @@ class EmploymentStatusesController extends Controller
 
             EmploymentStatus::whereNotIn('id', $statusesIds)->delete();
         }
+    }
+
+
+    protected function getData($data)
+    {
+        return [
+            'icon' => !empty($data['icon']) ? $data['icon'] : 0,
+            'icon_color' => !empty($data['icon_color']) ? $data['icon_color'] : '#000000',
+            'name' => !empty($data['name']) ? $data['name'] : '',
+            'salary_production' => !empty($data['salary_production']) ? $data['salary_production'] : 0,
+            'salary_fixed' => !empty($data['salary_fixed']) ? $data['salary_fixed'] : 0,
+            'salary_team' => !empty($data['salary_team']) ? $data['salary_team'] : 0,
+            'customable' => !empty($data['customable']) ? $data['customable'] : 0
+        ];
     }
 }
