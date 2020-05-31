@@ -13953,6 +13953,8 @@ i.far {
 .orders-page .main-orders-block {
   box-shadow: 1px 1px 5px #e6e6e6;
   border: solid 1px #dadada;
+  max-height: calc(100vh - 310px);
+  overflow-y: auto;
 }
 
 .orders-page .main-orders-block .table {

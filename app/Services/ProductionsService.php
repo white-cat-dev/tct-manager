@@ -84,6 +84,12 @@ class ProductionsService
                 {
                     $maxCount = $product->product_group->forms;
                 }
+
+                if ($maxCount == 0)
+                {
+                    break;
+                }
+
                 $plannedCount = ($productCount >= $maxCount) ? $maxCount : $productCount;
 
                 $production = Production::create([

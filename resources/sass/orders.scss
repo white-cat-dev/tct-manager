@@ -143,6 +143,8 @@
 	.main-orders-block {
 		box-shadow: 1px 1px 5px darken($grey, 5%);
 		border: solid 1px darken($grey, 10%);
+		max-height: calc(100vh - 310px);
+    	overflow-y: auto;
 
 		.table {
 			font-size: 14px;
