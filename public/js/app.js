@@ -81543,7 +81543,15 @@ tctApp.factory('ExportsRepository', ['$resource', function ($resource) {
     }
   });
 }]);
-tctApp.run(function ($rootScope) {
+tctApp.factory('AuthRepository', ['$resource', function ($resource) {
+  return $resource('/login', null, {
+    logout: {
+      method: 'POST',
+      url: '/logout'
+    }
+  });
+}]);
+tctApp.run(function ($rootScope, AuthRepository) {
   $rootScope.searchInputKeyPressed = function ($event) {
     if ($event.which === 13) {
       $event.currentTarget.blur();
@@ -81567,6 +81575,11 @@ tctApp.run(function ($rootScope) {
   $rootScope.inputFloat = function (model, key) {
     model[key] = model[key].replace(',', '.');
     model[key] = model[key].replace(/[^.\d]/g, '');
+  };
+
+  $rootScope.logout = function () {
+    AuthRepository.logout();
+    document.location.href = '/login';
   };
 });
 

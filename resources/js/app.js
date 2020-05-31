@@ -303,10 +303,16 @@ tctApp.factory('ExportsRepository', ['$resource', function($resource) {
     });  
 }]);
 
+tctApp.factory('AuthRepository', ['$resource', function($resource) {
+	return $resource('/login', null, {
+	    logout: { method: 'POST', url: '/logout' }
+	});
+}]);
 
 
 
-tctApp.run(function($rootScope) 
+
+tctApp.run(function($rootScope, AuthRepository) 
 {
     $rootScope.searchInputKeyPressed = function($event) 
     {
@@ -338,6 +344,12 @@ tctApp.run(function($rootScope)
     {
 		model[key] = model[key].replace(',', '.');
 		model[key] = model[key].replace(/[^.\d]/g, '');
+    }
+
+    $rootScope.logout = function()
+    {
+    	AuthRepository.logout();
+		document.location.href = '/login';
     }
 });
 
