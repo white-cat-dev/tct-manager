@@ -239,7 +239,7 @@
 									</span>
 								</td>
 								<td>
-									@{{ order.pallets * order.pallets_price }} руб
+									@{{ order.pallets * order.pallets_price | number }} руб
 								</td>
 							</tr>
 						</table>
