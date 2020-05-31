@@ -82677,10 +82677,12 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.save = function () {
+    $scope.isSaving = true;
     OrdersRepository.save({
       id: $scope.id
     }, $scope.order, function (response) {
       toastr.success($scope.id ? 'Заказ успешно обновлен!' : 'Новый заказ успешно создан!');
+      $location.path($scope.baseUrl).replace();
       $scope.orderErrors = {};
       $scope.id = response.id;
       $scope.order.url = response.url;
@@ -82840,9 +82842,26 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     productData.in_stock = product.in_stock;
     productData.free_in_stock = product.free_in_stock;
     productData.units_text = product.units_text;
-    productData.pivot.price = product.price;
-    productData.pivot.price_cashless = product.price_cashless;
-    productData.pivot.price_vat = product.price_vat;
+    productData.price = product.price;
+    productData.price_cashless = product.price_cashless;
+    productData.price_vat = product.price_vat;
+
+    if (!productData.pivot.price) {
+      switch ($scope.order.pay_type) {
+        case 'cash':
+          productData.pivot.price = productData.price;
+          break;
+
+        case 'cashless':
+          productData.pivot.price = productData.price_cashless;
+          break;
+
+        case 'vat':
+          productData.pivot.price = productData.price_vat;
+          break;
+      }
+    }
+
     $scope.updateOrderInfo();
   };
 
@@ -82859,6 +82878,26 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       var count = product.pivot.count.substring(0, index);
       product.pivot.count = product.pivot.count.substring(index).replace('.', '');
       product.pivot.count = count + product.pivot.count;
+    }
+
+    $scope.updateOrderInfo();
+  };
+
+  $scope.updatePrice = function (product) {
+    console.log(123);
+
+    if (product.pivot.price.length > 10) {
+      product.pivot.price = product.pivot.price.substring(0, 10);
+    }
+
+    product.pivot.price = product.pivot.price.replace(/[^,.\d]/g, '');
+    product.pivot.price = product.pivot.price.replace(',', '.');
+
+    if (product.pivot.price.split('.').length - 1 > 1) {
+      var index = product.pivot.price.lastIndexOf('.');
+      var price = product.pivot.price.substring(0, index);
+      product.pivot.price = product.pivot.price.substring(index).replace('.', '');
+      product.pivot.price = price + product.pivot.price;
     }
 
     $scope.updateOrderInfo();
@@ -82882,20 +82921,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         product = _step4.value;
 
         if (product.pivot.price) {
-          switch ($scope.order.pay_type) {
-            case 'cash':
-              product.pivot.cost = Math.round(product.pivot.price * product.pivot.count * 100) / 100;
-              break;
-
-            case 'cashless':
-              product.pivot.cost = Math.round(product.pivot.price_cashless * product.pivot.count * 100) / 100;
-              break;
-
-            case 'vat':
-              product.pivot.cost = Math.round(product.pivot.price_vat * product.pivot.count * 100) / 100;
-              break;
-          }
-
+          product.pivot.cost = Math.round(product.pivot.price * product.pivot.count * 100) / 100;
           $scope.order.cost += product.pivot.cost;
           $scope.order.weight += product.weight_unit * product.unit_in_units * product.pivot.count;
 

@@ -40,6 +40,8 @@ class Order extends Model
     protected $appends = [
     	'url',
         'status_text',
+        'delivery_text',
+        'priority_text',
         'formatted_date',
         'formatted_date_to'
     ];
@@ -63,6 +65,16 @@ class Order extends Model
         3 => 'Новый',
         4 => 'Приостановлен',
         5 => 'Завершен'
+    ];
+
+    protected static $priorities = [
+        1 => 'Обычный',
+        2 => 'Высокий'
+    ];
+
+    protected static $deliveries = [
+        'sverdlovsk' => 'Свердловский район',
+        'other' => 'Другой район'
     ];
 
 
@@ -100,6 +112,13 @@ class Order extends Model
         return $status;
     }
 
+    public function getPriorityTextAttribute()
+    {
+        $priority = Arr::get(static::$priorities, $this->priority, '');
+        
+        return $priority;
+    }
+
     public function getFormattedDateAttribute()
     {
         return Carbon::createFromDate($this->date)->format('d.m.Y');
@@ -108,6 +127,17 @@ class Order extends Model
     public function getFormattedDateToAttribute()
     {
         return Carbon::createFromDate($this->date_to)->format('d.m.Y');
+    }
+
+    public function getDeliveryTextAttribute()
+    {
+        if (!$this->delivery) 
+        {
+            return 'Без доставки';
+        }
+        $delivery = Arr::get(static::$deliveries, $this->delivery, '');
+
+        return $delivery . ' (' . $this->delivery_distance . ' км за городом)';
     }
 
 

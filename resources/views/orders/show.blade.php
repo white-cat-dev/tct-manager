@@ -22,32 +22,67 @@
 	<div class="show-block">
 		<div class="row justify-content-around">
 			<div class="col-11">
-				<div class="show-block-title">
-					Заказ №@{{ order.id }}
-				</div>
+				<div class="show-block-title m-0">
+					Заказ №@{{ order.number }} от @{{ order.formatted_date }}
 
-				<div class="order-progress">
-					<div class="progress-realization" ng-style="{'width': Math.round(order.progress.realization / order.progress.total * 100) + '%'}" ng-if="order.progress.realization">
-						<div class="progress-number">@{{ Math.round(order.progress.realization / order.progress.total * 100) }} %</div>
-						<div class="progress-label">Выдано</div>
-					</div>
-					<div class="progress-ready" ng-style="{'width': Math.round(order.progress.ready / order.progress.total * 100) + '%'}" ng-if="order.progress.production">
-						<div class="progress-number">@{{ Math.round(order.progress.ready / order.progress.total * 100) }} %</div>
-						<div class="progress-label">Готово</div>
+					<div class="status-block">
+						@{{ order.status_text }}
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="row justify-content-around">
+			
 			<div class="col-5">
+				<div class="params-title">Общая информация</div>
+				<div class="param-block">
+					<div class="param-name">
+						Номер заказа
+					</div>
+					<div class="param-value">
+						@{{ order.number }}
+					</div>
+				</div>
+				<div class="param-block">
+					<div class="param-name">
+						Дата принятия
+					</div>
+					<div class="param-value">
+						@{{ order.date }}
+					</div>
+				</div>
+				<div class="param-block">
+					<div class="param-name">
+						Приоритет заказа
+					</div>
+					<div class="param-value">
+						@{{ order.priority_text }}
+					</div>
+				</div>
+				<div class="param-block">
+					<div class="param-name">
+						Доставка
+					</div>
+					<div class="param-value">
+						@{{ order.delivery_text }}
+					</div>
+				</div>
+			</div>
+
+			<div class="col-6 col-xl-5">
 				<div class="params-title">Данные клиента</div>
 				<div class="param-block">
 					<div class="param-name">
 						Имя
 					</div>
 					<div class="param-value">
-						@{{ order.client.name }}
+						<span ng-if="order.client.name">
+							@{{ order.client.name }}
+						</span>
+						<span ng-if="!order.client.name">
+							Не указано
+						</span>
 					</div>
 				</div>
 				<div class="param-block">
@@ -55,7 +90,12 @@
 						Телефон
 					</div>
 					<div class="param-value">
-						@{{ order.client.phone }}
+						<span ng-if="order.client.phone">
+							@{{ order.client.phone }}
+						</span>
+						<span ng-if="!order.client.phone">
+							Не указан
+						</span>
 					</div>
 				</div>
 				<div class="param-block">
@@ -63,47 +103,22 @@
 						E-mail
 					</div>
 					<div class="param-value">
-						@{{ order.client.email }}
+						<span ng-if="order.client.email">
+							@{{ order.client.email }}
+						</span>
+						<span ng-if="!order.client.email">
+							Не указана
+						</span>
 					</div>
 				</div>
 
-				<div class="params-title">
-					Комментарий к заказу
-				</div>
 				<div class="param-block">
+					<div class="param-name">
+						Комментарий к заказу
+					</div>
 					<div class="param-value">
 						<span ng-if="order.comment">@{{ order.comment }}</span>
 						<span ng-if="!order.comment">Нет комментария</span>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-5">
-				<div class="params-title">Общая информация</div>
-				<div class="param-block">
-					<div class="param-name">
-						Стоимость
-					</div>
-					<div class="param-value">
-						@{{ order.cost | number }} руб.
-					</div>
-				</div>
-				<div class="param-block">
-					<div class="param-name">
-						Вес
-					</div>
-					<div class="param-value">
-						<span ng-if="order.weight">@{{ order.weight | number }} кг</span>
-						<span ng-if="!order.weight">Нет данных</span>
-					</div>
-				</div>
-				<div class="param-block">
-					<div class="param-name">
-						Количество поддонов
-					</div>
-					<div class="param-value">
-						<span ng-if="order.weight">@{{ order.pallets | number }} шт</span>
-						<span ng-if="!order.weight">Нет данных</span>
 					</div>
 				</div>
 			</div>

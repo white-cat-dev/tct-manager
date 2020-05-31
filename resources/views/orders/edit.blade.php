@@ -187,18 +187,11 @@
 									</div>
 								</span>
 							</td>
-							<td class="number-col" style="width: 15%;">
+							<td style="width: 15%;">
 								<span ng-if="product.id">
-									<span ng-switch on="order.pay_type">
-										<span ng-switch-when="cash">
-											@{{ product.pivot.price | number }} руб/<span ng-bind-html="product.units_text"></span>
-										</span>
-										<span ng-switch-when="cashless">
-											@{{ product.pivot.price_cashless | number }} руб/<span ng-bind-html="product.units_text"></span>
-										</span>
-										<span ng-switch-when="vat">
-											@{{ product.pivot.price_vat | number }} руб/<span ng-bind-html="product.units_text"></span>
-										</span>
+									<input type="text" class="form-control" ng-model="product.pivot.price" ng-change="updatePrice(product)">
+									<span class="product-units">
+										@{{ product.pivot.price }} <span>руб</span>
 									</span>
 								</span>
 							</td>
@@ -257,8 +250,8 @@
 		</div>
 
 		<div class="buttons-block">
-			<button class="btn btn-primary" ng-click="save()">
-				<i class="fas fa-save"></i> Сохранить
+			<button class="btn btn-primary" ng-click="save()" ng-disabled="isSaving">
+				<i class="fas fa-save"></i> Сохранить и выйти
 			</button>
 		</div>
 	</div>
