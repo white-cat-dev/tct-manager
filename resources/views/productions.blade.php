@@ -173,7 +173,7 @@
 						<span class="order-date">@{{ order.formatted_date }}</span>
 					</div>
 
-					<table class="table order-products">
+					{{-- <table class="table order-products">
 						<tr ng-repeat="product in order.products">
 							<td>
 								@{{ product.product_group.name }}
@@ -191,7 +191,7 @@
 								</span>
 							</td>
 						</tr>
-					</table>
+					</table> --}}
 				</div>
 
 				<div ng-if="productionOrders.length == 0">

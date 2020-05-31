@@ -27,7 +27,7 @@
 							</div>
 						</td>
 						<td>
-							@{{ realization.planned }} 
+							@{{ realization.ready }} 
 							<span ng-switch on="realization.product.category.units">
 								<span ng-switch-when="area">м<sup>2</sup></span>
 								<span ng-switch-when="volume">м<sup>3</sup></span>

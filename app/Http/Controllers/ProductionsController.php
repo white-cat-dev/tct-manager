@@ -120,7 +120,7 @@ class ProductionsController extends Controller
                             $productProductions[$day]->order_id = [$orderId, $production->order_id];
                         }
 
-                        $productProductions[$day]->auto_planned += $production->auto_planned;
+                        $productProductions[$day]->auto_planned = round($productProductions[$day]->auto_planned + $production->auto_planned, 3);
                         $productProductions[$day]->performed += $production->performed;
                         $productProductions[$day]->batches += $production->batches;
                     }
@@ -152,6 +152,8 @@ class ProductionsController extends Controller
                         'productions' => $productions->where('order_id', 0)->keyBy('day')
                     ]);
                 }
+
+                $product->orders = $product->orders->values();
             }
 
             $days = Carbon::createFromDate($year, $month, 1)->daysInMonth;

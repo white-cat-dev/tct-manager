@@ -116,15 +116,17 @@ class Product extends Model
             $progress['total'] = $product->pivot->count;
 
             $baseProduction = $this->productions()->where('order_id', $order->id)->whereNull('date')->first();
-            $progress['left'] =  $baseProduction ? $baseProduction->auto_planned : 0;
+
+            $progress['left'] = round($baseProduction ? ($baseProduction->auto_planned - $baseProduction->performed) : 0, 3);
             
-            foreach ($this->realizations->where('order_id', $order->id) as $realization) 
+            foreach ($this->realizations->where('order_id', $order->id)->whereNotNull('date') as $realization) 
             {
                 $progress['realization'] += $realization->performed;
             }
 
-            $progress['production'] = $progress['total'] - $progress['left'];
-            $progress['ready'] = $progress['production'] - $progress['realization'];
+            $progress['realization'] = round($progress['realization'], 3);
+            $progress['production'] = round($progress['total'] - $progress['left'], 3);
+            $progress['ready'] = round($progress['production'] - $progress['realization'], 3);
         }
 
         return $progress;
@@ -134,9 +136,9 @@ class Product extends Model
     public function getRealizeInStockAttribute()
     {
         $realizeInStock = 0;
-        foreach ($this->realizations as $realization) 
+        foreach ($this->realizations()->whereNull('date')->where('ready', '>', 0)->get() as $realization) 
         {
-            $realizeInStock += $realization->planned - $realization->performed;
+            $realizeInStock += $realization->ready;
         }
 
         return $realizeInStock;
@@ -144,7 +146,7 @@ class Product extends Model
 
     public function getFreeInStockAttribute()
     {
-        return $this->in_stock - $this->realize_in_stock;
+        return round($this->in_stock - $this->realize_in_stock, 3);
     }
 
 

@@ -149,6 +149,7 @@ angular.module('tctApp').controller('ProductionsController', [
 			newProduct.production = newProduct.productions[day];
 			newProduct.productions = [];
 
+			console.log(product);
 			for (order of product.orders)
 			{
 				if (order.productions[day])

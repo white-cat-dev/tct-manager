@@ -537,21 +537,21 @@ angular.module('tctApp').controller('OrdersController', [
     	{
     		for (realization of $scope.modalOrder.realizations)
     		{
-    			realization.performed = realization.planned;
+    			realization.performed = realization.ready;
     		}
     	}
     }
 
     $scope.checkAllRealizations = function(realization) 
     {
-    	if (realization.performed > realization.planned)
+    	if (realization.performed > realization.ready)
 		{
-			realization.performed = realization.planned
+			realization.performed = realization.ready
 		}
 
     	for (realization of $scope.modalOrder.realizations)
 		{
-			if (realization.performed < realization.planned)
+			if (realization.performed < realization.ready)
 			{
 				$scope.isAllRealizationsChosen = false;
 				return;

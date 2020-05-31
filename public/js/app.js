@@ -83020,7 +83020,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       try {
         for (var _iterator5 = $scope.modalOrder.realizations[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
           realization = _step5.value;
-          realization.performed = realization.planned;
+          realization.performed = realization.ready;
         }
       } catch (err) {
         _didIteratorError5 = true;
@@ -83040,8 +83040,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.checkAllRealizations = function (realization) {
-    if (realization.performed > realization.planned) {
-      realization.performed = realization.planned;
+    if (realization.performed > realization.ready) {
+      realization.performed = realization.ready;
     }
 
     var _iteratorNormalCompletion6 = true;
@@ -83052,7 +83052,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       for (var _iterator6 = $scope.modalOrder.realizations[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
         realization = _step6.value;
 
-        if (realization.performed < realization.planned) {
+        if (realization.performed < realization.ready) {
           $scope.isAllRealizationsChosen = false;
           return;
         }
@@ -83218,6 +83218,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
         newProduct.orders = [];
         newProduct.production = newProduct.productions[day];
         newProduct.productions = [];
+        console.log(product);
         var _iteratorNormalCompletion5 = true;
         var _didIteratorError5 = false;
         var _iteratorError5 = undefined;

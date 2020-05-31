@@ -24,7 +24,7 @@ class CreateProductionsTable extends Migration
             $table->decimal('auto_planned', 10, 3)->unsigned();
             $table->decimal('manual_planned', 10, 3)->unsigned();
             $table->decimal('performed', 10, 3)->unsigned();
-            $table->decimal('batches', 5, 3)->unsigned();
+            $table->decimal('batches', 6, 3)->unsigned();
             $table->decimal('salary', 8, 3)->unsigned();
             $table->timestamps();
         });

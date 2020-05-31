@@ -14,6 +14,7 @@ class Realization extends Model
     	'product_id',
         'order_id',
         'planned',
+        'ready',
         'performed'
     ];
 
