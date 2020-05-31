@@ -158,6 +158,11 @@ angular.module('tctApp').controller('OrdersController', [
 		}
 		else
 		{
+			ProductsRepository.query(function(response) 
+			{
+				$scope.productGroups = response;
+			});
+
 			$scope.addProduct();
 		}
 	}
@@ -360,21 +365,6 @@ angular.module('tctApp').controller('OrdersController', [
 		productData.pivot.price_cashless = product.price_cashless;
 		productData.pivot.price_vat = product.price_vat;
 
-		switch ($scope.order.pay_type) 
-		{
-			case ('cash'):
-				productData.pivot.cost = productData.pivot.price * productData.pivot.count;
-				break;
-
-			case ('cashless'):
-				productData.pivot.cost = productData.pivot.price_cashless * productData.pivot.count;
-				break;
-
-			case ('vat'):
-				productData.pivot.cost = productData.pivot.price_vat * productData.pivot.count;
-				break;
-		}
-
 		$scope.updateOrderInfo();
 	}
 
@@ -418,15 +408,15 @@ angular.module('tctApp').controller('OrdersController', [
 				switch ($scope.order.pay_type) 
 				{
 					case ('cash'):
-						product.pivot.cost = product.pivot.price * product.pivot.count;
+						product.pivot.cost = Math.round(product.pivot.price * product.pivot.count * 100) / 100;
 						break;
 
 					case ('cashless'):
-						product.pivot.cost = product.pivot.price_cashless * product.pivot.count;
+						product.pivot.cost = Math.round(product.pivot.price_cashless * product.pivot.count * 100) / 100;
 						break;
 
 					case ('vat'):
-						product.pivot.cost = product.pivot.price_vat * product.pivot.count;
+						product.pivot.cost = Math.round(product.pivot.price_vat * product.pivot.count * 100) / 100;
 						break;
 				}
 

@@ -10,6 +10,6 @@ class OrderProduct extends Pivot
     protected $casts = [
         'price' => 'float',
         'count' => 'float',
-        'cost' => 'float',
+        'cost' => 'float'
     ];
 }
