@@ -39,7 +39,7 @@ class OrdersController extends Controller
             }
 
 
-            $orders = $query->orderBy('status')->orderBy('priority')->orderBy('date')->get();
+            $orders = $query->orderBy('status')->orderBy('priority')->orderBy('date', 'DESC')->get();
 
             foreach ($orders as $order) 
             {
