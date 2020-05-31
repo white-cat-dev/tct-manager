@@ -112,7 +112,15 @@ class ImportProducts extends Command
 
         if (empty($productGroupData['forms_add']))
         {
-            $productGroupData['forms_add'] = 0;
+            if ($category->variations == 'colors')
+            {
+                $productGroupData['forms_add'] = $productGroupData['forms'] / 2;
+                $productGroupData['forms'] /= 2;
+            }
+            else
+            {
+                $productGroupData['forms_add'] = 0;
+            }
         }
 
 
@@ -157,7 +165,6 @@ class ImportProducts extends Command
     protected function getProduct($productData, $productGroup)
     {
         $productData['category_id'] = $productGroup->category_id;
-        $productData['in_stock'] = 0;
 
         if ($productGroup->category->units == 'unit')
         {
@@ -178,6 +185,7 @@ class ImportProducts extends Command
 
         if (!$product)
         {
+            $productData['in_stock'] = 0;
             $product = $productGroup->products()->create($productData);
         }
         else
