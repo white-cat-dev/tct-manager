@@ -219,19 +219,25 @@
 					</div>
 				</div>
 
-				<table ng-if="order.payments.length > 0">
-					<tr ng-repeat="payment in order.payments">
-						<td>
-							@{{ payment.formatted_date }}
-						</td>
-						<td>
-							@{{ payment.paid | number }} руб
-						</td>
-					</tr>
-				</table>
+				<div class="alert alert-secondary">
+					<table class="table table-sm" ng-if="order.payments.length > 0">
+						<tr>
+							<th>Дата</th>
+							<th>Сумма</th>
+						</tr>
+						<tr ng-repeat="payment in order.payments">
+							<td>
+								@{{ payment.formatted_date }}
+							</td>
+							<td>
+								@{{ payment.paid | number }} руб
+							</td>
+						</tr>
+					</table>
 
-				<div class="alert alert-secondary" ng-if="order.payments.length == 0">
-					<i class="far fa-calendar-times"></i> Оплат заказа еще не поступало
+					<div ng-if="order.payments.length == 0">
+						<i class="far fa-calendar-times"></i> Оплат заказа еще не поступало
+					</div>
 				</div>
 			</div>
 
@@ -240,28 +246,30 @@
 					История производства
 				</div>
 
-				<table class="table" ng-if="(order.productions | filter: {'performed': '> 0'}).length > 0">
-					<tr>
-						<th>Дата</th>
-						<th>Продукт</th>
-						<th>Количество</th>
-					</tr>
-					<tr ng-repeat="production in order.productions | filter: {'performed': '> 0'}">
-						<td>
-							@{{ production.formatted_date }}
-						</td>
-						<td>
-							@{{ production.product.product_group.name }} @{{ production.product.product_group.size }}<br>
-							@{{ production.product.color_text }}
-						</td>
-						<td>
-							@{{ production.performed }} <span ng-bind-html="realization.product.units_text"></span>
-						</td>
-					</tr>
-				</table>
+				<div class="alert alert-secondary">
+					<table class="table table-sm" ng-if="(order.productions | filter: {'performed': '> 0'}).length > 0">
+						<tr>
+							<th>Дата</th>
+							<th>Продукт</th>
+							<th>Количество</th>
+						</tr>
+						<tr ng-repeat="production in order.productions | filter: {'performed': '> 0'}">
+							<td>
+								@{{ production.formatted_date }}
+							</td>
+							<td>
+								@{{ production.product.product_group.name }} @{{ production.product.product_group.size }}<br>
+								@{{ production.product.color_text }}
+							</td>
+							<td>
+								@{{ production.performed }} <span ng-bind-html="realization.product.units_text"></span>
+							</td>
+						</tr>
+					</table>
 
-				<div class="alert alert-secondary" ng-if="(order.productions | filter: {'performed': '> 0'}).length == 0">
-					<i class="far fa-calendar-times"></i> Заказ еще не произведен
+					<div ng-if="(order.productions | filter: {'performed': '> 0'}).length == 0">
+						<i class="far fa-calendar-times"></i> Заказ еще не произведен
+					</div>
 				</div>
 			</div>
 
@@ -270,26 +278,28 @@
 					История выдачи
 				</div>
 
-				<table class="table" ng-if="(order.realizations | filter: {'performed': '> 0'}).length > 0">
-					<tr>
-						<th>Дата</th>
-						<th>Продукт</th>
-						<th>Количество</th>
-					</tr>
-					<tr ng-repeat="realization in order.realizations | filter: {'performed': '> 0'}">
-						<td>@{{ realization.formatted_date }}</td>
-						<td>
-							@{{ realization.product.product_group.name }} @{{ production.product.product_group.size }}<br>
-							@{{ realization.product.color_text }}
-						</td>
-						<td>
-							@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>
-						</td>
-					</tr>
-				</table>
+				<div class="alert alert-secondary">
+					<table class="table" ng-if="(order.realizations | filter: {'performed': '> 0'}).length > 0">
+						<tr>
+							<th>Дата</th>
+							<th>Продукт</th>
+							<th>Количество</th>
+						</tr>
+						<tr ng-repeat="realization in order.realizations | filter: {'performed': '> 0'}">
+							<td>@{{ realization.formatted_date }}</td>
+							<td>
+								@{{ realization.product.product_group.name }} @{{ production.product.product_group.size }}<br>
+								@{{ realization.product.color_text }}
+							</td>
+							<td>
+								@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>
+							</td>
+						</tr>
+					</table>
 
-				<div class="alert alert-secondary" ng-if="(order.realizations | filter: {'performed': '> 0'}).length == 0">
-					<i class="far fa-calendar-times"></i> Заказ еще не выдан
+					<div ng-if="(order.realizations | filter: {'performed': '> 0'}).length == 0">
+						<i class="far fa-calendar-times"></i> Заказ еще не выдан
+					</div>
 				</div>
 			</div>
 		</div>

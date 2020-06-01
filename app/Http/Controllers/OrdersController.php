@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Order;
 use App\Client;
 use App\Realization;
+use App\OrderPayment;
 use App\Production;
 use App\Facility;
 use Carbon\Carbon;
@@ -39,7 +40,7 @@ class OrdersController extends Controller
             }
 
 
-            $orders = $query->orderBy('status')->orderBy('date', 'DESC')->orderBy('number', 'DESC')->get();
+            $orders = $query->orderBy('date', 'DESC')->orderBy('number', 'DESC')->get();
 
             foreach ($orders as $order) 
             {
@@ -187,53 +188,139 @@ class OrdersController extends Controller
 
         foreach ($realizationsData as $realizationData) 
         {
-            $realization = Realization::where('id', $realizationData['id'])->with('order', 'product')->first();
+            $baseRealization = Realization::where('id', $realizationData['id'])->with('order', 'product')->first();
 
-            if ($realization)
+            if ($baseRealization)
             {
-                if ($realization->date)
+                if ($baseRealization->date)
                 {
                     continue;
                 }
 
-                $order = $realization->order;
+                $realization = Realization::create($this->getRealizationData($realizationData, $baseRealization));
+                $performed = $realization->performed;
 
-                $performed = (float)$realizationData['performed'];
-                $planned = $realization->planned - $performed;
-
-                $realization->product->update([
-                    'in_stock' => $realization->product->in_stock - $performed
-                ]);
-
-                $realization->update([
-                    'date' => date('Y-m-d'),
-                    'planned' => $performed,
-                    'performed' => $performed
-                ]);
-
-
-                if ($planned == 0)
+                if ($performed > $baseRealization->ready)
                 {
-                    $baseProductions = $realization->order->productions()->whereNull('date')->get();
-                    if ($baseProductions->count() == 0) 
+                    $difference = $performed - $baseRealization->ready;
+
+                    $baseProduction = $baseRealization->order->productions()
+                        ->whereNull('date')
+                        ->where('product_id', $baseRealization->product_id)
+                        ->first();
+
+                    $baseProduction->update([
+                        'auto_planned' => $baseProduction->auto_planned - $difference
+                    ]);
+
+                    // ProductionsService::getInstance()->updateOrderPlan($baseRealization->order, $baseRealization->product, 0);
+
+                    $otherBaseRealizations = Realization::whereNull('date')
+                        ->where('order_id', '!=', $baseRealization->order_id)
+                        ->where('product_id', $baseRealization->product_id)
+                        ->where('ready', '>', 0)
+                        ->get();
+
+                    foreach ($otherBaseRealizations as $otherBaseRealization) 
                     {
-                        $order->update([
-                            'status' => Order::STATUS_FINISHED
-                        ]);
-                        continue;
+                        if ($otherBaseRealization->ready > $difference)
+                        {
+                            $otherBaseRealization->update([
+                                'ready' =>  $otherBaseRealization->ready - $difference
+                            ]);
+
+                            $baseRealization->update([
+                                'ready' => $baseRealization->ready + $difference
+                            ]);
+
+                            $otherBaseProduction = $otherBaseRealization->order->productions()
+                                ->whereNull('date')
+                                ->where('product_id', $otherBaseRealization->product_id)
+                                ->first();
+
+                            $otherBaseProduction->update([
+                                'auto_planned' => $otherBaseProduction->auto_planned + $difference
+                            ]);
+
+                            // ProductionsService::getInstance()->updateOrderPlan($otherBaseProduction->order, $otherBaseProduction->product, 0);
+
+                            break;
+                        }
+                        else
+                        {
+                            $otherBaseRealization->update([
+                                'ready' =>  0
+                            ]);
+
+                            $baseRealization->update([
+                                'ready' => $baseRealization->ready + $otherBaseRealization->ready
+                            ]);
+
+                            $otherBaseProduction = $otherBaseRealization->order->productions()
+                                ->whereNull('date')
+                                ->where('product_id', $otherBaseRealization->product_id)
+                                ->first();
+
+                            $otherBaseProduction->update([
+                                'auto_planned' => $otherBaseProduction->auto_planned + $otherBaseRealization->ready
+                            ]);
+
+                            // ProductionsService::getInstance()->updateOrderPlan($otherBaseProduction->order, $otherBaseProduction->product, 0);
+
+                            $difference -= $otherBaseRealization->ready;
+                        }
                     }
                 }
 
-                $baseRealization = Realization::create([
-                    'date' => null,
-                    'category_id' => $realization->product->id,
-                    'product_id' => $realization->product_id,
-                    'order_id' => $realization->order_id,
-                    'planned' => $planned,
-                    'performed' => 0
+                $baseRealization->product->update([
+                    'in_stock' => $baseRealization->product->in_stock - $performed
                 ]);
+
+                $baseRealization->update([
+                    'ready' => $baseRealization->ready - $performed,
+                    'performed' => $baseRealization->performed + $performed
+                ]);
+
+
+
+                $orderBaseRealizations = $baseRealization->order->realizations()->whereNull('date')->get();
+
+                $isOrderFinished = true;
+
+                foreach ($orderBaseRealizations as $orderBaseRealization) 
+                {
+                    if ($orderBaseRealization->planned > $orderBaseRealization->performed)
+                    {
+                        $isOrderFinished = false;
+                        break;
+                    }
+                }
+
+                if ($isOrderFinished)
+                {
+                    $baseRealization->order->update([
+                        'status' => Order::STATUS_FINISHED
+                    ]);
+                }
             }
         }
+    }
+
+
+    public function savePayment(Request $request)
+    {
+        $paymentData = $this->getPaymentData($request);
+
+        if (!$paymentData['order_id'])
+        {
+            return;
+        }
+
+        $payment = OrderPayment::create($paymentData);
+
+        $payment->order->update([
+            'paid' => $payment->order->paid + $payment->paid
+        ]);
     }
 
 
@@ -288,6 +375,45 @@ class OrdersController extends Controller
             'name' => !empty($data['name']) ? $data['name'] : '',
             'phone' => !empty($data['phone']) ? $data['phone'] : '',
             'email' => !empty($data['email']) ? $data['email'] : ''
+        ];
+    }
+
+
+
+    protected function getRealizationData($data, $baseRealization)
+    {
+        $date = !empty($data['date_raw']) ? $data['date_raw'] : date('dmY');
+        $date = Carbon::createFromFormat('dmY', $date)->format('Y-m-d');
+
+        return [
+            'date' => $date,
+            'category_id' => $baseRealization->category_id,
+            'product_group_id' => $baseRealization->product_group_id,
+            'product_id' => $baseRealization->product_id,
+            'order_id' => $baseRealization->order_id,
+            'planned' => 0,
+            'ready' => 0,
+            'performed' => !empty($data['performed']) ? (float)$data['performed'] : 0
+        ];
+    }
+
+
+    protected function getPaymentData(Request $request)
+    {
+        $date = $request->get('date_raw', -1); 
+        if ($date == -1)
+        {
+            $date = $request->get('date', date('Y-m-d')); 
+        }
+        else
+        {
+            $date = $date ? Carbon::createFromFormat('dmY', $date)->format('Y-m-d') : date('Y-m-d');
+        }
+
+        return [
+            'date' => $date,
+            'order_id' => $request->get('order_id', 0),
+            'paid' => $request->get('paid', 0)
         ];
     }
 }

@@ -264,7 +264,7 @@ angular.module('tctApp').controller('MaterialsController', [
 
     $scope.showSupplyModal = function()
     {
-    	$scope.modalSupply.date = $filter('date')(new Date(), 'ddMMyyyy'),
+    	$scope.modalSupply.date_raw = $filter('date')(new Date(), 'ddMMyyyy'),
     	$scope.addSupplyMaterial();
     	$scope.isSupplyModalShown = true;
     }
@@ -298,7 +298,7 @@ angular.module('tctApp').controller('MaterialsController', [
     {
     	for (supply of $scope.modalSupply.supplies)
     	{
-    		supply.date = $scope.modalSupply.date;
+    		supply.date_raw = $scope.modalSupply.date_raw;
     	}
 
     	MaterialsRepository.saveSupply({'supplies': $scope.modalSupply.supplies}, function(response) 

@@ -11,6 +11,7 @@ class Realization extends Model
     protected $fillable = [
     	'date',
         'category_id',
+        'product_group_id',
     	'product_id',
         'order_id',
         'planned',
@@ -25,6 +26,7 @@ class Realization extends Model
 
     protected $casts = [
         'planned' => 'float',
+        'ready' => 'float',
         'performed' => 'float'
     ];
 
@@ -32,6 +34,16 @@ class Realization extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function product_group()
+    {
+        return $this->belongsTo(ProductGroup::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function order()

@@ -124,7 +124,7 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<div class="param-label">Дата</div>
-						<input type="text" class="form-control" ng-model="modalSupply.date" ui-mask="99.99.9999">
+						<input type="text" class="form-control" ng-model="modalSupply.date_raw" ui-mask="99.99.9999">
 					</div>
 
 					<table class="table table-with-buttons" ng-if="modalSupply.supplies.length > 0">

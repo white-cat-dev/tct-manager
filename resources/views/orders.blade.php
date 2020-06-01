@@ -1,4 +1,4 @@
-<div class="orders-page" ng-init="init({{ App\Order::STATUS_PRODUCTION }})">
+<div class="orders-page" ng-init="init([{{ App\Order::STATUS_READY }}, {{ App\Order::STATUS_PRODUCTION }}])">
 	<h1>Заказы</h1>
 
 	<div class="top-buttons-block">
@@ -23,16 +23,16 @@
 	<div class="top-statuses-menu-block">
 		<div class="statuses-menu-block" ng-init="isStatusesShown = false">	
 			<div class="statuses-menu" ng-class="{'shown': isStatusesShown}" ng-click="isStatusesShown = !isStatusesShown">
-				<button type="button" class="btn" ng-class="{'active': currentStatus == 0 }" ng-click="chooseStatus(0)">
+				<button type="button" class="btn" ng-class="{'active': currentStatus.length == 0 }" ng-click="chooseStatus([])">
 					Все заказы
 				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_PRODUCTION }} }" ng-click="chooseStatus({{ App\Order::STATUS_PRODUCTION }})">
+				<button type="button" class="btn" ng-class="{'active': currentStatus.length == 2 }" ng-click="chooseStatus([{{ App\Order::STATUS_PRODUCTION }}, {{ App\Order::STATUS_READY }}])">
 					В работе
 				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_READY }} }" ng-click="chooseStatus({{ App\Order::STATUS_READY }})">
+				<button type="button" class="btn" ng-class="{'active': currentStatus.length == 1 && currentStatus.indexOf({{ App\Order::STATUS_READY }}) !== -1 }" ng-click="chooseStatus([{{ App\Order::STATUS_READY }}])">
 					Готовые к выдаче
 				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus == {{ App\Order::STATUS_FINISHED }} }" ng-click="chooseStatus({{ App\Order::STATUS_FINISHED }})">
+				<button type="button" class="btn" ng-class="{'active': currentStatus.length == 1 && currentStatus.indexOf({{ App\Order::STATUS_FINISHED }}) !== -1 }" ng-click="chooseStatus([{{ App\Order::STATUS_FINISHED }}])">
 					Завершенные
 				</button>
 			</div>
@@ -105,9 +105,9 @@
 						<a ng-href="@{{ currentOrder.url + '/edit' }}" class="btn btn-primary btn-sm">
 							<i class="fas fa-edit"></i>
 						</a>
-						<button type="button" class="btn btn-primary btn-sm" ng-click="showDelete(currentOrder)">
+						{{-- <button type="button" class="btn btn-primary btn-sm" ng-click="showDelete(currentOrder)">
 							<i class="far fa-trash-alt"></i>
-						</button>
+						</button> --}}
 					</div>
 
 					<table class="table table-sm" ng-if="currentOrder.products.length > 0">
@@ -158,6 +158,9 @@
 							<button type="button" class="btn-sm dropdown-item" ng-click="showRealizationModal(currentOrder)">
 								Отпустить заказ
 							</button>
+							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.paid < currentOrder.cost" ng-click="showPaymentModal(currentOrder)">
+								Внести платеж
+							</button>
 						</div>
 					</div>
 				</div>
@@ -202,5 +205,6 @@
 	</div>
 
 	@include('partials.order-realization-modal')
+	@include('partials.order-payment-modal')
 	@include('partials.delete-modal')
 </div>

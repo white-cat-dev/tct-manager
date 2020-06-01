@@ -270,7 +270,8 @@ tctApp.factory('ClientsRepository', ['$resource', function($resource) {
 
 tctApp.factory('OrdersRepository', ['$resource', function($resource) { 
 	return $resource('/orders/:id', null, {
-		saveRealization: { method: 'POST', url: '/orders/realization' }
+		saveRealization: { method: 'POST', url: '/orders/realization' },
+		savePayment: { method: 'POST', url: '/orders/payment' }
     });  
 }]);
 

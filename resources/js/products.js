@@ -126,6 +126,8 @@ angular.module('tctApp').controller('ProductsController', [
 
 	$scope.init = function()
 	{
+		$scope.isLoading = true;
+
 		if ($location.search().category)
 		{
 			$scope.currentCategory = $location.search().category;
@@ -306,6 +308,8 @@ angular.module('tctApp').controller('ProductsController', [
 		ProductsRepository.query(request, function(response) 
 		{
 			$scope.productGroups = response;
+
+			$scope.isLoading = false;
 		});
 	}
 

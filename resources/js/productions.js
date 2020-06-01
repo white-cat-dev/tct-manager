@@ -4,6 +4,7 @@ angular.module('tctApp').controller('ProductionsController', [
 	'$location',
 	'$timeout',
 	'$filter',
+	'toastr',
 	'ProductionsRepository',
 	'OrdersRepository',
 	'ProductsRepository',
@@ -13,10 +14,13 @@ angular.module('tctApp').controller('ProductionsController', [
 		$location,
 		$timeout,
 		$filter,
+		toastr,
 		ProductionsRepository,
 		OrdersRepository,
 		ProductsRepository
 	){
+
+	$scope.Math = window.Math;
 
 	$scope.days = 0;
 	$scope.monthes = [];
@@ -41,6 +45,8 @@ angular.module('tctApp').controller('ProductionsController', [
 
 	$scope.init = function()
 	{
+		$scope.isLoading = true;
+
 		var request = {};
 		if ($scope.currentDate.year > 0)
 		{
@@ -77,6 +83,7 @@ angular.module('tctApp').controller('ProductionsController', [
 					break;
 				}
 			}
+			$scope.isLoading = false;
 		});
 	}
 
@@ -149,7 +156,6 @@ angular.module('tctApp').controller('ProductionsController', [
 			newProduct.production = newProduct.productions[day];
 			newProduct.productions = [];
 
-			console.log(product);
 			for (order of product.orders)
 			{
 				if (order.productions[day])
@@ -225,19 +231,20 @@ angular.module('tctApp').controller('ProductionsController', [
 			'day': $scope.currentDate.day
 		}
 
+		$scope.isSaving = true;
 		ProductionsRepository.save(request, function(response) 
 		{
-			$scope.successTopAlert = 'Все изменения успешно сохранены!';
-			$scope.showTopAlert = true;
-
-			$timeout(function() {
-				$scope.showTopAlert = false;
-			}, 2000);
-
+			$scope.isSaving = false;
+			toastr.success('Все изменения успешно сохранены!');
 
 			$scope.hideModal();
 			$scope.init();
-		});
+		}, 
+		function(response) 
+		{
+            $scope.isSaving = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
 	}
 
 

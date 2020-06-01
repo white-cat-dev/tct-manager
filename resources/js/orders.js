@@ -97,6 +97,7 @@ angular.module('tctApp').controller('OrdersController', [
 	$scope.init = function(status)
 	{
 		$scope.chooseStatus(status);
+		console.log(status);
 		$scope.loadOrders();
 	}
 
@@ -264,9 +265,9 @@ angular.module('tctApp').controller('OrdersController', [
 			'main_category': $scope.currentMainCategory.join(',')
 		};
 
-		if ($scope.currentStatus > 0)
+		if ($scope.currentStatus.length > 0)
 		{
-			request.status = $scope.currentStatus
+			request.status = $scope.currentStatus.join(',');
 		}
 
 		OrdersRepository.query(request, function(response) 
@@ -288,9 +289,9 @@ angular.module('tctApp').controller('OrdersController', [
 	}
 
 
-	$scope.chooseStatus = function(status)
+	$scope.chooseStatus = function(statuses)
 	{
-		$scope.currentStatus = status;
+		$scope.currentStatus = statuses;
 
 		$scope.loadOrders();
 	}
@@ -519,6 +520,7 @@ angular.module('tctApp').controller('OrdersController', [
     $scope.showRealizationModal = function(order)
     {
     	$scope.modalOrder = order || $scope.order;
+    	$scope.modalOrder.realization_date_raw = $filter('date')(new Date(), 'ddMMyyyy'),
     	$scope.isRealizationModalShown = true;
 
     	$scope.isAllRealizationsChosen = false;
@@ -544,9 +546,14 @@ angular.module('tctApp').controller('OrdersController', [
 
     $scope.checkAllRealizations = function(realization) 
     {
-    	if (realization.performed > realization.ready)
+    	if (realization.performed > realization.product.in_stock)
 		{
-			realization.performed = realization.ready
+			realization.performed = realization.product.in_stock;
+		}
+
+		if (realization.performed > realization.planned - realization.old_performed)
+		{
+			realization.performed = realization.planned - realization.old_performed;
 		}
 
     	for (realization of $scope.modalOrder.realizations)
@@ -563,15 +570,17 @@ angular.module('tctApp').controller('OrdersController', [
 
     $scope.saveRealization = function()
     {
+    	for (realization of $scope.modalOrder.realizations)
+    	{
+    		realization.date_raw = $scope.modalOrder.realization_date_raw;
+    	}
+
+    	$scope.isSaving = true;
     	OrdersRepository.saveRealization({'realizations': $scope.modalOrder.realizations}, function(response) 
 		{
-			$scope.successTopAlert = 'Все изменения успешно сохранены!';
-			$scope.showTopAlert = true;
+			$scope.isSaving = false;
 
-			$timeout(function() {
-				$scope.showTopAlert = false;
-			}, 2000);
-
+			toastr.success('Выдача заказа успешно сохранена!');
 
 			if (!$scope.baseUrl)
 			{
@@ -579,6 +588,70 @@ angular.module('tctApp').controller('OrdersController', [
 			}
 
 			$scope.hideRealizationModal();
-		});
+		}, 
+		function(response) 
+		{
+            $scope.isSaving = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
+    }
+
+
+
+    $scope.showPaymentModal = function(order)
+    {
+    	$scope.modalOrder = order || $scope.order;
+    	$scope.modalPayment = {
+    		'order_id': $scope.modalOrder.id,
+    		'date_raw': $filter('date')(new Date(), 'ddMMyyyy'),
+    		'paid': 0
+    	}
+    	$scope.isPaymentModalShown = true;
+
+    	$scope.isFullPaymentChosen = false;
+    }
+
+
+    $scope.hidePaymentModal = function()
+    {
+    	$scope.isPaymentModalShown = false;
+    }
+
+
+    $scope.chooseFullPayment = function()
+    {
+    	if ($scope.isFullPaymentChosen)
+    	{
+    		$scope.modalPayment.paid = $scope.modalOrder.cost - $scope.modalOrder.paid;
+    	}
+    }
+
+    $scope.checkFullPayment = function() 
+    {
+    	$scope.isFullPaymentChosen = $scope.modalPayment.paid >= $scope.modalOrder.cost - $scope.modalOrder.paid;
+    }
+
+
+    $scope.savePayment = function()
+    {
+    	$scope.isSaving = true;
+    	OrdersRepository.savePayment($scope.modalPayment, function(response) 
+		{
+			$scope.isSaving = false;
+
+			toastr.success('Платеж успешно внесен!');
+
+			if (!$scope.baseUrl)
+			{
+				$scope.loadOrders();
+			}
+
+			$scope.hidePaymentModal();
+		}, 
+		function(response) 
+		{
+            $scope.isSaving = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
     }
 }]);

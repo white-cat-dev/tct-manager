@@ -12,6 +12,7 @@ use App\Category;
 use App\Facility;
 use App\Material;
 use App\Services\EmploymentsService;
+use App\Services\ProductionsService;
 
 
 class ProductionsController extends Controller
@@ -78,8 +79,15 @@ class ProductionsController extends Controller
 
 
             $products = Product::whereHas('productions', function($query) use ($year, $month) {
-                    $query->whereYear('date', $year)
-                        ->whereMonth('date', $month);
+                    $query->where(function ($query) use ($year, $month) 
+                    {
+                        $query->where(function ($query2) use ($year, $month) 
+                        {
+                            $query2->whereYear('date', $year)
+                                ->whereMonth('date', $month);
+                        })
+                        ->orWhereNull('date');
+                    });
                 })
                 ->get();
 
@@ -227,7 +235,14 @@ class ProductionsController extends Controller
                     $productionPerformed = $production->performed;
 
                     $planned = (float)$productionData['planned'];
-                    $manualPlanned = ($planned != $production->auto_planned) ? $planned : $production->manual_planned;
+                    if ((float)$productionData['performed'] == 0)
+                    {
+                        $manualPlanned = ($planned != $production->auto_planned) ? $planned : $production->manual_planned;
+                    }
+                    else
+                    {
+                        $manualPlanned = (float)$productionData['performed'];
+                    }
 
                     $production->update([
                         'auto_planned' => $planned,
@@ -240,12 +255,15 @@ class ProductionsController extends Controller
 
                     $productionPerformed = $production->performed - $productionPerformed;
 
-                    $this->updateBaseProduction($production, $productionPerformed);
-
-                    $this->updateBaseRealization($production, $productionPerformed);
+                    if ($production->order)
+                    {
+                        ProductionsService::getInstance()->updateOrderPlan($production->order, $production->product, $productionPerformed);
+                    }
                 }
                 else
                 {
+                    // continue;
+
                     if (empty($productionData['planned']) && empty($productionData['performed']))
                     {
                         continue;
@@ -253,6 +271,9 @@ class ProductionsController extends Controller
 
                     if (empty($productionData['order_id']))
                     {
+                        $performed = $productionData['performed'];
+
+
                         $baseProductions = Production::where('product_id', $productionData['product_id'])
                             ->whereNull('date')
                             ->with('order')
@@ -260,59 +281,19 @@ class ProductionsController extends Controller
                             ->sortBy('order.priority')
                             ->sortBy('order.date');
 
-                        $performed = $productionData['performed'];
-
-                        if ($baseProductions->count() > 0) 
+                        
+                        foreach ($baseProductions as $baseProduction) 
                         {
-                            $baseProductions = $baseProductions
-                                ->sortBy('order.priority')
-                                ->sortBy('order.date');
+                            $production = ProductionsService::getInstance()->createOrderProduction($baseProduction, $performed, $productionData);
+                            dd($production);
 
-                            foreach ($baseProductions as $baseProduction) 
+                            $performed -= $production->performed;
+
+                            if ($performed == 0)
                             {
-                                $currentPerformed = ($performed > $baseProduction->auto_planned) ? $baseProduction->auto_planned :  $performed;
-
-                                $production = Production::where('date', $productionData['date'])
-                                    ->where('product_id', $baseProduction->product_id)
-                                    ->where('order_id', $baseProduction->order_id)
-                                    ->first();
-
-                                if ($production)
-                                {
-                                    $production->update([
-                                        'performed' => $production->performed + $currentPerformed,
-                                        'auto_planned' => $production->performed + $currentPerformed
-                                    ]);
-                                }
-                                else
-                                {
-                                    $production = Production::create([
-                                        'date' => $productionData['date'],
-                                        'category_id' => $baseProduction->category_id,
-                                        'product_group_id' => $baseProduction->product_group_id,
-                                        'product_id' => $baseProduction->product_id,
-                                        'order_id' => $baseProduction->order_id,
-                                        'facility_id' => $productionData['facility_id'],
-                                        'performed' => $currentPerformed,
-                                        'auto_planned' => $currentPerformed,
-                                        'manual_planned' => 0,
-                                        'batches' => 0,
-                                        'salary' => $currentPerformed * $baseProduction->product->product_group->salary_units
-                                    ]);
-                                }
-
-                                $this->updateBaseProduction($production, $currentPerformed, $baseProduction);
-                                $this->updateBaseRealization($production, $currentPerformed);
-                                
-                                $performed -= $currentPerformed;
-
-                                if ($performed == 0)
-                                {
-                                    break;
-                                }
+                                break;
                             }
                         }
-
 
                         $productionPerformed = $productionData['performed'];
 
@@ -331,7 +312,7 @@ class ProductionsController extends Controller
                 }
 
 
-                $this->updateCategoryRealization($production, $productionPerformed);
+                $this->updateCategoryProduction($production, $productionPerformed);
 
                 $this->updateMaterialsApply($production, $productionPerformed);
 
@@ -363,65 +344,7 @@ class ProductionsController extends Controller
     }
 
 
-    protected function updateBaseProduction($production, $performed, $baseProduction = null)
-    {
-        if (!$baseProduction)
-        {
-            $baseProduction = Production::where('order_id', $production->order_id)
-                ->where('product_id', $production->product_id)
-                ->whereNull('date')
-                ->first();
-        }
-
-        if ($baseProduction)
-        {
-            if ($baseProduction->auto_planned == $performed)
-            {
-                $baseProduction->update([
-                    'auto_planned' => $baseProduction->auto_planned - $performed
-                ]);
-                // $baseProduction->delete();
-
-                $orderBaseProductions = $baseProduction->order->productions()->whereNull('date')->get();
-                foreach ($orderBaseProductions as $orderBaseProduction) 
-                {
-                    if ($orderBaseProduction->auto_planned != $orderBaseProduction->performed)
-                    {
-                        return;
-                    }
-                }
-
-                $baseProduction->order->update([
-                    'status' => Order::STATUS_READY
-                ]);
-            }
-            else
-            {
-                $baseProduction->update([
-                    'auto_planned' => $baseProduction->auto_planned - $performed
-                ]);
-            }
-        }
-    }
-
-
-    protected function updateBaseRealization($production, $performed)
-    {
-        $baseRealization = Realization::where('order_id', $production->order_id)
-            ->where('product_id', $production->product_id)
-            ->whereNull('date')
-            ->first();
-
-        if ($baseRealization)
-        {
-            $baseRealization->update([
-                'planned' => $baseRealization->planned + $performed
-            ]);
-        }
-    }
-
-
-    protected function updateCategoryRealization($production, $performed)
+    protected function updateCategoryProduction($production, $performed)
     {
         $categoryProduction = Production::where('order_id', 0)
             ->where('product_id', 0)
@@ -458,8 +381,6 @@ class ProductionsController extends Controller
     protected function updateMaterialsApply($production, $performed)
     {
         $recipe = $production->product_group->recipe;
-
-        dump($recipe);
 
         if (!$recipe)
         {

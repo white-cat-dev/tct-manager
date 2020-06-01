@@ -1,7 +1,9 @@
 <div class="production-page" ng-init="init()">
 	<h1>Производство</h1>
 
-	<div class="row">
+	@include('partials.loading')
+
+	<div class="row" ng-if="!isLoading">
 		<div class="col-12 col-lg-9">
 			<div class="top-buttons-block">
 				<div class="left-buttons">
@@ -70,7 +72,7 @@
 	</div>
 
 
-	<div class="row">
+	<div class="row" ng-if="!isLoading">
 		<div class="col-12 col-lg-9">
 			<div class="production-block" ng-if="isAllProductionsShown && productionProducts.length > 0 || !isAllProductionsShown && productionsPlanned">
 				<div class="products-block">
@@ -99,7 +101,7 @@
 								</span>
 							</td>
 							<td class="d-none d-md-table-cell">
-								@{{ product.productions[0] ? product.productions[0].planned : 0 }}
+								@{{ product.productions[0] ? Math.round((product.productions[0].planned - product.productions[0].performed) * 100) / 100 : 0 }}
 								<span ng-switch on="product.category.units">
 									<span ng-switch-when="area">м<sup>2</sup></span>
 									<span ng-switch-when="volume">м<sup>3</sup></span>
@@ -534,8 +536,13 @@
 					{{-- <button type="button" class="btn btn-primary">
 						<i class="fas fa-print"></i> Распечатать
 					</button> --}}
-					<button type="button" class="btn btn-primary" ng-click="save()">
-						<i class="fas fa-save"></i> Сохранить
+					<button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="isSaving">
+						<span ng-if="isSaving">
+							<i class="fa fa-spinner fa-spin"></i> Сохранение
+						</span>
+						<span ng-if="!isSaving">
+							<i class="fas fa-save"></i> Сохранить
+						</span>
 					</button>
 				</div>
 			</div>

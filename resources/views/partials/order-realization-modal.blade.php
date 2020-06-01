@@ -11,10 +11,15 @@
 			</div>
 
 			<div class="modal-body">
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="modalOrder.realization_date_raw" ui-mask="99.99.9999">
+				</div>
+
 				<table class="table">
 					<tr>
 						<th>Продукт</th>
 						<th>Готово</th>
+						<th>В наличии</th>
 						<th>Выдано</th>
 					</tr>
 
@@ -26,15 +31,13 @@
 								@{{ realization.product.variation_noun_text }}
 							</div>
 						</td>
-						<td>
-							@{{ realization.ready }} 
-							<span ng-switch on="realization.product.category.units">
-								<span ng-switch-when="area">м<sup>2</sup></span>
-								<span ng-switch-when="volume">м<sup>3</sup></span>
-								<span ng-switch-when="unit">шт.</span>
-							</span>
+						<td ng-init="realization.current_ready = realization.ready - realization.performed">
+							@{{ realization.current_ready }} <span ng-bind-html="realization.product.units_text"></span>
 						</td>
 						<td>
+							@{{ realization.product.in_stock }} <span ng-bind-html="realization.product.units_text"></span>
+						</td>
+						<td ng-init="realization.old_performed = realization.performed">
 							<input type="text" class="form-control" ng-model="realization.performed" ng-change="checkAllRealizations(realization)"> 
 						</td>
 					</tr>

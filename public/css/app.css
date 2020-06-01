@@ -12153,6 +12153,7 @@ div[toast].ng-leave.ng-leave-active {
 
 body {
   background: white;
+  overflow-y: scroll;
 }
 
 body.modal-open {
@@ -12219,6 +12220,20 @@ footer {
 .content-block {
   min-height: calc(100vh - 148px);
   margin: 20px auto;
+}
+
+.loading-block {
+  position: absolute;
+  top: 0px;
+  padding-top: 200px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  z-index: 15;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 100px;
+  color: silver;
 }
 
 .main-menu-block {
@@ -12786,45 +12801,8 @@ i.far {
   display: inline-block;
 }
 
-.alerts-block {
-  max-height: 0px;
-  opacity: 0;
-  overflow: hidden;
-  transition: 0.3s;
+.alert > .table {
   margin-bottom: 0px;
-}
-
-.alerts-block.shown {
-  max-height: 100px;
-  margin-bottom: 20px;
-  opacity: 1;
-}
-
-.alerts-block .alert {
-  margin-bottom: 0px;
-}
-
-.alerts-block .alert-success .btn-link {
-  color: #28a65b;
-  text-decoration: underline;
-}
-
-.alerts-block.top-alerts-block {
-  position: absolute;
-  top: -7px;
-  right: 0px;
-  max-height: unset;
-  white-space: nowrap;
-  overflow: hidden;
-  transition: opacity 0.3s;
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 25;
-}
-
-.alerts-block.top-alerts-block.shown {
-  max-width: 400px;
 }
 
 .no-data-block {
@@ -14215,6 +14193,20 @@ i.far {
   font-size: 35px;
   color: #9a9a9a;
   margin-bottom: 3px;
+}
+
+.orders-page .payment-modal .param-label {
+  color: #343434;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.orders-page .payment-modal .info-block {
+  background: #fbfbfb;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: solid 1px #dadada;
 }
 
 .workers-page {

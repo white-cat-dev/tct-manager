@@ -412,4 +412,20 @@
 		    margin-bottom: 3px;
 	    }
 	}
+
+	.payment-modal {
+		.param-label {
+	    	color: darken($grey, 75%);
+	    	margin-bottom: 10px;
+	    	font-weight: 500;
+	    }
+
+	    .info-block {
+	    	background: lighten($grey, 3%);
+		    padding: 10px;
+		    margin-bottom: 20px;
+		    text-align: center;
+		    border: solid 1px darken($grey, 10%);
+	    }
+	}
 }

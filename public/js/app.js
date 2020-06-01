@@ -81508,6 +81508,10 @@ tctApp.factory('OrdersRepository', ['$resource', function ($resource) {
     saveRealization: {
       method: 'POST',
       url: '/orders/realization'
+    },
+    savePayment: {
+      method: 'POST',
+      url: '/orders/payment'
     }
   });
 }]);
@@ -82469,7 +82473,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
   };
 
   $scope.showSupplyModal = function () {
-    $scope.modalSupply.date = $filter('date')(new Date(), 'ddMMyyyy'), $scope.addSupplyMaterial();
+    $scope.modalSupply.date_raw = $filter('date')(new Date(), 'ddMMyyyy'), $scope.addSupplyMaterial();
     $scope.isSupplyModalShown = true;
   };
 
@@ -82499,7 +82503,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
     try {
       for (var _iterator3 = $scope.modalSupply.supplies[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
         supply = _step3.value;
-        supply.date = $scope.modalSupply.date;
+        supply.date_raw = $scope.modalSupply.date_raw;
       }
     } catch (err) {
       _didIteratorError3 = true;
@@ -82594,6 +82598,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
   $scope.init = function (status) {
     $scope.chooseStatus(status);
+    console.log(status);
     $scope.loadOrders();
   };
 
@@ -82757,8 +82762,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       'main_category': $scope.currentMainCategory.join(',')
     };
 
-    if ($scope.currentStatus > 0) {
-      request.status = $scope.currentStatus;
+    if ($scope.currentStatus.length > 0) {
+      request.status = $scope.currentStatus.join(',');
     }
 
     OrdersRepository.query(request, function (response) {
@@ -82796,8 +82801,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     });
   };
 
-  $scope.chooseStatus = function (status) {
-    $scope.currentStatus = status;
+  $scope.chooseStatus = function (statuses) {
+    $scope.currentStatus = statuses;
     $scope.loadOrders();
   };
 
@@ -83003,7 +83008,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
   $scope.showRealizationModal = function (order) {
     $scope.modalOrder = order || $scope.order;
-    $scope.isRealizationModalShown = true;
+    $scope.modalOrder.realization_date_raw = $filter('date')(new Date(), 'ddMMyyyy'), $scope.isRealizationModalShown = true;
     $scope.isAllRealizationsChosen = false;
   };
 
@@ -83040,8 +83045,12 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.checkAllRealizations = function (realization) {
-    if (realization.performed > realization.ready) {
-      realization.performed = realization.ready;
+    if (realization.performed > realization.product.in_stock) {
+      realization.performed = realization.product.in_stock;
+    }
+
+    if (realization.performed > realization.planned - realization.old_performed) {
+      realization.performed = realization.planned - realization.old_performed;
     }
 
     var _iteratorNormalCompletion6 = true;
@@ -83076,20 +83085,87 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.saveRealization = function () {
+    var _iteratorNormalCompletion7 = true;
+    var _didIteratorError7 = false;
+    var _iteratorError7 = undefined;
+
+    try {
+      for (var _iterator7 = $scope.modalOrder.realizations[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+        realization = _step7.value;
+        realization.date_raw = $scope.modalOrder.realization_date_raw;
+      }
+    } catch (err) {
+      _didIteratorError7 = true;
+      _iteratorError7 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
+          _iterator7["return"]();
+        }
+      } finally {
+        if (_didIteratorError7) {
+          throw _iteratorError7;
+        }
+      }
+    }
+
+    $scope.isSaving = true;
     OrdersRepository.saveRealization({
       'realizations': $scope.modalOrder.realizations
     }, function (response) {
-      $scope.successTopAlert = 'Все изменения успешно сохранены!';
-      $scope.showTopAlert = true;
-      $timeout(function () {
-        $scope.showTopAlert = false;
-      }, 2000);
+      $scope.isSaving = false;
+      toastr.success('Выдача заказа успешно сохранена!');
 
       if (!$scope.baseUrl) {
         $scope.loadOrders();
       }
 
       $scope.hideRealizationModal();
+    }, function (response) {
+      $scope.isSaving = false;
+      toastr.error('Произошла ошибка на сервере');
+    });
+  };
+
+  $scope.showPaymentModal = function (order) {
+    $scope.modalOrder = order || $scope.order;
+    $scope.modalPayment = {
+      'order_id': $scope.modalOrder.id,
+      'date_raw': $filter('date')(new Date(), 'ddMMyyyy'),
+      'paid': 0
+    };
+    $scope.isPaymentModalShown = true;
+    $scope.isFullPaymentChosen = false;
+  };
+
+  $scope.hidePaymentModal = function () {
+    $scope.isPaymentModalShown = false;
+  };
+
+  $scope.chooseFullPayment = function () {
+    if ($scope.isFullPaymentChosen) {
+      $scope.modalPayment.paid = $scope.modalOrder.cost - $scope.modalOrder.paid;
+    }
+  };
+
+  $scope.checkFullPayment = function () {
+    $scope.isFullPaymentChosen = $scope.modalPayment.paid >= $scope.modalOrder.cost - $scope.modalOrder.paid;
+  };
+
+  $scope.savePayment = function () {
+    $scope.isSaving = true;
+    OrdersRepository.savePayment($scope.modalPayment, function (response) {
+      $scope.isSaving = false;
+      toastr.success('Платеж успешно внесен!');
+
+      if (!$scope.baseUrl) {
+        $scope.loadOrders();
+      }
+
+      $scope.hidePaymentModal();
+    }, function (response) {
+      $scope.isSaving = false;
+      toastr.error('Произошла ошибка на сервере');
     });
   };
 }]);
@@ -83103,7 +83179,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'ProductionsRepository', 'OrdersRepository', 'ProductsRepository', function ($scope, $routeParams, $location, $timeout, $filter, ProductionsRepository, OrdersRepository, ProductsRepository) {
+angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductionsRepository', 'OrdersRepository', 'ProductsRepository', function ($scope, $routeParams, $location, $timeout, $filter, toastr, ProductionsRepository, OrdersRepository, ProductsRepository) {
+  $scope.Math = window.Math;
   $scope.days = 0;
   $scope.monthes = [];
   $scope.years = [];
@@ -83121,6 +83198,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
   $scope.isAllProductionsShown = false;
 
   $scope.init = function () {
+    $scope.isLoading = true;
     var request = {};
 
     if ($scope.currentDate.year > 0) {
@@ -83171,6 +83249,8 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
           }
         }
       }
+
+      $scope.isLoading = false;
     });
   };
 
@@ -83218,7 +83298,6 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
         newProduct.orders = [];
         newProduct.production = newProduct.productions[day];
         newProduct.productions = [];
-        console.log(product);
         var _iteratorNormalCompletion5 = true;
         var _didIteratorError5 = false;
         var _iteratorError5 = undefined;
@@ -83349,14 +83428,15 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
       'month': $scope.currentDate.month,
       'day': $scope.currentDate.day
     };
+    $scope.isSaving = true;
     ProductionsRepository.save(request, function (response) {
-      $scope.successTopAlert = 'Все изменения успешно сохранены!';
-      $scope.showTopAlert = true;
-      $timeout(function () {
-        $scope.showTopAlert = false;
-      }, 2000);
+      $scope.isSaving = false;
+      toastr.success('Все изменения успешно сохранены!');
       $scope.hideModal();
       $scope.init();
+    }, function (response) {
+      $scope.isSaving = false;
+      toastr.error('Произошла ошибка на сервере');
     });
   };
 
@@ -83692,6 +83772,8 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   }];
 
   $scope.init = function () {
+    $scope.isLoading = true;
+
     if ($location.search().category) {
       $scope.currentCategory = $location.search().category;
     }
@@ -83823,6 +83905,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 
     ProductsRepository.query(request, function (response) {
       $scope.productGroups = response;
+      $scope.isLoading = false;
     });
   };
 

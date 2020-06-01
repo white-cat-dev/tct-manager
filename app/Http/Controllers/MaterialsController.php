@@ -179,7 +179,7 @@ class MaterialsController extends Controller
 
     protected function getSupplyData($data)
     {
-        $date = !empty($data['date']) ? $data['date'] : date('dmY');
+        $date = !empty($data['date_raw']) ? $data['date_raw'] : date('dmY');
         $date = Carbon::createFromFormat('dmY', $date)->format('Y-m-d');
 
         return [

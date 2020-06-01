@@ -17,6 +17,7 @@ class CreateRealizationsTable extends Migration
             $table->id();
             $table->date('date')->nullable();
             $table->integer('category_id');
+            $table->integer('product_group_id');
             $table->integer('product_id');
             $table->integer('order_id');
             $table->decimal('planned', 10, 3)->unsigned();
