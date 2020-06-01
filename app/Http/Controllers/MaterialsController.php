@@ -112,7 +112,7 @@ class MaterialsController extends Controller
                 }
             }
 
-            $materialGroup->materials()->whereIn('materials.id', $materialsIds)->delete();
+            $materialGroup->materials()->detach($materialsIds);
 
             return $materialGroup;
         }

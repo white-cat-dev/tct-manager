@@ -123,7 +123,7 @@ class ProductsController extends Controller
                 }
             }
 
-            $productGroup->products()->whereIn('products.id', $productsIds)->delete();
+            $productGroup->products()->detach($productsIds);
 
             $productGroup->products = $productGroup->products;
             $productGroup->category = $productGroup->category;

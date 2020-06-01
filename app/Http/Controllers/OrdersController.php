@@ -162,7 +162,7 @@ class OrdersController extends Controller
                 }
             }
 
-            $order->products()->whereIn('orders_products.product_id', $productsIds)->delete();
+            $order->products()->detach($productsIds);
 
             ProductionsService::getInstance()->planOrder($order);
 

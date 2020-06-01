@@ -88,7 +88,7 @@ class RecipesController extends Controller
                 }
             }
 
-            $recipe->material_groups()->whereIn('recipes_material_groups.material_group_id', $materialGroupsIds)->delete();
+            $recipe->material_groups()->detach($materialGroupsIds);
 
             return $recipe;
         }
