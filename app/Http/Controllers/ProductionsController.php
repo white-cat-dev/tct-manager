@@ -11,6 +11,7 @@ use App\Order;
 use App\Category;
 use App\Facility;
 use App\Material;
+use App\MaterialApply;
 use App\Services\EmploymentsService;
 use App\Services\ProductionsService;
 
@@ -199,7 +200,7 @@ class ProductionsController extends Controller
                     'day' => $currentDay,
                     'year' => $year,
                     'month' => $month,
-                    'products' => $products,
+                    'products' => $products->sortBy('product_group.name')->values(),
                     'facilities' => $facilities,
                     'orders' => $allOrders->unique('id'),
                     'categories' => $categories,
@@ -245,9 +246,14 @@ class ProductionsController extends Controller
                     //     $manualPlanned = (float)$productionData['performed'];
                     // }
 
+                    $batches = !empty($productionData['batches']) ? (float)$productionData['batches'] : 0;
+                    $manualPlanned = ($batches != $production->batches) ? $productionData['planned'] : $production->manual_planned;
+                    
+
                     $production->update([
                         'auto_planned' => 0,
-                        'manual_planned' => 0,
+                        'manual_planned' => $manualPlanned,
+                        'batches' => $batches,
                         'performed' => (float)$productionData['performed'],
                         'salary' => (float)$productionData['performed'] * $production->product->product_group->salary_units,
                         'facility_id' => $productionData['facility_id']
@@ -343,12 +349,43 @@ class ProductionsController extends Controller
             }
         }
 
+        $materialsData = $request->get('materials');
+
+        foreach ($materialsData as $materialData) 
+        {
+            $materialAppyData = $materialData['apply'];
+
+            if (!empty($materialAppyData['id']))
+            {
+                $materialAppy = MaterialApply::find($materialAppyData['id']);
+
+                $appyPerformed = $materialAppy->performed;
+
+                $materialAppy->update([
+                    'performed' => $materialAppyData['performed']
+                ]);
+
+                $appyPerformed = $materialAppy->performed - $appyPerformed;
+
+                $materialAppy->material->update([
+                    'in_stock' => $materialAppy->material->in_stock - $appyPerformed
+                ]);
+            }
+        }
+
         EmploymentsService::getInstance()->updateEmployments($year, $month, $day);
     }
 
 
     protected function getData($data)
     {
+        $batches = !empty($data['batches']) ? $data['batches'] : 0;
+
+        if ($batches > 0)
+        {
+
+        }
+
         return [
             'date' => !empty($data['date']) ? $data['date'] : null,
             'category_id' => !empty($data['category_id']) ? $data['category_id'] : 0,
@@ -440,6 +477,17 @@ class ProductionsController extends Controller
                     'date' => $production->date,
                     'performed' => 0,
                     'planned' => $planned
+                ]);
+            }
+
+            if (!$materialGroup->control)
+            {
+                $materialAppy->update([
+                    'performed' => $materialAppy->planned
+                ]);
+
+                $material->update([
+                    'in_stock' => $material->in_stock - $planned
                 ]);
             }
         }

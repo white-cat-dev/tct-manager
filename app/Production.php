@@ -32,7 +32,8 @@ class Production extends Model
         'auto_planned' => 'float',
         'manual_planned' => 'float',
         'performed' => 'float',
-        'salary' => 'float'
+        'salary' => 'float',
+        'batches' => 'float'
     ];
 
     public function product()

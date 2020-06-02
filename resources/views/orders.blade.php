@@ -68,12 +68,12 @@
 						<th>Оплачено</th>
 					</tr>
 					<tr ng-repeat="order in orders | filter: {'number': searchQuery}" ng-click="chooseOrder(order)" ng-class="{'active': currentOrder.id == order.id}">
-						<td>
+						<td ng-class="{'text-success': order.priority == {{ App\Order::PRIORITY_HIGH }} }">
 							<div class="order-name">
 								@{{ order.number }}
-								<div class="order-priority" ng-if="order.priority == {{ App\Order::PRIORITY_HIGH }}">
+								{{-- <div class="order-priority" ng-if="order.priority == {{ App\Order::PRIORITY_HIGH }}">
 									Важно
-								</div>
+								</div> --}}
 							</div>
 						</td>
 						<td>
@@ -82,10 +82,10 @@
 						<td>
 							@{{ order.formatted_date_to }}
 						</td>
-						<td>
+						<td ng-class="{'text-success': order.pay_type != 'cash'}">
 							@{{ order.cost | number }} руб.
 						</td>
-						<td>
+						<td ng-class="{'text-success': order.pay_type != 'cash'}">
 							@{{ order.paid | number }} руб.
 						</td>
 					</tr>

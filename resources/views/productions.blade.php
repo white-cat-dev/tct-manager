@@ -3,215 +3,143 @@
 
 	@include('partials.loading')
 
-	<div class="row">
-		<div class="col-12 col-lg-9">
-			<div class="top-buttons-block">
-				<div class="left-buttons">
-					<div class="input-group date-group">
-						<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.year = currentDate.year - 1; init()" ng-disabled="currentDate.year == years[0]">
-						    <i class="fas fa-chevron-left"></i>
-						</button>
+	<div class="top-buttons-block">
+		<div class="left-buttons">
+			<div class="input-group date-group">
+				<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.year = currentDate.year - 1; init()" ng-disabled="currentDate.year == years[0]">
+				    <i class="fas fa-chevron-left"></i>
+				</button>
 
-						<ui-select ng-model="currentDate.year" ng-change="init()" skip-focusser="true" search-enabled="false">
-				            <ui-select-match placeholder="Год">
-					            <span ng-bind-html="$select.selected"></span>
-					        </ui-select-match>
-				            <ui-select-choices repeat="year in years">
-				                <span ng-bind-html="year"></span>
-				            </ui-select-choices>
-						</ui-select>
+				<ui-select ng-model="currentDate.year" ng-change="init()" skip-focusser="true" search-enabled="false">
+		            <ui-select-match placeholder="Год">
+			            <span ng-bind-html="$select.selected"></span>
+			        </ui-select-match>
+		            <ui-select-choices repeat="year in years">
+		                <span ng-bind-html="year"></span>
+		            </ui-select-choices>
+				</ui-select>
 
-						<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.year = currentDate.year + 1; init()" ng-disabled="currentDate.year == years[years.length - 1]">
-						    <i class="fas fa-chevron-right"></i>
-						</button>
-					</div>
+				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.year = currentDate.year + 1; init()" ng-disabled="currentDate.year == years[years.length - 1]">
+				    <i class="fas fa-chevron-right"></i>
+				</button>
+			</div>
 
-					<div class="input-group date-group">
-					    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.month = currentDate.month - 1; init()" ng-disabled="currentDate.month == monthes[0].id">
-						    <i class="fas fa-chevron-left"></i>
-						</button>
+			<div class="input-group date-group">
+			    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.month = currentDate.month - 1; init()" ng-disabled="currentDate.month == monthes[0].id">
+				    <i class="fas fa-chevron-left"></i>
+				</button>
 
-						<ui-select ng-model="currentDate.month" ng-change="init()" skip-focusser="true" search-enabled="false">
-				            <ui-select-match placeholder="Месяц">
-					            <span ng-bind-html="$select.selected.name"></span>
-					        </ui-select-match>
-				            <ui-select-choices repeat="month.id as month in monthes">
-				                <span ng-bind-html="month.name"></span>
-				            </ui-select-choices>
-						</ui-select>
+				<ui-select ng-model="currentDate.month" ng-change="init()" skip-focusser="true" search-enabled="false">
+		            <ui-select-match placeholder="Месяц">
+			            <span ng-bind-html="$select.selected.name"></span>
+			        </ui-select-match>
+		            <ui-select-choices repeat="month.id as month in monthes">
+		                <span ng-bind-html="month.name"></span>
+		            </ui-select-choices>
+				</ui-select>
 
-						<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.month = currentDate.month + 1; init()" ng-disabled="currentDate.month == monthes[monthes.length - 1].id">
-						    <i class="fas fa-chevron-right"></i>
-						</button>
-					</div>
-				</div>
+				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.month = currentDate.month + 1; init()" ng-disabled="currentDate.month == monthes[monthes.length - 1].id">
+				    <i class="fas fa-chevron-right"></i>
+				</button>
+			</div>
 
-				<div class="right-buttons">
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" ng-model="isAllProductionsShown" id="checkboxSalaries">
-						<label class="custom-control-label" for="checkboxSalaries">
-							Показать полный график
-						</label>
-					</div>
-				</div>
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" ng-model="isAllProductionsShown" id="checkboxSalaries">
+				<label class="custom-control-label" for="checkboxSalaries">
+					Показать полный график
+				</label>
 			</div>
 		</div>
 
-		<div class="col-12 col-lg-3">
-			<div class="top-buttons-block">
-				<div class="left-buttons">
-					
-				</div>
-				<div class="right-buttons">
-					<button type="button" class="btn btn-primary" ng-click="showModal(currentDate.day)">
-						<i class="far fa-calendar-check"></i> План на сегодня
-					</button>
-				</div>
-			</div>
+		<div class="right-buttons">
+			<button type="button" class="btn btn-primary" ng-click="showModal(currentDate.day)">
+				<i class="far fa-calendar-check"></i> План на сегодня
+			</button>
 		</div>
 	</div>
 
 
-	<div class="row">
-		<div class="col-12 col-lg-9">
-			<div class="production-block" ng-if="isAllProductionsShown && productionProducts.length > 0 || !isAllProductionsShown && productionsPlanned">
-				<div class="products-block">
-					<table class="table">
-						<tr>
-							<th>Продукт</th>
-							<th class="d-none d-md-table-cell">Склад</th>
-							<th class="d-none d-md-table-cell">План</th>
-						</tr>
-						<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
-							<td>
-								<div class="product-name">
-									@{{ product.product_group.name }}<br class="d-block d-md-none">
-									@{{ product.product_group.size }}
-								</div>
-								<div class="product-color" ng-if="product.variation_noun_text">
-									@{{ product.variation_noun_text }}
-								</div>
-							</td>
-							<td class="d-none d-md-table-cell">
-								@{{ product.in_stock }}
-								<span ng-switch on="product.category.units">
-									<span ng-switch-when="area">м<sup>2</sup></span>
-									<span ng-switch-when="volume">м<sup>3</sup></span>
-									<span ng-switch-when="unit">шт.</span>
-								</span>
-							</td>
-							<td class="d-none d-md-table-cell">
-								@{{ product.productions[0] ? ((product.productions[0].planned > product.productions[0].performed) ? Math.round((product.productions[0].planned - product.productions[0].performed) * 100) / 100 : 0) : 0 }}
-								<span ng-switch on="product.category.units">
-									<span ng-switch-when="area">м<sup>2</sup></span>
-									<span ng-switch-when="volume">м<sup>3</sup></span>
-									<span ng-switch-when="unit">шт.</span>
-								</span>
-							</td>
-						</tr>
-					</table>
-				</div>
-
-				<div class="productions-block">
-					<table class="table">
-						<tr>
-							<th ng-repeat="x in [].constructor(days) track by $index" ng-click="showModal($index + 1)" ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
-								@{{ $index + 1 }}
-							</th>
-						</tr>
-					
-						<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
-							<td ng-repeat="x in [].constructor(days) track by $index" 
-								ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" 
-								ng-click="showModal($index + 1)" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
-
-								<div class="production" ng-style="{'background': getOrderMarkColor(product.productions[$index+1])}" ng-class="{'marked': getOrderMarkColor(product.productions[$index+1]) != 'transparent'}">
-									<div class="production-performed" ng-if="product.productions[$index+1].performed > 0">
-										@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} 
-									</div>
-									<div class="production-planned"  ng-if="product.productions[$index+1].performed == 0">
-										@{{ product.productions[$index+1] ? product.productions[$index+1].planned : 0 }} 
-									</div>
-									{{-- <div class="production-facility" ng-style="{'border-bottom-color': product.productions[$index+1] ? facilities[product.productions[$index+1].facility_id].icon_color : ''}">
-									</div> --}}
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-
-			<div class="no-productions" ng-if="((isAllProductionsShown && productionProducts.length == 0) || (!isAllProductionsShown && !productionsPlanned)) && !isLoading">
-				<div class="icon">
-					<i class="far fa-calendar-times"></i>
-				</div>
-				<div>
-					Ничего не запланировано на текущий месяц
-				</div>
-				<div>
-					<button type="button" class="btn btn-primary" ng-click="showAllProductions()" ng-if="productionProducts.length > 0 && !shownFull">
-						Посмотреть полный график
-					</button>
-					<button type="button" class="btn btn-primary" ng-click="showModal(currentDate.day)" ng-if="productionProducts.length == 0">
-						Начать производство
-					</button>
-				</div>
-			</div>
+	<div class="production-block" ng-if="isAllProductionsShown && productionProducts.length > 0 || !isAllProductionsShown && productionsPlanned">
+		<div class="products-block">
+			<table class="table">
+				<tr>
+					<th>Продукт</th>
+					<th class="d-none d-md-table-cell">Склад</th>
+					<th class="d-none d-md-table-cell">План</th>
+				</tr>
+				<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
+					<td>
+						<div class="product-name">
+							@{{ product.product_group.name }}<br class="d-block d-md-none">
+							@{{ product.product_group.size }}
+						</div>
+						<div class="product-color" ng-if="product.variation_noun_text">
+							@{{ product.variation_noun_text }}
+						</div>
+					</td>
+					<td class="d-none d-md-table-cell">
+						@{{ product.in_stock }}
+						<span ng-switch on="product.category.units">
+							<span ng-switch-when="area">м<sup>2</sup></span>
+							<span ng-switch-when="volume">м<sup>3</sup></span>
+							<span ng-switch-when="unit">шт.</span>
+						</span>
+					</td>
+					<td class="d-none d-md-table-cell">
+						@{{ product.productions[0] ? ((product.productions[0].planned > product.productions[0].performed) ? Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000 : 0) : 0 }}
+						<span ng-switch on="product.category.units">
+							<span ng-switch-when="area">м<sup>2</sup></span>
+							<span ng-switch-when="volume">м<sup>3</sup></span>
+							<span ng-switch-when="unit">шт.</span>
+						</span>
+					</td>
+				</tr>
+			</table>
 		</div>
 
-		<div class="col-12 col-lg-3">
-			<div class="production-orders">
-				<div class="orders-title">
-					Текущие заказы
-				</div>
+		<div class="productions-block">
+			<table class="table">
+				<tr>
+					<th ng-repeat="x in [].constructor(days) track by $index" ng-click="showModal($index + 1)" ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
+						@{{ $index + 1 }}
+					</th>
+				</tr>
+			
+				<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
+					<td ng-repeat="x in [].constructor(days) track by $index" 
+						ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" 
+						ng-click="showModal($index + 1)" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
 
-				<div class="order-block" ng-repeat="order in productionOrders">
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" id="checkbox@{{order.id}}" ng-click="markOrder(order.id)">
-						<label class="custom-control-label" for="checkbox@{{order.id}}" ng-style="{'background-color': ordersMarkColors[order.id]}"></label>
-						<a href="@{{ order.url }}">
-							Заказ №@{{ order.number }}
-						</a> 
-						<span class="order-date">@{{ order.formatted_date }}</span>
-					</div>
+						<div class="production" ng-style="{'background': getOrderMarkColor(product.productions[$index+1])}" ng-class="{'marked': getOrderMarkColor(product.productions[$index+1]) != 'transparent'}">
+							<div class="production-performed" ng-if="product.productions[$index+1].performed > 0">
+								@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} 
+							</div>
+							<div class="production-planned"  ng-if="product.productions[$index+1].performed == 0">
+								@{{ product.productions[$index+1] ? product.productions[$index+1].batches : 0 }} 
+							</div>
+							{{-- <div class="production-facility" ng-style="{'border-bottom-color': product.productions[$index+1] ? facilities[product.productions[$index+1].facility_id].icon_color : ''}">
+							</div> --}}
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 
-					{{-- <table class="table order-products">
-						<tr ng-repeat="product in order.products">
-							<td>
-								@{{ product.product_group.name }}
-								@{{ product.product_group.size }}
-								<div class="product-color" ng-if ="product.variation_noun_text">
-									@{{ product.variation_noun_text }}
-								</div>
-							</td>
-							<td>
-								@{{ product.pivot.count }} 
-								<span ng-switch on="product.category.units">
-									<span ng-switch-when="area">м<sup>2</sup></span>
-									<span ng-switch-when="volume">м<sup>3</sup></span>
-									<span ng-switch-when="unit">шт.</span>
-								</span>
-							</td>
-						</tr>
-					</table> --}}
-				</div>
-
-				<div ng-if="productionOrders.length == 0 && !isLoading">
-					<div class="no-production-orders">
-						<div>
-							<i class="fas fa-shopping-cart"></i>
-						</div>
-						<div>
-							Нет текущих заказов
-						</div>
-						<div>
-							<a href="{{ route('order-create') }}" class="btn btn-sm btn-primary">
-								Создать заказ
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
+	<div class="no-productions" ng-if="((isAllProductionsShown && productionProducts.length == 0) || (!isAllProductionsShown && !productionsPlanned)) && !isLoading">
+		<div class="icon">
+			<i class="far fa-calendar-times"></i>
+		</div>
+		<div>
+			Ничего не запланировано на текущий месяц
+		</div>
+		<div>
+			<button type="button" class="btn btn-primary" ng-click="showAllProductions()" ng-if="productionProducts.length > 0 && !shownFull">
+				Посмотреть полный график
+			</button>
+			<button type="button" class="btn btn-primary" ng-click="showModal(currentDate.day)" ng-if="productionProducts.length == 0">
+				Начать производство
+			</button>
 		</div>
 	</div>
 
@@ -255,13 +183,12 @@
 								<tr>
 									<th>Продукт</th>
 									<th>Цех</th>
-									<th>Заказ</th>
-									<th>План</th>
-									<th>Готово</th>
+									<th>Общий план</th>
+									<th>Запланировать</th>
 								</tr>
 
-							    <tr ng-repeat-start="product in modalProductionProducts track by $index">
-							        <td rowspan="@{{ product.orders.length}}" style="width: 25%;">
+							    <tr ng-repeat="product in modalProductionProducts track by $index">
+							        <td style="width: 25%">
 							        	<div class="product-name">
 							        		@{{ product.product_group.name }}<br class="d-block d-md-none">
 											@{{ product.product_group.size }}
@@ -271,7 +198,7 @@
 										</div>
 							        </td>
 
-							        <td style="width: 25%" rowspan="@{{ product.orders.length}}" class="production-facility-col">
+							        <td style="width: 25%" class="production-facility-col">
 							        	<div class="production-facility" ng-style="{'border-bottom-color': facilities[product.production.facility_id] ? facilities[product.production.facility_id].icon_color : 'transparent'}"></div>
 
 							        	<ui-select ng-model="product.production.facility_id" ng-change="updateOrderProductionsFacility(product)" skip-focusser="true">
@@ -285,46 +212,13 @@
 										</ui-select>
 							        </td>
 
-							        <td style="width: 25%;">
-							        	<div class="order-name" ng-if="product.orders[0].id">
-							        		Заказ №@{{ product.orders[0].number }}
-							        	</div>
-							        	<div class="order-date" ng-if="product.orders[0].id">
-											@{{ product.orders[0].formatted_date }}
-										</div>
-										<div class="order-name" ng-if="!product.orders[0].id">
-							        		Без заказа
-							        	</div>
+							        <td style="width: 25%;" class="text-center">
+							        	@{{ product.base_planned }} <span ng-bind-html="product.units_text"></span>
 							        </td>
 
 							        <td style="width: 12%;">
-										<input type="text" class="form-control form-control-num" ng-model="product.orders[0].production.planned" ng-change="updateProductionPlanned(product)"> 
-									</td>
-
-									<td style="width: 12%;">
-										<input type="text" class="form-control form-control-num" ng-model="product.orders[0].production.performed" ng-change="updateProductionPerformed(product)"> 
-									</td>
-							    </tr>
-
-							    <tr ng-repeat-end ng-repeat="order in product.orders.slice(1)">
-							        <td style="width: 25%;">
-								       <div class="order-name" ng-if="order.id">
-							        		Заказ №@{{ order.number }}
-							        	</div>
-							        	<div class="order-date" ng-if="order.id">
-											@{{ order.formatted_date }}
-										</div>
-										<div class="order-name" ng-if="!order.id">
-							        		Без заказа
-							        	</div>
-								    </td>
-
-								    <td style="width: 12%;">
-										<input type="text" class="form-control form-control-num" ng-model="order.production.planned" ng-change="updateProductionPlanned(product)"> 
-									</td>
-
-									<td style="width: 12%;">
-										<input type="text" class="form-control form-control-num" ng-model="order.production.performed" ng-change="updateProductionPerformed(product)"> 
+										<input type="text" class="form-control form-control-num" ng-model="product.production.batches" ng-change="updateProductionPlanned(product)"> 
+										<small>@{{ product.production.planned }} <span ng-bind-html="product.units_text"></small>
 									</td>
 							    </tr>
 							</table>
@@ -384,11 +278,11 @@
 							<table class="table" ng-if="getFacilityProductionProducts(facility.id).length > 0">
 								<tr>
 									<th>Продукт</th>
-									{{-- <th>План</th> --}}
+									<th>План</th>
 									<th>Готово</th>
 								</tr>
 
-							    <tr ng-repeat="product in getFacilityProductionProducts(facility.id) track by $index">
+							    <tr ng-repeat="product in getFacilityProductionProducts(facility.id) | orderBy:'production_id' track by $index">
 							        <td style="width: 50%;">
 							        	<div class="product-name">
 							        		@{{ product.product_group.name }}
@@ -399,14 +293,9 @@
 										</div>
 							        </td>
 
-							        {{-- <td style="width: 25%; text-align: center;">
-										@{{ product.production.planned }}
-										<span ng-switch on="product.category.units">
-											<span ng-switch-when="area">м<sup>2</sup></span>
-											<span ng-switch-when="volume">м<sup>3</sup></span>
-											<span ng-switch-when="unit">шт.</span>
-										</span>
-									</td> --}}
+							        <td style="width: 25%; text-align: center;">
+										@{{ product.production.batches }}
+									</td>
 
 									<td style="width: 25%;">
 										<input type="text" class="form-control form-control-num" ng-model="product.production.performed"{{--  ng-change="updateOrderProductionsPerformed(product)" --}}> 
@@ -476,18 +365,18 @@
 								<th>Оплата</th>
 							</tr>
 							<tr ng-repeat="category in modalProductionCategories">
-								<td>
+								<td style="width: 40%;">
 									@{{ category.name }}
 								</td>
-								<td>
-									@{{ category.production.performed }}
+								<td style="width: 30%;" class="text-center">
+									@{{ category.production.performed | number }}
 									<span ng-switch on="category.units">
 										<span ng-switch-when="area">м<sup>2</sup></span>
 										<span ng-switch-when="volume">м<sup>3</sup></span>
 										<span ng-switch-when="unit">шт.</span>
 									</span>
 								</td>
-								<td>
+								<td style="width: 30%;" class="text-center">
 									@{{ category.production.salary | number }} руб
 								</td>
 							</tr>
@@ -508,11 +397,11 @@
 								<th>Фактический</th>
 							</tr>
 							<tr ng-repeat="material in modalProductionMaterials">
-								<td>
+								<td style="width: 40%;">
 									@{{ material.material_group.name }} @{{ material.variation_text }}
 								</td>
-								<td>
-									@{{ material.apply.planned }} 
+								<td style="width: 30%;" class="text-center">
+									@{{ material.apply.planned | number }} 
 									<span ng-switch on="material.material_group.units">
 										<span ng-switch-when="volume_l">л</span>
 										<span ng-switch-when="volume_ml">мл</span>
@@ -520,8 +409,13 @@
 										<span ng-switch-when="weight_t">т</span>
 									</span>
 								</td>
-								<td>
-									@{{ material.apply.performed }}
+								<td style="width: 30%;" class="text-center">
+									<span ng-if="!material.material_group.control">
+										@{{ material.apply.performed | number }}
+									</span>
+									<span ng-if="material.material_group.control">
+										<input type="text" class="form-control form-control-num" ng-change="inputFloat(material.apply, 'performed')" ng-model="material.apply.performed"></span>
+									</span>
 								</td>
 							</tr>
 						</table>
@@ -532,7 +426,7 @@
 					</div>
 				</div>
 
-				<div class="modal-footer" ng-if="chosenModalType != 'total'">
+				<div class="modal-footer">
 					{{-- <button type="button" class="btn btn-primary">
 						<i class="fas fa-print"></i> Распечатать
 					</button> --}}

@@ -367,6 +367,7 @@ i.fas, i.far {
 
 	.left-buttons {
 		display: flex;
+		align-items: center;
 
 		& > .btn, 
 		& > div {
@@ -375,6 +376,10 @@ i.fas, i.far {
 			&:last-child {
 				margin-right: 0px;
 			}
+		}
+
+		& > .custom-checkbox {
+			margin-left: 15px;
 		}
 	}
 

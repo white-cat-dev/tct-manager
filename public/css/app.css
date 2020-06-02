@@ -12518,6 +12518,7 @@ i.far {
 
 .top-buttons-block .left-buttons {
   display: flex;
+  align-items: center;
 }
 
 .top-buttons-block .left-buttons > .btn,
@@ -12528,6 +12529,10 @@ i.far {
 .top-buttons-block .left-buttons > .btn:last-child,
 .top-buttons-block .left-buttons > div:last-child {
   margin-right: 0px;
+}
+
+.top-buttons-block .left-buttons > .custom-checkbox {
+  margin-left: 15px;
 }
 
 .top-buttons-block .right-buttons {
@@ -13409,6 +13414,54 @@ i.far {
   border-color: transparent;
 }
 
+.production-page .production-modal .edit-field {
+  cursor: pointer;
+  position: relative;
+  transition: 0.1s;
+  display: inline-block;
+}
+
+.production-page .production-modal .edit-field:hover .units > span {
+  color: #276090;
+}
+
+.production-page .production-modal .edit-field:hover .form-control {
+  color: #276090;
+}
+
+.production-page .production-modal .edit-field .units {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  color: transparent;
+  z-index: -1;
+}
+
+.production-page .production-modal .edit-field .units > span {
+  color: #000000;
+}
+
+.production-page .production-modal .edit-field .form-control {
+  display: inline;
+  padding: 0px;
+  height: auto;
+  width: 70px;
+  border: none;
+  border-bottom: solid 1px transparent;
+  color: #000000;
+  background: transparent;
+}
+
+.production-page .production-modal .edit-field .form-control:focus {
+  border-bottom: solid 1px #276090;
+}
+
+@media (max-width: 1209.98px) {
+  .production-page .production-modal .edit-field .form-control {
+    font-size: 14px;
+  }
+}
+
 .production-page .production-modal .alert {
   font-size: 14px;
   margin-top: 10px;
@@ -13461,6 +13514,14 @@ i.far {
   border: solid 1px #dadada;
   padding: 5px 10px;
   font-size: 12px;
+  position: relative;
+}
+
+.production-page .production-modal .table th small,
+.production-page .production-modal .table td small {
+  position: absolute;
+  bottom: 1px;
+  right: 3px;
 }
 
 .production-page .production-modal .table th {
@@ -13495,7 +13556,7 @@ i.far {
 
 .production-page .production-modal .table .form-control.form-control-num {
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .production-page .production-modal .table .ui-select-container {

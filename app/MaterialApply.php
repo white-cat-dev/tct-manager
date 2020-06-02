@@ -36,4 +36,9 @@ class MaterialApply extends Model
             return 0;
         }
     }
+
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
+    }
 }
