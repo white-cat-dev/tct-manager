@@ -112,7 +112,7 @@ class MaterialsController extends Controller
                 }
             }
 
-            $materialGroup->materials()->detach($materialsIds);
+            // $materialGroup->materials()->detach($materialsIds);
 
             return $materialGroup;
         }
