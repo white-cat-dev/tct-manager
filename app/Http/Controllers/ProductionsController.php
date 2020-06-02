@@ -311,6 +311,7 @@ class ProductionsController extends Controller
                     // {
                     // }
 
+
                     $production = Production::create($this->getData($productionData));
                     $productionPerformed = $production->performed;
                 }
@@ -339,9 +340,9 @@ class ProductionsController extends Controller
                 }
 
 
-                $this->updateCategoryProduction($production, $productionPerformed);
+                $this->updateCategoryProduction($production, $production->performed);
 
-                $this->updateMaterialsApply($production, $productionPerformed);
+                $this->updateMaterialsApply($production, $production->performed);
 
                 $production->product->update([
                     'in_stock' => $production->product->in_stock + $productionPerformed
