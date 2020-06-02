@@ -335,7 +335,7 @@ class ProductionsController extends Controller
 
                 $this->updateCategoryProduction($production, $productionPerformed);
 
-                $this->updateMaterialsApply($production, $production->performed);
+                $this->updateMaterialsApply($production, $productionPerformed);
 
                 $production->product->update([
                     'in_stock' => $production->product->in_stock + $productionPerformed
