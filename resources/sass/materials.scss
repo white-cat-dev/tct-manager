@@ -27,6 +27,7 @@
 			position: relative;
 			transition: 0.1s;
 			display: inline-block;
+			white-space: nowrap;
 
 			&:hover {
 				.units > span {

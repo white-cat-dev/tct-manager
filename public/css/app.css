@@ -13104,6 +13104,7 @@ i.far {
   position: relative;
   transition: 0.1s;
   display: inline-block;
+  white-space: nowrap;
 }
 
 .materials-page .main-table .edit-field:hover .units > span {
