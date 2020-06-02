@@ -83382,7 +83382,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
                 'variation_noun_text': product.variation_noun_text,
                 'base_planned': Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000
               };
-              console.log(scope.newProduct[facilities[0].id]);
+              console.log($scope.newProduct[facilities[0].id]);
               $scope.addProduct(facilities[0].id);
             }
           }
