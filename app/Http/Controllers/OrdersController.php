@@ -25,11 +25,18 @@ class OrdersController extends Controller
         {
             $query = Order::with('realizations', 'realizations.product');
 
-            $statuses = $request->get('status', -1);
-            if ($statuses != -1)
+            $status = $request->get('status', -1);
+            if ($status != -1)
             {
-                $statuses = explode(',', $statuses);
-                $query = $query->whereIn('status', $statuses);
+                switch ($status) {
+                    case 'production':
+                        $query->where('status', Order::STATUS_PRODUCTION);
+                        break;
+
+                    case 'finished':
+                        $query->where('status', Order::STATUS_FINISHED);
+                        break;
+                }
             }
 
             $mainCategories = $request->get('main_category', -1);
@@ -40,14 +47,34 @@ class OrdersController extends Controller
             }
 
 
-            $orders = $query->orderBy('date', 'DESC')->orderBy('number', 'DESC')->get();
+            $tempOrders = $query->orderBy('date', 'DESC')->orderBy('number', 'DESC')->get();
+            $orders = collect([]);
 
-            foreach ($orders as $order) 
+            foreach ($tempOrders as $order) 
             {
+                $isOrderReady = true;
+
                 $order->progress = $order->getProgress();
                 foreach ($order->products as $product) 
                 {
                     $product->progress = $product->getProgress($order);
+
+                    if ($product->progress['total'] - $product->progress['realization'] > $product->in_stock)
+                    {
+                        $isOrderReady = false;
+                    }
+                }
+
+                if ($status == 'ready')
+                {
+                    if ($isOrderReady && ($order->status != Order::STATUS_FINISHED))
+                    {
+                        $orders->push($order);
+                    }
+                }
+                else
+                {
+                    $orders->push($order);
                 }
             }
             return $orders;
@@ -107,14 +134,16 @@ class OrdersController extends Controller
                 ]);
             }
 
-            ProductionsService::getInstance()->planOrder($order);
-
-            if ($order->productions()->count() == 0)
+            if ($order->paid > 0)
             {
-                $order->update([
-                    'status' => Order::STATUS_READY
+                $order->payments()->create([
+                    'date' => $order->date,
+                    'paid' => $order->paid
                 ]);
             }
+
+            ProductionsService::getInstance()->planOrder($order);
+
             
             return $order;
         }
@@ -130,6 +159,15 @@ class OrdersController extends Controller
             $this->validate($request, $this->validationRules);
 
             $orderData = $this->getData($request);
+
+            if ($order->paid != $orderData['paid'])
+            {
+                $order->payments()->create([
+                    'date' => date('Y-m-d'),
+                    'paid' => $orderData['paid'] - $order->paid
+                ]);
+            }
+
             $order->update($orderData);
 
             $clientData = $request->get('client');
@@ -164,7 +202,7 @@ class OrdersController extends Controller
 
             $order->products()->detach($productsIds);
 
-            ProductionsService::getInstance()->planOrder($order);
+            ProductionsService::getInstance()->planOrders();
 
             return $order;
         }
@@ -188,122 +226,133 @@ class OrdersController extends Controller
 
         foreach ($realizationsData as $realizationData) 
         {
-            $baseRealization = Realization::where('id', $realizationData['id'])->with('order', 'product')->first();
+            $realizationData = $this->getRealizationData($realizationData);
 
-            if ($baseRealization)
+            if (!$realizationData['order_id'] || $realizationData['performed'] == 0)
             {
-                if ($baseRealization->date)
+                continue;
+            }
+
+            $realization = Realization::create($realizationData);
+
+            $realization->product->update([
+                'in_stock' => $realization->product->in_stock - $realization->performed
+            ]);
+
+
+            $isOrderFinished = true;
+
+            foreach ($realization->order->products as $product) 
+            {
+                $progress = $product->getProgress($realization->order);
+                if ($progress['realization'] < $progress['total'])
                 {
-                    continue;
-                }
-
-                $realization = Realization::create($this->getRealizationData($realizationData, $baseRealization));
-                $performed = $realization->performed;
-
-                if ($performed > $baseRealization->ready)
-                {
-                    $difference = $performed - $baseRealization->ready;
-
-                    $baseProduction = $baseRealization->order->productions()
-                        ->whereNull('date')
-                        ->where('product_id', $baseRealization->product_id)
-                        ->first();
-
-                    $baseProduction->update([
-                        'auto_planned' => $baseProduction->auto_planned - $difference
-                    ]);
-
-                    // ProductionsService::getInstance()->updateOrderPlan($baseRealization->order, $baseRealization->product, 0);
-
-                    $otherBaseRealizations = Realization::whereNull('date')
-                        ->where('order_id', '!=', $baseRealization->order_id)
-                        ->where('product_id', $baseRealization->product_id)
-                        ->where('ready', '>', 0)
-                        ->get();
-
-                    foreach ($otherBaseRealizations as $otherBaseRealization) 
-                    {
-                        if ($otherBaseRealization->ready > $difference)
-                        {
-                            $otherBaseRealization->update([
-                                'ready' =>  $otherBaseRealization->ready - $difference
-                            ]);
-
-                            $baseRealization->update([
-                                'ready' => $baseRealization->ready + $difference
-                            ]);
-
-                            $otherBaseProduction = $otherBaseRealization->order->productions()
-                                ->whereNull('date')
-                                ->where('product_id', $otherBaseRealization->product_id)
-                                ->first();
-
-                            $otherBaseProduction->update([
-                                'auto_planned' => $otherBaseProduction->auto_planned + $difference
-                            ]);
-
-                            // ProductionsService::getInstance()->updateOrderPlan($otherBaseProduction->order, $otherBaseProduction->product, 0);
-
-                            break;
-                        }
-                        else
-                        {
-                            $otherBaseRealization->update([
-                                'ready' =>  0
-                            ]);
-
-                            $baseRealization->update([
-                                'ready' => $baseRealization->ready + $otherBaseRealization->ready
-                            ]);
-
-                            $otherBaseProduction = $otherBaseRealization->order->productions()
-                                ->whereNull('date')
-                                ->where('product_id', $otherBaseRealization->product_id)
-                                ->first();
-
-                            $otherBaseProduction->update([
-                                'auto_planned' => $otherBaseProduction->auto_planned + $otherBaseRealization->ready
-                            ]);
-
-                            // ProductionsService::getInstance()->updateOrderPlan($otherBaseProduction->order, $otherBaseProduction->product, 0);
-
-                            $difference -= $otherBaseRealization->ready;
-                        }
-                    }
-                }
-
-                $baseRealization->product->update([
-                    'in_stock' => $baseRealization->product->in_stock - $performed
-                ]);
-
-                $baseRealization->update([
-                    'ready' => $baseRealization->ready - $performed,
-                    'performed' => $baseRealization->performed + $performed
-                ]);
-
-
-
-                $orderBaseRealizations = $baseRealization->order->realizations()->whereNull('date')->get();
-
-                $isOrderFinished = true;
-
-                foreach ($orderBaseRealizations as $orderBaseRealization) 
-                {
-                    if ($orderBaseRealization->planned > $orderBaseRealization->performed)
-                    {
-                        $isOrderFinished = false;
-                        break;
-                    }
-                }
-
-                if ($isOrderFinished)
-                {
-                    $baseRealization->order->update([
-                        'status' => Order::STATUS_FINISHED
-                    ]);
+                    $isOrderFinished = false;
+                    break;
                 }
             }
+
+            if ($isOrderFinished)
+            {
+                $realization->order->update([
+                    'status' => Order::STATUS_FINISHED
+                ]);
+            }
         }
+
+
+
+            
+                // $realization = Realization::create($this->getRealizationData($realizationData, $baseRealization));
+                // $performed = $realization->performed;
+
+                // if ($performed > $baseRealization->ready)
+                // {
+                //     $difference = $performed - $baseRealization->ready;
+
+                //     $baseProduction = $baseRealization->order->productions()
+                //         ->whereNull('date')
+                //         ->where('product_id', $baseRealization->product_id)
+                //         ->first();
+
+                //     $baseProduction->update([
+                //         'auto_planned' => $baseProduction->auto_planned - $difference
+                //     ]);
+
+                //     // ProductionsService::getInstance()->updateOrderPlan($baseRealization->order, $baseRealization->product, 0);
+
+                //     $otherBaseRealizations = Realization::whereNull('date')
+                //         ->where('order_id', '!=', $baseRealization->order_id)
+                //         ->where('product_id', $baseRealization->product_id)
+                //         ->where('ready', '>', 0)
+                //         ->get();
+
+                //     foreach ($otherBaseRealizations as $otherBaseRealization) 
+                //     {
+                //         if ($otherBaseRealization->ready > $difference)
+                //         {
+                //             $otherBaseRealization->update([
+                //                 'ready' =>  $otherBaseRealization->ready - $difference
+                //             ]);
+
+                //             $baseRealization->update([
+                //                 'ready' => $baseRealization->ready + $difference
+                //             ]);
+
+                //             $otherBaseProduction = $otherBaseRealization->order->productions()
+                //                 ->whereNull('date')
+                //                 ->where('product_id', $otherBaseRealization->product_id)
+                //                 ->first();
+
+                //             if ($otherBaseProduction)
+                //             {
+                //                 $otherBaseProduction->update([
+                //                     'auto_planned' => $otherBaseProduction->auto_planned + $difference
+                //                 ]); 
+                //             }
+
+                //             // ProductionsService::getInstance()->updateOrderPlan($otherBaseProduction->order, $otherBaseProduction->product, 0);
+
+                //             break;
+                //         }
+                //         else
+                //         {
+                //             $otherBaseRealization->update([
+                //                 'ready' =>  0
+                //             ]);
+
+                //             $baseRealization->update([
+                //                 'ready' => $baseRealization->ready + $otherBaseRealization->ready
+                //             ]);
+
+                //             $otherBaseProduction = $otherBaseRealization->order->productions()
+                //                 ->whereNull('date')
+                //                 ->where('product_id', $otherBaseRealization->product_id)
+                //                 ->first();
+
+                //             if ($otherBaseProduction)
+                //             {
+                //                 $otherBaseProduction->update([
+                //                     'auto_planned' => $otherBaseProduction->auto_planned + $otherBaseRealization->ready
+                //                 ]);
+                //             }
+
+                //             // ProductionsService::getInstance()->updateOrderPlan($otherBaseProduction->order, $otherBaseProduction->product, 0);
+
+                //             $difference -= $otherBaseRealization->ready;
+                //         }
+                //     }
+                // }
+
+                // $baseRealization->product->update([
+                //     'in_stock' => $baseRealization->product->in_stock - $performed
+                // ]);
+
+                // $baseRealization->update([
+                //     'ready' => $baseRealization->ready - $performed,
+                //     'performed' => $baseRealization->performed + $performed
+                // ]);
+                // }
     }
 
 
@@ -380,17 +429,17 @@ class OrdersController extends Controller
 
 
 
-    protected function getRealizationData($data, $baseRealization)
+    protected function getRealizationData($data)
     {
         $date = !empty($data['date_raw']) ? $data['date_raw'] : date('dmY');
         $date = Carbon::createFromFormat('dmY', $date)->format('Y-m-d');
 
         return [
             'date' => $date,
-            'category_id' => $baseRealization->category_id,
-            'product_group_id' => $baseRealization->product_group_id,
-            'product_id' => $baseRealization->product_id,
-            'order_id' => $baseRealization->order_id,
+            'category_id' => !empty($data['product']['category_id']) ? (float)$data['product']['category_id'] : 0,
+            'product_group_id' => !empty($data['product']['product_group_id']) ? (float)$data['product']['product_group_id'] : 0,
+            'product_id' => !empty($data['product']['id']) ? (float)$data['product']['id'] : 0,
+            'order_id' => !empty($data['order_id']) ? (float)$data['order_id'] : 0,
             'planned' => 0,
             'ready' => 0,
             'performed' => !empty($data['performed']) ? (float)$data['performed'] : 0

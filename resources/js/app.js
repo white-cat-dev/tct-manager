@@ -345,6 +345,14 @@ tctApp.run(function($rootScope, AuthRepository)
     {
 		model[key] = model[key].replace(',', '.');
 		model[key] = model[key].replace(/[^.\d]/g, '');
+
+		if (model[key].split('.').length - 1 > 1)
+		{
+			var index = model[key].indexOf('.');
+			var count = model[key].substring(0, index);
+			model[key] = model[key].substring(index).replace('.', '');
+			model[key] = count + model[key];
+		}
     }
 
     $rootScope.logout = function()

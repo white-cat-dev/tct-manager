@@ -151,29 +151,35 @@ angular.module('tctApp').controller('ProductionsController', [
 
 		for (product of $scope.productionProducts)
 		{
-			var newProduct = angular.copy(product);
-			newProduct.orders = [];
-			newProduct.production = newProduct.productions[day];
-			newProduct.productions = [];
-
-			for (order of product.orders)
+			if (product.productions[day])
 			{
-				if (order.productions[day])
-				{
-					var newOrder = angular.copy(order);
+				var newProduct = angular.copy(product);
+				// newProduct.orders = [];
+				newProduct.production = newProduct.productions[day];
+				newProduct.productions = [];
 
-					newOrder.production = newOrder.productions[day];
-					newOrder.productions = [];
-
-					newProduct.orders.push(newOrder);
-				}
-			}
-
-			if (newProduct.orders.length > 0)
-			{
 				$scope.modalProductionProducts.push(newProduct);
 			}
+
+			// for (order of product.orders)
+			// {
+			// 	if (order.productions[day])
+			// 	{
+			// 		var newOrder = angular.copy(order);
+
+			// 		newOrder.production = newOrder.productions[day];
+			// 		newOrder.productions = [];
+
+			// 		newProduct.orders.push(newOrder);
+			// 	}
+			// }
+
+			// if (newProduct.orders.length > 0)
+			// {
+			// 	$scope.modalProductionProducts.push(newProduct);
+			// }
 		}
+
 
 		$scope.modalProductionCategories = [];
 
@@ -202,8 +208,6 @@ angular.module('tctApp').controller('ProductionsController', [
 				$scope.modalProductionMaterials.push(newMaterial);
 			}
 		}
-
-		console.log($scope.modalProductionMaterials, $scope.productionMaterials);
 
 		document.querySelector('body').classList.add('modal-open');
 		$scope.isModalShown = true;

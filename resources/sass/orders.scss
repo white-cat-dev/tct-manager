@@ -389,6 +389,16 @@
 
 				th {
 					text-align: center;
+					vertical-align: middle;
+				}
+
+				&.disabled {
+					background: lighten($grey, 3%);
+					color: darken($grey, 35%);
+
+					.form-control:disabled {
+						background: lighten($grey, 3%);
+					}
 				}
 			}
 		}

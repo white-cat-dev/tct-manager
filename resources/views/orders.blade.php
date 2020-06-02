@@ -1,5 +1,7 @@
-<div class="orders-page" ng-init="init([{{ App\Order::STATUS_READY }}, {{ App\Order::STATUS_PRODUCTION }}])">
+<div class="orders-page" ng-init="init('production')">
 	<h1>Заказы</h1>
+
+	@include('partials.loading')
 
 	<div class="top-buttons-block">
 		<div class="left-buttons">
@@ -23,16 +25,16 @@
 	<div class="top-statuses-menu-block">
 		<div class="statuses-menu-block" ng-init="isStatusesShown = false">	
 			<div class="statuses-menu" ng-class="{'shown': isStatusesShown}" ng-click="isStatusesShown = !isStatusesShown">
-				<button type="button" class="btn" ng-class="{'active': currentStatus.length == 0 }" ng-click="chooseStatus([])">
+				<button type="button" class="btn" ng-class="{'active': currentStatus == '' }" ng-click="chooseStatus('')">
 					Все заказы
 				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus.length == 2 }" ng-click="chooseStatus([{{ App\Order::STATUS_PRODUCTION }}, {{ App\Order::STATUS_READY }}])">
+				<button type="button" class="btn" ng-class="{'active': currentStatus == 'production'}" ng-click="chooseStatus('production')">
 					В работе
 				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus.length == 1 && currentStatus.indexOf({{ App\Order::STATUS_READY }}) !== -1 }" ng-click="chooseStatus([{{ App\Order::STATUS_READY }}])">
+				<button type="button" class="btn" ng-class="{'active': currentStatus == 'ready'}" ng-click="chooseStatus('ready')">
 					Готовые к выдаче
 				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus.length == 1 && currentStatus.indexOf({{ App\Order::STATUS_FINISHED }}) !== -1 }" ng-click="chooseStatus([{{ App\Order::STATUS_FINISHED }}])">
+				<button type="button" class="btn" ng-class="{'active': currentStatus == 'finished'}" ng-click="chooseStatus('finished')">
 					Завершенные
 				</button>
 			</div>
@@ -115,7 +117,7 @@
 							<th>Продукт</th>
 							<th>Кол-во</th>
 							<th>Отпущено</th>
-							<th>Готово</th>
+							<th ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }}">В наличии</th>
 						</tr>
 						<tr ng-repeat="product in currentOrder.products">
 							<td>
@@ -125,26 +127,19 @@
 							</td>
 							<td>
 								@{{ product.progress.total }}
-								<span ng-switch on="product.category.units">
-									<span ng-switch-when="area">м<sup>2</sup></span>
-									<span ng-switch-when="volume">м<sup>3</sup></span>
-									<span ng-switch-when="unit">шт.</span>
-								</span>
+								<span ng-bind-html="product.units_text"></span>
 							</td>
 							<td>
 								@{{ product.progress.realization }}
-								<span ng-switch on="product.category.units">
-									<span ng-switch-when="area">м<sup>2</sup></span>
-									<span ng-switch-when="volume">м<sup>3</sup></span>
-									<span ng-switch-when="unit">шт.</span>
-								</span>
+								<span ng-bind-html="product.units_text"></span>
 							</td>
-							<td>
-								@{{ product.progress.ready }}
-								<span ng-switch on="product.category.units">
-									<span ng-switch-when="area">м<sup>2</sup></span>
-									<span ng-switch-when="volume">м<sup>3</sup></span>
-									<span ng-switch-when="unit">шт.</span>
+							<td ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }}">
+								<span ng-if="product.progress.total != product.progress.realization">
+									@{{ product.in_stock }}
+									<span ng-bind-html="product.units_text"></span>
+								</span>
+								<span ng-if="product.progress.total == product.progress.realization">
+									—
 								</span>
 							</td>
 						</tr>
@@ -177,15 +172,15 @@
 		</div>
 	</div>
 
-	<div class="no-data-block" ng-if="(orders | filter: {'number': searchQuery}).length == 0">
+	<div class="no-data-block" ng-if="(orders | filter: {'number': searchQuery}).length == 0 && !isLoading">
 		<div class="icon">
 			<i class="fas fa-th"></i>
 		</div>
 		Не найдено ни одного
 		<span ng-switch on="currentStatus">
-			<span ng-switch-when="{{ App\Order::STATUS_PRODUCTION }}">заказа в работе</span>
-			<span ng-switch-when="{{ App\Order::STATUS_READY }}">готового к выдаче заказа</span>
-			<span ng-switch-when="{{ App\Order::STATUS_FINISHED }}">завершенного заказа</span>
+			<span ng-switch-when="production">заказа в работе</span>
+			<span ng-switch-when="ready">готового к выдаче заказа</span>
+			<span ng-switch-when="finished">завершенного заказа</span>
 			<span ng-switch-default>заказа</span>
 		</span><br>
 		<small ng-if="currentMainCategory.length == 1 && currentMainCategory[0] == 'tiles'"> в категории «плитка»</small>

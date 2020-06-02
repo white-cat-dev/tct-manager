@@ -12225,7 +12225,7 @@ footer {
 .loading-block {
   position: absolute;
   top: 0px;
-  padding-top: 200px;
+  padding-top: 250px;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -14174,6 +14174,16 @@ i.far {
 
 .orders-page .realization-modal .table tr th {
   text-align: center;
+  vertical-align: middle;
+}
+
+.orders-page .realization-modal .table tr.disabled {
+  background: #fbfbfb;
+  color: #9a9a9a;
+}
+
+.orders-page .realization-modal .table tr.disabled .form-control:disabled {
+  background: #fbfbfb;
 }
 
 .orders-page .realization-modal .custom-control-label {

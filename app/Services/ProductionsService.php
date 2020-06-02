@@ -30,21 +30,25 @@ class ProductionsService
     {
         $readyProducts = 0;
 
+        $productsIds = collect([]);
+
         foreach ($order->products as $product)
         {
             $productCount = $product->pivot->count;
 
-            $baseRealization = $this->getBaseRealization($order, $product, $productCount);
-
-            $productCount -= $baseRealization->ready;
-
-            if ($productCount <= 0)
-            {
-                $readyProducts += 1;
-                continue;
-            }
-
             $baseProduction = $this->getBaseProduction($order, $product, $productCount);
+
+            $productsIds->push($product->id);
+        
+            // $baseRealization = $this->getBaseRealization($order, $product, $productCount);
+
+            // $productCount -= $baseRealization->ready;
+
+            // if ($productCount <= 0)
+            // {
+            //     $readyProducts += 1;
+            // }
+
 
             // $currentDay = Carbon::today();
 
@@ -76,22 +80,30 @@ class ProductionsService
             // $this->deleteProductions($currentDay, $order, $product);
         }
 
-        if ($readyProducts == $order->products->count())
-        {
-            $order->update([
-                'status' => Order::STATUS_READY
-            ]);
-        }
+        $order->productions()->whereNotIn('product_id', $productsIds)->delete();
+
+        // if ($readyProducts == $order->products->count())
+        // {
+        //     $order->update([
+        //         'status' => Order::STATUS_READY
+        //     ]);
+        // }
+        // else
+        // {
+        //     $order->update([
+        //         'status' => Order::STATUS_PRODUCTION
+        //     ]);
+        // }
     }
 
 
     public function planOrders()
     {
-        $orders = Order::where('status', Order::STATUS_PRODUCTION)->get();
+        $orders = Order::where('status', '!=', Order::STATUS_FINISHED)->get();
 
         foreach ($orders as $order) 
         {
-            $this->planOrder($order, true);
+            $this->planOrder($order);
         }
     }
 
@@ -99,7 +111,10 @@ class ProductionsService
     public function updateOrderPlan($order, $product, $productCount)
     {
         $baseProduction = $this->updateBaseProduction($order, $product, $productCount);
-        $baseRealization = $this->updateBaseRealization($order, $product, $productCount);
+
+        return $baseProduction;
+
+        // $baseRealization = $this->updateBaseRealization($order, $product, $productCount);
 
         // $productions = Production::where('order_id', $order->id)
         //     ->where('product_id', $product->id)
@@ -178,46 +193,47 @@ class ProductionsService
     }
 
 
-    public function createOrderProduction($baseProduction, $productCount, $productionData)
-    {
-        $productCount = ($productCount > $baseProduction->auto_planned) ? $baseProduction->auto_planned :  $productCount;
+    // public function createOrderProduction($baseProduction, $productCount, $productionData)
+    // {
+    //     dump($productCount);
 
-        $production = Production::where('date', $productionData['date'])
-            ->where('product_id', $baseProduction->product_id)
-            ->where('order_id', $baseProduction->order_id)
-            ->first();
+    //     $productCount = ($productCount > $baseProduction->auto_planned) ? $baseProduction->auto_planned :  $productCount;
+
+    //     $production = Production::where('date', $productionData['date'])
+    //         ->where('product_id', $baseProduction->product_id)
+    //         ->where('order_id', $baseProduction->order_id)
+    //         ->first();
 
 
-        if ($production)
-        {
-            $production->update([
-                'performed' => $production->performed + $productCount,
-                'manual_planned' => $production->performed + $productCount,
-                'salary' => $production->salary + $productCount * $production->product->product_group->salary_units
-            ]);
-        }
-        else
-        {
-            $production = Production::create([
-                'date' => $productionData['date'],
-                'category_id' => $baseProduction->category_id,
-                'product_group_id' => $baseProduction->product_group_id,
-                'product_id' => $baseProduction->product_id,
-                'order_id' => $baseProduction->order_id,
-                'facility_id' => $productionData['facility_id'],
-                'performed' => $productCount,
-                'auto_planned' => 0,
-                'manual_planned' => $productCount,
-                'batches' => 0,
-                'salary' => $productCount * $baseProduction->product->product_group->salary_units
-            ]);
-        }
+    //     if ($production)
+    //     {
+    //         $production->update([
+    //             'performed' => $production->performed + $productCount,
+    //             'manual_planned' => $production->performed + $productCount,
+    //             'salary' => $production->salary + $productCount * $production->product->product_group->salary_units
+    //         ]);
+    //     }
+    //     else
+    //     {
+    //         $production = Production::create([
+    //             'date' => $productionData['date'],
+    //             'category_id' => $baseProduction->category_id,
+    //             'product_group_id' => $baseProduction->product_group_id,
+    //             'product_id' => $baseProduction->product_id,
+    //             'order_id' => $baseProduction->order_id,
+    //             'facility_id' => $productionData['facility_id'],
+    //             'performed' => $productCount,
+    //             'auto_planned' => 0,
+    //             'manual_planned' => $productCount,
+    //             'batches' => 0,
+    //             'salary' => $productCount * $baseProduction->product->product_group->salary_units
+    //         ]);
+    //     }
 
-        $this->updateOrderPlan($baseProduction->order, $baseProduction->product, $productCount);
+    //     $this->updateOrderPlan($baseProduction->order, $baseProduction->product, $productCount);
 
-        return $production;
-    }
-
+    //     return $production;
+    // }
 
 
     protected function updateBaseProduction($order, $product, $productCount)
@@ -227,8 +243,17 @@ class ProductionsService
             ->whereNull('date')
             ->first();
 
+        if ($baseProduction->performed + $productCount > $baseProduction->auto_planned)
+        {
+            $performed = $baseProduction->auto_planned;
+        }
+        else
+        {
+            $performed = $baseProduction->performed + $productCount;
+        }
+
         $baseProduction->update([
-            'performed' => $baseProduction->performed + $productCount
+            'performed' => $performed
         ]);
 
         return $baseProduction;
@@ -330,12 +355,35 @@ class ProductionsService
                 'batches' => 0,
                 'salary' => 0
             ]);
+
+            if ($product->free_in_stock > 0)
+            {
+                $baseProduction->update([
+                    'performed' => ($product->free_in_stock < $productCount) ? $product->free_in_stock : $productCount
+                ]);
+            }
         }
         else
         {
             $baseProduction->update([
                 'auto_planned' => $productCount
             ]);
+
+            $progress = $product->getProgress($order);
+            
+
+            if ($progress['ready'] > $product->free_in_stock)
+            {
+                $baseProduction->update([
+                    'performed' => $progress['realization'] + $product->free_in_stock
+                ]);
+            }
+            else if ($progress['ready'] < $product->free_in_stock)
+            {
+                $baseProduction->update([
+                    'performed' => $progress['realization'] + $progress['ready'] + $product->free_in_stock
+                ]);
+            }
         }
 
         return $baseProduction;

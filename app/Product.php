@@ -117,7 +117,7 @@ class Product extends Model
 
             $baseProduction = $this->productions()->where('order_id', $order->id)->whereNull('date')->first();
 
-            $progress['left'] = round($baseProduction ? ($baseProduction->auto_planned - $baseProduction->performed) : 0, 3);
+            $progress['production'] = round($baseProduction ? ($baseProduction->performed) : 0, 3);
             
             foreach ($this->realizations->where('order_id', $order->id)->whereNotNull('date') as $realization) 
             {
@@ -125,7 +125,8 @@ class Product extends Model
             }
 
             $progress['realization'] = round($progress['realization'], 3);
-            $progress['production'] = round($progress['total'] - $progress['left'], 3);
+            $progress['production'] = round($progress['production'], 3);
+            $progress['left'] = round($progress['total'] - $progress['production'], 3);
             $progress['ready'] = round($progress['production'] - $progress['realization'], 3);
         }
 
@@ -136,9 +137,11 @@ class Product extends Model
     public function getRealizeInStockAttribute()
     {
         $realizeInStock = 0;
-        foreach ($this->realizations()->whereNull('date')->where('ready', '>', 0)->get() as $realization) 
+        foreach ($this->orders()->where('status', '!=', Order::STATUS_FINISHED)->get() as $order) 
         {
-            $realizeInStock += $realization->ready;
+            $progress = $this->getProgress($order);
+
+            $realizeInStock += $progress['ready'];
         }
 
         return $realizeInStock;
@@ -146,7 +149,14 @@ class Product extends Model
 
     public function getFreeInStockAttribute()
     {
-        return round($this->in_stock - $this->realize_in_stock, 3);
+        if ($this->in_stock > $this->realize_in_stock)
+        {
+            return round($this->in_stock - $this->realize_in_stock, 3);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 

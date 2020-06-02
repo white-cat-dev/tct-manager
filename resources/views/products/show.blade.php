@@ -141,7 +141,7 @@
 						<th ng-if="productGroup.category.variations">Вид</th>
 						<th>Цена (наличный / безнал / НДС), руб</th>
 						<th>В наличии</th>
-						<th>Свободно</th>
+						{{-- <th>Свободно</th> --}}
 					</tr>
 					<tr ng-repeat="product in productGroup.products">
 						<td ng-if="productGroup.category.variations">
@@ -173,14 +173,14 @@
 								<span ng-switch-when="unit">шт</span>
 							</span>
 						</td>
-						<td>
+						{{-- <td>
 							@{{ product.free_in_stock }}
 							<span ng-switch on="productGroup.category.units">
 								<span ng-switch-when="area">м<sup>2</sup></span>
 								<span ng-switch-when="volume">м<sup>3</sup></span>
 								<span ng-switch-when="unit">шт</span>
 							</span>
-						</td>
+						</td> --}}
 					</tr>
 				</table>
 			</div>

@@ -261,17 +261,21 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.loadOrders = function()
 	{
+		$scope.isLoading = true;
+
 		var request = {
 			'main_category': $scope.currentMainCategory.join(',')
 		};
 
-		if ($scope.currentStatus.length > 0)
+		if ($scope.currentStatus)
 		{
-			request.status = $scope.currentStatus.join(',');
+			request.status = $scope.currentStatus;
 		}
 
 		OrdersRepository.query(request, function(response) 
 		{
+			$scope.isLoading = false;
+
 			$scope.orders = response;
 
 			if ($scope.currentOrder)
@@ -285,13 +289,18 @@ angular.module('tctApp').controller('OrdersController', [
 					}
 				}
 			}
-		});
+		}, 
+		function(response) 
+		{
+            $scope.isLoading = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
 	}
 
 
-	$scope.chooseStatus = function(statuses)
+	$scope.chooseStatus = function(status)
 	{
-		$scope.currentStatus = statuses;
+		$scope.currentStatus = status;
 
 		$scope.loadOrders();
 	}
@@ -520,8 +529,32 @@ angular.module('tctApp').controller('OrdersController', [
     $scope.showRealizationModal = function(order)
     {
     	$scope.modalOrder = order || $scope.order;
-    	$scope.modalOrder.realization_date_raw = $filter('date')(new Date(), 'ddMMyyyy'),
+    	$scope.modalOrder.realization_date_raw = $filter('date')(new Date(), 'ddMMyyyy');
+    	$scope.modalOrder.disabled_realizations = true;
     	$scope.isRealizationModalShown = true;
+
+    	$scope.modalOrder.realizations = [];
+
+    	for (product of $scope.modalOrder.products) 
+    	{
+    		var planned = Math.round((product.progress.total - product.progress.realization) * 100) / 100;
+    		var maxPerformed = (product.in_stock < planned) ? product.in_stock : planned;
+
+    		$scope.modalOrder.realizations.push({
+    			'order_id': $scope.modalOrder.id, 
+    			'product': product,
+    			'planned': planned,
+    			'performed': 0,
+    			'max_performed': maxPerformed
+    		});
+
+    		if (maxPerformed > 0)
+    		{
+    			$scope.modalOrder.disabled_realizations = false;
+    		}
+    	}
+
+    	console.log($scope.modalOrder.realizations);
 
     	$scope.isAllRealizationsChosen = false;
     }
@@ -537,28 +570,24 @@ angular.module('tctApp').controller('OrdersController', [
     {
     	if ($scope.isAllRealizationsChosen)
     	{
+    		console.log($scope.modalOrder.realizations);
     		for (realization of $scope.modalOrder.realizations)
     		{
-    			realization.performed = realization.ready;
+    			realization.performed = realization.max_performed;
     		}
     	}
     }
 
     $scope.checkAllRealizations = function(realization) 
     {
-    	if (realization.performed > realization.product.in_stock)
+    	if (realization.performed > realization.max_performed)
 		{
-			realization.performed = realization.product.in_stock;
-		}
-
-		if (realization.performed > realization.planned - realization.old_performed)
-		{
-			realization.performed = realization.planned - realization.old_performed;
+			realization.performed = realization.max_performed;
 		}
 
     	for (realization of $scope.modalOrder.realizations)
 		{
-			if (realization.performed < realization.ready)
+			if ((realization.performed < realization.max_performed) && (realization.max_performed == 0))
 			{
 				$scope.isAllRealizationsChosen = false;
 				return;

@@ -222,11 +222,12 @@ class ProductionsController extends Controller
 
         foreach ($productsData as $productData) 
         {
-            $productionsData = !empty($productData['orders']) ? $productData['orders'] : [$productData['production']];
+            // $productionsData = !empty($productData['orders']) ? $productData['orders'] : [$productData['production']];
+            $productionsData = [$productData['production']];
 
             foreach ($productionsData as $productionData) 
             {
-                $productionData = !empty($productionData['production']) ? $productionData['production'] : $productionData;
+                // $productionData = !empty($productionData['production']) ? $productionData['production'] : $productionData;
 
                 if (!empty($productionData['id']))
                 {
@@ -234,19 +235,19 @@ class ProductionsController extends Controller
 
                     $productionPerformed = $production->performed;
 
-                    $planned = (float)$productionData['planned'];
-                    if ((float)$productionData['performed'] == 0)
-                    {
-                        $manualPlanned = ($planned != $production->auto_planned) ? $planned : $production->manual_planned;
-                    }
-                    else
-                    {
-                        $manualPlanned = (float)$productionData['performed'];
-                    }
+                    // $planned = (float)$productionData['planned'];
+                    // if ((float)$productionData['performed'] == 0)
+                    // {
+                    //     $manualPlanned = ($planned != $production->auto_planned) ? $planned : $production->manual_planned;
+                    // }
+                    // else
+                    // {
+                    //     $manualPlanned = (float)$productionData['performed'];
+                    // }
 
                     $production->update([
-                        'auto_planned' => $planned,
-                        'manual_planned' => $manualPlanned,
+                        'auto_planned' => 0,
+                        'manual_planned' => 0,
                         'performed' => (float)$productionData['performed'],
                         'salary' => (float)$productionData['performed'] * $production->product->product_group->salary_units,
                         'facility_id' => $productionData['facility_id']
@@ -255,59 +256,79 @@ class ProductionsController extends Controller
 
                     $productionPerformed = $production->performed - $productionPerformed;
 
-                    if ($production->order)
-                    {
-                        ProductionsService::getInstance()->updateOrderPlan($production->order, $production->product, $productionPerformed);
-                    }
+                    // if ($production->order)
+                    // {
+                    //     ProductionsService::getInstance()->updateOrderPlan($production->order, $production->product, $productionPerformed);
+                    // }
                 }
                 else
                 {
-                    // continue;
-
                     if (empty($productionData['planned']) && empty($productionData['performed']))
                     {
                         continue;
                     }
 
-                    if (empty($productionData['order_id']))
-                    {
-                        $performed = $productionData['performed'];
+                    // if (empty($productionData['order_id']))
+                    // {
+                    //     $performed = $productionData['performed'];
 
-
-                        $baseProductions = Production::where('product_id', $productionData['product_id'])
-                            ->whereNull('date')
-                            ->with('order')
-                            ->get()
-                            ->sortBy('order.priority')
-                            ->sortBy('order.date');
+                    //     $baseProductions = Production::where('product_id', $productionData['product_id'])
+                    //         ->whereNull('date')
+                    //         ->with('order')
+                    //         ->get()
+                    //         ->sortBy('order.priority')
+                    //         ->sortBy('order.date');
 
                         
-                        foreach ($baseProductions as $baseProduction) 
-                        {
-                            $production = ProductionsService::getInstance()->createOrderProduction($baseProduction, $performed, $productionData);
-                            dd($production);
+                    //     foreach ($baseProductions as $baseProduction) 
+                    //     {
+                    //         $production = ProductionsService::getInstance()->createOrderProduction($baseProduction, $performed, $productionData);
 
-                            $performed -= $production->performed;
+                    //         $performed -= $production->performed;
 
-                            if ($performed == 0)
-                            {
-                                break;
-                            }
-                        }
+                    //         if ($performed == 0)
+                    //         {
+                    //             break;
+                    //         }
+                    //     }
 
-                        $productionPerformed = $productionData['performed'];
+                    //     $productionPerformed = $productionData['performed'];
 
-                        if ($performed > 0)
-                        {
-                            $productionData['performed'] = $performed;
+                    //     if ($performed > 0)
+                    //     {
+                    //         $productionData['performed'] = $performed;
 
-                            $production = Production::create($this->getData($productionData));
-                        }
-                    }
-                    else
+                    //         $production = Production::create($this->getData($productionData));
+                    //     }
+                    // }
+                    // else
+                    // {
+                    // }
+
+                    $production = Production::create($this->getData($productionData));
+                    $productionPerformed = $production->performed;
+                }
+
+                $performed = $productionPerformed;
+
+                $baseProductions = Production::where('product_id', $productionData['product_id'])
+                    ->whereNull('date')
+                    ->with('order')
+                    ->get()
+                    ->sortBy('order.priority')
+                    ->sortBy('order.date');
+
+                foreach ($baseProductions as $baseProduction) 
+                {
+                    $oldPerformed = $baseProduction->performed;
+
+                    $baseProduction = ProductionsService::getInstance()->updateOrderPlan($baseProduction->order, $baseProduction->product, $performed);
+
+                    $performed = $performed + $oldPerformed - $baseProduction->performed;
+
+                    if ($performed <= 0)
                     {
-                        $production = Production::create($this->getData($productionData));
-                        $productionPerformed = $production->performed;
+                        break;
                     }
                 }
 
@@ -410,7 +431,7 @@ class ProductionsController extends Controller
             if ($materialAppy)
             {
                 $materialAppy->update([
-                    'planned' => $planned
+                    'planned' => $materialAppy->planned + $planned
                 ]);
             }
             else

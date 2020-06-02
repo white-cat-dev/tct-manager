@@ -18,42 +18,51 @@
 				<table class="table">
 					<tr>
 						<th>Продукт</th>
-						<th>Готово</th>
+						<th>Осталось</th>
 						<th>В наличии</th>
-						<th>Выдано</th>
+						<th>Отпустить</th>
 					</tr>
 
-					<tr ng-repeat="realization in modalOrder.realizations" ng-if="!realization.date">
-						<td>
+					<tr ng-repeat="realization in modalOrder.realizations" ng-class="{'disabled': realization.max_performed == 0}">
+						<td style="width: 40%;">
 							@{{ realization.product.product_group.name }}
 							@{{ realization.product.product_group.size }}
 							<div class="product-color" ng-if="realization.product.variation_noun_text">
 								@{{ realization.product.variation_noun_text }}
 							</div>
 						</td>
-						<td ng-init="realization.current_ready = realization.ready - realization.performed">
-							@{{ realization.current_ready }} <span ng-bind-html="realization.product.units_text"></span>
+						<td style="width: 20%;">
+							@{{ realization.planned }} <span ng-bind-html="realization.product.units_text"></span>
 						</td>
-						<td>
+						<td style="width: 20%;">
 							@{{ realization.product.in_stock }} <span ng-bind-html="realization.product.units_text"></span>
 						</td>
-						<td ng-init="realization.old_performed = realization.performed">
-							<input type="text" class="form-control" ng-model="realization.performed" ng-change="checkAllRealizations(realization)"> 
+						<td ng-init="realization.old_performed = realization.performed" style="width: 20%;">
+							<input type="text" class="form-control" ng-model="realization.performed" ng-change="inputFloat(realization, 'performed'); checkAllRealizations(realization)" ng-disabled="realization.max_performed == 0"> 
 						</td>
 					</tr>
 				</table>
 
-				<div class="custom-control custom-checkbox">
+				<div class="custom-control custom-checkbox" ng-show="!modalOrder.disabled_realizations">
 					<input type="checkbox" class="custom-control-input" ng-model="isAllRealizationsChosen" ng-change="chooseAllRealizations()" id="checkboxRealizations">
 					<label class="custom-control-label" for="checkboxRealizations">
-						Отпустить все готовые продукты
+						Отпустить все доступные продукты
 					</label>
+				</div>
+
+				<div ng-show="modalOrder.disabled_realizations">
+					Нет доступных продуктов
 				</div>
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" ng-click="saveRealization()">
-					<i class="fas fa-save"></i> Сохранить
+				<button type="button" class="btn btn-primary" ng-click="saveRealization()" ng-disabled="modalOrder.disabled_realizations || isSaving">
+					<span ng-if="isSaving">
+						<i class="fa fa-spinner fa-spin"></i> Сохранение
+					</span>
+					<span ng-if="!isSaving">
+						<i class="fas fa-save"></i> Сохранить
+					</span>
 				</button>
 			</div>
 		</div>

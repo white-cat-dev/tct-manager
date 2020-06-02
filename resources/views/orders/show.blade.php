@@ -205,43 +205,12 @@
 				</div>
 			</div>
 
+
 			<div class="col-6 col-xl-5">
-				<div class="params-title">
-					Оплата заказа
-				</div>
-
-				<div class="param-block">
-					<div class="param-name">
-						Оплачено
-					</div>
-					<div class="param-value">
-						@{{ order.paid | number }} руб
-					</div>
-				</div>
-
-				<div class="alert alert-secondary">
-					<table class="table table-sm" ng-if="order.payments.length > 0">
-						<tr>
-							<th>Дата</th>
-							<th>Сумма</th>
-						</tr>
-						<tr ng-repeat="payment in order.payments">
-							<td>
-								@{{ payment.formatted_date }}
-							</td>
-							<td>
-								@{{ payment.paid | number }} руб
-							</td>
-						</tr>
-					</table>
-
-					<div ng-if="order.payments.length == 0">
-						<i class="far fa-calendar-times"></i> Оплат заказа еще не поступало
-					</div>
-				</div>
+				
 			</div>
 
-			<div class="col-6 col-xl-5">
+			{{-- <div class="col-6 col-xl-5">
 				<div class="params-title">
 					История производства
 				</div>
@@ -271,6 +240,41 @@
 						<i class="far fa-calendar-times"></i> Заказ еще не произведен
 					</div>
 				</div>
+			</div> --}}
+
+			<div class="col-6 col-xl-5">
+				<div class="params-title">
+					История оплаты
+				</div>
+
+				<div class="alert alert-secondary">
+					<table class="table table-sm" ng-if="order.payments.length > 0">
+						<tr>
+							<th>Дата</th>
+							<th>Сумма</th>
+						</tr>
+						<tr ng-repeat="payment in order.payments">
+							<td>
+								@{{ payment.formatted_date }}
+							</td>
+							<td>
+								@{{ payment.paid | number }} руб
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Итого:
+							</td>
+							<td>
+								@{{ order.paid | number }} руб
+							</td>
+						</tr>
+					</table>
+
+					<div ng-if="order.payments.length == 0">
+						<i class="far fa-calendar-times"></i> Оплат заказа еще не поступало
+					</div>
+				</div>
 			</div>
 
 			<div class="col-6 col-xl-5">
@@ -279,13 +283,13 @@
 				</div>
 
 				<div class="alert alert-secondary">
-					<table class="table" ng-if="(order.realizations | filter: {'performed': '> 0'}).length > 0">
+					<table class="table" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
 						<tr>
 							<th>Дата</th>
 							<th>Продукт</th>
 							<th>Количество</th>
 						</tr>
-						<tr ng-repeat="realization in order.realizations | filter: {'performed': '> 0'}">
+						<tr ng-repeat="realization in order.realizations | filter: {'date': '!= null'}">
 							<td>@{{ realization.formatted_date }}</td>
 							<td>
 								@{{ realization.product.product_group.name }} @{{ production.product.product_group.size }}<br>
@@ -297,7 +301,7 @@
 						</tr>
 					</table>
 
-					<div ng-if="(order.realizations | filter: {'performed': '> 0'}).length == 0">
+					<div ng-if="(order.realizations | filter: {'date': '!= null'}).length == 0">
 						<i class="far fa-calendar-times"></i> Заказ еще не выдан
 					</div>
 				</div>

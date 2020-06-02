@@ -3,7 +3,7 @@
 
 	@include('partials.loading')
 
-	<div class="row" ng-if="!isLoading">
+	<div class="row">
 		<div class="col-12 col-lg-9">
 			<div class="top-buttons-block">
 				<div class="left-buttons">
@@ -72,7 +72,7 @@
 	</div>
 
 
-	<div class="row" ng-if="!isLoading">
+	<div class="row">
 		<div class="col-12 col-lg-9">
 			<div class="production-block" ng-if="isAllProductionsShown && productionProducts.length > 0 || !isAllProductionsShown && productionsPlanned">
 				<div class="products-block">
@@ -82,7 +82,7 @@
 							<th class="d-none d-md-table-cell">Склад</th>
 							<th class="d-none d-md-table-cell">План</th>
 						</tr>
-						<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned">
+						<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
 							<td>
 								<div class="product-name">
 									@{{ product.product_group.name }}<br class="d-block d-md-none">
@@ -101,7 +101,7 @@
 								</span>
 							</td>
 							<td class="d-none d-md-table-cell">
-								@{{ product.productions[0] ? Math.round((product.productions[0].planned - product.productions[0].performed) * 100) / 100 : 0 }}
+								@{{ product.productions[0] ? ((product.productions[0].planned > product.productions[0].performed) ? Math.round((product.productions[0].planned - product.productions[0].performed) * 100) / 100 : 0) : 0 }}
 								<span ng-switch on="product.category.units">
 									<span ng-switch-when="area">м<sup>2</sup></span>
 									<span ng-switch-when="volume">м<sup>3</sup></span>
@@ -120,7 +120,7 @@
 							</th>
 						</tr>
 					
-						<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned">
+						<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
 							<td ng-repeat="x in [].constructor(days) track by $index" 
 								ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" 
 								ng-click="showModal($index + 1)" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
@@ -141,7 +141,7 @@
 				</div>
 			</div>
 
-			<div class="no-productions" ng-if="(isAllProductionsShown && productionProducts.length == 0) || (!isAllProductionsShown && !productionsPlanned)">
+			<div class="no-productions" ng-if="((isAllProductionsShown && productionProducts.length == 0) || (!isAllProductionsShown && !productionsPlanned)) && !isLoading">
 				<div class="icon">
 					<i class="far fa-calendar-times"></i>
 				</div>
@@ -196,7 +196,7 @@
 					</table> --}}
 				</div>
 
-				<div ng-if="productionOrders.length == 0">
+				<div ng-if="productionOrders.length == 0 && !isLoading">
 					<div class="no-production-orders">
 						<div>
 							<i class="fas fa-shopping-cart"></i>
@@ -384,7 +384,7 @@
 							<table class="table" ng-if="getFacilityProductionProducts(facility.id).length > 0">
 								<tr>
 									<th>Продукт</th>
-									<th>План</th>
+									{{-- <th>План</th> --}}
 									<th>Готово</th>
 								</tr>
 
@@ -399,17 +399,17 @@
 										</div>
 							        </td>
 
-							        <td style="width: 25%; text-align: center;">
+							        {{-- <td style="width: 25%; text-align: center;">
 										@{{ product.production.planned }}
 										<span ng-switch on="product.category.units">
 											<span ng-switch-when="area">м<sup>2</sup></span>
 											<span ng-switch-when="volume">м<sup>3</sup></span>
 											<span ng-switch-when="unit">шт.</span>
 										</span>
-									</td>
+									</td> --}}
 
 									<td style="width: 25%;">
-										<input type="text" class="form-control form-control-num" ng-model="product.production.performed" ng-change="updateOrderProductionsPerformed(product)"> 
+										<input type="text" class="form-control form-control-num" ng-model="product.production.performed"{{--  ng-change="updateOrderProductionsPerformed(product)" --}}> 
 									</td>
 							    </tr>
 							</table>

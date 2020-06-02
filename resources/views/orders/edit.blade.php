@@ -183,7 +183,7 @@
 									</span>
 									<div class="product-stock" ng-if="product.id">
 										<div>В наличии: @{{ product.in_stock }} <span ng-bind-html="product.units_text"></span></div>
-										<div>Свободно: @{{ product.free_in_stock }} <span ng-bind-html="product.units_text"></span></div>
+										{{-- <div>Свободно: @{{ product.free_in_stock }} <span ng-bind-html="product.units_text"></span></div> --}}
 									</div>
 								</span>
 							</td>
