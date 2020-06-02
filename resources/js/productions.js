@@ -176,10 +176,7 @@ angular.module('tctApp').controller('ProductionsController', [
 					newProduct.base_planned = 0;
 				}
 
-				if (newProduct.production.planned > 0 || newProduct.production.performed > 0)
-				{
-					$scope.modalProductionProducts.push(newProduct);
-				}
+				$scope.modalProductionProducts.push(newProduct);
 			}
 			else if (product.productions[0])
 			{
@@ -187,6 +184,7 @@ angular.module('tctApp').controller('ProductionsController', [
 				{
 					var facilities = $scope.getCategoryFacilities(product.category_id);
 
+					console.log(product.product_group.name, product.variation);
 					if (facilities.length > 0)
 					{
 						$scope.newProduct[facilities[0].id] = {
@@ -200,11 +198,8 @@ angular.module('tctApp').controller('ProductionsController', [
 							'variation': product.variation,
 							'units_text': product.units_text,
 							'variation_noun_text': product.variation_noun_text,
-							'base_planned': (product.productions[0].planned > product.productions[0].performed) ? 
-								Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000 : 0
+							'base_planned': Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000
 						};
-
-						console.log($scope.newProduct);
 
 						$scope.addProduct(facilities[0].id);
 					}
