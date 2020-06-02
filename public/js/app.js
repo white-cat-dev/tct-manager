@@ -83367,7 +83367,6 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
         } else if (product.productions[0]) {
           if (product.productions[0].planned > product.productions[0].performed) {
             var facilities = $scope.getCategoryFacilities(product.category_id);
-            console.log(product.product_group.name, product.variation, product.productions[0]);
 
             if (facilities.length > 0) {
               $scope.newProduct[facilities[0].id] = {
@@ -83383,6 +83382,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
                 'variation_noun_text': product.variation_noun_text,
                 'base_planned': Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000
               };
+              console.log(scope.newProduct[facilities[0].id]);
               $scope.addProduct(facilities[0].id);
             }
           }
