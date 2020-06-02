@@ -83613,7 +83613,11 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
       'batches': 0
     };
     $scope.newProduct[facility].production = production;
-    $scope.newProduct[facility].base_planned = 0;
+
+    if (!$scope.newProduct[facility].base_planned) {
+      $scope.newProduct[facility].base_planned = 0;
+    }
+
     $scope.modalProductionProducts.push($scope.newProduct[facility]);
     $scope.newProduct[facility] = {};
     $scope.isAddProductShown[facility] = false;
