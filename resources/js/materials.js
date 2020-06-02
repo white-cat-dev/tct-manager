@@ -92,8 +92,10 @@ angular.module('tctApp').controller('MaterialsController', [
 
 	$scope.init = function()
 	{
+		$scope.isLoading = true;
 		MaterialsRepository.query(function(response) 
 		{
+			$scope.isLoading = false;
 			$scope.materialGroups = response;
 
 			$scope.materials = [];

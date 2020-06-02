@@ -82315,7 +82315,9 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
   }];
 
   $scope.init = function () {
+    $scope.isLoading = true;
     MaterialsRepository.query(function (response) {
+      $scope.isLoading = false;
       $scope.materialGroups = response;
       $scope.materials = [];
       var _iteratorNormalCompletion = true;

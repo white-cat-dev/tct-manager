@@ -105,7 +105,7 @@
 					</th>
 				</tr>
 			
-				<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
+				<tr ng-repeat="product in productionProducts" ng-if="(isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed)">
 					<td ng-repeat="x in [].constructor(days) track by $index" 
 						ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" 
 						ng-click="showModal($index + 1)" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">

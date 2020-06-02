@@ -1,6 +1,8 @@
 <div class="materials-page" ng-init="init()">
 	<h1>Материалы</h1>
 
+	@include('partials.loading')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -92,7 +94,7 @@
 		</tr>
 	</table>
 
-	<div class="no-data-block" ng-if="(materialGroups | filter: {'name': searchQuery}).length == 0">
+	<div class="no-data-block" ng-if="(materialGroups | filter: {'name': searchQuery}).length == 0 && !isLoading">
 		<div class="icon">
 			<i class="fas fa-th"></i>
 		</div>
