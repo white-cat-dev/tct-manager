@@ -176,7 +176,10 @@ angular.module('tctApp').controller('ProductionsController', [
 					newProduct.base_planned = 0;
 				}
 
-				$scope.modalProductionProducts.push(newProduct);
+				if (newProduct.production.planned > 0 || newProduct.production.performed > 0)
+				{
+					$scope.modalProductionProducts.push(newProduct);
+				}
 			}
 			else if (product.productions[0])
 			{

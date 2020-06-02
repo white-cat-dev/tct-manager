@@ -83363,7 +83363,9 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
             newProduct.base_planned = 0;
           }
 
-          $scope.modalProductionProducts.push(newProduct);
+          if (newProduct.production.planned > 0 || newProduct.production.performed > 0) {
+            $scope.modalProductionProducts.push(newProduct);
+          }
         } else if (product.productions[0]) {
           if (product.productions[0].planned > product.productions[0].performed) {
             var facilities = $scope.getCategoryFacilities(product.category_id);
