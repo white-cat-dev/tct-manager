@@ -184,7 +184,7 @@ angular.module('tctApp').controller('ProductionsController', [
 				{
 					var facilities = $scope.getCategoryFacilities(product.category_id);
 
-					console.log(product.product_group.name, product.variation);
+					console.log(product.product_group.name, product.variation, product.productions[0]);
 					if (facilities.length > 0)
 					{
 						$scope.newProduct[facilities[0].id] = {
@@ -205,9 +205,6 @@ angular.module('tctApp').controller('ProductionsController', [
 					}
 				}
 			}
-
-
-			console.log($scope.modalProductionProducts);
 
 			// for (order of product.orders)
 			// {

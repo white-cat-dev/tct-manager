@@ -83367,7 +83367,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
         } else if (product.productions[0]) {
           if (product.productions[0].planned > product.productions[0].performed) {
             var facilities = $scope.getCategoryFacilities(product.category_id);
-            console.log(product.product_group.name, product.variation);
+            console.log(product.product_group.name, product.variation, product.productions[0]);
 
             if (facilities.length > 0) {
               $scope.newProduct[facilities[0].id] = {
@@ -83386,9 +83386,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
               $scope.addProduct(facilities[0].id);
             }
           }
-        }
-
-        console.log($scope.modalProductionProducts); // for (order of product.orders)
+        } // for (order of product.orders)
         // {
         // 	if (order.productions[day])
         // 	{
@@ -83402,6 +83400,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
         // {
         // 	$scope.modalProductionProducts.push(newProduct);
         // }
+
       }
     } catch (err) {
       _didIteratorError2 = true;
