@@ -300,7 +300,8 @@ tctApp.factory('ProductionsRepository', ['$resource', function($resource) {
 tctApp.factory('ExportsRepository', ['$resource', function($resource) { 
 	return $resource('/export', null, {
 		products: { method: 'GET', url: '/export/products' },
-		materials: { method: 'GET', url: '/export/materials' }
+		materials: { method: 'GET', url: '/export/materials' },
+		order: { method: 'GET', url: '/export/order' }
     });  
 }]);
 
@@ -357,8 +358,10 @@ tctApp.run(function($rootScope, AuthRepository)
 
     $rootScope.logout = function()
     {
-    	AuthRepository.logout();
-		document.location.href = '/login';
+    	AuthRepository.logout(function(response) 
+    	{
+			document.location.href = '/login';		
+    	});
     }
 });
 

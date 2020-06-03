@@ -78,27 +78,6 @@ class Product extends Model
     }
 
 
-    public function getRealized($orderId = null)
-    {
-        $production = 0;
-        $productions = $this->productions;
-        if ($orderId)
-        {
-            $productions = $productions->where('order_id', $realizations);
-        }
-        foreach ($productions as $production) 
-        {
-            $production += $production->planned - $production->performed;
-        }
-
-        return $production;
-    }
-
-    public function getProducted($orderId = null)
-    {
-
-    }
-
     public function getProgress($order)
     {
         $progress = [
@@ -115,19 +94,19 @@ class Product extends Model
         {
             $progress['total'] = $product->pivot->count;
 
-            $baseProduction = $this->productions()->where('order_id', $order->id)->whereNull('date')->first();
+            // $baseProduction = $this->productions()->where('order_id', $order->id)->whereNull('date')->first();
 
-            $progress['production'] = round($baseProduction ? ($baseProduction->performed) : 0, 3);
+            // $progress['production'] = round($baseProduction ? ($baseProduction->performed) : 0, 3);
             
-            foreach ($this->realizations->where('order_id', $order->id)->whereNotNull('date') as $realization) 
+            foreach ($this->realizations()->where('order_id', $order->id)->whereNotNull('date')->get() as $realization) 
             {
                 $progress['realization'] += $realization->performed;
             }
 
             $progress['realization'] = round($progress['realization'], 3);
-            $progress['production'] = round($progress['production'], 3);
-            $progress['left'] = round($progress['total'] - $progress['production'], 3);
-            $progress['ready'] = round($progress['production'] - $progress['realization'], 3);
+            // $progress['production'] = round($progress['production'], 3);
+            // $progress['left'] = round($progress['total'] - $progress['production'], 3);
+            // $progress['ready'] = round($progress['production'] - $progress['realization'], 3);
         }
 
         return $progress;
@@ -136,15 +115,15 @@ class Product extends Model
 
     public function getRealizeInStockAttribute()
     {
-        $realizeInStock = 0;
-        foreach ($this->orders()->where('status', '!=', Order::STATUS_FINISHED)->get() as $order) 
+        $baseProduction = $this->getBaseProduction();
+        if ($baseProduction)
         {
-            $progress = $this->getProgress($order);
-
-            $realizeInStock += $progress['ready'];
+            return $baseProduction->performed;
         }
-
-        return $realizeInStock;
+        else
+        {
+            return 0;
+        }
     }
 
     public function getFreeInStockAttribute()
@@ -157,6 +136,28 @@ class Product extends Model
         {
             return 0;
         }
+    }
+
+
+    public function getBaseProduction()
+    {
+        return $this->productions()->whereNull('date')->where('order_id', 0)->first();
+    }
+
+    public function getRealized($orderId = null)
+    {
+        $production = 0;
+        $productions = $this->productions;
+        if ($orderId)
+        {
+            $productions = $productions->where('order_id', $realizations);
+        }
+        foreach ($productions as $production) 
+        {
+            $production += $production->planned - $production->performed;
+        }
+
+        return $production;
     }
 
 

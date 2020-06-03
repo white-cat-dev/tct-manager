@@ -81544,6 +81544,10 @@ tctApp.factory('ExportsRepository', ['$resource', function ($resource) {
     materials: {
       method: 'GET',
       url: '/export/materials'
+    },
+    order: {
+      method: 'GET',
+      url: '/export/order'
     }
   });
 }]);
@@ -81589,8 +81593,9 @@ tctApp.run(function ($rootScope, AuthRepository) {
   };
 
   $rootScope.logout = function () {
-    AuthRepository.logout();
-    document.location.href = '/login';
+    AuthRepository.logout(function (response) {
+      document.location.href = '/login';
+    });
   };
 });
 
@@ -82548,7 +82553,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductsRepository', 'OrdersRepository', function ($scope, $routeParams, $location, $timeout, $filter, toastr, ProductsRepository, OrdersRepository) {
+angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductsRepository', 'OrdersRepository', 'ExportsRepository', function ($scope, $routeParams, $location, $timeout, $filter, toastr, ProductsRepository, OrdersRepository, ExportsRepository) {
   $scope.Math = window.Math;
   $scope.baseUrl = '';
   $scope.currentStatus = 0;
@@ -82617,9 +82622,11 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     ProductsRepository.query(function (response) {
       $scope.productGroups = response;
     });
+    $scope.isLoading = true;
     OrdersRepository.get({
       id: $scope.id
     }, function (response) {
+      $scope.isLoading = false;
       $scope.order = response;
     });
   };
@@ -82629,10 +82636,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     $scope.id = $routeParams['id'];
 
     if ($scope.id) {
+      $scope.isLoading = true;
       OrdersRepository.get({
         id: $scope.id
       }, function (response) {
         $scope.order = response;
+        $scope.order.manual_pallets = $scope.order.pallets;
+        $scope.order.manual_pallets_price = $scope.order.pallets_price;
 
         if ($scope.order.date) {
           var date = $scope.order.date.split("-");
@@ -82644,6 +82654,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         }
 
         ProductsRepository.query(function (response) {
+          $scope.isLoading = false;
           $scope.productGroups = response;
           var _iteratorNormalCompletion = true;
           var _didIteratorError = false;
@@ -82652,6 +82663,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
           try {
             for (var _iterator = $scope.order.products[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
               product = _step.value;
+              product.pivot.manual_price = product.pivot.price;
               var chosenProductGroup = null;
               var _iteratorNormalCompletion2 = true;
               var _didIteratorError2 = false;
@@ -82703,7 +82715,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       });
     } else {
       $scope.order.date_raw = $filter('date')(new Date(), 'ddMMyyyy');
-      console.log($scope.order.date_raw);
       ProductsRepository.query(function (response) {
         $scope.productGroups = response;
       });
@@ -82712,16 +82723,30 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.save = function () {
-    $scope.isSaving = true;
+    $scope.isSaving = true; // if (!$scope.id && $scope.isAllRealizationsChosen)
+    // {
+    // 	$scope.order.realizations = [];
+    // 	for (product of $scope.order.products) 
+    //    	{
+    //   			var maxPerformed = (product.in_stock < product.pivot.count) ? product.in_stock : product.pivot.count;
+    //    		$scope.order.realizations.push({
+    //    			'order_id': order.id, 
+    //    			'product': product.pivot,
+    //    			'planned': 0,
+    //    			'performed': product.pivot.count,
+    //    			'date_raw': order.date
+    //    		});
+    //    	}
+    // }
+
     OrdersRepository.save({
       id: $scope.id
     }, $scope.order, function (response) {
       $scope.isSaving = false;
       toastr.success($scope.id ? 'Заказ успешно обновлен!' : 'Новый заказ успешно создан!');
-      $location.path($scope.baseUrl).replace();
-      $scope.orderErrors = {};
-      $scope.id = response.id;
-      $scope.order.url = response.url;
+      $location.path($scope.baseUrl).replace(); // $scope.orderErrors = {};
+      // $scope.id = response.id;
+      // $scope.order.url = response.url;
     }, function (response) {
       $scope.isSaving = false;
 
@@ -82808,7 +82833,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
             }
           }
         }
-      }
+      } // window.scrollTo(0, 0);
+
     }, function (response) {
       $scope.isLoading = false;
       toastr.error('Произошла ошибка на сервере');
@@ -82846,8 +82872,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       'products': [],
       'pivot': {
         'price': 0,
-        'price_cashless': 0,
-        'price_vat': 0,
         'count': 0,
         'cost': 0
       }
@@ -82862,6 +82886,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   $scope.chooseProductGroup = function (productData, productGroup, product) {
     if (!product) {
       productData.id = null;
+      productData.product_id = null;
+      productData.pivot.price = 0;
     }
 
     productData.category = productGroup.category;
@@ -82888,70 +82914,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     productData.price = product.price;
     productData.price_cashless = product.price_cashless;
     productData.price_vat = product.price_vat;
-
-    if (!productData.pivot.price) {
-      switch ($scope.order.pay_type) {
-        case 'cash':
-          productData.pivot.price = productData.price;
-          break;
-
-        case 'cashless':
-          productData.pivot.price = productData.price_cashless;
-          break;
-
-        case 'vat':
-          productData.pivot.price = productData.price_vat;
-          break;
-      }
-    }
-
     $scope.updateOrderInfo();
   };
 
-  $scope.updateCount = function (product) {
-    if (product.pivot.count.length > 10) {
-      product.pivot.count = product.pivot.count.substring(0, 10);
-    }
-
-    product.pivot.count = product.pivot.count.replace(/[^,.\d]/g, '');
-    product.pivot.count = product.pivot.count.replace(',', '.');
-
-    if (product.pivot.count.split('.').length - 1 > 1) {
-      var index = product.pivot.count.lastIndexOf('.');
-      var count = product.pivot.count.substring(0, index);
-      product.pivot.count = product.pivot.count.substring(index).replace('.', '');
-      product.pivot.count = count + product.pivot.count;
-    }
-
-    $scope.updateOrderInfo();
-  };
-
-  $scope.updatePrice = function (product) {
-    if (product.pivot.price.length > 10) {
-      product.pivot.price = product.pivot.price.substring(0, 10);
-    }
-
-    product.pivot.price = product.pivot.price.replace(/[^,.\d]/g, '');
-    product.pivot.price = product.pivot.price.replace(',', '.');
-
-    if (product.pivot.price.split('.').length - 1 > 1) {
-      var index = product.pivot.price.lastIndexOf('.');
-      var price = product.pivot.price.substring(0, index);
-      product.pivot.price = product.pivot.price.substring(index).replace('.', '');
-      product.pivot.price = price + product.pivot.price;
-    }
-
-    $scope.updateOrderInfo();
-  };
-
-  $scope.updateOrderInfo = function (pallets) {
+  $scope.updateOrderInfo = function () {
     $scope.order.cost = 0;
     $scope.order.weight = 0;
-
-    if (!pallets) {
-      $scope.order.pallets = 0;
-    }
-
+    $scope.order.pallets = 0;
     $scope.order.main_category = '';
     var _iteratorNormalCompletion4 = true;
     var _didIteratorError4 = false;
@@ -82961,18 +82930,35 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       for (var _iterator4 = $scope.order.products[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
         product = _step4.value;
 
-        if (product.pivot.price) {
-          product.pivot.cost = Math.round(product.pivot.price * product.pivot.count * 100) / 100;
-          $scope.order.cost += product.pivot.cost;
-          $scope.order.weight += product.weight_unit * product.unit_in_units * product.pivot.count;
+        if (!product.id) {
+          continue;
+        }
 
-          if (!pallets) {
-            $scope.order.pallets += product.units_in_pallete ? Math.ceil(product.pivot.count / product.units_in_pallete) : 0;
-          }
+        switch ($scope.order.pay_type) {
+          case 'cash':
+            product.pivot.price = product.price;
+            break;
 
-          if (product.category) {
-            $scope.order.main_category = product.category.main_category;
-          }
+          case 'cashless':
+            product.pivot.price = product.price_cashless;
+            break;
+
+          case 'vat':
+            product.pivot.price = product.price_vat;
+            break;
+        }
+
+        if (product.pivot.manual_price) {
+          product.pivot.price = product.pivot.manual_price;
+        }
+
+        product.pivot.cost = Math.round(product.pivot.price * product.pivot.count * 100) / 100;
+        $scope.order.cost += product.pivot.cost;
+        $scope.order.weight += product.weight_unit * product.unit_in_units * product.pivot.count;
+        $scope.order.pallets += product.units_in_pallete ? Math.ceil(product.pivot.count / product.units_in_pallete) : 0;
+
+        if (product.category) {
+          $scope.order.main_category = product.category.main_category;
         }
       }
     } catch (err) {
@@ -82990,8 +82976,14 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       }
     }
 
-    if (!$scope.order.pallets_price) {
-      $scope.order.pallets_price = $scope.palletsPrices[$scope.order.pay_type];
+    $scope.order.pallets_price = $scope.palletsPrices[$scope.order.pay_type];
+
+    if ($scope.order.manual_pallets_price) {
+      $scope.order.pallets_price = $scope.order.manual_pallets_price;
+    }
+
+    if ($scope.order.manual_pallets) {
+      $scope.order.pallets = $scope.order.manual_pallets;
     }
 
     $scope.order.cost += $scope.order.pallets * $scope.order.pallets_price;
@@ -83014,10 +83006,14 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
     $scope.order.cost = Math.ceil($scope.order.cost);
     $scope.order.weight = Math.ceil($scope.order.weight);
+
+    if ($scope.isFullPaymentChosen) {
+      $scope.order.paid = $scope.order.cost;
+    }
   };
 
   $scope.isRealizationModalShown = false;
-  $scope.modalOrder = {};
+  $scope.modalOrder = null;
   $scope.isAllRealizationsChosen = false;
 
   $scope.showRealizationModal = function (order) {
@@ -83178,6 +83174,10 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     });
   };
 
+  $scope.isPaymentModalShown = false;
+  $scope.modalPayment = null;
+  $scope.isFullPaymentChosen = false;
+
   $scope.showPaymentModal = function (order) {
     $scope.modalOrder = order || $scope.order;
     $scope.modalPayment = {
@@ -83195,12 +83195,22 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
   $scope.chooseFullPayment = function () {
     if ($scope.isFullPaymentChosen) {
-      $scope.modalPayment.paid = $scope.modalOrder.cost - $scope.modalOrder.paid;
+      if ($scope.modalPayment) {
+        $scope.modalPayment.paid = $scope.modalOrder.cost - $scope.modalOrder.paid;
+      } else {
+        $scope.order.paid = $scope.order.cost;
+      }
     }
   };
 
   $scope.checkFullPayment = function () {
-    $scope.isFullPaymentChosen = $scope.modalPayment.paid >= $scope.modalOrder.cost - $scope.modalOrder.paid;
+    console.log($scope.modalOrder);
+
+    if ($scope.modalOrder) {
+      $scope.isFullPaymentChosen = $scope.modalPayment.paid >= $scope.modalOrder.cost - $scope.modalOrder.paid;
+    } else {
+      $scope.isFullPaymentChosen = $scope.order.paid >= $scope.order.cost;
+    }
   };
 
   $scope.savePayment = function () {
@@ -83218,7 +83228,20 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       $scope.isSaving = false;
       toastr.error('Произошла ошибка на сервере');
     });
-  };
+  }; //    $scope.loadExportFile = function(order) 
+  // {
+  // 	ExportsRepository.order({'id': order.id}, function(response) 
+  // 	{
+  // 		window.open(
+  // 		 	response.file,
+  // 		 	'_blank' // <- This is what makes it open in a new window.
+  // 		);
+  // 	}, 
+  // 	function(response) 
+  // 	{
+  //        });
+  // }
+
 }]);
 
 /***/ }),

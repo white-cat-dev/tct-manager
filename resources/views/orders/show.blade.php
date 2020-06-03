@@ -1,6 +1,8 @@
 <div class="orders-page" ng-init="initShow()">
 	<h1>Просмотр заказа</h1>
 
+	@include('partials.loading')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<a href="{{ route('orders') }}" class="btn btn-primary">
@@ -205,42 +207,10 @@
 				</div>
 			</div>
 
-
 			<div class="col-6 col-xl-5">
 				
 			</div>
 
-			{{-- <div class="col-6 col-xl-5">
-				<div class="params-title">
-					История производства
-				</div>
-
-				<div class="alert alert-secondary">
-					<table class="table table-sm" ng-if="(order.productions | filter: {'performed': '> 0'}).length > 0">
-						<tr>
-							<th>Дата</th>
-							<th>Продукт</th>
-							<th>Количество</th>
-						</tr>
-						<tr ng-repeat="production in order.productions | filter: {'performed': '> 0'}">
-							<td>
-								@{{ production.formatted_date }}
-							</td>
-							<td>
-								@{{ production.product.product_group.name }} @{{ production.product.product_group.size }}<br>
-								@{{ production.product.color_text }}
-							</td>
-							<td>
-								@{{ production.performed }} <span ng-bind-html="realization.product.units_text"></span>
-							</td>
-						</tr>
-					</table>
-
-					<div ng-if="(order.productions | filter: {'performed': '> 0'}).length == 0">
-						<i class="far fa-calendar-times"></i> Заказ еще не произведен
-					</div>
-				</div>
-			</div> --}}
 
 			<div class="col-6 col-xl-5">
 				<div class="params-title">
@@ -283,7 +253,7 @@
 				</div>
 
 				<div class="alert alert-secondary">
-					<table class="table" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
+					<table class="table table-sm" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
 						<tr>
 							<th>Дата</th>
 							<th>Продукт</th>

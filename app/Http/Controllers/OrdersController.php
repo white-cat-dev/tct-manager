@@ -143,7 +143,6 @@ class OrdersController extends Controller
             }
 
             ProductionsService::getInstance()->planOrder($order);
-
             
             return $order;
         }
@@ -167,6 +166,8 @@ class OrdersController extends Controller
                     'paid' => $orderData['paid'] - $order->paid
                 ]);
             }
+
+            $oldProducts = clone $order->products;
 
             $order->update($orderData);
 
@@ -202,7 +203,7 @@ class OrdersController extends Controller
 
             $order->products()->detach($productsIds);
 
-            ProductionsService::getInstance()->planOrders();
+            ProductionsService::getInstance()->replanOrder($order, $oldProducts);
 
             return $order;
         }
@@ -234,11 +235,21 @@ class OrdersController extends Controller
             }
 
             $realization = Realization::create($realizationData);
+            $performed = $realization->performed;
 
             $realization->product->update([
-                'in_stock' => $realization->product->in_stock - $realization->performed
+                'in_stock' => $realization->product->in_stock - $performed
             ]);
 
+            $baseProduction = $realization->product->getBaseProduction();
+
+            if ($baseProduction)
+            {
+                $baseProduction->update([
+                    'auto_planned' => $baseProduction->auto_planned - $realization->performed,
+                    'performed' => $baseProduction->auto_planned - $realization->performed,
+                ]);
+            }
 
             $isOrderFinished = true;
 
@@ -257,8 +268,6 @@ class OrdersController extends Controller
                 $realization->order->update([
                     'status' => Order::STATUS_FINISHED
                 ]);
-
-                // $realization->order->productions()->whereNull('date')->delete();
             }
         }
 
@@ -451,15 +460,8 @@ class OrdersController extends Controller
 
     protected function getPaymentData(Request $request)
     {
-        $date = $request->get('date_raw', -1); 
-        if ($date == -1)
-        {
-            $date = $request->get('date', date('Y-m-d')); 
-        }
-        else
-        {
-            $date = $date ? Carbon::createFromFormat('dmY', $date)->format('Y-m-d') : date('Y-m-d');
-        }
+        $date = $request->get('date_raw', date('dmY')); 
+        $date = $date ? Carbon::createFromFormat('dmY', $date)->format('Y-m-d') : date('Y-m-d');
 
         return [
             'date' => $date,

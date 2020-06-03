@@ -5,18 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
 use App\Exports\MaterialsExport;
+use App\Order;
 use Excel;
 use Storage;
+use PDF;
 
 
 class ExportsController extends Controller
 {
     public function index(Request $request) 
     {
-        $fileName = $request->route('file', 0);
-        $type = $request->get('type', 0);
+        $fileName = $request->route('file', '');
+        $type = $request->route('type', '');
 
-        return Storage::download('exports/' . $type . '/' . $fileName);
+        if ($type == 'order')
+        {
+            return file(storage_path('app/exports/' . $type . '/' . $fileName));
+        }
+        else
+        {
+            return Storage::download('exports/' . $type . '/' . $fileName);
+        }
     }
 
 
@@ -44,6 +53,26 @@ class ExportsController extends Controller
 
         return [
             'file' => route('export', ['file' => $fileName, 'type' => 'materials'])
+        ];
+    }
+
+
+    public function order(Request $request)
+    {
+        $orderId = $request->get('id', 0);
+        $order = Order::find($orderId);
+        
+        $pdf = PDF::loadView('exports/order');
+
+        $content = $pdf->download()->getOriginalContent();
+
+        $fileName = $order->number . '.pdf';
+
+        Storage::put('exports/order/' . $fileName, $content);
+
+
+        return [
+            'file' => route('export', ['file' => $fileName, 'type' => 'order'])
         ];
     }
 }

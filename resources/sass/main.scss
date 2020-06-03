@@ -622,6 +622,27 @@ i.fas, i.far {
 .ui-select-container {
 	border: solid 1px darken($grey, 10%);
     border-radius: 0.25rem;
+
+	.ui-select-match {
+		overflow: hidden;
+	}
+
+	.ui-select-choices {
+		padding: 5px 0px;
+		margin-top: 0px;
+		margin-left: -1px;
+	    margin-right: -1px;
+	    width: calc(100% + 2px);
+
+		.ui-select-choices-row-inner {
+			padding: 3px 12px;
+		}
+	}
+
+	.ui-select-search {
+		border-color: transparent;
+		border-top: none;
+	}
 }
 
 .ui-select-container.is-invalid,

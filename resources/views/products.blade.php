@@ -71,7 +71,7 @@
 				<th>Виды</th>
 				<th>Цена</th>
 				<th>В наличии</th>
-				{{-- <th>Свободно</th> --}}
+				<th>Свободно</th>
 				<th></th>
 			</tr>
 		
@@ -116,14 +116,14 @@
 						</div>
 					</div>
 				</td>
-				{{-- <td style="width: 12%;">
+				<td style="width: 12%;">
 					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
 						<div ng-repeat="product in productGroup.products">
 							@{{ product.free_in_stock }} 
 							<span ng-bind-html="product.units_text"></span>
 						</div>
 					</div>
-				</td> --}}
+				</td>
 				<td>
 					<div class="btn-group">
 						<a ng-href="@{{ productGroup.url }}" class="btn btn-sm btn-primary">

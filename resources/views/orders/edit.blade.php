@@ -2,6 +2,8 @@
 	<h1 ng-if="!id">Создание нового заказа</h1>
 	<h1 ng-if="id">Редактирование заказа</h1>
 
+	@include('partials.loading')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<a href="{{ route('orders') }}" class="btn btn-primary">
@@ -86,7 +88,7 @@
 					<div class="custom-control custom-radio">
 						<input class="custom-control-input" type="radio" id="radioNone" ng-model="order.delivery" value="" ng-change="updateOrderInfo()">
 						<label class="custom-control-label" for="radioNone">
-							Без доставки
+							Самовывоз
 						</label>
 					</div>
 					<div class="custom-control custom-radio">
@@ -103,7 +105,7 @@
 					</div>
 
 					<div class="delivery-distance-block">
-						<input type="text" class="form-control" ng-model="order.delivery_distance" ng-change="updateOrderInfo()">
+						<input type="text" class="form-control" ng-model="order.delivery_distance" ng-blur="updateOrderInfo()">
 						<span>км за городом</span>
 					</div>
 				</div>		
@@ -139,18 +141,18 @@
 				<div class="col-12 col-xl-11">
 					<div class="params-title">Состав заказа</div>
 
-					<table class="table products-table table-with-buttons" ng-if="order.products.length > 0">
+					<table class="table products-table table-with-buttons">
 						<tr>
 							<th>Название</th>
-							<th>Разновидность</th>
-							<th>Количество</th>
+							<th>Вид</th>
 							<th>Цена</th>
+							<th>Количество</th>
 							<th>Стоимость</th>
 							<th></th>
 						</tr>
 
 						<tr ng-repeat="product in order.products track by $index">
-							<td style="width: 30%;">
+							<td>
 								<ui-select ng-model="product.product_group_id" ng-change="chooseProductGroup(product, $select.selected)" skip-focusser="true">
 						            <ui-select-match placeholder="Выберите из списка...">
 							            @{{ $select.selected.name }} @{{ $select.selected.size }}
@@ -160,7 +162,9 @@
 						            </ui-select-choices>
 								</ui-select>
 							</td>
-							<td style="width: 20%;">
+							<td>
+								<span class="empty-select" ng-if="!product.category">
+								</span>
 								<span ng-if="product.category && product.category.variations">
 									<ui-select ng-model="product.product_id" ng-change="chooseProduct(product, $select.selected)" skip-focusser="true">
 							            <ui-select-match placeholder="Выберите...">
@@ -171,34 +175,27 @@
 							            </ui-select-choices>
 									</ui-select>
 								</span>
-								<span ng-if="product.category && !product.category.variations">
+								<span class="empty-select" ng-if="product.category && !product.category.variations">
 									—
 								</span>
 							</td>
 							<td style="width: 15%;">
-								<span ng-if="product.id">
-									<input type="text" class="form-control" ng-model="product.pivot.count" ng-change="updateCount(product)">
-									<span class="product-units">
-										@{{ product.pivot.count }} <span ng-bind-html="product.units_text"></span>
-									</span>
-									<div class="product-stock" ng-if="product.id">
-										<div>В наличии: @{{ product.in_stock }} <span ng-bind-html="product.units_text"></span></div>
-										{{-- <div>Свободно: @{{ product.free_in_stock }} <span ng-bind-html="product.units_text"></span></div> --}}
-									</div>
+								<input type="text" class="form-control" ng-model="product.pivot.price" ng-change="inputFloat(product.pivot, 'price')" ng-blur="product.pivot.manual_price = product.pivot.price; updateOrderInfo()" ng-disabled="!product.id">
+								<span class="product-units" ng-if="product.id">
+									@{{ product.pivot.price }} <span>руб</span>
 								</span>
 							</td>
 							<td style="width: 15%;">
-								<span ng-if="product.id">
-									<input type="text" class="form-control" ng-model="product.pivot.price" ng-change="updatePrice(product)">
-									<span class="product-units">
-										@{{ product.pivot.price }} <span>руб</span>
-									</span>
+								<input type="text" class="form-control" ng-model="product.pivot.count" ng-disabled="!product.id" ng-change="inputFloat(product.pivot, 'count')" ng-blur="updateOrderInfo()">
+								<span class="product-units">
+									@{{ product.pivot.count }} <span ng-bind-html="product.units_text"></span>
 								</span>
+								<div class="product-stock">
+									<div>В наличии: @{{ product.in_stock ? product.in_stock : 0 }} <span ng-bind-html="product.units_text"></span></div>
+								</div>
 							</td>
 							<td class="number-col" style="width: 15%;">
-								<span ng-if="product.id">
-									@{{ product.pivot.cost | number }} руб
-								</span>
+								@{{ product.pivot.cost | number }} руб
 							</td>
 							<td>
 								<button type="button" class="btn btn-primary" ng-click="deleteProduct($index)">
@@ -206,13 +203,45 @@
 								</button>
 							</td>
 						</tr>
-					</table>
 
-					<div class="form-group">
-						<button type="button" class="btn btn-primary" ng-click="addProduct()">
-							<i class="fas fa-plus"></i> Добавить продукт	
-						</button>
-					</div>
+						<tr>
+							<td>
+								<div class="form-group">
+									<button type="button" class="btn btn-primary" ng-click="addProduct()">
+										<i class="fas fa-plus"></i> Добавить продукт	
+									</button>
+								</div>
+							</td>
+							<td colspan="5"></td>
+						</tr>
+
+						<tr>
+							<td class="border-0">
+								<span class="empty-select text-left">Поддоны</span>
+							</td>
+							<td class="border-0">
+								<span class="empty-select">
+									—
+								</span>
+							</td>
+							<td class="border-0">
+								<input type="text" class="form-control" ng-model="order.pallets_price" ng-change="inputFloat(order, 'pallets_price')" ng-blur="order.manual_pallets_price = order.pallets_price; updateOrderInfo()">
+								<span class="product-units">
+									@{{ order.pallets_price }} <span>руб</span>
+								</span>
+							</td>
+							<td class="border-0">
+								<input type="text" class="form-control" ng-model="order.pallets" ng-change="inputFloat(order, 'pallets')" ng-blur="order.manual_pallets = order.pallets; updateOrderInfo()">
+								<span class="product-units">
+									@{{ order.pallets }} <span>шт</span>
+								</span>
+							</td>
+							<td class="number-col border-0">
+								@{{ order.pallets * order.pallets_price | number }} руб
+							</td>
+							<td class="border-0"></td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -220,56 +249,53 @@
 		<div class="params-section">
 			<div class="row justify-content-around">
 				<div class="col-6 col-xl-5">
-					<div class="params-title">Итоговая информация</div>
+					<div class="params-title mb-4">Итоговая информация</div>
 
 					<div class="form-group">
-						<div class="param-label">Поддоны</div>
-						<table class="table table-sm small-products-table">
-							<tr>
-								<td>
-									<input type="text" class="form-control" ng-model="order.pallets_price" ng-change="updateOrderInfo(true)">
-									<span class="product-units">
-										@{{ order.pallets_price }} <span>руб</span>
-									</span>
-								</td>
-								<td>
-									<input type="text" class="form-control" ng-model="order.pallets" ng-change="updateOrderInfo(true)">
-									<span class="product-units">
-										@{{ order.pallets }} <span>шт</span>
-									</span>
-								</td>
-								<td>
-									@{{ order.pallets * order.pallets_price | number }} руб
-								</td>
-							</tr>
-						</table>
+						<span class="param-label">Вес заказа: </span>@{{ order.weight | number }} кг
 					</div>
 
 					<div class="form-group">
-						<div class="param-label">Вес заказа</div>
-						@{{ order.weight | number }} кг
-					</div>
-
-					<div class="form-group">
-						<div class="param-label">Стоимость заказа</div>
-						@{{ order.cost | number }} руб
-					</div>
-
-					<div class="form-group">
-						<div class="param-label">Оплачено, руб</div>
-						<input type="text" class="form-control" ng-model="order.paid">
+						<span class="param-label">Стоимость заказа: </span>@{{ order.cost | number }} руб
 					</div>
 				</div>
 
 				<div class="col-6 col-xl-5">
+					<div class="order-paid-block">
+						<div class="param-label">Оплачено:</div>
+						<input type="text" class="form-control" ng-model="order.paid" ng-blur="checkFullPayment()">
+						<span class="product-units">
+							@{{ order.paid }} <span>руб</span>
+						</span>
+					</div>
 
+					<div class="custom-control custom-checkbox mb-3">
+						<input type="checkbox" class="custom-control-input" ng-model="isFullPaymentChosen" ng-change="chooseFullPayment()" id="checkboxPayment">
+						<label class="custom-control-label" for="checkboxPayment">
+							Полная оплата
+						</label>
+					</div>
+					
+					{{-- <div ng-if="!id">
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" class="custom-control-input" ng-model="isAllRealizationsChosen" id="checkboxRealizations">
+							<label class="custom-control-label" for="checkboxRealizations">
+								Отпустить полностью
+							</label>
+						</div>
+					</div> --}}
 				</div>
 			</div>
 		</div>
 
 		<div class="buttons-block">
 			<button class="btn btn-primary" ng-click="save()" ng-disabled="isSaving">
-				<i class="fas fa-save"></i> Сохранить и выйти
+				<span ng-if="isSaving">
+					<i class="fa fa-spinner fa-spin"></i> Сохранение
+				</span>
+				<span ng-if="!isSaving">
+					<i class="fas fa-save"></i> Сохранить и выйти
+				</span>
 			</button>
 		</div>
 	</div>

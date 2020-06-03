@@ -107,8 +107,8 @@
 						<a ng-href="@{{ currentOrder.url + '/edit' }}" class="btn btn-primary btn-sm">
 							<i class="fas fa-edit"></i>
 						</a>
-						{{-- <button type="button" class="btn btn-primary btn-sm" ng-click="showDelete(currentOrder)">
-							<i class="far fa-trash-alt"></i>
+						{{-- <button type="button" class="btn btn-primary btn-sm" ng-click="loadExportFile(currentOrder)">
+							<i class="fas fa-print"></i>
 						</button> --}}
 					</div>
 
