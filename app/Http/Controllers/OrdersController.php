@@ -258,7 +258,7 @@ class OrdersController extends Controller
                     'status' => Order::STATUS_FINISHED
                 ]);
 
-                $realization->order->productions->whereNull('date')->delete();
+                // $realization->order->productions()->whereNull('date')->delete();
             }
         }
 
