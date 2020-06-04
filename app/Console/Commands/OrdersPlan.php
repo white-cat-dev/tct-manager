@@ -38,6 +38,6 @@ class OrdersPlan extends Command
      */
     public function handle()
     {
-        ProductionsService::getInstance()->replanOrders();
+        ProductionsService::getInstance()->planOrders();
     }
 }
