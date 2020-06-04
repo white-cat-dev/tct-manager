@@ -282,7 +282,7 @@
 									<th>Готово</th>
 								</tr>
 
-							    <tr ng-repeat="product in getFacilityProductionProducts(facility.id) | orderBy:'production_id' track by $index">
+							    <tr ng-repeat="product in getFacilityProductionProducts(facility.id) {{-- | orderBy:'production_id' --}} track by $index">
 							        <td style="width: 50%;">
 							        	<div class="product-name">
 							        		@{{ product.product_group.name }}
