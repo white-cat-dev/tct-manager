@@ -378,12 +378,7 @@
 									@{{ category.name }}
 								</td>
 								<td style="width: 30%;" class="text-center">
-									@{{ category.production.performed | number }}
-									<span ng-switch on="category.units">
-										<span ng-switch-when="area">м<sup>2</sup></span>
-										<span ng-switch-when="volume">м<sup>3</sup></span>
-										<span ng-switch-when="unit">шт.</span>
-									</span>
+									<span ng-bind-html="category.production.performed"></span>
 								</td>
 								<td style="width: 30%;" class="text-center">
 									@{{ category.production.salary | number }} руб

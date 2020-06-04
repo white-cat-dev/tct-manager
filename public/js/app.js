@@ -83441,6 +83441,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
     }
 
     $scope.modalProductionCategories = [];
+    var mainCategories = {};
     var _iteratorNormalCompletion3 = true;
     var _didIteratorError3 = false;
     var _iteratorError3 = undefined;
@@ -83452,8 +83453,17 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
         if (category.productions[day]) {
           var newCategory = angular.copy(category);
           newCategory.production = newCategory.productions[day];
+          newCategory.production.performed = newCategory.production.performed + ' ' + newCategory.units_text;
           newCategory.productions = [];
-          $scope.modalProductionCategories.push(newCategory);
+          var mainCategory = newCategory.main_category;
+
+          if (mainCategories[mainCategory]) {
+            mainCategories[mainCategory].name += ' + ' + newCategory.name;
+            mainCategories[mainCategory].production.salary += newCategory.production.salary;
+            mainCategories[mainCategory].production.performed += ' + ' + newCategory.production.performed;
+          } else {
+            mainCategories[mainCategory] = newCategory;
+          }
         }
       }
     } catch (err) {
@@ -83469,6 +83479,10 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
           throw _iteratorError3;
         }
       }
+    }
+
+    for (key in mainCategories) {
+      $scope.modalProductionCategories.push(mainCategories[key]);
     }
 
     $scope.modalProductionMaterials = [];

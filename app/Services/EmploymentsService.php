@@ -72,7 +72,10 @@ class EmploymentsService
             if (!empty($managerEmployment))
             {
                 $statusProduction = $managerEmployment->status->customable ? $managerEmployment->status_custom : $managerEmployment->status->salary_production;
-                $mainCategories['tiles']->productions[$day]->salary -= 50 * $statusProduction;
+                if (!empty($mainCategories['tiles']->productions[$day])) 
+                {
+                    $mainCategories['tiles']->productions[$day]->salary -= 50 * $statusProduction;
+                }
 
                 $managerEmployment->update([
                     'salary' => ceil(200 * $statusProduction)

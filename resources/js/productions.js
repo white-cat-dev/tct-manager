@@ -229,17 +229,36 @@ angular.module('tctApp').controller('ProductionsController', [
 
 		$scope.modalProductionCategories = [];
 
+		var mainCategories = {};
+
 		for (category of $scope.productionCategories)
 		{
 			if (category.productions[day])
 			{
 				var newCategory = angular.copy(category);
 				newCategory.production = newCategory.productions[day];
+				newCategory.production.performed = newCategory.production.performed + ' ' + newCategory.units_text;
 				newCategory.productions = [];
 
-				$scope.modalProductionCategories.push(newCategory);
+				var mainCategory = newCategory.main_category;
+				if (mainCategories[mainCategory])
+				{
+					mainCategories[mainCategory].name += ' + ' + newCategory.name;
+					mainCategories[mainCategory].production.salary += newCategory.production.salary;
+					mainCategories[mainCategory].production.performed +=  ' + ' + newCategory.production.performed;
+				}
+				else
+				{
+					mainCategories[mainCategory] = newCategory;
+				}
 			}
 		}
+
+		for (key in mainCategories)
+		{
+			$scope.modalProductionCategories.push(mainCategories[key]);
+		}
+
 
 		$scope.modalProductionMaterials = [];
 

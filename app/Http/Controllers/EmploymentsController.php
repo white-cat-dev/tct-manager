@@ -176,7 +176,7 @@ class EmploymentsController extends Controller
                         'worker_id' => $employmentData['worker_id'],
                         'status_id' => $employmentData['status_id'],
                         'status_custom' => $employmentData['status_custom'],
-                        'main_category' => $employmentData['main_category'],
+                        'main_category' => $employmentData['main_category'] ? $employmentData['main_category'] : 'tiles',
                         'salary' => 0
                     ]);
                 }
