@@ -145,7 +145,7 @@ class ProductionsController extends Controller
                     'day' => $currentDay,
                     'year' => $year,
                     'month' => $month,
-                    'products' => $products->sortBy('product_group.name')->values(),
+                    'products' => $products->sortBy(function($item) { return $item->product_group->name . $item->id; })->values(),
                     'facilities' => $facilities,
                     'orders' => [],
                     'categories' => $categories,
