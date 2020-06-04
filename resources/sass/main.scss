@@ -81,8 +81,23 @@ footer {
     right: 0px;
     text-align: center;
     z-index: 15;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
     font-size: 100px;
+    color: darken($grey, 20%);
+}
+
+
+.modal-loading-block {
+	position: absolute;
+    top: 0px;
+    padding-top: 50px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    z-index: 15;
+    background: rgba(255, 255, 255, 0.5);
+    font-size: 50px;
     color: darken($grey, 20%);
 }
 
@@ -739,5 +754,13 @@ i.fas, i.far {
 .auth-content-block {
 	.form-check {
 		padding-left: 0px;
+	}
+}
+
+.pointer-col {
+	cursor: pointer;
+
+	&:hover {
+		color: $primary;
 	}
 }

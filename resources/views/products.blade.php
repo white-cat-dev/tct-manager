@@ -119,7 +119,7 @@
 				</td>
 				<td style="width: 12%;">
 					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
-						<div ng-repeat="product in productGroup.products">
+						<div ng-repeat="product in productGroup.products" class="pointer-col" ng-click="showProductOrdersModal(product)">
 							@{{ product.planned }} 
 							<span ng-bind-html="product.units_text"></span>
 						</div>
@@ -224,4 +224,5 @@
 	</div>
 
 	@include('partials.delete-modal')
+	@include('partials/product-orders-modal')
 </div>

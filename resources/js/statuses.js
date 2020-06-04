@@ -26,6 +26,11 @@ angular.module('tctApp').controller('EmploymentStatusesController', [
 		EmploymentStatusesRepository.query(function(response) 
 		{
 			$scope.statuses = response;
+
+			for (key in $scope.statuses) 
+			{
+				$scope.statuses[key].customable = Boolean($scope.statuses[key].customable);
+			}
 		});
 	}
 

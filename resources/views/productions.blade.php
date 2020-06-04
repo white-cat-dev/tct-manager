@@ -86,7 +86,7 @@
 							<span ng-switch-when="unit">шт.</span>
 						</span>
 					</td>
-					<td class="d-none d-md-table-cell">
+					<td class="d-none d-md-table-cell pointer-col" ng-click="showProductOrdersModal(product)">
 						@{{ product.productions[0] ? Math.round(product.productions[0].planned * 1000) / 1000 : 0 }}
 						<span ng-switch on="product.category.units">
 							<span ng-switch-when="area">м<sup>2</sup></span>
@@ -446,4 +446,6 @@
 			</div>
 		</div>
 	</div>
+
+	@include('partials/product-orders-modal')
 </div>

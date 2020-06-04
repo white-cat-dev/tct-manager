@@ -479,4 +479,28 @@ angular.module('tctApp').controller('ProductsController', [
 		{
         });
 	}
+
+
+	$scope.modalProductOrders = [];
+
+	$scope.showProductOrdersModal = function(product)
+	{
+		$scope.isModalLoading = true;
+		$scope.isProductOrdersModalShown = true;
+		$scope.modalProduct = product;
+
+		ProductsRepository.orders({'id': product.id}, function(response) 
+		{
+			$scope.isModalLoading = false;
+
+			$scope.modalProductOrders = response;
+		});
+	}
+
+
+	$scope.hideProductOrdersModal = function()
+	{
+		$scope.isProductOrdersModalShown = false;
+		$scope.modalProductOrders = [];
+	}
 }]);

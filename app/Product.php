@@ -86,7 +86,8 @@ class Product extends Model
             'production' => 0,
             'realization' => 0,
             'ready' => 0,
-            'left' => 0
+            'left' => 0,
+            'planned' => 0
         ];
 
         $product = $order->products->where('id', $this->id)->first();
@@ -105,6 +106,7 @@ class Product extends Model
             }
 
             $progress['realization'] = round($progress['realization'], 3);
+            $progress['planned'] = round($progress['total'] - $progress['realization'], 3);
             // $progress['production'] = round($progress['production'], 3);
             // $progress['left'] = round($progress['total'] - $progress['production'], 3);
             // $progress['ready'] = round($progress['production'] - $progress['realization'], 3);

@@ -12236,6 +12236,20 @@ footer {
   color: silver;
 }
 
+.modal-loading-block {
+  position: absolute;
+  top: 0px;
+  padding-top: 50px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  z-index: 15;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 50px;
+  color: silver;
+}
+
 .main-menu-block {
   margin-top: 20px;
   border-radius: 5px;
@@ -12877,6 +12891,14 @@ i.far {
   padding-left: 0px;
 }
 
+.pointer-col {
+  cursor: pointer;
+}
+
+.pointer-col:hover {
+  color: #276090;
+}
+
 .categories-block {
   position: relative;
 }
@@ -13095,6 +13117,47 @@ i.far {
   text-decoration: underline;
   border: none;
   display: block;
+}
+
+.product-orders-modal .modal-body {
+  min-height: 152px;
+}
+
+.product-orders-modal .table tr td,
+.product-orders-modal .table tr th {
+  width: 25%;
+  text-align: center;
+  border: solid 1px #dadada;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.product-orders-modal .table tr th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.product-orders-modal .product-name {
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.product-orders-modal .product-color {
+  color: #9a9a9a;
+  font-weight: 400;
+}
+
+.product-orders-modal .no-product-orders-block {
+  text-align: center;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.product-orders-modal .no-product-orders-block div:first-child {
+  font-size: 35px;
+  color: #9a9a9a;
 }
 
 .materials-page {

@@ -81486,6 +81486,11 @@ tctApp.factory('ProductsRepository', ['$resource', function ($resource) {
     copy: {
       method: 'POST',
       url: '/products/:id/copy'
+    },
+    orders: {
+      method: 'GET',
+      url: '/products/:id/orders',
+      'isArray': true
     }
   });
 }]);
@@ -83751,6 +83756,25 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
       }
     }
   };
+
+  $scope.modalProductOrders = [];
+
+  $scope.showProductOrdersModal = function (product) {
+    $scope.isModalLoading = true;
+    $scope.isProductOrdersModalShown = true;
+    $scope.modalProduct = product;
+    ProductsRepository.orders({
+      'id': product.id
+    }, function (response) {
+      $scope.isModalLoading = false;
+      $scope.modalProductOrders = response;
+    });
+  };
+
+  $scope.hideProductOrdersModal = function () {
+    $scope.isProductOrdersModalShown = false;
+    $scope.modalProductOrders = [];
+  };
 }]);
 
 /***/ }),
@@ -84156,6 +84180,25 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       document.location.href = response.file;
     }, function (response) {});
   };
+
+  $scope.modalProductOrders = [];
+
+  $scope.showProductOrdersModal = function (product) {
+    $scope.isModalLoading = true;
+    $scope.isProductOrdersModalShown = true;
+    $scope.modalProduct = product;
+    ProductsRepository.orders({
+      'id': product.id
+    }, function (response) {
+      $scope.isModalLoading = false;
+      $scope.modalProductOrders = response;
+    });
+  };
+
+  $scope.hideProductOrdersModal = function () {
+    $scope.isProductOrdersModalShown = false;
+    $scope.modalProductOrders = [];
+  };
 }]);
 
 /***/ }),
@@ -84298,6 +84341,10 @@ angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '
   $scope.init = function () {
     EmploymentStatusesRepository.query(function (response) {
       $scope.statuses = response;
+
+      for (key in $scope.statuses) {
+        $scope.statuses[key].customable = Boolean($scope.statuses[key].customable);
+      }
     });
   };
 

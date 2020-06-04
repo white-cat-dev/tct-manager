@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ProductGroup;
 use App\Product; 
+use App\Order; 
 use Str;
 
 
@@ -160,6 +161,19 @@ class ProductsController extends Controller
         }
 
         return $productGroupCopy;
+    }
+
+
+    public function orders(Request $request, Product $product)
+    {
+        $orders = $product->orders()->where('status', '!=', Order::STATUS_FINISHED)->get();
+
+        foreach ($orders as $order) 
+        {
+            $order->progress = $product->getProgress($order);
+        }
+
+        return $orders;
     }
 
 

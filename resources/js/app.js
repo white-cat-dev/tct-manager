@@ -250,7 +250,8 @@ tctApp.factory('CategoriesRepository', ['$resource', function($resource) {
 
 tctApp.factory('ProductsRepository', ['$resource', function($resource) { 
 	return $resource('/products/:id', null, {
-		copy: { method: 'POST', url: '/products/:id/copy' }
+		copy: { method: 'POST', url: '/products/:id/copy' },
+		orders: { method: 'GET', url: '/products/:id/orders', 'isArray': true }
     });  
 }]);
 
