@@ -131,7 +131,7 @@ class ProductionsService
 
             $baseProduction->update([
                 'auto_planned' => $baseProduction->auto_planned + $productCount,
-                'performed' => $baseProduction->performed + (($freeInStock > $productCount) ? $productCount : $freeInStock)
+                'performed' => $baseProduction->performed + ($freeInStock > $productCount) ? $productCount : $freeInStock
             ]);
         }
         else
@@ -145,7 +145,7 @@ class ProductionsService
                 'facility_id' => 0,
                 'manual_planned' => 0,
                 'auto_planned' => $productCount,
-                'performed' => $product->in_stock,
+                'performed' => ($product->in_stock > $productCount) ? $productCount : $product->in_stock,
                 'batches' => 0,
                 'salary' => 0
             ]);
