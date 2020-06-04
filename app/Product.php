@@ -35,6 +35,7 @@ class Product extends Model
     protected $appends = [
         'realize_in_stock',
         'free_in_stock',
+        'planned',
         'variation_text',
         'variation_noun_text',
         'main_variation_text',
@@ -110,6 +111,20 @@ class Product extends Model
         }
 
         return $progress;
+    }
+
+
+    public function getPlannedAttribute()
+    {
+        $baseProduction = $this->getBaseProduction();
+        if ($baseProduction)
+        {
+            return $baseProduction->auto_planned;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 

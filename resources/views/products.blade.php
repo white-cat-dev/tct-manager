@@ -71,11 +71,12 @@
 				<th>Виды</th>
 				<th>Цена</th>
 				<th>В наличии</th>
+				<th>Заказано</th>
 				<th>Свободно</th>
 				<th></th>
 			</tr>
 		
-			<tr ng-repeat="(productGroupNum, productGroup) in productGroups | filter: {'name': searchQuery}"  ng-init="isProductsListShown = false">
+			<tr ng-repeat="(productGroupNum, productGroup) in productGroups | filter: {'name': searchQuery}"  ng-init="isProductsListShown = true">
 				<td>
 					@{{ $index + 1 }}
 				</td>
@@ -119,6 +120,14 @@
 				<td style="width: 12%;">
 					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
 						<div ng-repeat="product in productGroup.products">
+							@{{ product.planned }} 
+							<span ng-bind-html="product.units_text"></span>
+						</div>
+					</div>
+				</td>
+				<td style="width: 12%;">
+					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
+						<div ng-repeat="product in productGroup.products">
 							@{{ product.free_in_stock }} 
 							<span ng-bind-html="product.units_text"></span>
 						</div>
@@ -136,9 +145,9 @@
 						<button type="button" class="btn btn-sm btn-primary" ng-click="copy(productGroup.id)">
 							<i class="fas fa-copy"></i>
 						</button>
-						<button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(productGroup)">
+						{{-- <button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(productGroup)">
 							<i class="far fa-trash-alt"></i>
-						</button>
+						</button> --}}
 						@endif
 					</div>
 				</td>

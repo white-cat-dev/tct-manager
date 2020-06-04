@@ -83108,7 +83108,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       for (var _iterator7 = $scope.modalOrder.realizations[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
         realization = _step7.value;
 
-        if (realization.performed < realization.max_performed && realization.max_performed == 0) {
+        if (realization.performed < realization.max_performed) {
           $scope.isAllRealizationsChosen = false;
           return;
         }

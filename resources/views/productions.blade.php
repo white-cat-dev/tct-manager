@@ -65,6 +65,7 @@
 				<tr>
 					<th>Продукт</th>
 					<th class="d-none d-md-table-cell">Склад</th>
+					<th class="d-none d-md-table-cell">Заказ</th>
 					<th class="d-none d-md-table-cell">План</th>
 				</tr>
 				<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
@@ -79,6 +80,14 @@
 					</td>
 					<td class="d-none d-md-table-cell">
 						@{{ product.in_stock }}
+						<span ng-switch on="product.category.units">
+							<span ng-switch-when="area">м<sup>2</sup></span>
+							<span ng-switch-when="volume">м<sup>3</sup></span>
+							<span ng-switch-when="unit">шт.</span>
+						</span>
+					</td>
+					<td class="d-none d-md-table-cell">
+						@{{ product.productions[0] ? Math.round(product.productions[0].planned * 1000) / 1000 : 0 }}
 						<span ng-switch on="product.category.units">
 							<span ng-switch-when="area">м<sup>2</sup></span>
 							<span ng-switch-when="volume">м<sup>3</sup></span>

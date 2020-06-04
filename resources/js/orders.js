@@ -588,7 +588,7 @@ angular.module('tctApp').controller('OrdersController', [
 
     	for (realization of $scope.modalOrder.realizations)
 		{
-			if ((realization.performed < realization.max_performed) && (realization.max_performed == 0))
+			if (realization.performed < realization.max_performed)
 			{
 				$scope.isAllRealizationsChosen = false;
 				return;

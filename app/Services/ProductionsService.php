@@ -90,9 +90,11 @@ class ProductionsService
 
                 $baseProduction = $product->getBaseProduction();
 
+                $autoPlanned = $baseProduction->auto_planned - $productCount;
+
                 $baseProduction->update([
-                    'auto_planned' => $baseProduction->auto_planned - $productCount,
-                    'performed' => ($baseProduction->planned == $productCount) ? 0 : $baseProduction->performed
+                    'auto_planned' => $autoPlanned,
+                    'performed' => ($baseProduction->performed > $autoPlanned) ? $autoPlanned : $baseProduction->performed
                 ]);
             }
         }
@@ -103,9 +105,11 @@ class ProductionsService
 
             $baseProduction = $oldProduct->getBaseProduction();
 
+            $autoPlanned = $baseProduction->auto_planned - $oldProduct->pivot->count;
+
             $baseProduction->update([
-                'auto_planned' => $baseProduction->auto_planned - $oldProduct->pivot->count,
-                'performed' => ($baseProduction->planned == $oldProduct->pivot->count) ? 0 : $baseProduction->performed
+                'auto_planned' => $autoPlanned,
+                'performed' => ($baseProduction->performed > $autoPlanned) ? $autoPlanned : $baseProduction->performed
             ]);
         }
     }
@@ -156,6 +160,16 @@ class ProductionsService
         foreach ($orders as $order) 
         {
             $this->planOrder($order);
+        }
+    }
+
+    public function replanOrders()
+    {
+        $orders = Order::where('status', '!=', Order::STATUS_FINISHED)->get();
+
+        foreach ($orders as $order) 
+        {
+            $this->replanOrder($order, $order->products);
         }
     }
 
