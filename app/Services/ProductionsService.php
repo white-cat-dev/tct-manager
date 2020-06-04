@@ -131,7 +131,7 @@ class ProductionsService
 
             $baseProduction->update([
                 'auto_planned' => $baseProduction->auto_planned + $productCount,
-                'performed' => $baseProduction->performed + ($freeInStock > $productCount) ? $productCount : $freeInStock
+                'performed' => $baseProduction->performed + (($freeInStock > $productCount) ? $productCount : $freeInStock)
             ]);
         }
         else
