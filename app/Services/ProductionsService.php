@@ -91,6 +91,10 @@ class ProductionsService
                 $baseProduction = $product->getBaseProduction();
 
                 $autoPlanned = $baseProduction->auto_planned - $productCount;
+                if ($autoPlanned < 0)
+                {
+                    $autoPlanned = 0;
+                }
 
                 $baseProduction->update([
                     'auto_planned' => $autoPlanned,
@@ -106,6 +110,10 @@ class ProductionsService
             $baseProduction = $oldProduct->getBaseProduction();
 
             $autoPlanned = $baseProduction->auto_planned - $oldProduct->pivot->count;
+            if ($autoPlanned < 0)
+            {
+                $autoPlanned = 0;
+            }
 
             $baseProduction->update([
                 'auto_planned' => $autoPlanned,
