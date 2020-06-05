@@ -150,6 +150,11 @@ class Order extends Model
         return Carbon::createFromDate($this->date_to)->format('d.m.Y');
     }
 
+    public function getFullFormattedDateAttribute()
+    {
+        return Carbon::createFromDate($this->date_to)->format('d F Y \г.');
+    }
+
     public function getDeliveryTextAttribute()
     {
         if (!$this->delivery) 

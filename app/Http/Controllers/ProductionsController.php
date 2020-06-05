@@ -261,7 +261,7 @@ class ProductionsController extends Controller
             if ($baseProduction)
             {
                 $baseProduction->update([
-                    'performed' => ($baseProduction->performed + $productionPerformed > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $baseProduction->performed + $productionPerformed
+                    'performed' => ($baseProduction->performed + $productionPerformed > $baseProduction->auto_planned) ? $baseProduction->auto_planned : ($baseProduction->performed + $productionPerformed)
                 ]);
             }
 

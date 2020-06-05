@@ -15,12 +15,13 @@ class ExportsController extends Controller
 {
     public function index(Request $request) 
     {
+
         $fileName = $request->route('file', '');
         $type = $request->route('type', '');
 
         if ($type == 'order')
         {
-            return file(storage_path('app/exports/' . $type . '/' . $fileName));
+            return Storage::download('exports/' . $type . '/' . $fileName);
         }
         else
         {
@@ -61,10 +62,13 @@ class ExportsController extends Controller
     {
         $orderId = $request->get('id', 0);
         $order = Order::find($orderId);
-        
-        $pdf = PDF::loadView('exports/order');
 
-        $content = $pdf->download()->getOriginalContent();
+        $html = view('exports/order', compact('order'))->render();
+        $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+        
+        $pdf = PDF::loadHtml($html, 'UTF-8');
+
+        $content = $pdf->output();
 
         $fileName = $order->number . '.pdf';
 

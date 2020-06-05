@@ -706,17 +706,17 @@ angular.module('tctApp').controller('OrdersController', [
     }
 
 
- //    $scope.loadExportFile = function(order) 
-	// {
-	// 	ExportsRepository.order({'id': order.id}, function(response) 
-	// 	{
-	// 		window.open(
-	// 		 	response.file,
-	// 		 	'_blank' // <- This is what makes it open in a new window.
-	// 		);
-	// 	}, 
-	// 	function(response) 
-	// 	{
- //        });
-	// }
+    $scope.loadExportFile = function(order) 
+	{
+		ExportsRepository.order({'id': order.id}, function(response) 
+		{
+			window.open(
+			 	response.file,
+			 	'_blank' // <- This is what makes it open in a new window.
+			);
+		}, 
+		function(response) 
+		{
+        });
+	}
 }]);

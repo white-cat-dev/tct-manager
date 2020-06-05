@@ -262,8 +262,8 @@
 						<tr ng-repeat="realization in order.realizations | filter: {'date': '!= null'}">
 							<td>@{{ realization.formatted_date }}</td>
 							<td>
-								@{{ realization.product.product_group.name }} @{{ production.product.product_group.size }}<br>
-								@{{ realization.product.color_text }}
+								@{{ realization.product.product_group.name }} @{{ realization.product.product_group.size }}<br>
+								@{{ realization.product.variation_text }}
 							</td>
 							<td>
 								@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>
