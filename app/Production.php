@@ -77,7 +77,7 @@ class Production extends Model
 
     public function getPlannedAttribute()
     {
-        if (!empty($this->manual_planned))
+        if ($this->manual_planned >= 0)
         {
             return $this->manual_planned;
         }

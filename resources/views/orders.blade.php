@@ -37,6 +37,9 @@
 				<button type="button" class="btn" ng-class="{'active': currentStatus == 'finished'}" ng-click="chooseStatus('finished')">
 					Завершенные
 				</button>
+				<button type="button" class="btn" ng-class="{'active': currentStatus == 'new'}" ng-click="chooseStatus('new')">
+					С сайта
+				</button>
 			</div>
 
 			<div class="main-category-block">
@@ -70,7 +73,8 @@
 					<tr ng-repeat="order in orders | filter: {'number': searchQuery}" ng-click="chooseOrder(order)" ng-class="{'active': currentOrder.id == order.id}">
 						<td ng-class="{'text-success': order.priority == {{ App\Order::PRIORITY_HIGH }} }">
 							<div class="order-name">
-								@{{ order.number }}
+								<span ng-if="order.number">@{{ order.number }}</span>
+								<span ng-if="!order.number">@{{ order.id }}</span>
 								{{-- <div class="order-priority" ng-if="order.priority == {{ App\Order::PRIORITY_HIGH }}">
 									Важно
 								</div> --}}
@@ -97,7 +101,7 @@
 			<div class="main-products-block">
 				<div ng-if="currentOrder">
 					<div class="title-block">
-						Заказ №@{{ currentOrder.number }}
+						Заказ №<span ng-if="currentOrder.number">@{{ currentOrder.number }}</span><span ng-if="!currentOrder.number">@{{ currentOrder.id }}</span>
 					</div>
 
 					<div class="btn-group">
@@ -150,11 +154,14 @@
 							<i class="fas fa-cog"></i> Доступные действия
 						</button>
 						<div class="dropdown-menu" aria-labelledby="actionsButton">
-							<button type="button" class="btn-sm dropdown-item" ng-click="showRealizationModal(currentOrder)">
+							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.status != {{ App\Order::STATUS_NEW }}" ng-click="showRealizationModal(currentOrder)">
 								Отпустить заказ
 							</button>
 							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.paid < currentOrder.cost" ng-click="showPaymentModal(currentOrder)">
 								Внести платеж
+							</button>
+							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.status == {{ App\Order::STATUS_NEW }}" ng-click="save()">
+								В производство
 							</button>
 						</div>
 					</div>
@@ -181,6 +188,7 @@
 			<span ng-switch-when="production">заказа в работе</span>
 			<span ng-switch-when="ready">готового к выдаче заказа</span>
 			<span ng-switch-when="finished">завершенного заказа</span>
+			<span ng-switch-when="new">заказа с сайта</span>
 			<span ng-switch-default>заказа</span>
 		</span><br>
 		<small ng-if="currentMainCategory.length == 1 && currentMainCategory[0] == 'tiles'"> в категории «плитка»</small>

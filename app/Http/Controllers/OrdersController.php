@@ -36,6 +36,10 @@ class OrdersController extends Controller
                     case 'finished':
                         $query->where('status', Order::STATUS_FINISHED);
                         break;
+
+                    case 'new':
+                        $query->where('status', Order::STATUS_NEW);
+                        break;
                 }
             }
 
@@ -155,9 +159,20 @@ class OrdersController extends Controller
     {
         if ($request->wantsJson())
         {
+            if (!empty($request->get('production')))
+            {
+                $order->update([
+                    'status' => Order::STATUS_PRODUCTION
+                ]);
+
+                ProductionsService::getInstance()->planOrder($order);
+                return $order;
+            }
+            
             $this->validate($request, $this->validationRules);
 
             $orderData = $this->getData($request);
+
 
             if ($order->paid != $orderData['paid'])
             {

@@ -264,5 +264,6 @@ Route::prefix('wp-api')->namespace('WpApi')->group(function()
 	{
 		Route::get('/', 'OrdersController@getOrder');
 		Route::post('add', 'OrdersController@addToOrder');
+		Route::post('/', 'OrdersController@saveOrder');
 	});
 });

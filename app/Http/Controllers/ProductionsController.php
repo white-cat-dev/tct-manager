@@ -263,6 +263,8 @@ class ProductionsController extends Controller
                 $baseProduction->update([
                     'performed' => ($baseProduction->performed + $productionPerformed > $baseProduction->auto_planned) ? $baseProduction->auto_planned : ($baseProduction->performed + $productionPerformed)
                 ]);
+
+                ProductionsService::getInstance()->replanProduct($production->product);
             }
 
 
@@ -298,7 +300,7 @@ class ProductionsController extends Controller
             'product_id' => !empty($data['product_id']) ? $data['product_id'] : 0,
             'order_id' => !empty($data['order_id']) ? $data['order_id'] : 0,
             'auto_planned' => 0,
-            'manual_planned' => !empty($data['planned']) ? $data['planned'] : 0,
+            'manual_planned' => !empty($data['planned']) ? $data['planned'] : -1,
             'performed' => !empty($data['performed']) ? $data['performed'] : 0,
             'batches' => !empty($data['batches']) ? $data['batches'] : 0,
             'salary' => !empty($data['salary']) ? $data['salary'] : 0

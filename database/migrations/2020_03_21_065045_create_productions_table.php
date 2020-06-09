@@ -22,7 +22,7 @@ class CreateProductionsTable extends Migration
             $table->integer('order_id');
             $table->integer('facility_id');
             $table->decimal('auto_planned', 10, 3)->unsigned();
-            $table->decimal('manual_planned', 10, 3)->unsigned();
+            $table->decimal('manual_planned', 10, 3);
             $table->decimal('performed', 10, 3)->unsigned();
             $table->decimal('batches', 6, 3)->unsigned();
             $table->decimal('salary', 8, 3)->unsigned();

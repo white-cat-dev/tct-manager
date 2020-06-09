@@ -218,6 +218,14 @@ angular.module('tctApp').controller('OrdersController', [
 	 //    	}
 		// }
 
+		if ($scope.currentOrder)
+		{
+			$scope.id = $scope.currentOrder.id;
+			$scope.order = $scope.currentOrder;
+			$scope.baseUrl = 'orders';
+			$scope.order['production'] = true;
+		}
+
 		OrdersRepository.save({id: $scope.id}, $scope.order, function(response) 
 		{
 			$scope.isSaving = false;
@@ -225,6 +233,11 @@ angular.module('tctApp').controller('OrdersController', [
 			toastr.success($scope.id ? 'Заказ успешно обновлен!' : 'Новый заказ успешно создан!');
 
 			$location.path($scope.baseUrl).replace();
+
+			if ($scope.currentOrder)
+			{
+				$scope.init('production');
+			}
 
 			// $scope.orderErrors = {};
 			// $scope.id = response.id;

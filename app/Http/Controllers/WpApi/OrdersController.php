@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\ProductGroup;
 use App\Product;
 use App\Order;
+use App\Client;
 use Cookie;
+use Carbon\Carbon;
 
 
 class OrdersController extends Controller
@@ -23,6 +25,22 @@ class OrdersController extends Controller
         }
 
         return $cart;
+    }
+
+
+    public function saveOrder(Request $request)
+    {
+        $cartId = $request->get('id');
+        $cart = Order::find($cartId);
+
+        $cartData = $this->getData($request);
+        $cart->update($cartData);
+        if ($cart)
+        {
+            $cart->update([
+                'status' => Order::STATUS_NEW
+            ]);
+        }
     }
 
 
@@ -104,16 +122,29 @@ class OrdersController extends Controller
         
         if (empty($cart)) 
         {
+            $client = Client::create([
+                'name' => '',
+                'phone' => '',
+                'email' => ''
+            ]);
+
             $cart = Order::create([
                 'status' => Order::STATUS_CART,
+                'main_category' => 'tiles',
                 'number' => '',
                 'date' => date('Y-m-d'),
-                'client_id' => 0,
+                'date_to' => date('Y-m-d'),
+                'client_id' => $client->id,
                 'comment' => 'Заказ сделан на сайте',
                 'priority' => 0,
                 'cost' => 0,
                 'weight' => 0,
-                'pallets' => 0
+                'pallets' => 0,
+                'pallets_price' => 150,
+                'paid' => 0,
+                'pay_type' => 'cash',
+                'delivery' => '',
+                'delivery_distance' => 0
             ]);
 
             Cookie::queue('tct_manager_cart', $cart->id, 129600);
@@ -122,5 +153,50 @@ class OrdersController extends Controller
         $cart->products = $cart->products;
 
         return $cart;
+    }
+
+
+    protected function getData(Request $request)
+    {
+        $date = $request->get('date_raw', -1); 
+        if ($date == -1)
+        {
+            $date = $request->get('date', date('Y-m-d')); 
+        }
+        else
+        {
+            $date = $date ? Carbon::createFromFormat('dmY', $date)->format('Y-m-d') : date('Y-m-d');
+        }
+
+        // $number = $request->get('number', '');
+
+        // if (!$number)
+        // {
+        //     $number = Order::whereYear('date', date('Y'))
+        //         ->whereMonth('date', date('m'))
+        //         ->count() + 1;
+
+        //     $number = Carbon::createFromDate($date)->format('m') . '-' .  str_pad($number, 3, '0', STR_PAD_LEFT);
+        // }
+
+
+        return [
+            'date' => $date,
+            'date_to' => $date,
+            'number' => '',
+            'main_category' => $request->get('main_category', 'tiles'),
+            'delivery' => $request->get('delivery', ''),
+            'delivery_distance' => $request->get('delivery_distance', 0),
+            'client_id' => $request->get('client_id', 0),
+            'priority' => $request->get('priority', Order::PRIORITY_NORMAL),
+            'comment' => $request->get('comment', ''),
+            'status' => $request->get('status', Order::STATUS_PRODUCTION),
+            'cost' => $request->get('cost', 0),
+            'paid' => $request->get('paid', 0),
+            'pay_type' => $request->get('pay_type', 'cash'),
+            'weight' => $request->get('weight', 0),
+            'pallets' => $request->get('pallets', 0),
+            'pallets_price' => $request->get('pallets_price', 150)
+        ];
     }
 }
