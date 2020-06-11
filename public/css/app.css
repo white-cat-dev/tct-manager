@@ -12213,7 +12213,6 @@ header .main-menu-toggler span:last-child {
 }
 
 footer {
-  height: 50px;
   background: #276090;
 }
 
@@ -13320,16 +13319,25 @@ i.far {
   border-radius: 5px;
   box-shadow: 1px 1px 5px #e6e6e6;
   border: solid 1px #dadada;
-  overflow: hidden;
-  min-height: 232px;
+  max-height: calc(100vh - 99px);
 }
 
 .production-page .production-block .products-block {
   flex: none;
   z-index: 1;
-  box-shadow: 2px 0px 6px #e4e4e4;
   border-right: solid 1px #dadada;
   background: #f3f3f3;
+  max-height: calc(100vh - 99px);
+  overflow: hidden;
+  padding-bottom: 17px;
+}
+
+.production-page .production-block .products-block .table {
+  margin-bottom: 0px;
+}
+
+.production-page .production-block .products-block .table tr:first-child td {
+  border-top: none;
 }
 
 .production-page .production-block .products-block .table th {
@@ -13339,6 +13347,7 @@ i.far {
   padding: 5px 8px;
   vertical-align: middle;
   border-left: solid 1px #dadada;
+  border-bottom: solid 1px #dadada;
 }
 
 .production-page .production-block .products-block .table tr th:first-child {
@@ -13363,6 +13372,11 @@ i.far {
   }
 }
 
+.production-page .production-block .products-block .table td .product-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .production-page .production-block .products-block .table td .product-color {
   color: #9a9a9a;
 }
@@ -13370,16 +13384,43 @@ i.far {
 .production-page .production-block .products-block .table tr td:first-child {
   text-align: left;
   border-left: none;
+  width: 200px;
+  max-width: 200px;
+}
+
+.production-page .production-block .products-block .table tr td:nth-child(2),
+.production-page .production-block .products-block .table tr th:nth-child(2),
+.production-page .production-block .products-block .table tr td:nth-child(3),
+.production-page .production-block .products-block .table tr th:nth-child(3),
+.production-page .production-block .products-block .table tr td:nth-child(4),
+.production-page .production-block .products-block .table tr th:nth-child(4) {
+  width: 70px;
+  max-width: 70px;
+}
+
+.production-page .production-block .products-block .table tr:last-child td {
+  border-bottom: none;
+}
+
+.production-page .production-block .products-block .table.top-table tr th:first-child {
+  width: 200px;
+  max-width: 200px;
+}
+
+.production-page .production-block .products-block .products-block-content {
+  overflow-y: hidden;
+  max-height: calc(100vh - 159px);
+  border-bottom: solid 1px #dadada;
 }
 
 .production-page .production-block .productions-block {
-  overflow-x: scroll;
   border-right: solid 1px #dadada;
+  max-height: calc(100vh - 99px);
+  overflow: hidden;
 }
 
 .production-page .production-block .productions-block .table {
   margin: 0px -1px;
-  width: 1500px;
   font-size: 14px;
 }
 
@@ -13387,6 +13428,8 @@ i.far {
 .production-page .production-block .productions-block .table td {
   padding: 10px;
   border-left: solid 1px #dadada;
+  border-top: none;
+  border-bottom: solid 1px #dadada;
   vertical-align: middle;
   text-align: center;
   cursor: pointer;
@@ -13394,7 +13437,7 @@ i.far {
 
 .production-page .production-block .productions-block .table th {
   background: #f3f3f3;
-  border-left: solid 1px #dadada;
+  min-width: 51px;
 }
 
 .production-page .production-block .productions-block .table th:hover,
@@ -13413,7 +13456,6 @@ i.far {
   background: #FFFFFF;
   text-align: center;
   vertical-align: middle;
-  border-bottom: solid 1px #dadada;
 }
 
 @media (max-width: 767.98px) {
@@ -13496,6 +13538,25 @@ i.far {
   border-style: solid;
   border-width: 0 0 12px 12px;
   border-color: transparent;
+}
+
+.production-page .production-block .productions-block .productions-block-top-table {
+  height: 42px;
+  overflow: hidden;
+  padding-right: 17px;
+  background: #f3f3f3;
+  border-bottom: solid 1px #dadada;
+}
+
+.production-page .production-block .productions-block .productions-block-top-table > div {
+  overflow-x: hidden;
+  border-right: solid 1px #dadada;
+}
+
+.production-page .production-block .productions-block .productions-block-content {
+  max-height: calc(100vh - 142px);
+  overflow: scroll;
+  width: 100%;
 }
 
 .production-page .production-modal .edit-field {
@@ -13824,76 +13885,6 @@ i.far {
   left: 0px;
 }
 
-.production-page .production-orders {
-  border: solid 1px #dadada;
-  padding: 15px 15px 5px 15px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 5px #e6e6e6;
-  min-height: 232px;
-}
-
-.production-page .production-orders .orders-title {
-  text-align: center;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  border-bottom: solid 1px #dadada;
-}
-
-.production-page .production-orders .order-block {
-  font-size: 15px;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  border-bottom: solid 1px #dadada;
-}
-
-.production-page .production-orders .order-block:last-child {
-  margin-bottom: 0px;
-  border-bottom: none;
-}
-
-.production-page .production-orders .order-block .order-date {
-  font-size: 12px;
-  color: #9a9a9a;
-}
-
-.production-page .production-orders .order-block .custom-control-input:checked ~ .custom-control-label::before {
-  background-color: inherit;
-  border-color: inherit;
-}
-
-.production-page .production-orders .order-block .custom-control-label::before,
-.production-page .production-orders .order-block .custom-control-label::after {
-  top: 2px;
-  width: 18px;
-  height: 18px;
-}
-
-.production-page .production-orders .order-products {
-  font-size: 12px;
-  margin-bottom: 0px;
-}
-
-.production-page .production-orders .order-products td {
-  padding: 3px;
-  border: none;
-}
-
-.production-page .production-orders .order-products tr td:last-child {
-  padding-right: 0px;
-  border-right: none;
-  text-align: right;
-}
-
-.production-page .production-orders .order-products tr td:first-child {
-  padding-left: 0px;
-}
-
-.production-page .production-orders .order-products .product-color {
-  color: #9a9a9a;
-  font-size: 12px;
-}
-
 .production-page .no-productions {
   text-align: center;
   font-size: 18px;
@@ -13916,26 +13907,6 @@ i.far {
 
 .production-page .no-productions div:last-child {
   margin-top: 20px;
-}
-
-.production-page .no-production-orders {
-  text-align: center;
-  font-size: 16px;
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px 10px;
-}
-
-.production-page .no-production-orders div:first-child {
-  font-size: 35px;
-  color: #9a9a9a;
-  margin-bottom: 3px;
-}
-
-.production-page .no-production-orders div:last-child {
-  margin-top: 15px;
 }
 
 .orders-page {
@@ -14444,7 +14415,7 @@ i.far {
   position: relative;
 }
 
-.employments-page .employments-block {
+.employments-page .employment-block {
   display: flex;
   border-radius: 5px;
   box-shadow: 1px 1px 5px #e6e6e6;
@@ -14452,40 +14423,41 @@ i.far {
   overflow: hidden;
   min-height: 200px;
   margin-bottom: 15px;
-  min-height: 100%;
 }
 
-.employments-page .employments-block .workers {
+.employments-page .employment-block .workers-block {
   flex: none;
-  width: 150px;
+  width: 130px;
   z-index: 1;
-  box-shadow: 1px 0px 5px #dadada;
   border-right: solid 1px #dadada;
   background: #f3f3f3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  max-height: calc(100vh - 199px);
+  overflow: hidden;
+  padding-bottom: 17px;
 }
 
-.employments-page .employments-block .workers .table {
+.employments-page .employment-block .workers-block .table {
   flex: none;
-  width: 150px;
+  width: 130px;
   z-index: 1;
   border-right: solid 1px #dadada;
   background: #f3f3f3;
   margin-bottom: 0px;
 }
 
-.employments-page .employments-block .workers .table:last-child {
-  margin-bottom: 17px;
-  margin-top: 27px;
-}
-
-.employments-page .employments-block .workers .table th {
+.employments-page .employment-block .workers-block .table th {
   height: 41px;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px 8px;
+  vertical-align: middle;
+  border-bottom: solid 1px #dadada;
 }
 
-.employments-page .employments-block .workers .table td {
+.employments-page .employment-block .workers-block .table td {
+  height: 42px;
+  border-top: none;
+  border-left: none;
   border-bottom: solid 1px #dadada;
   padding: 10px;
   white-space: nowrap;
@@ -14495,43 +14467,60 @@ i.far {
   text-align: left;
 }
 
-.employments-page .employments-block .employments {
-  overflow-x: scroll;
-  border-right: solid 1px #dadada;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.employments-page .employment-block .workers-block .table td .worker-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
-.employments-page .employments-block .employments .table {
+.employments-page .employment-block .workers-block .workers-block-content {
+  overflow: hidden;
+  max-height: calc(100vh - 259px);
+  border-bottom: solid 1px #dadada;
+}
+
+.employments-page .employment-block .workers-block .workers-block-content .table:last-child {
+  margin-top: 27px;
+}
+
+.employments-page .employment-block .workers-block .workers-block-content .table:last-child td {
+  border-top: solid 1px #dadada;
+}
+
+.employments-page .employment-block .employments-block {
+  overflow-x: scroll;
+  border-right: solid 1px #dadada;
+  max-height: calc(100vh - 199px);
+  overflow: hidden;
+}
+
+.employments-page .employment-block .employments-block .table {
   margin: 0px -1px;
   font-size: 14px;
   border-bottom: solid 1px #dadada;
 }
 
-.employments-page .employments-block .employments .table:last-child {
-  margin-top: 27px;
-}
-
-.employments-page .employments-block .employments .table th,
-.employments-page .employments-block .employments .table td {
+.employments-page .employment-block .employments-block .table th,
+.employments-page .employment-block .employments-block .table td {
   padding: 10px;
   border-left: solid 1px #dadada;
+  border-bottom: solid 1px #dadada;
+  border-top: none;
   vertical-align: middle;
   text-align: center;
+  cursor: pointer;
 }
 
-.employments-page .employments-block .employments .table th {
+.employments-page .employment-block .employments-block .table th {
   border-left: solid 1px #dadada;
   background: #f3f3f3;
+  min-width: 42px;
 }
 
-.employments-page .employments-block .employments .table th.current {
-  background: #aeecc7;
+.employments-page .employment-block .employments-block .table th.current {
+  background: #dae9f5;
 }
 
-.employments-page .employments-block .employments .table td {
-  border-top: solid 1px #dadada;
+.employments-page .employment-block .employments-block .table td {
   cursor: pointer;
   height: 42px;
   min-width: 42px;
@@ -14539,18 +14528,22 @@ i.far {
   background: #FFFFFF;
 }
 
-.employments-page .employments-block .employments .table td .employment {
+.employments-page .employment-block .employments-block .table td.current {
+  background: #f2f7fc;
+}
+
+.employments-page .employment-block .employments-block .table td .employment {
   width: 100%;
   height: 100%;
   padding: 9px 0px;
-  border: solid 1px #FFFFFF;
+  border: solid 1px transparent;
   font-size: 14px;
   line-height: 21px;
   font-weight: 500;
   position: relative;
 }
 
-.employments-page .employments-block .employments .table td .employment .employment-category {
+.employments-page .employment-block .employments-block .table td .employment .employment-category {
   position: absolute;
   bottom: 0px;
   right: 0px;
@@ -14561,13 +14554,13 @@ i.far {
   border-color: transparent;
 }
 
-.employments-page .employments-block .employments .table td .employment .employment-salary {
+.employments-page .employment-block .employments-block .table td .employment .employment-salary {
   color: #000000;
   font-size: 12px;
   font-weight: normal;
 }
 
-.employments-page .employments-block .employments .table td .employment .form-control {
+.employments-page .employment-block .employments-block .table td .employment .form-control {
   display: inline;
   padding: 0px;
   height: auto;
@@ -14577,11 +14570,39 @@ i.far {
   color: #276090;
   font-size: 14px;
   font-weight: 500;
+  background: none;
 }
 
-.employments-page .employments-block .employments .table td .employment .edit-field {
+.employments-page .employment-block .employments-block .table td .employment .edit-field {
   cursor: text;
   transition: 0.1s;
+}
+
+.employments-page .employment-block .employments-block .employments-block-top-table {
+  height: 42px;
+  overflow: hidden;
+  padding-right: 17px;
+  background: #f3f3f3;
+  border-bottom: solid 1px #dadada;
+}
+
+.employments-page .employment-block .employments-block .employments-block-top-table > div {
+  overflow-x: hidden;
+  border-right: solid 1px #dadada;
+}
+
+.employments-page .employment-block .employments-block .employments-block-content {
+  max-height: calc(100vh - 242px);
+  overflow: scroll;
+  width: 100%;
+}
+
+.employments-page .employment-block .employments-block .employments-block-content table:last-child {
+  margin-top: 27px;
+}
+
+.employments-page .employment-block .employments-block .employments-block-content table:last-child td {
+  border-top: solid 1px #dadada;
 }
 
 .employments-page .employment-statuses {

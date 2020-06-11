@@ -163,67 +163,69 @@ class ProductionsService
 
     public function replanProduct($product)
     {
-        // $baseProduction = $product->getBaseProduction();
+        $baseProduction = $product->getBaseProduction();
 
-        // $productions = $product->productions()->whereNotNull('date')->where('date', '>=', date('Y-m-d'))->get();
+        $productions = $product->productions()->whereNotNull('date')->where('date', '>=', date('Y-m-d'))->get();
 
-        // $planned = 0;
-        // foreach ($productions as $production) 
-        // {
-        //     if (($production->date == date('Y-m-d')) && ($production->performed > 0))
-        //     {
-        //         continue;
-        //     }
+        $planned = 0;
+        foreach ($productions as $production) 
+        {
+            if (($production->date == date('Y-m-d')) && ($production->performed > 0))
+            {
+                continue;
+            }
 
-        //     $planned += $production->planned;
-        // }
+            $planned += $production->planned;
+        }
 
 
-        // if ($planned > $baseProduction->auto_planned)
-        // {
-        //     $difference = $planned - $baseProduction->auto_planned;
-        //     $lastDay = $productions->sortByDesc('date')->first()->date;
+        
+        $autoPlanned = $baseProduction->auto_planned - $baseProduction->performed;
+        if ($planned > $autoPlanned)
+        {
+            $difference = $planned - $autoPlanned;
+            $lastDay = $productions->sortByDesc('date')->first()->date;
 
-        //     foreach ($productions->sortByDesc('date') as $production) 
-        //     {
-        //         if ($production->planned <= $difference)
-        //         {
-        //             $difference -= $production->planned;
-        //             $production->delete();
-        //         }
-        //         else
-        //         {
-        //             $production->update([
-        //                 'auto_planned' => $production->planned - $difference
-        //             ]);
+            foreach ($productions->sortByDesc('date') as $production) 
+            {
+                if ($production->planned <= $difference)
+                {
+                    $difference -= $production->planned;
+                    $production->delete();
+                }
+                else
+                {
+                    $production->update([
+                        'auto_planned' => $production->planned - $difference
+                    ]);
 
-        //             break;
-        //         }
-        //     }
-        // }
-        // else if ($planned < $baseProduction->auto_planned)
-        // {
-        //     $production = $productions->sortByDesc('date')->first();
-        //     $currentDay = Carbon::createFromDate($production->date);
+                    break;
+                }
+            }
+        }
+        else if ($planned < $autoPlanned)
+        {
+            $production = $productions->sortByDesc('date')->first();
+            $currentDay = Carbon::createFromDate($production->date);
 
-        //     $difference = $baseProduction->auto_planned - $planned;
+            $difference = $autoPlanned - $planned;
 
-        //     while ($difference > 0)
-        //     {
-        //         $production = $this->getProduction($currentDay, $product, $difference);
+            while ($difference > 0)
+            {
+                $production = $this->getProduction($currentDay, $product, $difference);
 
-        //         if ($production === -1)
-        //         {
-        //             break;
-        //         }
-        //         else if ($production)
-        //         {
-        //             $difference -= $production->new_planned;
-        //         }
+                if ($production === -1)
+                {
+                    break;
+                }
+                else if ($production)
+                {
+                    $difference -= $production->new_planned;
+                }
 
-        //         $currentDay = $currentDay->addDay();
-        //     }
-        // }
+                $currentDay = $currentDay->addDay();
+            }
+        }
     }
 
 
@@ -522,6 +524,15 @@ class ProductionsService
         }
 
         $plannedCount = ($plannedCount > $productCount) ? $productCount : $plannedCount;
+
+        if ($plannedCount < $product->product_group->units_from_batch)
+        {
+            $plannedCount = $product->product_group->units_from_batch;
+        }
+        if ($plannedCount > 2 * $product->product_group->units_from_batch)
+        {
+            $plannedCount = $product->product_group->units_from_batch;
+        }
 
         if ($production)
         {

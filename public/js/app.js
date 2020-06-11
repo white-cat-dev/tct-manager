@@ -81819,6 +81819,7 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
   $scope.isSalariesShown = false;
 
   $scope.init = function () {
+    $scope.isLoading = true;
     var request = {};
 
     if ($scope.currentDate.year > 0) {
@@ -81843,6 +81844,8 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       if (Object.keys($scope.statuses).length > 0) {
         $scope.chooseCurrentEmploymentStatus(Object.keys($scope.statuses)[0]);
       }
+
+      $scope.initScroll();
     });
   };
 
@@ -81891,9 +81894,15 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       'month': $scope.currentDate.month,
       'day': $scope.currentDate.day
     };
+    console.log(employments);
+    $scope.isSaving = true;
     EmploymentsRepository.save(request, function (response) {
+      $scope.isSaving = false;
       toastr.success('Все изменения успешно сохранены!');
       $scope.init();
+    }, function (response) {
+      $scope.isSaving = false;
+      toastr.error('Произошла ошибка на сервере');
     });
   };
 
@@ -81958,20 +81967,35 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
     if (!worker.employments[day]) {
       var statusId = $scope.currentEmploymentStatus !== null ? $scope.currentEmploymentStatus : -1;
       var mainCategory = $scope.currentMainCategory !== null ? $scope.currentMainCategory : 0;
+      var statusCustom = 0;
+
+      if (statusId) {
+        if ($scope.statuses[statusId].customable > 0) {
+          statusCustom = worker.id > 0 ? 1 : 9;
+          mainCategory = 'tiles';
+        }
+      }
+
       worker.employments[day] = {
         'worker_id': worker.id,
         'day': day,
         'status_id': statusId,
-        'status_custom': 0,
+        'status_custom': statusCustom,
         'main_category': mainCategory,
         'salary': 0
       };
     } else {
       var statusId = worker.employments[day].status_id;
       var mainCategory = worker.employments[day].main_category;
+      var statusCustom = worker.employments[day].status_custom;
 
       if ($scope.currentEmploymentStatus !== null) {
         statusId = $scope.currentEmploymentStatus;
+
+        if ($scope.statuses[$scope.currentEmploymentStatus].customable > 0) {
+          statusCustom = worker.id > 0 ? 1 : 9;
+          mainCategory = 'tiles';
+        }
       }
 
       if ($scope.currentMainCategory !== null) {
@@ -81980,6 +82004,7 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
 
       worker.employments[day].status_id = statusId;
       worker.employments[day].main_category = mainCategory;
+      worker.employments[day].status_custom = statusCustom;
     }
   };
 
@@ -82003,6 +82028,32 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       $scope.isSalaryModalShown = false;
       $scope.init();
     });
+  };
+
+  $scope.initScroll = function () {
+    setTimeout(function () {
+      var employmentBlock = document.querySelector('.employment-block');
+      var mainBlock = employmentBlock.querySelector('.employments-block-content');
+      var leftBlock = employmentBlock.querySelector('.workers-block-content');
+      var topBlock = employmentBlock.querySelector('.employments-block-top-table > div');
+      var scrollLeft = mainBlock.querySelector('.table').clientWidth / $scope.days * ($scope.currentDate.day - 1);
+      scrollLeft = scrollLeft - mainBlock.clientWidth / 2 + 20;
+
+      if (scrollLeft < 0) {
+        scrollLeft = 0;
+      }
+
+      mainBlock.scrollLeft = scrollLeft;
+      mainBlock.focus();
+      mainBlock.addEventListener('scroll', function (event) {
+        var scrollTop = mainBlock.scrollTop;
+        var scrollLeft = mainBlock.scrollLeft;
+        leftBlock.scrollTop = scrollTop;
+        topBlock.scrollLeft = scrollLeft;
+      });
+      $scope.isLoading = false;
+      $scope.$apply();
+    }, 100);
   };
 }]);
 
@@ -83264,7 +83315,9 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   !*** ./resources/js/productions.js ***!
   \*************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductionsRepository', 'OrdersRepository', 'ProductsRepository', function ($scope, $routeParams, $location, $timeout, $filter, toastr, ProductionsRepository, OrdersRepository, ProductsRepository) {
   $scope.Math = window.Math;
@@ -83309,7 +83362,6 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
       $scope.productionMaterials = response.materials;
       $scope.facilities = response.facilities;
       $scope.productionsPlanned = false;
-      console.log($scope.productionProducts);
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -83338,7 +83390,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
         }
       }
 
-      $scope.isLoading = false;
+      $scope.initScroll();
     });
   };
 
@@ -83782,6 +83834,32 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
   $scope.hideProductOrdersModal = function () {
     $scope.isProductOrdersModalShown = false;
     $scope.modalProductOrders = [];
+  };
+
+  $scope.initScroll = function () {
+    setTimeout(function () {
+      var productionBlock = document.querySelector('.production-block');
+      var mainBlock = productionBlock.querySelector('.productions-block-content');
+      var leftBlock = productionBlock.querySelector('.products-block-content');
+      var topBlock = productionBlock.querySelector('.productions-block-top-table > div');
+      var scrollLeft = mainBlock.querySelector('.table').clientWidth / $scope.days * ($scope.currentDate.day - 1);
+      scrollLeft = scrollLeft - mainBlock.clientWidth / 2 + 25;
+
+      if (scrollLeft < 0) {
+        scrollLeft = 0;
+      }
+
+      mainBlock.scrollLeft = scrollLeft;
+      mainBlock.focus();
+      mainBlock.addEventListener('scroll', function (event) {
+        var scrollTop = mainBlock.scrollTop;
+        var scrollLeft = mainBlock.scrollLeft;
+        leftBlock.scrollTop = scrollTop;
+        topBlock.scrollLeft = scrollLeft;
+      });
+      $scope.isLoading = false;
+      $scope.$apply();
+    }, 100);
   };
 }]);
 

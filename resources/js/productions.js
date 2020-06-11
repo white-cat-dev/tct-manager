@@ -1,3 +1,5 @@
+var $ = require('jquery');
+
 angular.module('tctApp').controller('ProductionsController', [
 	'$scope',
 	'$routeParams',
@@ -75,7 +77,6 @@ angular.module('tctApp').controller('ProductionsController', [
 			$scope.facilities = response.facilities;
 
 			$scope.productionsPlanned = false;
-			console.log($scope.productionProducts);
 			for (product of $scope.productionProducts)
 			{
 				if (product.productions[0] && product.productions[0].planned > 0)
@@ -84,7 +85,8 @@ angular.module('tctApp').controller('ProductionsController', [
 					break;
 				}
 			}
-			$scope.isLoading = false;
+			
+			$scope.initScroll();
 		});
 	}
 
@@ -550,5 +552,41 @@ angular.module('tctApp').controller('ProductionsController', [
 	{
 		$scope.isProductOrdersModalShown = false;
 		$scope.modalProductOrders = [];
+	}
+
+
+
+	$scope.initScroll = function()
+	{
+		setTimeout(function()
+		{
+			var productionBlock = document.querySelector('.production-block');
+			var mainBlock = productionBlock.querySelector('.productions-block-content');
+			var leftBlock = productionBlock.querySelector('.products-block-content');
+			var topBlock = productionBlock.querySelector('.productions-block-top-table > div');
+
+			var scrollLeft = mainBlock.querySelector('.table').clientWidth / $scope.days * ($scope.currentDate.day - 1);
+			scrollLeft = scrollLeft - mainBlock.clientWidth / 2 + 25;
+			if (scrollLeft < 0)
+			{
+				scrollLeft = 0;
+			}
+
+			mainBlock.scrollLeft = scrollLeft;
+
+			mainBlock.focus();
+
+			mainBlock.addEventListener('scroll', function(event) 
+			{
+				var scrollTop = mainBlock.scrollTop;
+				var scrollLeft = mainBlock.scrollLeft;
+
+				leftBlock.scrollTop = scrollTop;
+				topBlock.scrollLeft = scrollLeft;
+			});
+
+			$scope.isLoading = false;
+			$scope.$apply();
+		}, 100);
 	}
 }]);

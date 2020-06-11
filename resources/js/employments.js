@@ -36,6 +36,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 	$scope.init = function()
 	{
+		$scope.isLoading = true;
+
 		var request = {};
 		if ($scope.currentDate.year > 0)
 		{
@@ -64,6 +66,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 			{
 				$scope.chooseCurrentEmploymentStatus(Object.keys($scope.statuses)[0]);
 			}
+
+			$scope.initScroll();
 		});
 	};
 
@@ -99,13 +103,21 @@ angular.module('tctApp').controller('EmploymentsController', [
 			'month': $scope.currentDate.month,
 			'day': $scope.currentDate.day
 		}
-
+		console.log(employments);
+		$scope.isSaving = true;
 		EmploymentsRepository.save(request, function(response) 
 		{
+			$scope.isSaving = false;
+
 			toastr.success('Все изменения успешно сохранены!');
 
 			$scope.init();
-		});
+		}, 
+		function(response) 
+		{
+            $scope.isSaving = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
 	};
 
 
@@ -191,12 +203,22 @@ angular.module('tctApp').controller('EmploymentsController', [
 		{
 			var statusId = ($scope.currentEmploymentStatus !== null) ? $scope.currentEmploymentStatus : -1;
 			var mainCategory = ($scope.currentMainCategory !== null) ? $scope.currentMainCategory : 0;
+			var statusCustom = 0; 
+
+			if (statusId)
+			{
+				if ($scope.statuses[statusId].customable > 0)
+				{
+					statusCustom = (worker.id > 0) ? 1 : 9;
+					mainCategory = 'tiles';
+				}
+			}
 
 			worker.employments[day] = {
 				'worker_id': worker.id,
 				'day': day,
 				'status_id': statusId,
-				'status_custom': 0, 
+				'status_custom': statusCustom, 
 				'main_category': mainCategory,
 				'salary': 0
 			};
@@ -205,18 +227,27 @@ angular.module('tctApp').controller('EmploymentsController', [
 		{
 			var statusId = worker.employments[day].status_id;
 			var mainCategory = worker.employments[day].main_category;
+			var statusCustom = worker.employments[day].status_custom; 
 
 			if ($scope.currentEmploymentStatus !== null)
 			{
 				statusId = $scope.currentEmploymentStatus;
+
+				if ($scope.statuses[$scope.currentEmploymentStatus].customable > 0)
+				{
+					statusCustom = (worker.id > 0) ? 1 : 9;
+					mainCategory = 'tiles';
+				}
 			}
 
 			if ($scope.currentMainCategory !== null)
 			{
 				mainCategory = $scope.currentMainCategory;
 			}
+
 			worker.employments[day].status_id = statusId;
 			worker.employments[day].main_category = mainCategory;
+			worker.employments[day].status_custom = statusCustom;
 		}
 	};
 
@@ -249,5 +280,40 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 			$scope.init();
 		});
+	}
+
+
+	$scope.initScroll = function()
+	{
+		setTimeout(function()
+		{
+			var employmentBlock = document.querySelector('.employment-block');
+			var mainBlock = employmentBlock.querySelector('.employments-block-content');
+			var leftBlock = employmentBlock.querySelector('.workers-block-content');
+			var topBlock = employmentBlock.querySelector('.employments-block-top-table > div');
+
+			var scrollLeft = mainBlock.querySelector('.table').clientWidth / $scope.days * ($scope.currentDate.day - 1);
+			scrollLeft = scrollLeft - mainBlock.clientWidth / 2 + 20;
+			if (scrollLeft < 0)
+			{
+				scrollLeft = 0;
+			}
+
+			mainBlock.scrollLeft = scrollLeft;
+
+			mainBlock.focus();
+
+			mainBlock.addEventListener('scroll', function(event) 
+			{
+				var scrollTop = mainBlock.scrollTop;
+				var scrollLeft = mainBlock.scrollLeft;
+
+				leftBlock.scrollTop = scrollTop;
+				topBlock.scrollLeft = scrollLeft;
+			});
+
+			$scope.isLoading = false;
+			$scope.$apply();
+		}, 100);
 	}
 }]);

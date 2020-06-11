@@ -155,6 +155,8 @@ class EmploymentsController extends Controller
         {
             foreach ($employmentsGroup as $employmentData) 
             {
+                $employmentData = $this->getData($employmentData);
+
                 $date = Carbon::createFromDate($year, $month, $employmentData['day'])->format('Y-m-d');
 
                 $employment = Employment::where('worker_id', $employmentData['worker_id'])
@@ -190,5 +192,19 @@ class EmploymentsController extends Controller
     public function saveSalary(Request $request, WorkerSalary $salary)
     {
         $salary->update($request->all());
+    }
+
+
+    protected function getData($data)
+    {
+        return [
+            'day' => !empty($data['day']) ? $data['day'] : 0,
+            'date' => !empty($data['date']) ? $data['date'] : null,
+            'worker_id' => !empty($data['worker_id']) ? $data['worker_id'] : 0,
+            'status_id' => !empty($data['status_id']) ? $data['status_id'] : 1,
+            'status_custom' => !empty($data['status_custom']) ? $data['status_custom'] : 0,
+            'main_category' => !empty($data['main_category']) ? $data['main_category'] : '',
+            'salary' => !empty($data['salary']) ? $data['salary'] : 0
+        ];
     }
 }

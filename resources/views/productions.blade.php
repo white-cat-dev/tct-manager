@@ -44,8 +44,8 @@
 			</div>
 
 			<div class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input" ng-model="isAllProductionsShown" id="checkboxSalaries">
-				<label class="custom-control-label" for="checkboxSalaries">
+				<input type="checkbox" class="custom-control-input" ng-model="isAllProductionsShown" id="checkboxProductions">
+				<label class="custom-control-label" for="checkboxProductions">
 					Показать полный график
 				</label>
 			</div>
@@ -61,77 +61,90 @@
 
 	<div class="production-block" ng-if="isAllProductionsShown && productionProducts.length > 0 || !isAllProductionsShown && productionsPlanned">
 		<div class="products-block">
-			<table class="table">
+			<table class="table top-table">
 				<tr>
 					<th>Продукт</th>
 					<th class="d-none d-md-table-cell">Склад</th>
 					<th class="d-none d-md-table-cell">Заказ</th>
 					<th class="d-none d-md-table-cell">План</th>
 				</tr>
-				<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
-					<td>
-						<div class="product-name">
-							@{{ product.product_group.name }}<br class="d-block d-md-none">
-							@{{ product.product_group.size }}
-						</div>
-						<div class="product-color" ng-if="product.variation_noun_text">
-							@{{ product.variation_noun_text }}
-						</div>
-					</td>
-					<td class="d-none d-md-table-cell">
-						@{{ product.in_stock }}
-						<span ng-switch on="product.category.units">
-							<span ng-switch-when="area">м<sup>2</sup></span>
-							<span ng-switch-when="volume">м<sup>3</sup></span>
-							<span ng-switch-when="unit">шт.</span>
-						</span>
-					</td>
-					<td class="d-none d-md-table-cell pointer-col" ng-click="showProductOrdersModal(product)">
-						@{{ product.productions[0] ? Math.round(product.productions[0].planned * 1000) / 1000 : 0 }}
-						<span ng-switch on="product.category.units">
-							<span ng-switch-when="area">м<sup>2</sup></span>
-							<span ng-switch-when="volume">м<sup>3</sup></span>
-							<span ng-switch-when="unit">шт.</span>
-						</span>
-					</td>
-					<td class="d-none d-md-table-cell">
-						@{{ product.productions[0] ? ((product.productions[0].planned > product.productions[0].performed) ? Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000 : 0) : 0 }}
-						<span ng-switch on="product.category.units">
-							<span ng-switch-when="area">м<sup>2</sup></span>
-							<span ng-switch-when="volume">м<sup>3</sup></span>
-							<span ng-switch-when="unit">шт.</span>
-						</span>
-					</td>
-				</tr>
 			</table>
+			
+			<div class="products-block-content">
+				<table class="table">
+					<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
+						<td>
+							<div class="product-name">
+								@{{ product.product_group.name }}<br class="d-block d-md-none">
+								@{{ product.product_group.size }}
+							</div>
+							<div class="product-color" ng-if="product.variation_noun_text">
+								@{{ product.variation_noun_text }}
+							</div>
+						</td>
+						<td class="d-none d-md-table-cell">
+							@{{ product.in_stock }}
+							<span ng-switch on="product.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт.</span>
+							</span>
+						</td>
+						<td class="d-none d-md-table-cell pointer-col" ng-click="showProductOrdersModal(product)">
+							@{{ product.productions[0] ? Math.round(product.productions[0].planned * 1000) / 1000 : 0 }}
+							<span ng-switch on="product.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт.</span>
+							</span>
+						</td>
+						<td class="d-none d-md-table-cell">
+							@{{ product.productions[0] ? ((product.productions[0].planned > product.productions[0].performed) ? Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000 : 0) : 0 }}
+							<span ng-switch on="product.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт.</span>
+							</span>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 
 		<div class="productions-block">
-			<table class="table">
-				<tr>
-					<th ng-repeat="x in [].constructor(days) track by $index" ng-click="showModal($index + 1)" ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
-						@{{ $index + 1 }}
-					</th>
-				</tr>
-			
-				<tr ng-repeat="product in productionProducts" ng-if="(isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed)">
-					<td ng-repeat="x in [].constructor(days) track by $index" 
-						ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" 
-						ng-click="showModal($index + 1)" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
+			<div class="productions-block-top-table">
+				<div>
+					<table class="table top-table">
+						<tr>
+							<th ng-repeat="x in [].constructor(days) track by $index" ng-click="showModal($index + 1)" ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
+								@{{ $index + 1 }}
+							</th>
+						</tr>
+					</table>
+				</div>
+			</div>
 
-						<div class="production" ng-style="{'background': getOrderMarkColor(product.productions[$index+1])}" ng-class="{'marked': getOrderMarkColor(product.productions[$index+1]) != 'transparent'}">
-							<div class="production-performed" ng-if="product.productions[$index+1].performed > 0">
-								@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} 
+			<div class="productions-block-content">
+				<table class="table">
+					<tr ng-repeat="product in productionProducts" ng-if="(isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed)">
+						<td ng-repeat="x in [].constructor(days) track by $index" 
+							ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" 
+							ng-click="showModal($index + 1)" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
+
+							<div class="production" ng-style="{'background': getOrderMarkColor(product.productions[$index+1])}" ng-class="{'marked': getOrderMarkColor(product.productions[$index+1]) != 'transparent'}">
+								<div class="production-performed" ng-if="product.productions[$index+1].performed > 0">
+									@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} 
+								</div>
+								<div class="production-planned"  ng-if="product.productions[$index+1].performed == 0">
+									@{{ product.productions[$index+1] ? product.productions[$index+1].batches : 0 }} 
+								</div>
+								{{-- <div class="production-facility" ng-style="{'border-bottom-color': product.productions[$index+1] ? facilities[product.productions[$index+1].facility_id].icon_color : ''}">
+								</div> --}}
 							</div>
-							<div class="production-planned"  ng-if="product.productions[$index+1].performed == 0">
-								@{{ product.productions[$index+1] ? product.productions[$index+1].batches : 0 }} 
-							</div>
-							{{-- <div class="production-facility" ng-style="{'border-bottom-color': product.productions[$index+1] ? facilities[product.productions[$index+1].facility_id].icon_color : ''}">
-							</div> --}}
-						</div>
-					</td>
-				</tr>
-			</table>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 

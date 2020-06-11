@@ -261,7 +261,7 @@ class ProductionsController extends Controller
             if ($baseProduction)
             {
                 $baseProduction->update([
-                    'performed' => ($baseProduction->performed + $productionPerformed > $baseProduction->auto_planned) ? $baseProduction->auto_planned : ($baseProduction->performed + $productionPerformed)
+                    'performed' => ($baseProduction->product->in_stock > $baseProduction->planned) ? $baseProduction->planned : $baseProduction->product->in_stock
                 ]);
 
                 ProductionsService::getInstance()->replanProduct($production->product);

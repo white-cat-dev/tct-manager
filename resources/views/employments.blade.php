@@ -1,171 +1,176 @@
 <div class="employments-page" ng-init="init()">
 	<h1>График работ</h1>
 
-	<div class="row">
-		<div class="col-12 col-lg-9">
-			<div class="top-buttons-block">
-				<div class="left-buttons">
-					<div class="input-group date-group">
-						<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.year = currentDate.year - 1; init()" ng-disabled="currentDate.year == years[0]">
-						    <i class="fas fa-chevron-left"></i>
-						</button>
+	@include('partials.loading')
 
-						<ui-select ng-model="currentDate.year" ng-change="init()" skip-focusser="true" search-enabled="false">
-				            <ui-select-match placeholder="Год">
-					            <span ng-bind-html="$select.selected"></span>
-					        </ui-select-match>
-				            <ui-select-choices repeat="year in years">
-				                <span ng-bind-html="year"></span>
-				            </ui-select-choices>
-						</ui-select>
+	<div class="top-buttons-block">
+		<div class="left-buttons">
+			<div class="input-group date-group">
+				<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.year = currentDate.year - 1; init()" ng-disabled="currentDate.year == years[0]">
+				    <i class="fas fa-chevron-left"></i>
+				</button>
 
-						<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.year = currentDate.year + 1; init()" ng-disabled="currentDate.year == years[years.length - 1]">
-						    <i class="fas fa-chevron-right"></i>
-						</button>
-					</div>
+				<ui-select ng-model="currentDate.year" ng-change="init()" skip-focusser="true" search-enabled="false">
+		            <ui-select-match placeholder="Год">
+			            <span ng-bind-html="$select.selected"></span>
+			        </ui-select-match>
+		            <ui-select-choices repeat="year in years">
+		                <span ng-bind-html="year"></span>
+		            </ui-select-choices>
+				</ui-select>
 
-					<div class="input-group date-group">
-					    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.month = currentDate.month - 1; init()" ng-disabled="currentDate.month == monthes[0].id">
-						    <i class="fas fa-chevron-left"></i>
-						</button>
+				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.year = currentDate.year + 1; init()" ng-disabled="currentDate.year == years[years.length - 1]">
+				    <i class="fas fa-chevron-right"></i>
+				</button>
+			</div>
 
-						<ui-select ng-model="currentDate.month" ng-change="init()" skip-focusser="true" search-enabled="false">
-				            <ui-select-match placeholder="Месяц">
-					            <span ng-bind-html="$select.selected.name"></span>
-					        </ui-select-match>
-				            <ui-select-choices repeat="month.id as month in monthes">
-				                <span ng-bind-html="month.name"></span>
-				            </ui-select-choices>
-						</ui-select>
+			<div class="input-group date-group">
+			    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.month = currentDate.month - 1; init()" ng-disabled="currentDate.month == monthes[0].id">
+				    <i class="fas fa-chevron-left"></i>
+				</button>
 
-						<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.month = currentDate.month + 1; init()" ng-disabled="currentDate.month == monthes[monthes.length - 1].id">
-						    <i class="fas fa-chevron-right"></i>
-						</button>
-					</div>
-				</div>
+				<ui-select ng-model="currentDate.month" ng-change="init()" skip-focusser="true" search-enabled="false">
+		            <ui-select-match placeholder="Месяц">
+			            <span ng-bind-html="$select.selected.name"></span>
+			        </ui-select-match>
+		            <ui-select-choices repeat="month.id as month in monthes">
+		                <span ng-bind-html="month.name"></span>
+		            </ui-select-choices>
+				</ui-select>
 
-				<div class="right-buttons">
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" ng-model="isSalariesShown" id="checkboxSalaries">
-						<label class="custom-control-label" for="checkboxSalaries">
-							Показать расчет зарплаты
-						</label>
-					</div>
-				</div>
+				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.month = currentDate.month + 1; init()" ng-disabled="currentDate.month == monthes[monthes.length - 1].id">
+				    <i class="fas fa-chevron-right"></i>
+				</button>
+			</div>
+
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" ng-model="isSalariesShown" id="checkboxSalaries">
+				<label class="custom-control-label" for="checkboxSalaries">
+					Показать расчет зарплаты
+				</label>
 			</div>
 		</div>
 
-		<div class="col-12 col-lg-3">
-			<div class="top-buttons-block">
-				<div class="left-buttons">
-					
-				</div>
-				<div class="right-buttons">
-					<button type="button" class="btn btn-primary" ng-click="save()">
-						<i class="fas fa-save"></i> Сохранить изменения
-					</button>
-				</div>
-			</div>
+		<div class="right-buttons">
+			<button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="isSaving" style="width: 220px;">
+				<span ng-if="isSaving">
+					<i class="fa fa-spinner fa-spin"></i> Сохранение изменений
+				</span>
+				<span ng-if="!isSaving">
+					<i class="fas fa-save"></i> Сохранить изменения
+				</span>
+			</button>
 		</div>
 	</div>
 
 
 	<div class="row">
 		<div class="col-9">
-			<div class="employments-block" ng-if="workers.length > 0">
-				<div class="workers">
+			<div class="employment-block" ng-if="workers.length > 0">
+				<div class="workers-block">
 					<table class="table">
 						<tr>
-							<th></th>
-						</tr>
-						<tr ng-repeat="worker in workers">
-							<td>@{{ worker.name }}</td>
+							<th>Работник</th>
 						</tr>
 					</table>
 
-					<table class="table">
-						<tr>
-							<td>@{{ manager.name }}</td>
-						</tr>
-					</table>
+					<div class="workers-block-content">
+						<table class="table">
+							<tr ng-repeat="worker in workers">
+								<td>
+									<div class="employment-name">
+										@{{ worker.name }}
+									</div>
+								</td>
+							</tr>
+						</table>
+
+						<table class="table">
+							<tr>
+								<td>@{{ manager.name }}</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 
-				<div class="employments">
-					<table class="table">
-						<tr>
-							<th ng-repeat="x in [].constructor(days) track by $index">@{{ $index + 1 }}</th>
-							<th ng-if="isSalariesShown">Итого</th>
-						</tr>
+				<div class="employments-block">
+					<div class="employments-block-top-table">
+						<div>
+							<table class="table top-table">
+								<tr>
+									<th ng-repeat="x in [].constructor(days) track by $index" ng-class="{'current': $index + 1 == currentDate.day}">@{{ $index + 1 }}</th>
+									<th ng-if="isSalariesShown" style="min-width: 70px">Итого</th>
+								</tr>
+							</table>
+						</div>
+					</div>
 					
-						<tr ng-repeat="worker in workers">
-							<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(worker, $index+1)" ng-style="{'color': worker.employments[$index+1] ? statuses[worker.employments[$index+1].status_id].icon_color : ''}">
-								<div class="employment" ng-if="worker.employments[$index+1]">
-									<div ng-if="!isSalariesShown">
-										<div ng-bind-html="statuses[worker.employments[$index+1].status_id].icon" ng-if="!statuses[worker.employments[$index+1].status_id].customable"></div>
+					<div class="employments-block-content">
+						<table class="table">
+							<tr ng-repeat="worker in workers">
+								<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(worker, $index+1)" ng-style="{'color': worker.employments[$index+1] ? statuses[worker.employments[$index+1].status_id].icon_color : ''}" ng-class="{'current': $index + 1 == currentDate.day}">
+									<div class="employment" ng-if="worker.employments[$index+1]">
+										<div ng-if="!isSalariesShown">
+											<div ng-bind-html="statuses[worker.employments[$index+1].status_id].icon" ng-if="!statuses[worker.employments[$index+1].status_id].customable"></div>
 
-										<div ng-if="statuses[worker.employments[$index+1].status_id].customable">
-											<div ng-if="!statuses[currentEmploymentStatus].customable">
-												@{{ worker.employments[$index+1].status_custom }} 
-											</div>
-											<div ng-if="statuses[currentEmploymentStatus].customable">
-												<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
+											<div ng-if="statuses[worker.employments[$index+1].status_id].customable">
+												<div ng-if="!statuses[currentEmploymentStatus].customable">
 													@{{ worker.employments[$index+1].status_custom }} 
 												</div>
-												<input type="text" class="form-control" ng-model="worker.employments[$index+1].status_custom" ng-show="isEditFieldShown" ng-blur="isEditFieldShown = false" ng-keypress="inputKeyPressed($event)">
+												<div ng-if="statuses[currentEmploymentStatus].customable">
+													<input type="text" class="form-control" ng-model="worker.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)">
+												</div>
 											</div>
+
+											<div class="employment-category" ng-style="{'border-bottom-color': mainCategories[worker.employments[$index+1].main_category].icon_color}"></div>
 										</div>
 
-										<div class="employment-category" ng-style="{'border-bottom-color': mainCategories[worker.employments[$index+1].main_category].icon_color}"></div>
+										<div class="employment-salary" ng-if="isSalariesShown">
+											@{{ worker.employments[$index+1].salary }}
+										</div>
 									</div>
+								</td>
+								<td ng-if="isSalariesShown" style="min-width: 70px">
+									@{{ worker.salary.employments }}
+								</td>
+							</tr>
+						</table>
 
-									<div class="employment-salary" ng-if="isSalariesShown">
-										@{{ worker.employments[$index+1].salary }}
-									</div>
-								</div>
-							</td>
-							<td ng-if="isSalariesShown" style="min-width: 70px">
-								@{{ worker.salary.employments }}
-							</td>
-						</tr>
-					</table>
+						<table class="table">			
+							<tr>
+								<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(manager, $index+1)" ng-style="{'color': manager.employments[$index+1] ? statuses[manager.employments[$index+1].status_id].icon_color : ''}" ng-class="{'current': $index + 1 == currentDate.day}">
+									<div class="employment" ng-if="manager.employments[$index+1]">
+										<div ng-if="!isSalariesShown">
+											<div ng-bind-html="statuses[manager.employments[$index+1].status_id].icon" ng-if="!statuses[manager.employments[$index+1].status_id].customable"></div>
 
-					<table class="table">			
-						<tr>
-							<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(manager, $index+1)" ng-style="{'color': manager.employments[$index+1] ? statuses[manager.employments[$index+1].status_id].icon_color : ''}">
-								<div class="employment" ng-if="manager.employments[$index+1]">
-									<div ng-if="!isSalariesShown">
-										<div ng-bind-html="statuses[manager.employments[$index+1].status_id].icon" ng-if="!statuses[manager.employments[$index+1].status_id].customable"></div>
-
-										<div ng-if="statuses[manager.employments[$index+1].status_id].customable">
-											<div ng-if="!statuses[currentEmploymentStatus].customable">
-												@{{ manager.employments[$index+1].status_custom }} 
-											</div>
-											<div ng-if="statuses[currentEmploymentStatus].customable">
-												<div class="edit-field" ng-show="!isEditFieldShown" ng-click="isEditFieldShown = true; focusNextInput($event);">
+											<div ng-if="statuses[manager.employments[$index+1].status_id].customable">
+												<div ng-if="!statuses[currentEmploymentStatus].customable">
 													@{{ manager.employments[$index+1].status_custom }} 
 												</div>
-												<input type="text" class="form-control" ng-model="manager.employments[$index+1].status_custom" ng-show="isEditFieldShown" ng-blur="isEditFieldShown = false" ng-keypress="inputKeyPressed($event)">
+												<div ng-if="statuses[currentEmploymentStatus].customable">
+													<input type="text" class="form-control" ng-model="manager.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)">
+												</div>
 											</div>
+
+											<div class="employment-category" ng-style="{'border-bottom-color': mainCategories[manager.employments[$index+1].main_category].icon_color}"></div>
 										</div>
 
-										<div class="employment-category" ng-style="{'border-bottom-color': mainCategories[manager.employments[$index+1].main_category].icon_color}"></div>
+										<div class="employment-salary" ng-if="isSalariesShown">
+											@{{ manager.employments[$index+1].salary }}
+										</div>
 									</div>
-
-									<div class="employment-salary" ng-if="isSalariesShown">
-										@{{ manager.employments[$index+1].salary }}
-									</div>
-								</div>
-							</td>
-							<td ng-if="isSalariesShown" style="min-width: 70px">
-								@{{ manager.salary.employments }}
-							</td>
-						</tr>
-					</table>
+								</td>
+								<td ng-if="isSalariesShown" style="min-width: 70px">
+									@{{ manager.salary.employments }}
+								</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
 
 
-			<div class="no-employments" ng-if="workers.length == 0">
+			<div class="no-employments" ng-if="(workers.length == 0) && !isLoading">
 				<div>
 					<i class="far fa-calendar-times"></i>
 				</div>

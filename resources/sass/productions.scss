@@ -6,17 +6,24 @@
 		border-radius: 5px;
 		box-shadow: 1px 1px 5px darken($grey, 5%);
 		border: solid 1px darken($grey, 10%);
-		overflow: hidden;
-		min-height: 232px;
+		max-height: calc(100vh - 99px);
 
 		.products-block	{
 			flex: none;
 	    	z-index: 1;
-	    	box-shadow: 2px 0px 6px darken($grey, 6%);
 	    	border-right: solid 1px darken($grey, 10%);
 	    	background: $grey;
+	    	max-height: calc(100vh - 99px);
+	    	overflow: hidden;
+	    	padding-bottom: 17px;
 
 			.table {
+				margin-bottom: 0px;
+
+				tr:first-child td {
+					border-top: none;
+				}
+
 				th {
 					height: 41px;
 					font-size: 12px;
@@ -24,6 +31,7 @@
 				    padding: 5px 8px;
 				    vertical-align: middle;
 				    border-left: solid 1px darken($grey, 10%);
+				    border-bottom: solid 1px darken($grey, 10%);
 				}
 
 				tr th:first-child {
@@ -45,6 +53,10 @@
 						height: 65px;
 					}
 
+					.product-name {
+						text-overflow: ellipsis;
+   						overflow: hidden;
+					}
 
 					.product-color {
 						color: darken($grey, 35%);
@@ -54,23 +66,50 @@
 				tr td:first-child {
 					text-align: left;
 					border-left: none;
+					width: 200px;
+					max-width: 200px;
 				}
+
+				tr td:nth-child(2), tr th:nth-child(2),
+				tr td:nth-child(3), tr th:nth-child(3),
+				tr td:nth-child(4), tr th:nth-child(4) {
+					width: 70px;
+					max-width: 70px;
+				}
+
+				tr:last-child td {
+					border-bottom: none;
+				}
+
+				&.top-table {
+					tr th:first-child {
+						width: 200px;
+						max-width: 200px;
+					}
+				}
+			}
+				
+			.products-block-content {
+				overflow-y: hidden;
+				max-height: calc(100vh - 159px);
+				border-bottom: solid 1px darken($grey, 10%);
 			}
 		}
 
 		.productions-block {
-			overflow-x: scroll;
 			border-right: solid 1px darken($grey, 10%);
+    		max-height: calc(100vh - 99px);
+    		overflow: hidden;
 
 			.table {
 				margin: 0px -1px;
-				width: 1500px;
 				font-size: 14px;
-
 
 				th, td {
 					padding: 10px;
 					border-left: solid 1px darken($grey, 10%);
+					border-top: none;
+					border-bottom: solid 1px darken($grey, 10%);
 					vertical-align: middle;
 					text-align: center;
 					cursor: pointer;
@@ -79,7 +118,7 @@
 
 				th {
 					background: $grey;
-					border-left: solid 1px darken($grey, 10%);
+					min-width: 51px;
 
 					&:hover,
 					&.hover {
@@ -98,7 +137,6 @@
 					background: #FFFFFF;
 					text-align: center;
 					vertical-align: middle;
-					border-bottom: solid 1px darken($grey, 10%);
 
 					@include media-breakpoint-down(sm) {
 						height: 65px;
@@ -179,6 +217,25 @@
 						}
 					}
 				}
+			}
+
+			.productions-block-top-table {
+				height: 42px;
+			    overflow: hidden;
+			    padding-right: 17px;
+			    background: #f3f3f3;
+			    border-bottom: solid 1px #dadada;
+
+			    & > div {
+			    	overflow-x: hidden;
+    				border-right: solid 1px #dadada;
+			    }
+			}
+
+			.productions-block-content {
+				max-height: calc(100vh - 142px);
+			    overflow: scroll;
+			    width: 100%;
 			}
 		}
 	}
@@ -510,77 +567,6 @@
 		}
 	}
 
-	.production-orders {
-		border: solid 1px darken($grey, 10%);
-		padding: 15px 15px 5px 15px;
-		border-radius: 5px;
-		box-shadow: 1px 1px 5px darken($grey, 5%);
-		min-height: 232px;
-
-		.orders-title {
-			text-align: center;
-			padding-bottom: 10px;
-		    margin-bottom: 10px;
-		    font-weight: bold;
-		    border-bottom: solid 1px darken($grey, 10%);
-		}
-
-		.order-block {
-			font-size: 15px;
-			padding-bottom: 5px;
-			margin-bottom: 10px;
-			border-bottom: solid 1px darken($grey, 10%);
-
-			&:last-child {
-				margin-bottom: 0px;
-				border-bottom: none;
-			}
-
-			.order-date {
-				font-size: 12px;
-				color: darken($grey, 35%);
-			}
-
-			.custom-control-input:checked ~ .custom-control-label::before {
-				background-color: inherit;
-				border-color: inherit;
-			}
-
-			.custom-control-label::before,
-			.custom-control-label::after {
-			    top: 2px;
-			    width: 18px;
-			    height: 18px;
-			}
-		}
-
-		.order-products {
-			font-size: 12px;
-			margin-bottom: 0px;
-
-			td {
-				padding: 3px;
-				border: none;
-			}
-
-			tr td {
-				&:last-child {
-					padding-right: 0px;
-					border-right: none;
-					text-align: right;
-				}
-				&:first-child {
-					padding-left: 0px;
-				}
-			}
-
-			.product-color {
-				color: darken($grey, 35%);
-				font-size: 12px;
-			}
-		}
-	}
-
 	.no-productions {
 		text-align: center;
 		font-size: 18px;
@@ -602,26 +588,6 @@
 
 		div:last-child {
 			margin-top: 20px;
-		}
-	}
-
-	.no-production-orders {
-		text-align: center;
-		font-size: 16px;
-	   	min-height: 100px;
-	    display: flex;
-	    flex-direction: column;
-	    justify-content: center;
-	    padding: 20px 10px;
-
-		div:first-child {
-			font-size: 35px;
-			color: darken($grey, 35%);
-			margin-bottom: 3px;
-		}
-
-		div:last-child {
-			margin-top: 15px;
 		}
 	}
 }

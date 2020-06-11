@@ -1,7 +1,7 @@
 .employments-page {
 	position: relative;
 
-	.employments-block {
+	.employment-block {
 		display: flex;
 		border-radius: 5px;
 		box-shadow: 1px 1px 5px darken($grey, 5%);
@@ -9,37 +9,38 @@
 		overflow: hidden;
 		min-height: 200px;
 		margin-bottom: 15px;
-		min-height: 100%;
 
-		.workers {
+		.workers-block {
 			flex: none;
-	    	width: 150px;
+	    	width: 130px;
 	    	z-index: 1;
-	    	box-shadow: 1px 0px 5px darken($grey, 10%);
 	    	border-right: solid 1px darken($grey, 10%);
 	    	background: $grey;
-	    	display: flex;
-	    	flex-direction: column;
-	    	justify-content: space-between;
+	    	max-height: calc(100vh - 199px);
+	    	overflow: hidden;
+	    	padding-bottom: 17px;
 
 			.table {
 				flex: none;
-		    	width: 150px;
+		    	width: 130px;
 		    	z-index: 1;
 		    	border-right: solid 1px darken($grey, 10%);
 		    	background: $grey;
 		    	margin-bottom: 0px;
 
-		    	&:last-child {
-		    		margin-bottom: 17px;
-		    		margin-top: 27px;
-		    	}
-
 		    	th {
 		    		height: 41px;
+				    font-size: 12px;
+				    text-align: center;
+				    padding: 5px 8px;
+				    vertical-align: middle;
+				    border-bottom: solid 1px #dadada;
 		    	}
 
 				td {
+					height: 42px;
+					border-top: none;
+					border-left: none;
 					border-bottom: solid 1px darken($grey, 10%);
 					padding: 10px;
 					white-space: nowrap;
@@ -47,55 +48,76 @@
 					background: $grey;
 					font-size: 14px;
 					text-align: left;
+
+					.worker-name {
+						text-overflow: ellipsis;
+   						overflow: hidden;
+					}
 				}
+			}
+
+			.workers-block-content {
+		    	overflow: hidden;
+				max-height: calc(100vh - 259px);
+				border-bottom: solid 1px darken($grey, 10%);
+
+				.table:last-child {
+		    		margin-top: 27px;
+
+		    		td {
+						border-top: solid 1px darken($grey, 10%);
+					}
+		    	}
 			}
 		}
 
-		.employments {
+		.employments-block {
 			overflow-x: scroll;
 			border-right: solid 1px darken($grey, 10%);
-			display: flex;
-	    	flex-direction: column;
-	    	justify-content: space-between;
+	    	max-height: calc(100vh - 199px);
+    		overflow: hidden;
 
 			.table {
 				margin: 0px -1px;
 				font-size: 14px;
 				border-bottom: solid 1px darken($grey, 10%);
 
-				&:last-child {
-		    		margin-top: 27px;
-		    	}
-
 				th, td {
 					padding: 10px;
 					border-left: solid 1px darken($grey, 10%);
+					border-bottom: solid 1px darken($grey, 10%);
+					border-top: none;
 					vertical-align: middle;
 					text-align: center;
+					cursor: pointer;
 				}
 
 				th {
 					border-left: solid 1px darken($grey, 10%);
 					background: $grey;
+					min-width: 42px;
 
 					&.current {
-						background: lighten($green, 40%);
+						background: lighten($primary, 55%);
 					}
 				}
 
 				td {
-					border-top: solid 1px darken($grey, 10%);
 					cursor: pointer;
 					height: 42px;
 					min-width: 42px;
 					padding: 0px;
 					background: #FFFFFF;
 
+					&.current {
+						background: lighten($primary, 61%);
+					}
+
 					.employment {
 						width: 100%;
     					height: 100%;
 					    padding: 9px 0px;
-					    border: solid 1px #FFFFFF;
+					    border: solid 1px transparent;
 					    font-size: 14px;
 					    line-height: 21px;
 					    font-weight: 500;
@@ -128,6 +150,7 @@
 						    color: $primary;
 						    font-size: 14px;
 						    font-weight: 500;
+						    background: none;
 						}
 
 						.edit-field {
@@ -136,6 +159,33 @@
 						}
 					}
 				}
+			}
+
+			.employments-block-top-table {
+				height: 42px;
+			    overflow: hidden;
+			    padding-right: 17px;
+			    background: #f3f3f3;
+			    border-bottom: solid 1px #dadada;
+
+			    & > div {
+			    	overflow-x: hidden;
+    				border-right: solid 1px #dadada;
+			    }
+			}
+
+			.employments-block-content {
+				max-height: calc(100vh - 242px);
+			    overflow: scroll;
+			    width: 100%;
+
+		    	table:last-child {
+		    		margin-top: 27px;
+
+		    		td {
+						border-top: solid 1px darken($grey, 10%);
+					}
+		    	}
 			}
 		}
 	}
