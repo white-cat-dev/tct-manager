@@ -133,99 +133,99 @@ class ProductionsService
         }
 
 
-        $productCountPlan = $productCount - $freeInStock;
+        // $productCountPlan = $productCount - $freeInStock;
 
-        $currentDay = Carbon::today();
+        // $currentDay = Carbon::today();
 
-        $currentDay = $currentDay->addDay();
+        // $currentDay = $currentDay->addDay();
 
-        $facilities = Facility::whereHas('categories', function($query) use ($product) {
-            $query->where('categories.id', $product->category_id);
-        })->get();
+        // $facilities = Facility::whereHas('categories', function($query) use ($product) {
+        //     $query->where('categories.id', $product->category_id);
+        // })->get();
 
-        while ($productCountPlan > 0)
-        {
-            $production = $this->getProduction($currentDay, $product, $productCount, $facilities);
+        // while ($productCountPlan > 0)
+        // {
+        //     $production = $this->getProduction($currentDay, $product, $productCount, $facilities);
 
-            if ($production === -1)
-            {
-                break;
-            }
-            else if ($production)
-            {
-                $productCountPlan -= $production->planned;
-            }
+        //     if ($production === -1)
+        //     {
+        //         break;
+        //     }
+        //     else if ($production)
+        //     {
+        //         $productCountPlan -= $production->planned;
+        //     }
 
-            $currentDay = $currentDay->addDay();
-        }     
+        //     $currentDay = $currentDay->addDay();
+        // }     
     }
 
 
     public function replanProduct($product)
     {
-        $baseProduction = $product->getBaseProduction();
+        // $baseProduction = $product->getBaseProduction();
 
-        $productions = $product->productions()->whereNotNull('date')->where('date', '>=', date('Y-m-d'))->get();
+        // $productions = $product->productions()->whereNotNull('date')->where('date', '>=', date('Y-m-d'))->get();
 
-        $planned = 0;
-        foreach ($productions as $production) 
-        {
-            if (($production->date == date('Y-m-d')) && ($production->performed > 0))
-            {
-                continue;
-            }
+        // $planned = 0;
+        // foreach ($productions as $production) 
+        // {
+        //     if (($production->date == date('Y-m-d')) && ($production->performed > 0))
+        //     {
+        //         continue;
+        //     }
 
-            $planned += $production->planned;
-        }
+        //     $planned += $production->planned;
+        // }
 
 
         
-        $autoPlanned = $baseProduction->auto_planned - $baseProduction->performed;
-        if ($planned > $autoPlanned)
-        {
-            $difference = $planned - $autoPlanned;
-            $lastDay = $productions->sortByDesc('date')->first()->date;
+        // $autoPlanned = $baseProduction->auto_planned - $baseProduction->performed;
+        // if ($planned > $autoPlanned)
+        // {
+        //     $difference = $planned - $autoPlanned;
+        //     $lastDay = $productions->sortByDesc('date')->first()->date;
 
-            foreach ($productions->sortByDesc('date') as $production) 
-            {
-                if ($production->planned <= $difference)
-                {
-                    $difference -= $production->planned;
-                    $production->delete();
-                }
-                else
-                {
-                    $production->update([
-                        'auto_planned' => $production->planned - $difference
-                    ]);
+        //     foreach ($productions->sortByDesc('date') as $production) 
+        //     {
+        //         if ($production->planned <= $difference)
+        //         {
+        //             $difference -= $production->planned;
+        //             $production->delete();
+        //         }
+        //         else
+        //         {
+        //             $production->update([
+        //                 'auto_planned' => $production->planned - $difference
+        //             ]);
 
-                    break;
-                }
-            }
-        }
-        else if ($planned < $autoPlanned)
-        {
-            $production = $productions->sortByDesc('date')->first();
-            $currentDay = Carbon::createFromDate($production->date);
+        //             break;
+        //         }
+        //     }
+        // }
+        // else if ($planned < $autoPlanned)
+        // {
+        //     $production = $productions->sortByDesc('date')->first();
+        //     $currentDay = Carbon::createFromDate($production->date);
 
-            $difference = $autoPlanned - $planned;
+        //     $difference = $autoPlanned - $planned;
 
-            while ($difference > 0)
-            {
-                $production = $this->getProduction($currentDay, $product, $difference);
+        //     while ($difference > 0)
+        //     {
+        //         $production = $this->getProduction($currentDay, $product, $difference);
 
-                if ($production === -1)
-                {
-                    break;
-                }
-                else if ($production)
-                {
-                    $difference -= $production->new_planned;
-                }
+        //         if ($production === -1)
+        //         {
+        //             break;
+        //         }
+        //         else if ($production)
+        //         {
+        //             $difference -= $production->new_planned;
+        //         }
 
-                $currentDay = $currentDay->addDay();
-            }
-        }
+        //         $currentDay = $currentDay->addDay();
+        //     }
+        // }
     }
 
 
