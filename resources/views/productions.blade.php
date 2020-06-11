@@ -59,7 +59,7 @@
 	</div>
 
 
-	<div class="production-block" ng-if="isAllProductionsShown && productionProducts.length > 0 || !isAllProductionsShown && productionsPlanned">
+	<div class="production-block" ng-show="isAllProductionsShown && productionProducts.length > 0 || !isAllProductionsShown && productionsPlanned">
 		<div class="products-block">
 			<table class="table top-table">
 				<tr>
