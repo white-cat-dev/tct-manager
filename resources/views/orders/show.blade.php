@@ -144,14 +144,19 @@
 						<th>Количество</th>
 						<th>Стоимость</th>
 						<th>Отпущено</th>
-						<th>Готово</th>
+						<th>В наличии</th>
 					</tr>
 					<tr ng-repeat="product in order.products">
 						<td>
 							@{{ product.product_group.name }} @{{ product.product_group.size }}
 						</td>
 						<td>
-							@{{ product.variation_text }}
+							<span ng-if="product.variation_text">
+								@{{ product.variation_text }}
+							</span>
+							<span ng-if="!product.variation_text">
+								—
+							</span>
 						</td>
 						<td>
 							@{{ product.pivot.price | number }} руб/<span ng-bind-html="product.units_text"></span>
@@ -166,7 +171,59 @@
 							@{{ product.progress.realization | number }} <span ng-bind-html="product.units_text"></span>
 						</td>
 						<td>
-							@{{ product.progress.ready | number }} <span ng-bind-html="product.units_text"></span>
+							<span ng-if="product.progress.total != product.progress.realization">
+								@{{ product.in_stock }}
+								<span ng-bind-html="product.units_text"></span>
+							</span>
+							<span ng-if="product.progress.total == product.progress.realization">
+								—
+							</span>
+						</td>
+					</tr>
+					<tr ng-if="order.pallets">
+						<td>
+							Поддоны
+						</td>
+						<td>
+							—
+						</td>
+						<td>
+							@{{ order.pallets_price | number }} руб
+						</td>
+						<td>
+							@{{ order.pallets | number }} шт
+						</td>
+						<td>
+							@{{ order.pallets * order.pallets_price | number }} руб
+						</td>
+						<td>
+							—
+						</td>
+						<td>
+							—
+						</td>
+					</tr>
+					<tr ng-if="order.delivery_price">
+						<td>
+							Доставка
+						</td>
+						<td>
+							—
+						</td>
+						<td>
+							—
+						</td>
+						<td>
+							—
+						</td>
+						<td>
+							@{{ order.delivery_price | number }} руб
+						</td>
+						<td>
+							—
+						</td>
+						<td>
+							—
 						</td>
 					</tr>
 				</table>
@@ -177,15 +234,6 @@
 			<div class="col-6 col-xl-5">
 				<div class="params-title">
 					Итоговая информация
-				</div>
-
-				<div class="param-block">
-					<div class="param-name">
-						Поддоны
-					</div>
-					<div class="param-value">
-						@{{ order.pallets | number }} шт по @{{ order.pallets_price | number }} руб
-					</div>
 				</div>
 
 				<div class="param-block">
@@ -212,13 +260,13 @@
 			</div>
 
 
-			<div class="col-6 col-xl-5">
+			<div class="col-5 col-xl-4">
 				<div class="params-title">
 					История оплаты
 				</div>
 
 				<div class="alert alert-secondary">
-					<table class="table table-sm" ng-if="order.payments.length > 0">
+					<table class="table table-sm history-table" ng-if="order.payments.length > 0">
 						<tr>
 							<th>Дата</th>
 							<th>Сумма</th>
@@ -236,7 +284,7 @@
 								Итого:
 							</td>
 							<td>
-								@{{ order.paid | number }} руб
+								@{{ order.payments_paid | number }} руб
 							</td>
 						</tr>
 					</table>
@@ -247,13 +295,13 @@
 				</div>
 			</div>
 
-			<div class="col-6 col-xl-5">
+			<div class="col-7 col-xl-6">
 				<div class="params-title">
 					История выдачи
 				</div>
 
 				<div class="alert alert-secondary">
-					<table class="table table-sm" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
+					<table class="table table-sm history-table" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
 						<tr>
 							<th>Дата</th>
 							<th>Продукт</th>
@@ -261,9 +309,9 @@
 						</tr>
 						<tr ng-repeat="realization in order.realizations | filter: {'date': '!= null'}">
 							<td>@{{ realization.formatted_date }}</td>
-							<td>
-								@{{ realization.product.product_group.name }} @{{ realization.product.product_group.size }}<br>
-								@{{ realization.product.variation_text }}
+							<td style="width: 50%">
+								@{{ realization.product.product_group.name }} @{{ realization.product.product_group.size }}
+								<span class="product-color">@{{ realization.product.variation_text }}</span>
 							</td>
 							<td>
 								@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>

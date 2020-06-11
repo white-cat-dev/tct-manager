@@ -19,7 +19,7 @@
 						</div>
 						<div class="col-6">
 							<div class="param-label">Оплачено</div>
-							@{{ modalOrder.paid | number }} руб
+							@{{ modalOrder.payments_paid | number }} руб
 						</div>
 					</div>
 				</div>

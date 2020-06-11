@@ -90,7 +90,7 @@
 							@{{ order.cost | number }} руб.
 						</td>
 						<td ng-class="{'text-success': order.pay_type != 'cash'}">
-							@{{ order.paid | number }} руб.
+							@{{ order.payments_paid | number }} руб.
 						</td>
 					</tr>
 				</table>
@@ -157,7 +157,7 @@
 							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.status != {{ App\Order::STATUS_NEW }}" ng-click="showRealizationModal(currentOrder)">
 								Отпустить заказ
 							</button>
-							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.paid < currentOrder.cost" ng-click="showPaymentModal(currentOrder)">
+							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.payments_paid < currentOrder.cost" ng-click="showPaymentModal(currentOrder)">
 								Внести платеж
 							</button>
 							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.status == {{ App\Order::STATUS_NEW }}" ng-click="save()">

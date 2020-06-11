@@ -12628,7 +12628,6 @@ i.far {
 
 .edit-form-block .params-section {
   padding-top: 20px;
-  border-top: solid 1px #dadada;
 }
 
 .show-block {
@@ -14067,6 +14066,32 @@ i.far {
   margin-top: 10px;
 }
 
+.orders-page .table tr td {
+  position: relative;
+}
+
+.orders-page .table .product-units {
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  color: transparent;
+}
+
+.orders-page .table .product-units > span {
+  color: #495057;
+}
+
+.orders-page .table .form-control {
+  background: transparent;
+  color: #212529;
+  z-index: 1;
+  position: relative;
+}
+
+.orders-page .table .form-control:focus {
+  background: transparent;
+}
+
 .orders-page .products-table tr td {
   vertical-align: top;
   position: relative;
@@ -14092,31 +14117,10 @@ i.far {
   padding: 6px 12px;
 }
 
-.orders-page .products-table tr td .form-control {
-  background: transparent;
-  color: #212529;
-}
-
-.orders-page .products-table tr td .form-control:focus {
-  background: transparent;
-}
-
 .orders-page .products-table tr td .product-stock {
   color: #9a9a9a;
   font-size: 12px;
   margin-top: 3px;
-}
-
-.orders-page .products-table tr td .product-units {
-  position: absolute;
-  top: 20px;
-  left: 25px;
-  color: transparent;
-  z-index: -1;
-}
-
-.orders-page .products-table tr td .product-units > span {
-  color: #495057;
 }
 
 .orders-page .products-table tr td:first-child .ui-select-container {
@@ -14267,6 +14271,16 @@ i.far {
   margin-bottom: 20px;
   text-align: center;
   border: solid 1px #dadada;
+}
+
+.orders-page .history-table tr td,
+.orders-page .history-table tr th {
+  vertical-align: top;
+}
+
+.orders-page .history-table tr td .product-color,
+.orders-page .history-table tr th .product-color {
+  color: #9a9a9a;
 }
 
 .workers-page {

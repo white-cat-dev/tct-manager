@@ -106,11 +106,11 @@ class ProductionsService
 
         if ($baseProduction)
         {
-            $freeInStock = ($product->in_stock > $baseProduction->performed) ? ($product->in_stock - $baseProduction->performed) : 0;
+            $baseProductionPlanned = $baseProduction->auto_planned + $productCount;
 
             $baseProduction->update([
-                'auto_planned' => $baseProduction->auto_planned + $productCount,
-                'performed' => $baseProduction->performed + (($freeInStock > $productCount) ? $productCount : $freeInStock)
+                'auto_planned' => $baseProductionPlanned,
+                'performed' => ($baseProduction->product->in_stock > $baseProductionPlanned) ? $baseProductionPlanned : $baseProduction->product->in_stock
             ]);
         }
         else

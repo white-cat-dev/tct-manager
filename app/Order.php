@@ -26,6 +26,7 @@ class Order extends Model
         'number',
         'delivery',
         'delivery_distance',
+        'delivery_price',
     	'client_id',
         'status',
         'comment',
@@ -45,7 +46,8 @@ class Order extends Model
         'priority_text',
         'pay_type_text',
         'formatted_date',
-        'formatted_date_to'
+        'formatted_date_to',
+        'payments_paid'
     ];
 
     protected $with = [
@@ -58,7 +60,8 @@ class Order extends Model
         'paid' => 'float',
         'pallets_price' => 'float',
         'weight' => 'float',
-        'delivery_distance' => 'float'
+        'delivery_distance' => 'float',
+        'delivery_price' => 'float'
     ];
 
     protected static $statuses = [
@@ -159,11 +162,16 @@ class Order extends Model
     {
         if (!$this->delivery) 
         {
-            return 'Без доставки';
+            return 'Самовывоз';
         }
         $delivery = Arr::get(static::$deliveries, $this->delivery, '');
 
         return $delivery . ' (' . $this->delivery_distance . ' км за городом)';
+    }
+
+    public function getPaymentsPaidAttribute()
+    {
+        return $this->payments->sum('paid');
     }
 
 

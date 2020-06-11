@@ -103,7 +103,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 			'month': $scope.currentDate.month,
 			'day': $scope.currentDate.day
 		}
-		console.log(employments);
+
 		$scope.isSaving = true;
 		EmploymentsRepository.save(request, function(response) 
 		{

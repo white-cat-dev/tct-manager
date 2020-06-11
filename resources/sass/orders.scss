@@ -151,6 +151,34 @@
 		}
 	}
 
+	.table {
+		tr td {
+			position: relative;
+		}
+
+		.product-units {
+			position: absolute;
+		    top: 20px;
+			left: 25px;
+		    color: transparent;
+
+		    & > span {
+		    	color: #495057;
+		    }
+		}
+
+		.form-control {
+			background: transparent;
+			color: #212529;
+			z-index: 1;
+    		position: relative;
+
+			&:focus {
+				background: transparent;
+			}
+		}
+	}
+
 	.products-table {
 		tr td {
 			vertical-align: top;
@@ -176,31 +204,10 @@
 			    padding: 6px 12px;
 			}
 
-			.form-control {
-				background: transparent;
-				color: #212529;
-
-				&:focus {
-					background: transparent;
-				}
-			}
-
 			.product-stock {
 				color: darken($grey, 35%);
     			font-size: 12px;
     			margin-top: 3px;
-			}
-
-			.product-units {
-				position: absolute;
-			    top: 20px;
-    			left: 25px;
-			    color: transparent;
-			    z-index: -1;
-
-			    & > span {
-			    	color: #495057;
-			    }
 			}
 
 			&:first-child {
@@ -366,5 +373,16 @@
 		    text-align: center;
 		    border: solid 1px darken($grey, 10%);
 	    }
+	}
+
+	.history-table {
+		tr td,
+		tr th {
+			vertical-align: top;
+
+			.product-color {
+				color: darken($grey, 35%);
+			}
+		}
 	}
 }

@@ -39,6 +39,7 @@ angular.module('tctApp').controller('OrdersController', [
 		'priority': '1',
 		'delivery': '',
 		'delivery_distance': 0,
+		'delivery_price': 0,
 		'products': []
 	};
 	$scope.id = 0;
@@ -142,6 +143,7 @@ angular.module('tctApp').controller('OrdersController', [
 
 				$scope.order.manual_pallets = $scope.order.pallets;
 				$scope.order.manual_pallets_price = $scope.order.pallets_price;
+				$scope.order.manual_delivery_price = $scope.order.delivery_price;
 
 				if ($scope.order.date)
 				{
@@ -152,6 +154,18 @@ angular.module('tctApp').controller('OrdersController', [
 				if ($scope.order.priority)
 				{
 					$scope.order.priority = '' + $scope.order.priority;
+				}
+
+				for (payment of $scope.order.payments)
+				{
+					var date = payment.date.split("-");
+					payment.date_raw = date[2] + date[1] + date[0];
+				}
+
+				for (realization of $scope.order.realizations)
+				{
+					var date = realization.date.split("-");
+					realization.date_raw = date[2] + date[1] + date[0];
 				}
 
 				ProductsRepository.query(function(response) 
@@ -454,6 +468,8 @@ angular.module('tctApp').controller('OrdersController', [
 		$scope.order.pallets = 0;
 		$scope.order.main_category = '';
 
+		$scope.isAllRealizationsActive = true;
+
 		for (product of $scope.order.products) 
 		{
 			if (!product.id)
@@ -476,7 +492,7 @@ angular.module('tctApp').controller('OrdersController', [
 					break;
 			}
 
-			if (product.pivot.manual_price)
+			if (product.pivot.manual_price !== undefined)
 			{
 				product.pivot.price = product.pivot.manual_price;
 			}
@@ -491,16 +507,22 @@ angular.module('tctApp').controller('OrdersController', [
 			{
 				$scope.order.main_category = product.category.main_category;
 			}
+
+			if (product.pivot.count > product.in_stock)
+			{
+				$scope.isAllRealizationsActive = false;
+				$scope.order.all_realizations = false;
+			}
 		}
 
 		$scope.order.pallets_price = $scope.palletsPrices[$scope.order.pay_type];
 
-		if ($scope.order.manual_pallets_price)  
+		if ($scope.order.manual_pallets_price !== undefined)  
 		{
 			$scope.order.pallets_price = $scope.order.manual_pallets_price;
 		}
 
-		if ($scope.order.manual_pallets)
+		if ($scope.order.manual_pallets !== undefined)
 		{
 			$scope.order.pallets = $scope.order.manual_pallets;
 		}
@@ -511,23 +533,35 @@ angular.module('tctApp').controller('OrdersController', [
 		{
 			switch ($scope.order.delivery) {
 				case ('sverdlovsk'):
-					$scope.order.cost += 2500;
+					$scope.order.delivery_price = 2500;
 				    break;
 
 				case ('other'):
-					$scope.order.cost += 3000;
+					$scope.order.delivery_price = 3000;
 					break;
 			}
 
 			if ($scope.order.delivery_distance)
 			{
-				$scope.order.cost += 50 * $scope.order.delivery_distance;
+				$scope.order.delivery_price += 50 * $scope.order.delivery_distance;
 			}
 		}
+		else
+		{
+			$scope.order.delivery_price = 0;
+		}
+
+		if ($scope.order.manual_delivery_price !== undefined)
+		{
+			$scope.order.delivery_price = $scope.order.manual_delivery_price;
+		}
+
+		$scope.order.cost += $scope.order.delivery_price;
 
 		$scope.order.cost = Math.ceil($scope.order.cost);
 		$scope.order.weight = Math.ceil($scope.order.weight);
 
+		console.log($scope.isFullPaymentChosen);
 		if ($scope.isFullPaymentChosen)
 		{
 			$scope.order.paid = $scope.order.cost;
@@ -668,6 +702,7 @@ angular.module('tctApp').controller('OrdersController', [
 
     $scope.chooseFullPayment = function()
     {
+    		console.log(111);
     	if ($scope.isFullPaymentChosen)
     	{
     		if ($scope.modalPayment)
@@ -676,6 +711,7 @@ angular.module('tctApp').controller('OrdersController', [
     		}
     		else
     		{
+    			console.log(345);
     			$scope.order.paid = $scope.order.cost;
     		}
     	}
@@ -683,7 +719,6 @@ angular.module('tctApp').controller('OrdersController', [
 
     $scope.checkFullPayment = function() 
     {
-    		console.log($scope.modalOrder);
     	if ($scope.modalOrder)
     	{
     		$scope.isFullPaymentChosen = $scope.modalPayment.paid >= ($scope.modalOrder.cost - $scope.modalOrder.paid);
