@@ -52,7 +52,7 @@ class CheckStocks extends Command
 
             $finishStocks = round($startStocks + $productionsCount - $realizationsCount, 3);
 
-            $this->info($product->product_group->name . ' ' . $product->product_group->size . ' ' . $product->variation_text . ': '. $startStocks . ' + ' . $productionsCount . ' - ' . $realizationsCount . ' = ' . $finishStocks . ' (в наличии ' . $product->in_stock  . ')');
+            $this->info($product->id . ' ' . $product->product_group->name . ' ' . $product->product_group->size . ' ' . $product->variation_text . ': '. $startStocks . ' + ' . $productionsCount . ' - ' . $realizationsCount . ' = ' . $finishStocks . ' (в наличии ' . $product->in_stock  . ')');
 
             if ($finishStocks != $product->in_stock)
             {
