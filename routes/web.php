@@ -97,6 +97,7 @@ Route::middleware('auth')->group(function()
 	{
 		Route::post('realization', 'OrdersController@saveRealization');
 		Route::post('payment', 'OrdersController@savePayment');
+		Route::post('date', 'OrdersController@getDate');
 
 		Route::get('/', 'OrdersController@index')->name('orders');
 		Route::get('create', 'OrdersController@create')->name('order-create');
@@ -264,6 +265,8 @@ Route::prefix('wp-api')->namespace('WpApi')->group(function()
 	{
 		Route::get('/', 'OrdersController@getOrder');
 		Route::post('add', 'OrdersController@addToOrder');
+		Route::post('update', 'OrdersController@updateOrder');
+		Route::post('date', 'OrdersController@getDate');
 		Route::post('/', 'OrdersController@saveOrder');
 	});
 });

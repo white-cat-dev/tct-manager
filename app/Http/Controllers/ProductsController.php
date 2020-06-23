@@ -221,7 +221,7 @@ class ProductsController extends Controller
             'units_in_pallete' => $request->get('units_in_pallete', 0),
             'units_from_batch' => $request->get('units_from_batch', 0),
             'forms' => $request->get('forms', 0),
-            'forms_add' => $request->get('forms_add', 0),
+            'performance' => $request->get('performance', 0),
             'salary_units' => $request->get('salary_units', 0),
             'recipe_id' => $request->get('recipe_id', null)
         ];

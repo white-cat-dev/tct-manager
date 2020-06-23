@@ -81517,6 +81517,10 @@ tctApp.factory('OrdersRepository', ['$resource', function ($resource) {
     savePayment: {
       method: 'POST',
       url: '/orders/payment'
+    },
+    getDate: {
+      method: 'POST',
+      url: '/orders/date'
     }
   });
 }]);
@@ -82682,7 +82686,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     OrdersRepository.get({
       id: $scope.id
     }, function (response) {
-      $scope.isLoading = false;
       $scope.order = response;
     });
   };
@@ -82704,6 +82707,11 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         if ($scope.order.date) {
           var date = $scope.order.date.split("-");
           $scope.order.date_raw = date[2] + date[1] + date[0];
+        }
+
+        if ($scope.order.date_to) {
+          var dateTo = $scope.order.date_to.split("-");
+          $scope.order.date_to_raw = dateTo[2] + dateTo[1] + dateTo[0];
         }
 
         if ($scope.order.priority) {
@@ -82822,6 +82830,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       });
     } else {
       $scope.order.date_raw = $filter('date')(new Date(), 'ddMMyyyy');
+      $scope.order.date_to_raw = $filter('date')(new Date(), 'ddMMyyyy');
       ProductsRepository.query(function (response) {
         $scope.productGroups = response;
       });
@@ -82830,21 +82839,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.save = function () {
-    $scope.isSaving = true; // if (!$scope.id && $scope.isAllRealizationsChosen)
-    // {
-    // 	$scope.order.realizations = [];
-    // 	for (product of $scope.order.products) 
-    //    	{
-    //   			var maxPerformed = (product.in_stock < product.pivot.count) ? product.in_stock : product.pivot.count;
-    //    		$scope.order.realizations.push({
-    //    			'order_id': order.id, 
-    //    			'product': product.pivot,
-    //    			'planned': 0,
-    //    			'performed': product.pivot.count,
-    //    			'date_raw': order.date
-    //    		});
-    //    	}
-    // }
+    $scope.isSaving = true;
 
     if ($scope.currentOrder) {
       $scope.id = $scope.currentOrder.id;
@@ -82875,6 +82870,24 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
           $scope.orderErrors = response.data.errors;
           break;
 
+        default:
+          toastr.error('Произошла ошибка на сервере');
+          break;
+      }
+    });
+  };
+
+  $scope.getDate = function () {
+    $scope.isAddSaving = true;
+    OrdersRepository.getDate($scope.order, function (response) {
+      $scope.isAddSaving = false;
+      var dateTo = response.date.split("-");
+      $scope.order.date_to_raw = dateTo[2] + dateTo[1] + dateTo[0];
+      toastr.success('Дата готовности заказа успешно рассчитана!');
+    }, function (response) {
+      $scope.isAddSaving = false;
+
+      switch (response.status) {
         default:
           toastr.error('Произошла ошибка на сервере');
           break;
@@ -83800,6 +83813,8 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
 
   $scope.updateProductionPlanned = function (product) {
     product.production.planned = product.production.batches * product.product_group.units_from_batch;
+    product.production.manual_batches = product.production.batches;
+    product.production.manual_planned = product.production.planned;
   };
 
   $scope.updateOrderProductionsPerformed = function (product) {

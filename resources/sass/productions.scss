@@ -61,6 +61,11 @@
 					.product-color {
 						color: darken($grey, 35%);
 					}
+
+					.production-date-to {
+						font-size: 11px;
+						color: darken($grey, 35%);
+					}
 				}
 
 				tr td:first-child {
@@ -68,6 +73,11 @@
 					border-left: none;
 					width: 200px;
 					max-width: 200px;
+
+					@include media-breakpoint-down(md) {
+						width: 120px;
+						max-width: 120px;
+					}
 				}
 
 				tr td:nth-child(2), tr th:nth-child(2),
@@ -85,6 +95,11 @@
 					tr th:first-child {
 						width: 200px;
 						max-width: 200px;
+
+						@include media-breakpoint-down(md) {
+							width: 120px;
+							max-width: 120px;
+						}
 					}
 				}
 			}
@@ -185,7 +200,11 @@
 					    }
 						
 						.production-planned {
-							color: darken($grey, 25%);
+							color: darken($grey, 15%);
+
+							&.manual {
+								color: darken($grey, 75%);
+							}
 						}
 
 						.production-performed {
@@ -225,6 +244,10 @@
 			    padding-right: 17px;
 			    background: #f3f3f3;
 			    border-bottom: solid 1px #dadada;
+
+			    @include media-breakpoint-down(md) {
+					padding-right: 0px;
+			    }
 
 			    & > div {
 			    	overflow-x: hidden;

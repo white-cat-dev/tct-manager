@@ -23,8 +23,11 @@ class CreateProductionsTable extends Migration
             $table->integer('facility_id');
             $table->decimal('auto_planned', 10, 3)->unsigned();
             $table->decimal('manual_planned', 10, 3);
+            $table->date('date_to')->nullable();
+            $table->tinyInteger('priority');
             $table->decimal('performed', 10, 3)->unsigned();
-            $table->decimal('batches', 6, 3)->unsigned();
+            $table->decimal('auto_batches', 6, 3)->unsigned();
+            $table->decimal('manual_batches', 6, 3);
             $table->decimal('salary', 8, 3)->unsigned();
             $table->timestamps();
         });

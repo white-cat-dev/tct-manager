@@ -10,6 +10,7 @@ use App\Order;
 use App\Client;
 use Cookie;
 use Carbon\Carbon;
+use App\Services\ProductionsService;
 
 
 class OrdersController extends Controller
@@ -28,6 +29,48 @@ class OrdersController extends Controller
     }
 
 
+    public function getDate(Request $request)
+    {
+        $cart = $this->getUserCart($request->get('id'));
+
+        $products = [];
+
+        foreach ($cart->products as $product) 
+        {
+            $products[] = [
+                'product' => $product,
+                'count' => $product->pivot->count
+            ];
+        }
+
+        $dateTo = ProductionsService::getInstance()->testPlanOrder($products, Order::PRIORITY_NORMAL);
+
+        if ($dateTo > date('Y-m-d'))
+        {
+            $dateTo = Carbon::createFromDate($dateTo)->addDays(2);
+        }
+        else
+        {
+            $dateTo = Carbon::createFromDate($dateTo);
+        }
+
+        $dateText = $dateTo->diffInDays(Carbon::today());
+
+        if ($dateText == 0)
+        {
+            $dateText = 'Все товары из заказа есть в наличии';
+        }
+        else
+        {
+            $dateText = 'Ваш заказ ориентировочно будет готов через <strong>' . $dateText . ' ' . trans_choice('день|дня|дней', $dateText) . '</strong> после оплаты';
+        }
+       
+        return [
+            'date_text' => $dateText
+        ];
+    }
+
+
     public function saveOrder(Request $request)
     {
         $cartId = $request->get('id');
@@ -41,6 +84,58 @@ class OrdersController extends Controller
                 'status' => Order::STATUS_NEW
             ]);
         }
+    }
+
+
+    public function updateOrder(Request $request)
+    {
+        $cartId = $request->get('id');
+        $cart = Order::find($cartId);
+
+        $cartData = $this->getData($request);
+
+        $cart->update($cartData);
+
+        $clientData = $request->get('client');
+        $client = Client::find($clientData['id']);
+        $client->update($this->getClientData($clientData));
+
+        $productsIds = $cart->products()->select('product_id')->pluck('product_id', 'product_id');
+
+        foreach ($request->get('products', []) as $productData) 
+        {
+            $productsIds->forget($productData['id']);
+
+            $product = $cart->products()->find($productData['id']);
+
+            if (!$product) 
+            {
+                $product = $cart->products()->attach($productData['id'], [
+                    'count' => $productData['pivot']['count'],
+                    'price' => $productData['pivot']['price'],
+                    'cost' => $productData['pivot']['cost']
+                ]);
+            }
+            else 
+            {
+                $cart->products()->updateExistingPivot($productData['id'], [
+                    'count' => $productData['pivot']['count'],
+                    'price' => $productData['pivot']['price'],
+                    'cost' => $productData['pivot']['cost']
+                ]);
+            }
+        }
+
+        $cart->products()->detach($productsIds);
+
+        $cart->refresh();
+        
+        foreach ($cart->products as $product) 
+        {
+            $product->otherProducts = $product->product_group->products;
+        }
+
+        return $cart;
     }
 
 
@@ -135,7 +230,7 @@ class OrdersController extends Controller
                 'date' => date('Y-m-d'),
                 'date_to' => date('Y-m-d'),
                 'client_id' => $client->id,
-                'comment' => 'Заказ сделан на сайте',
+                'comment' => '',
                 'priority' => 0,
                 'cost' => 0,
                 'weight' => 0,
@@ -143,6 +238,7 @@ class OrdersController extends Controller
                 'pallets_price' => 150,
                 'paid' => 0,
                 'pay_type' => 'cash',
+                'delivery_price' => 0,
                 'delivery' => '',
                 'delivery_distance' => 0
             ]);
@@ -158,35 +254,14 @@ class OrdersController extends Controller
 
     protected function getData(Request $request)
     {
-        $date = $request->get('date_raw', -1); 
-        if ($date == -1)
-        {
-            $date = $request->get('date', date('Y-m-d')); 
-        }
-        else
-        {
-            $date = $date ? Carbon::createFromFormat('dmY', $date)->format('Y-m-d') : date('Y-m-d');
-        }
-
-        // $number = $request->get('number', '');
-
-        // if (!$number)
-        // {
-        //     $number = Order::whereYear('date', date('Y'))
-        //         ->whereMonth('date', date('m'))
-        //         ->count() + 1;
-
-        //     $number = Carbon::createFromDate($date)->format('m') . '-' .  str_pad($number, 3, '0', STR_PAD_LEFT);
-        // }
-
-
         return [
-            'date' => $date,
-            'date_to' => $date,
+            'date' => $request->get('date', date('Y-m-d')),
+            'date_to' => $request->get('date', date('Y-m-d')), 
             'number' => '',
             'main_category' => $request->get('main_category', 'tiles'),
             'delivery' => $request->get('delivery', ''),
             'delivery_distance' => $request->get('delivery_distance', 0),
+            'delivery_price' => $request->get('delivery_price', 0),
             'client_id' => $request->get('client_id', 0),
             'priority' => $request->get('priority', Order::PRIORITY_NORMAL),
             'comment' => $request->get('comment', ''),
@@ -197,6 +272,15 @@ class OrdersController extends Controller
             'weight' => $request->get('weight', 0),
             'pallets' => $request->get('pallets', 0),
             'pallets_price' => $request->get('pallets_price', 150)
+        ];
+    }
+
+    protected function getClientData($data)
+    {
+        return [
+            'name' => !empty($data['name']) ? $data['name'] : '',
+            'phone' => !empty($data['phone']) ? $data['phone'] : '',
+            'email' => !empty($data['email']) ? $data['email'] : ''
         ];
     }
 }

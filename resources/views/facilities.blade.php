@@ -1,6 +1,14 @@
 <div class="facilities-page" ng-init="init()">
 	<h1>Цехи</h1>
 
+	@include('partials.loading')
+
+	@if (Auth::user() && Auth::user()->type == 'admin')
+	<a href="{{ route('facility-create') }}" class="btn btn-primary top-right-button">
+		<i class="fas fa-plus"></i>
+	</a>
+	@endif
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
@@ -14,7 +22,7 @@
 			</div>
 		</div>
 
-		<div class="right-buttons">
+		<div class="right-buttons d-none d-md-flex">
 			@if (Auth::user() && Auth::user()->type == 'admin')
 			<a href="{{ route('facility-create') }}" class="btn btn-primary">
 				<i class="fas fa-plus"></i> Создать цех

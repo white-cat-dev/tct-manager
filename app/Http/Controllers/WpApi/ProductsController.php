@@ -51,7 +51,9 @@ class ProductsController extends Controller
             $productGroup = null;
         }
 
-        $response = [];
+        $response = [
+            'id' => 0
+        ];
 
         if ($productGroup)
         {

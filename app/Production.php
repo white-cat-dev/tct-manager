@@ -17,15 +17,20 @@ class Production extends Model
         'facility_id',
         'auto_planned',
         'manual_planned',
+        'date_to',
+        'priority',
     	'performed',
-        'batches',
+        'auto_batches',
+        'manual_batches',
         'salary'
     ];
 
     protected $appends = [
         'day',
         'formatted_date',
-        'planned'
+        'formatted_date_to',
+        'planned',
+        'batches'
     ];
 
     protected $casts = [
@@ -33,7 +38,8 @@ class Production extends Model
         'manual_planned' => 'float',
         'performed' => 'float',
         'salary' => 'float',
-        'batches' => 'float'
+        'auto_batches' => 'float',
+        'manual_batches' => 'float'
     ];
 
     public function product()
@@ -74,6 +80,11 @@ class Production extends Model
         return Carbon::createFromDate($this->date)->format('d.m.Y');
     }
 
+    public function getFormattedDateToAttribute()
+    {
+        return Carbon::createFromDate($this->date_to)->format('d.m.Y');
+    }
+
 
     public function getPlannedAttribute()
     {
@@ -84,6 +95,18 @@ class Production extends Model
         else 
         {
             return $this->auto_planned;
+        }
+    }
+
+    public function getBatchesAttribute()
+    {
+        if ($this->manual_batches >= 0)
+        {
+            return $this->manual_batches;
+        }
+        else 
+        {
+            return $this->auto_batches;
         }
     }
 }

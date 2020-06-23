@@ -61,7 +61,6 @@ class ProductionsController extends Controller
             }
 
 
-
             $materials = Material::whereHas('applies', function($query) use ($year, $month) {
                 $query->whereYear('date', $year)
                     ->whereMonth('date', $month);
@@ -176,36 +175,15 @@ class ProductionsController extends Controller
 
                 $productionPerformed = $production->performed;
 
-                // $planned = (float)$productionData['planned'];
-                // if ((float)$productionData['performed'] == 0)
-                // {
-                //     $manualPlanned = ($planned != $production->auto_planned) ? $planned : $production->manual_planned;
-                // }
-                // else
-                // {
-                //     $manualPlanned = (float)$productionData['performed'];
-                // }
-
-                $batches = !empty($productionData['batches']) ? (float)$productionData['batches'] : 0;
-                $manualPlanned = ($batches != $production->batches) ? $productionData['planned'] : $production->manual_planned;
-                
-
                 $production->update([
-                    'auto_planned' => 0,
-                    'manual_planned' => $manualPlanned,
-                    'batches' => $batches,
+                    'manual_planned' => (float)$productionData['manual_planned'],
+                    'manual_batches' => (float)$productionData['manual_batches'],
                     'performed' => (float)$productionData['performed'],
                     'salary' => (float)$productionData['performed'] * $production->product->product_group->salary_units,
                     'facility_id' => $productionData['facility_id']
                 ]);
 
-
                 $productionPerformed = $production->performed - $productionPerformed;
-
-                // if ($production->order)
-                // {
-                //     ProductionsService::getInstance()->updateOrderPlan($production->order, $production->product, $productionPerformed);
-                // }
             }
             else
             {
@@ -213,48 +191,15 @@ class ProductionsController extends Controller
                 {
                     continue;
                 }
-
-                // if (empty($productionData['order_id']))
-                // {
-                //     $performed = $productionData['performed'];
-
-                //     $baseProductions = Production::where('product_id', $productionData['product_id'])
-                //         ->whereNull('date')
-                //         ->with('order')
-                //         ->get()
-                //         ->sortBy('order.priority')
-                //         ->sortBy('order.date');
-
-                    
-                //     foreach ($baseProductions as $baseProduction) 
-                //     {
-                //         $production = ProductionsService::getInstance()->createOrderProduction($baseProduction, $performed, $productionData);
-
-                //         $performed -= $production->performed;
-
-                //         if ($performed == 0)
-                //         {
-                //             break;
-                //         }
-                //     }
-
-                //     $productionPerformed = $productionData['performed'];
-
-                //     if ($performed > 0)
-                //     {
-                //         $productionData['performed'] = $performed;
-
-                //         $production = Production::create($this->getData($productionData));
-                //     }
-                // }
-                // else
-                // {
-                // }
   
-
                 $production = Production::create($this->getData($productionData));
                 $productionPerformed = $production->performed;
             }
+
+
+            $production->product->update([
+                'in_stock' => $production->product->in_stock + $productionPerformed
+            ]);
 
             $baseProduction = $production->product->getBaseProduction();
 
@@ -271,10 +216,6 @@ class ProductionsController extends Controller
             $this->updateCategoryProduction($production, $productionPerformed);
 
             $this->updateMaterialsApply($production, $productionPerformed);
-
-            $production->product->update([
-                'in_stock' => $production->product->in_stock + $productionPerformed
-            ]);
         }
 
         $this->updateControlMaterialsApply($request->get('materials'));
@@ -285,24 +226,20 @@ class ProductionsController extends Controller
 
     protected function getData($data)
     {
-        $batches = !empty($data['batches']) ? $data['batches'] : 0;
-
-        if ($batches > 0)
-        {
-
-        }
-
         return [
             'date' => !empty($data['date']) ? $data['date'] : null,
             'category_id' => !empty($data['category_id']) ? $data['category_id'] : 0,
             'product_group_id' => !empty($data['product_group_id']) ? $data['product_group_id'] : 0,
             'facility_id' => !empty($data['facility_id']) ? $data['facility_id'] : 0,
             'product_id' => !empty($data['product_id']) ? $data['product_id'] : 0,
-            'order_id' => !empty($data['order_id']) ? $data['order_id'] : 0,
+            'order_id' => 0,
             'auto_planned' => 0,
-            'manual_planned' => !empty($data['planned']) ? $data['planned'] : -1,
+            'manual_planned' => !empty($data['manual_planned']) ? $data['manual_planned'] : -1,
+            'priority' => Order::PRIORITY_NORMAL,
+            'date_to' => null,
             'performed' => !empty($data['performed']) ? $data['performed'] : 0,
-            'batches' => !empty($data['batches']) ? $data['batches'] : 0,
+            'auto_batches' => 0,
+            'manual_batches' => !empty($data['manual_batches']) ? $data['manual_batches'] : -1,
             'salary' => !empty($data['salary']) ? $data['salary'] : 0
         ];
     }
@@ -333,9 +270,12 @@ class ProductionsController extends Controller
                 'order_id' => 0,
                 'facility_id' => 0,
                 'auto_planned' => 0,
-                'manual_planned' => 0,
+                'manual_planned' => -1,
+                'date_to' => null,
+                'priority' => Order::PRIORITY_NORMAL,
                 'performed' => $performed,
-                'batches' => 0,
+                'auto_batches' => 0,
+                'manual_batches' => -1,
                 'salary' => $performed * $production->product->product_group->salary_units
             ]);
         }

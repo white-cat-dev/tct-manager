@@ -57,6 +57,10 @@
 						<input class="custom-control-input" type="radio" ng-model="order.priority" id="radioHigh" value="2">
 						<label class="custom-control-label" for="radioHigh">Высокий</label>
 					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" ng-model="order.priority" id="radioVeryHigh" value="3">
+						<label class="custom-control-label" for="radioVeryHigh">Очень высокий</label>
+					</div>
 				</div>	
 
 				<div class="form-group">
@@ -283,6 +287,20 @@
 
 					<div class="form-group">
 						<span class="param-label">Стоимость заказа: </span>@{{ order.cost | number }} руб
+					</div>
+
+					<div class="form-group">
+						<div class="param-label">Дата готовности</div>
+						<input type="text" class="form-control" ng-model="order.date_to_raw" ui-mask="99.99.9999">
+
+						<button type="button"  class="btn btn-primary mt-2" ng-if="!id"  ng-click="getDate()" ng-disabled="isAddSaving">
+							<span ng-if="isAddSaving">
+								<i class="fa fa-spinner fa-spin"></i> Рассчет даты готовности
+							</span>
+							<span ng-if="!isAddSaving">
+								<i class="far fa-calendar-check"></i> Рассчитать дату готовности
+							</span>
+						</button>
 					</div>
 				</div>
 

@@ -3,58 +3,79 @@
 
 	@include('partials.loading')
 
+	@if (Auth::user() && Auth::user()->type == 'admin')
+	<a href="{{ route('order-create') }}" class="btn btn-primary top-right-button">
+		<i class="fas fa-plus"></i>
+	</a>
+	@endif
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group search-group">
 				<input type="text" class="form-control" placeholder="Введите номер заказа..." ng-model="tempSearchQuery" ng-keypress="searchInputKeyPressed($event)">
 				<div class="input-group-append">
 			    	<button class="btn btn-primary" type="button" ng-click="searchQuery = tempSearchQuery">
-			    		<i class="fas fa-search"></i> Поиск
+			    		<i class="fas fa-search"></i> <span class="d-none d-md-inline">Поиск</span>
 			    	</button>
 			 	</div>
 			</div>
 		</div>
 
-		<div class="right-buttons">
+		<div class="right-buttons d-none d-md-flex">
 			<a href="{{ route('order-create') }}" class="btn btn-primary">
 				<i class="fas fa-plus"></i> Создать заказ
 			</a>
 		</div>
 	</div>
-	
-	<div class="top-statuses-menu-block">
-		<div class="statuses-menu-block" ng-init="isStatusesShown = false">	
-			<div class="statuses-menu" ng-class="{'shown': isStatusesShown}" ng-click="isStatusesShown = !isStatusesShown">
-				<button type="button" class="btn" ng-class="{'active': currentStatus == '' }" ng-click="chooseStatus('')">
-					Все заказы
-				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus == 'production'}" ng-click="chooseStatus('production')">
-					В работе
-				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus == 'ready'}" ng-click="chooseStatus('ready')">
-					Готовые к выдаче
-				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus == 'finished'}" ng-click="chooseStatus('finished')">
-					Завершенные
-				</button>
-				<button type="button" class="btn" ng-class="{'active': currentStatus == 'new'}" ng-click="chooseStatus('new')">
-					С сайта
-				</button>
+
+
+
+	<div class="statuses-menu-block" ng-init="isStatusesShown = false">	
+		<div class="statuses-menu" ng-class="{'shown': isStatusesShown}" ng-click="isStatusesShown = !isStatusesShown">
+			<div class="statuses-title btn d-block d-md-none">
+				<span ng-if="isStatusesShown">Выберите категорию...</span>
+				<span ng-if="currentStatus == 0 && !isStatusesShown">Все категории</span>
+				<span ng-switch on="currentStatus" ng-if="!isCategoriesShown">
+					<span ng-switch-when="production">В работе</span>
+					<span ng-switch-when="ready">Готовые к выдаче</span>
+					<span ng-switch-when="finished">Завершенные</span>
+					<span ng-switch-when="new">С сайта</span>
+				</span>
+
+				<div class="icon">
+					<i class="fas fa-caret-down"></i>
+				</div>
 			</div>
 
-			<div class="main-category-block">
-				<div class="custom-control custom-checkbox custom-control-inline">
-					<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('tiles') !== -1" id="checkboxBlocks" ng-click="chooseMainCategory('tiles')">
-					<label class="custom-control-label" for="checkboxBlocks">
-						Плитка
-					</label>
-				</div>
-				<div class="custom-control custom-checkbox custom-control-inline">
-					<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('blocks') !== -1" id="checkboxTiles" ng-click="chooseMainCategory('blocks')">
-					<label class="custom-control-label" for="checkboxTiles">
-						Блоки
-					</label>
-				</div>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == '' }" ng-click="chooseStatus('')">
+				Все заказы
+			</button>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == 'production'}" ng-click="chooseStatus('production')">
+				В работе
+			</button>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == 'ready'}" ng-click="chooseStatus('ready')">
+				Готовые к выдаче
+			</button>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == 'finished'}" ng-click="chooseStatus('finished')">
+				Завершенные
+			</button>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == 'new'}" ng-click="chooseStatus('new')">
+				С сайта
+			</button>
+		</div>
+
+		<div class="main-category-block">
+			<div class="custom-control custom-checkbox custom-control-inline">
+				<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('tiles') !== -1" id="checkboxBlocks" ng-click="chooseMainCategory('tiles')">
+				<label class="custom-control-label" for="checkboxBlocks">
+					Плитка
+				</label>
+			</div>
+			<div class="custom-control custom-checkbox custom-control-inline">
+				<input type="checkbox" class="custom-control-input" ng-checked="currentMainCategory.indexOf('blocks') !== -1" id="checkboxTiles" ng-click="chooseMainCategory('blocks')">
+				<label class="custom-control-label" for="checkboxTiles">
+					Блоки
+				</label>
 			</div>
 		</div>
 	</div>
@@ -66,9 +87,9 @@
 					<tr>
 						<th>Номер</th>
 						<th>Дата принятия</th>
-						<th>Дата готовности</th>
+						<th class="d-none d-lg-table-cell">Дата готовности</th>
 						<th>Стоимость</th>
-						<th>Оплачено</th>
+						<th class="d-none d-lg-table-cell">Оплачено</th>
 					</tr>
 					<tr ng-repeat="order in orders | filter: {'number': searchQuery}" ng-click="chooseOrder(order)" ng-class="{'active': currentOrder.id == order.id}">
 						<td ng-class="{'text-success': order.priority == {{ App\Order::PRIORITY_HIGH }} }">
@@ -83,13 +104,13 @@
 						<td>
 							@{{ order.formatted_date }}
 						</td>
-						<td>
+						<td class="d-none d-lg-table-cell">
 							@{{ order.formatted_date_to }}
 						</td>
 						<td ng-class="{'text-success': order.pay_type != 'cash'}">
 							@{{ order.cost | number }} руб.
 						</td>
-						<td ng-class="{'text-success': order.pay_type != 'cash'}">
+						<td ng-class="{'text-success': order.pay_type != 'cash'}" class="d-none d-lg-table-cell">
 							@{{ order.payments_paid | number }} руб.
 						</td>
 					</tr>

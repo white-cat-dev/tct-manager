@@ -35,7 +35,7 @@ class CreateProductGroupsTable extends Migration
             $table->decimal('units_in_pallete', 7, 3)->unsigned();
             $table->decimal('units_from_batch', 7, 3)->unsigned();
             $table->decimal('forms', 7, 3)->unsigned();
-            $table->decimal('forms_add', 7, 3)->unsigned();
+            $table->decimal('performance', 7, 3)->unsigned();
             $table->decimal('salary_units', 7, 2)->unsigned();
             $table->integer('recipe_id')->nullable();
             $table->timestamps();

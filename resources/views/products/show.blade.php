@@ -222,12 +222,24 @@
 
 				<div class="param-block">
 					<div class="param-name">
-						<span ng-if="productGroup.category.variations != 'colors'">Количество форм</span>
-						<span ng-if="productGroup.category.variations == 'colors'">Количество серых / красных форм</span>
+						Количество форм
 					</div>
 					<div class="param-value">
 						@{{ productGroup.forms }} 
-						<span ng-if="productGroup.category.variations == 'colors'">/ @{{ productGroup.forms_add }} </span>
+						<span ng-switch on="productGroup.category.units">
+							<span ng-switch-when="area">м<sup>2</sup></span>
+							<span ng-switch-when="volume">м<sup>3</sup></span>
+							<span ng-switch-when="unit">шт.</span>
+						</span>
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Максимальная производительность
+					</div>
+					<div class="param-value">
+						@{{ productGroup.performance }} 
 						<span ng-switch on="productGroup.category.units">
 							<span ng-switch-when="area">м<sup>2</sup></span>
 							<span ng-switch-when="volume">м<sup>3</sup></span>

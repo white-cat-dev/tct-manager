@@ -12522,11 +12522,13 @@ i.far {
 .top-buttons-block .input-group.date-group .input-group-append {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  padding: 10px 12px;
 }
 
 .top-buttons-block .input-group.date-group .input-group-prepend {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  padding: 10px 12px;
 }
 
 .top-buttons-block .left-buttons {
@@ -12984,10 +12986,6 @@ i.far {
   border-color: #276090;
 }
 
-.products-page .categories-menu-block .categories-menu .btn:first-of-type {
-  margin-right: 0px;
-}
-
 .products-page .categories-menu-block .categories-menu .categories-title {
   position: relative;
   width: auto;
@@ -13380,11 +13378,23 @@ i.far {
   color: #9a9a9a;
 }
 
+.production-page .production-block .products-block .table td .production-date-to {
+  font-size: 11px;
+  color: #9a9a9a;
+}
+
 .production-page .production-block .products-block .table tr td:first-child {
   text-align: left;
   border-left: none;
   width: 200px;
   max-width: 200px;
+}
+
+@media (max-width: 1209.98px) {
+  .production-page .production-block .products-block .table tr td:first-child {
+    width: 120px;
+    max-width: 120px;
+  }
 }
 
 .production-page .production-block .products-block .table tr td:nth-child(2),
@@ -13404,6 +13414,13 @@ i.far {
 .production-page .production-block .products-block .table.top-table tr th:first-child {
   width: 200px;
   max-width: 200px;
+}
+
+@media (max-width: 1209.98px) {
+  .production-page .production-block .products-block .table.top-table tr th:first-child {
+    width: 120px;
+    max-width: 120px;
+  }
 }
 
 .production-page .production-block .products-block .products-block-content {
@@ -13509,7 +13526,11 @@ i.far {
 }
 
 .production-page .production-block .productions-block .table td .production .production-planned {
-  color: #b3b3b3;
+  color: #cdcdcd;
+}
+
+.production-page .production-block .productions-block .table td .production .production-planned.manual {
+  color: #343434;
 }
 
 .production-page .production-block .productions-block .table td .production .production-performed {
@@ -13545,6 +13566,12 @@ i.far {
   padding-right: 17px;
   background: #f3f3f3;
   border-bottom: solid 1px #dadada;
+}
+
+@media (max-width: 1209.98px) {
+  .production-page .production-block .productions-block .productions-block-top-table {
+    padding-right: 0px;
+  }
 }
 
 .production-page .production-block .productions-block .productions-block-top-table > div {
@@ -13913,14 +13940,31 @@ i.far {
 }
 
 .orders-page .statuses-menu-block {
-  padding: 10px;
-  background: #f3f3f3;
+  margin-bottom: 20px;
   position: relative;
+}
+
+@media (max-width: 767.98px) {
+  .orders-page .statuses-menu-block {
+    height: 40px;
+    z-index: 2;
+    margin-bottom: 50px;
+  }
 }
 
 .orders-page .statuses-menu-block .btn {
   background: #FFFFFF;
   border: solid 1px #e6e6e6;
+}
+
+@media (max-width: 767.98px) {
+  .orders-page .statuses-menu-block .btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    margin-right: 0px;
+  }
 }
 
 .orders-page .statuses-menu-block .btn.active {
@@ -13929,10 +13973,44 @@ i.far {
   border-color: #276090;
 }
 
+.orders-page .statuses-menu-block .statuses-menu {
+  padding: 10px;
+  background: #f3f3f3;
+}
+
+@media (max-width: 767.98px) {
+  .orders-page .statuses-menu-block .statuses-menu {
+    padding-top: 0px;
+    padding-bottom: 20px;
+    max-height: 40px;
+    overflow: hidden;
+    transition: 0.3s;
+    z-index: 1;
+    position: relative;
+  }
+
+  .orders-page .statuses-menu-block .statuses-menu.shown {
+    max-height: 300px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .orders-page .statuses-menu-block .statuses-menu.shown .categories-title .icon {
+    transform: rotate(180deg);
+  }
+}
+
 .orders-page .statuses-menu-block .main-category-block {
   position: absolute;
   top: 16px;
   right: 15px;
+}
+
+@media (max-width: 1209.98px) {
+  .orders-page .statuses-menu-block .main-category-block {
+    top: 53px;
+    left: 0px;
+    right: unset;
+  }
 }
 
 .orders-page .statuses-menu-block .main-category-block .custom-control-inline {
@@ -13940,8 +14018,33 @@ i.far {
   margin-left: 10px;
 }
 
+@media (max-width: 767.98px) {
+  .orders-page .statuses-menu-block .main-category-block .custom-control-inline {
+    margin-right: 10px;
+    margin-left: 0px;
+  }
+}
+
 .orders-page .statuses-menu-block .main-category-block .custom-control-inline .custom-control-label {
   cursor: pointer;
+}
+
+.orders-page .statuses-menu-block .statuses-title {
+  position: relative;
+  width: auto;
+  background: #276090;
+  border: none;
+  color: #FFFFFF;
+  padding: 8px 12px;
+  margin: 0 -10px 20px -10px;
+}
+
+.orders-page .statuses-menu-block .statuses-title .icon {
+  position: absolute;
+  top: 3px;
+  right: 12px;
+  font-size: 22px;
+  transition: 0.3s;
 }
 
 .orders-page .top-statuses-menu-block {

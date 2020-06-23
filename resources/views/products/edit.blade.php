@@ -359,8 +359,7 @@
 
 					<div class="form-group">
 						<div class="param-label">
-							<span ng-if="productGroup.category.variations != 'colors'">Количество форм,</span>
-							<span ng-if="productGroup.category.variations == 'colors'">Количество серых / красных форм,</span>
+							Количество форм,
 							<span ng-switch on="productGroup.category.units">
 								<span ng-switch-when="area">м<sup>2</sup></span>
 								<span ng-switch-when="volume">м<sup>3</sup></span>
@@ -369,8 +368,20 @@
 						</div>
 						<div class="input-group divided-input-group">
 							<input type="text" class="form-control" ng-model="productGroup.forms" ng-class="{'is-invalid': productGroupErrors.forms}">
-							<span ng-if="productGroup.category.variations == 'colors'">/</span>
-							<input type="text" class="form-control" ng-model="productGroup.forms_add" ng-class="{'is-invalid': productGroupErrors.forms_add}" ng-if="productGroup.category.variations == 'colors'">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="param-label">
+							Максимальная производительность,
+							<span ng-switch on="productGroup.category.units">
+								<span ng-switch-when="area">м<sup>2</sup></span>
+								<span ng-switch-when="volume">м<sup>3</sup></span>
+								<span ng-switch-when="unit">шт</span>
+							</span>	
+						</div>
+						<div class="input-group divided-input-group">
+							<input type="text" class="form-control" ng-model="productGroup.performance" ng-class="{'is-invalid': productGroupErrors.performance}">
 						</div>
 					</div>
 				</div>

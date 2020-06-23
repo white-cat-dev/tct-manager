@@ -27,7 +27,7 @@ class ProductGroup extends Model
     	'units_in_pallete',
     	'units_from_batch',
     	'forms',
-        'forms_add',
+        'performance',
         'salary_units',
         'recipe_id'
     ];
@@ -54,7 +54,8 @@ class ProductGroup extends Model
         'units_from_batch' => 'float',
         'salary_units' => 'float',
         'forms' => 'float',
-        'forms_add' => 'float'
+        'forms_add' => 'float',
+        'performance' => 'float'
     ];
 
 

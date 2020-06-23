@@ -15,8 +15,7 @@
 				<input type="text" class="form-control" placeholder="Введите запрос для поиска..." ng-model="tempSearchQuery" ng-keypress="searchInputKeyPressed($event)">
 				<div class="input-group-append">
 			    	<button class="btn btn-primary" type="button" ng-click="searchQuery = tempSearchQuery">
-			    		<i class="fas fa-search"></i> <span class="d-none d-md-inline">Поиск
-			    		</span>
+			    		<i class="fas fa-search"></i> <span class="d-none d-md-inline">Поиск</span>
 			    	</button>
 			 	</div>
 			</div>
@@ -171,9 +170,12 @@
 					<a ng-href="@{{ productGroup.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-sm btn-primary" ng-click="delete(productGroup.id)">
-						<i class="far fa-trash-alt"></i>
+					<button type="button" class="btn btn-sm btn-primary" ng-click="copy(productGroup.id)">
+						<i class="fas fa-copy"></i>
 					</button>
+					{{-- <button type="button" class="btn btn-sm btn-primary" ng-click="delete(productGroup.id)">
+						<i class="far fa-trash-alt"></i>
+					</button> --}}
 					@endif
 				</div>
 			</div>
@@ -185,9 +187,6 @@
 						<span ng-if="!product.variation_text">—</span>
 					</td>
 					<td>
-						@{{ product.price }} руб.
-					</td>
-					<td>
 						<div class="edit-field" ng-init="product.new_in_stock = product.in_stock">
 							<input type="text" class="form-control" ng-model="product.new_in_stock" ng-blur="saveEditField(productGroupNum, productNum, 'in_stock')" ng-keypress="inputKeyPressed($event)">
 							<span class="units">
@@ -197,7 +196,7 @@
 						</div>
 					</td>
 					<td>
-						@{{ product.free_in_stock }} 
+						Свободно: @{{ product.free_in_stock }} 
 						<span ng-bind-html="product.units_text"></span>
 					</td>
 				</tr>

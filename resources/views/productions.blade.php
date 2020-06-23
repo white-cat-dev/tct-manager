@@ -43,7 +43,7 @@
 				</button>
 			</div>
 
-			<div class="custom-control custom-checkbox">
+			<div class="custom-control custom-checkbox d-none d-md-block">
 				<input type="checkbox" class="custom-control-input" ng-model="isAllProductionsShown" id="checkboxProductions">
 				<label class="custom-control-label" for="checkboxProductions">
 					Показать полный график
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 
-		<div class="right-buttons">
+		<div class="right-buttons d-none d-md-flex">
 			<button type="button" class="btn btn-primary" ng-click="showModal(currentDate.day)">
 				<i class="far fa-calendar-check"></i> План на сегодня
 			</button>
@@ -105,6 +105,9 @@
 								<span ng-switch-when="volume">м<sup>3</sup></span>
 								<span ng-switch-when="unit">шт.</span>
 							</span>
+							<div class="production-date-to" ng-if="product.productions[0].planned != product.productions[0].performed">
+								@{{ product.productions[0] ? product.productions[0].formatted_date_to : '' }}
+							</div>
 						</td>
 					</tr>
 				</table>
@@ -135,7 +138,7 @@
 								<div class="production-performed" ng-if="product.productions[$index+1].performed > 0">
 									@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} 
 								</div>
-								<div class="production-planned"  ng-if="product.productions[$index+1].performed == 0">
+								<div class="production-planned" ng-if="product.productions[$index+1].performed == 0" ng-class="{'manual': product.productions[$index+1].manual_batches >= 0}">
 									@{{ product.productions[$index+1] ? product.productions[$index+1].batches : 0 }} 
 								</div>
 								{{-- <div class="production-facility" ng-style="{'border-bottom-color': product.productions[$index+1] ? facilities[product.productions[$index+1].facility_id].icon_color : ''}">

@@ -110,17 +110,9 @@ class ImportProducts extends Command
             $productGroupData['adjectives'] = $category->adjectives;
         }
 
-        if (empty($productGroupData['forms_add']))
+        if (empty($productGroupData['performance']))
         {
-            if ($category->variations == 'colors')
-            {
-                $productGroupData['forms_add'] = $productGroupData['forms'] / 2;
-                $productGroupData['forms'] /= 2;
-            }
-            else
-            {
-                $productGroupData['forms_add'] = 0;
-            }
+           $productGroupData['performance'] = $productGroupData['forms'];
         }
 
 

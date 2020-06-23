@@ -18,6 +18,7 @@ class Order extends Model
 
     const PRIORITY_NORMAL = 1;
     const PRIORITY_HIGH = 2;
+    const PRIORITY_VERY_HIGH = 3;
 
     protected $fillable = [
         'date',
@@ -75,7 +76,8 @@ class Order extends Model
 
     protected static $priorities = [
         1 => 'Обычный',
-        2 => 'Высокий'
+        2 => 'Высокий',
+        3 => 'Очень высокий'
     ];
 
     protected static $payTypes = [
