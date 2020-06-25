@@ -13,7 +13,7 @@
 	    	z-index: 1;
 	    	border-right: solid 1px darken($grey, 10%);
 	    	background: $grey;
-	    	max-height: calc(100vh - 99px);
+	    	max-height: calc(100vh - 241px);
 	    	overflow: hidden;
 	    	padding-bottom: 17px;
 
@@ -106,14 +106,14 @@
 				
 			.products-block-content {
 				overflow-y: hidden;
-				max-height: calc(100vh - 159px);
+				max-height: calc(100vh - 300px);
 				border-bottom: solid 1px darken($grey, 10%);
 			}
 		}
 
 		.productions-block {
 			border-right: solid 1px darken($grey, 10%);
-    		max-height: calc(100vh - 99px);
+    		max-height: calc(100vh - 241px);
     		overflow: hidden;
 
 			.table {
@@ -256,14 +256,22 @@
 			}
 
 			.productions-block-content {
-				max-height: calc(100vh - 142px);
+				max-height: calc(100vh - 283px);
 			    overflow: scroll;
 			    width: 100%;
+
+			    &:focus {
+					outline: none;
+				}
 			}
 		}
 	}
 
 	.production-modal {
+
+		&:focus {
+			outline: none;
+		}
 
 		.edit-field {
 			cursor: pointer;

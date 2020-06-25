@@ -13324,7 +13324,7 @@ i.far {
   z-index: 1;
   border-right: solid 1px #dadada;
   background: #f3f3f3;
-  max-height: calc(100vh - 99px);
+  max-height: calc(100vh - 241px);
   overflow: hidden;
   padding-bottom: 17px;
 }
@@ -13425,13 +13425,13 @@ i.far {
 
 .production-page .production-block .products-block .products-block-content {
   overflow-y: hidden;
-  max-height: calc(100vh - 159px);
+  max-height: calc(100vh - 300px);
   border-bottom: solid 1px #dadada;
 }
 
 .production-page .production-block .productions-block {
   border-right: solid 1px #dadada;
-  max-height: calc(100vh - 99px);
+  max-height: calc(100vh - 241px);
   overflow: hidden;
 }
 
@@ -13580,9 +13580,17 @@ i.far {
 }
 
 .production-page .production-block .productions-block .productions-block-content {
-  max-height: calc(100vh - 142px);
+  max-height: calc(100vh - 283px);
   overflow: scroll;
   width: 100%;
+}
+
+.production-page .production-block .productions-block .productions-block-content:focus {
+  outline: none;
+}
+
+.production-page .production-modal:focus {
+  outline: none;
 }
 
 .production-page .production-modal .edit-field {

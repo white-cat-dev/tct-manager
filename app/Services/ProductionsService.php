@@ -128,7 +128,7 @@ class ProductionsService
                     'performed' => ($baseProduction->performed > $autoPlanned) ? $autoPlanned : $baseProduction->performed
                 ]);
 
-                $this->replanProduct($product);
+                // $this->replanProduct($product);
             }
         }
 
@@ -149,7 +149,7 @@ class ProductionsService
                 'performed' => ($baseProduction->performed > $autoPlanned) ? $autoPlanned : $baseProduction->performed
             ]);
 
-            $this->replanProduct($oldProduct);
+            // $this->replanProduct($oldProduct);
         }
     }
 
@@ -194,7 +194,7 @@ class ProductionsService
             ]);
         }
 
-        $this->replanProduct($product);  
+        // $this->replanProduct($product);  
     }
 
 
@@ -288,6 +288,19 @@ class ProductionsService
         {
             $this->replanOrder($order, $order->products);
         }
+    }
+
+
+    public function replan()
+    {
+        Production::whereNull('date')
+            ->orWhere(function ($query) {
+                $query->whereNotNull('date')
+                    ->where('performed', 0)
+                    ->where('manual_planned', '<', 0);
+            })->delete();
+
+        $this->planOrders();
     }
 
 

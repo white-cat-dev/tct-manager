@@ -206,21 +206,30 @@ class ProductionsController extends Controller
             if ($baseProduction)
             {
                 $baseProduction->update([
-                    'performed' => ($baseProduction->product->in_stock > $baseProduction->planned) ? $baseProduction->planned : $baseProduction->product->in_stock
+                    'performed' => ($baseProduction->product->in_stock > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $baseProduction->product->in_stock
                 ]);
 
-                ProductionsService::getInstance()->replanProduct($production->product);
+                // ProductionsService::getInstance()->replanProduct($production->product);
             }
-
-
-            $this->updateCategoryProduction($production, $productionPerformed);
 
             $this->updateMaterialsApply($production, $productionPerformed);
         }
 
+
         $this->updateControlMaterialsApply($request->get('materials'));
 
+        if (!empty($production))
+        {
+            $this->updateCategoryProductions($production->date);
+        }
+
         EmploymentsService::getInstance()->updateEmployments($year, $month, $day);
+    }
+
+
+    public function replan(Request $request)
+    {
+        ProductionsService::getInstance()->replan();
     }
 
 
@@ -245,39 +254,64 @@ class ProductionsController extends Controller
     }
 
 
-    protected function updateCategoryProduction($production, $performed)
+    protected function updateCategoryProductions($date)
     {
-        $categoryProduction = Production::where('order_id', 0)
-            ->where('product_id', 0)
-            ->where('category_id', $production->category_id)
-            ->where('date', $production->date)
-            ->first();
+        $categoryProductions = Production::where('product_id', 0)
+            ->where('date', $date)
+            ->get();
 
-        if ($categoryProduction)
+        $productions = Production::where('product_id', '!=', 0)
+            ->where('date', $date)
+            ->get();
+
+        $categorySalaries = [];
+
+        foreach ($productions as $production) 
         {
-            $categoryProduction->update([
-                'performed' => $categoryProduction->performed + $performed,
-                'salary' => $categoryProduction->salary + $performed * $production->product->product_group->salary_units
-            ]);
+            if (!empty($categorySalaries[$production->category_id]))
+            {
+                $categorySalaries[$production->category_id]['performed'] += $production->performed;
+                $categorySalaries[$production->category_id]['salary'] += $production->salary;
+            }
+            else
+            {
+                $categorySalaries[$production->category_id] = [
+                    'performed' => $production->performed,
+                    'salary' => $production->salary
+                ];
+            }
         }
-        else
+
+        foreach ($categorySalaries as $categoryId => $categorySalary) 
         {
-            $categoryProduction = Production::create([
-                'date' => $production->date,
-                'category_id' => $production->category_id,
-                'product_group_id' => 0,
-                'product_id' => 0,
-                'order_id' => 0,
-                'facility_id' => 0,
-                'auto_planned' => 0,
-                'manual_planned' => -1,
-                'date_to' => null,
-                'priority' => Order::PRIORITY_NORMAL,
-                'performed' => $performed,
-                'auto_batches' => 0,
-                'manual_batches' => -1,
-                'salary' => $performed * $production->product->product_group->salary_units
-            ]);
+            $categoryProduction = $categoryProductions->where('category_id', $categoryId)->first();
+
+            if ($categoryProduction)
+            {
+                $categoryProduction->update([
+                    'performed' => $categorySalary['performed'],
+                    'salary' => $categorySalary['salary']
+                ]);
+            }
+            else
+            {
+                $categoryProduction = Production::create([
+                    'date' => $date,
+                    'category_id' => $categoryId,
+                    'product_group_id' => 0,
+                    'product_id' => 0,
+                    'order_id' => 0,
+                    'facility_id' => 0,
+                    'auto_planned' => 0,
+                    'manual_planned' => -1,
+                    'date_to' => null,
+                    'priority' => Order::PRIORITY_NORMAL,
+                    'performed' => $categorySalary['performed'],
+                    'auto_batches' => 0,
+                    'manual_batches' => -1,
+                    'salary' => $categorySalary['salary']
+                ]);
+            }
         }
     }
 
@@ -344,18 +378,18 @@ class ProductionsController extends Controller
     {
         foreach ($materialsData as $materialData) 
         {
-            $materialAppyData = $materialData['apply'];
+            $materialApplyData = $materialData['apply'];
 
-            if (!empty($materialAppyData['id']))
+            if (!empty($materialApplyData['id']))
             {
-                $materialAppy = MaterialApply::find($materialAppyData['id']);
+                $materialAppy = MaterialApply::find($materialApplyData['id']);
 
                 if ($materialAppy->material->material_group->control)
                 {
                     $appyPerformed = $materialAppy->performed;
 
                     $materialAppy->update([
-                        'performed' => $materialAppyData['performed']
+                        'performed' => $materialApplyData['performed']
                     ]);
 
                     $appyPerformed = $materialAppy->performed - $appyPerformed;

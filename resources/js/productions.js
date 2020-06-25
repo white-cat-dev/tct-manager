@@ -155,6 +155,7 @@ angular.module('tctApp').controller('ProductionsController', [
 
 
 		$scope.modalDate = new Date($scope.currentDate.year, $scope.currentDate.month - 1, day);
+		$scope.modalDay = day;
 
 		$scope.modalProductionProducts = [];
 
@@ -202,30 +203,10 @@ angular.module('tctApp').controller('ProductionsController', [
 							'base_planned': Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000
 						};
 
-						console.log($scope.newProduct[facilities[0].id]);
-
 						$scope.addProduct(facilities[0].id);
 					}
 				}
 			}
-
-			// for (order of product.orders)
-			// {
-			// 	if (order.productions[day])
-			// 	{
-			// 		var newOrder = angular.copy(order);
-
-			// 		newOrder.production = newOrder.productions[day];
-			// 		newOrder.productions = [];
-
-			// 		newProduct.orders.push(newOrder);
-			// 	}
-			// }
-
-			// if (newProduct.orders.length > 0)
-			// {
-			// 	$scope.modalProductionProducts.push(newProduct);
-			// }
 		}
 
 
@@ -275,19 +256,26 @@ angular.module('tctApp').controller('ProductionsController', [
 				$scope.modalProductionMaterials.push(newMaterial);
 			}
 		}
+		$scope.isModalShown = true;
+
+		setTimeout(function()
+		{
+			document.querySelector('.modal.production-modal').focus();
+		}, 150);
 
 		document.querySelector('body').classList.add('modal-open');
-		$scope.isModalShown = true;
 	}
 
 
 	$scope.hideModal = function()
 	{
-		document.querySelector('body').classList.remove('modal-open');
 		$scope.isModalShown = false;
 
 		$scope.modalDate = '';
 		$scope.modalProductionProducts = [];
+
+		document.querySelector('body').classList.remove('modal-open');
+		document.querySelector('.production-block .productions-block-content').focus();
 	}
 
 	
@@ -300,7 +288,7 @@ angular.module('tctApp').controller('ProductionsController', [
 			'products': $scope.modalProductionProducts,
 			'year': $scope.currentDate.year,
 			'month': $scope.currentDate.month,
-			'day': $scope.currentDate.day
+			'day': $scope.modalDay
 		}
 
 		$scope.isSaving = true;
@@ -554,8 +542,44 @@ angular.module('tctApp').controller('ProductionsController', [
 	{
 		$scope.isProductOrdersModalShown = false;
 		$scope.modalProductOrders = [];
+
 	}
 
+
+	$scope.showReplanModal = function(order)
+	{
+		$scope.isReplanModalShown = true;
+
+		document.querySelector('body').classList.add('modal-open');
+	}
+
+
+	$scope.hideReplanModal = function()
+	{
+		$scope.isReplanModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
+		document.querySelector('.production-block .productions-block-content').focus();
+	}
+
+
+	$scope.replan = function()
+	{
+		$scope.isReplaning = true;
+		ProductionsRepository.replan(function(response) 
+		{
+			$scope.isReplaning = false;
+			toastr.success('План производства успешно перестроен!');
+
+			$scope.hideReplanModal();
+			$scope.init();
+		}, 
+		function(response) 
+		{
+            $scope.isReplaning = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
+	}
 
 
 	$scope.initScroll = function()
@@ -567,6 +591,8 @@ angular.module('tctApp').controller('ProductionsController', [
 			var leftBlock = productionBlock.querySelector('.products-block-content');
 			var topBlock = productionBlock.querySelector('.productions-block-top-table > div');
 
+			mainBlock.focus();
+
 			var scrollLeft = mainBlock.querySelector('.table').clientWidth / $scope.days * ($scope.currentDate.day - 1);
 			scrollLeft = scrollLeft - mainBlock.clientWidth / 2 + 25;
 			if (scrollLeft < 0)
@@ -575,8 +601,6 @@ angular.module('tctApp').controller('ProductionsController', [
 			}
 
 			mainBlock.scrollLeft = scrollLeft;
-
-			mainBlock.focus();
 
 			mainBlock.addEventListener('scroll', function(event) 
 			{
@@ -589,6 +613,6 @@ angular.module('tctApp').controller('ProductionsController', [
 
 			$scope.isLoading = false;
 			$scope.$apply();
-		}, 100);
+		}, 150);
 	}
 }]);

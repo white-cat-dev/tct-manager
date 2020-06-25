@@ -117,6 +117,7 @@ Route::middleware('auth')->group(function()
 		Route::get('orders', 'ProductionsController@orders');
 
 		Route::post('/', 'ProductionsController@save');
+		Route::get('replan', 'ProductionsController@replan');
 	});
 
 

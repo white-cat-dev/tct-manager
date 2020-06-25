@@ -296,7 +296,9 @@ tctApp.factory('EmploymentsRepository', ['$resource', function($resource) {
 }]);
 
 tctApp.factory('ProductionsRepository', ['$resource', function($resource) { 
-	return $resource('/productions'); 
+	return $resource('/productions', null, {
+		replan: { method: 'GET', url: '/productions/replan' }
+	});
 }]);
 
 tctApp.factory('ExportsRepository', ['$resource', function($resource) { 

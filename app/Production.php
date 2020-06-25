@@ -82,7 +82,14 @@ class Production extends Model
 
     public function getFormattedDateToAttribute()
     {
-        return Carbon::createFromDate($this->date_to)->format('d.m.Y');
+        if ($this->date_to)
+        {
+            return Carbon::createFromDate($this->date_to)->format('d.m.Y');
+        }
+        else
+        {
+            return '';
+        }
     }
 
 

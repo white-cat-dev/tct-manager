@@ -44,16 +44,20 @@
 			</div>
 
 			<div class="custom-control custom-checkbox d-none d-md-block">
-				<input type="checkbox" class="custom-control-input" ng-model="isAllProductionsShown" id="checkboxProductions">
+				<input type="checkbox" class="custom-control-input" ng-model="isAllProductionsShown" id="checkboxProductions" ng-click="initScroll()">
 				<label class="custom-control-label" for="checkboxProductions">
-					Показать полный график
+					Полный график
 				</label>
 			</div>
 		</div>
 
 		<div class="right-buttons d-none d-md-flex">
+			<button type="button" class="btn btn-primary" ng-click="showReplanModal()">
+				<i class="fas fa-calendar-check"></i> Перестроить план
+			</button>
+
 			<button type="button" class="btn btn-primary" ng-click="showModal(currentDate.day)">
-				<i class="far fa-calendar-check"></i> План на сегодня
+				<i class="fas fa-calendar-day"></i> Сегодня
 			</button>
 		</div>
 	</div>
@@ -127,7 +131,7 @@
 				</div>
 			</div>
 
-			<div class="productions-block-content">
+			<div class="productions-block-content" tabindex="0">
 				<table class="table">
 					<tr ng-repeat="product in productionProducts" ng-if="(isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed)">
 						<td ng-repeat="x in [].constructor(days) track by $index" 
@@ -169,7 +173,7 @@
 	</div>
 
 
-	<div class="modal production-modal" ng-show="isModalShown">
+	<div class="modal production-modal" ng-show="isModalShown" tabindex="0">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -464,4 +468,5 @@
 	</div>
 
 	@include('partials/product-orders-modal')
+	@include('partials/replan-modal')
 </div>
