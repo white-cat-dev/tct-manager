@@ -53,11 +53,11 @@
 
 		<div class="right-buttons d-none d-md-flex">
 			<button type="button" class="btn btn-primary" ng-click="showReplanModal()">
-				<i class="fas fa-calendar-check"></i> Перестроить план
+				<i class="far fa-calendar-check"></i> Перестроить план
 			</button>
 
 			<button type="button" class="btn btn-primary" ng-click="showModal(currentDate.day)">
-				<i class="fas fa-calendar-day"></i> Сегодня
+				<i class="far fa-calendar-plus"></i> Сегодня
 			</button>
 		</div>
 	</div>
