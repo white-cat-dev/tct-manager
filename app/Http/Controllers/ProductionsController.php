@@ -11,6 +11,7 @@ use App\Order;
 use App\Category;
 use App\Facility;
 use App\Material;
+use App\MaterialGroup;
 use App\MaterialApply;
 use App\Services\EmploymentsService;
 use App\Services\ProductionsService;
@@ -321,6 +322,18 @@ class ProductionsController extends Controller
 
     protected function updateMaterialsApply($production, $performed)
     {
+        $material = MaterialGroup::where('name', 'Цемент насыпь')->first()->materials()->first();
+        $materialAppy = $material->applies()->where(['date' => $production->date])->first();
+        if (!$materialAppy)
+        {
+            $materialAppy = $material->applies()->create([
+                'date' => $production->date,
+                'performed' => 0,
+                'planned' => 0
+            ]);
+        }
+
+
         $recipe = $production->product_group->recipe;
 
         if (!$recipe)

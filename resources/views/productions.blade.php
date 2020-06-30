@@ -12,7 +12,7 @@
 
 				<ui-select ng-model="currentDate.year" ng-change="init()" skip-focusser="true" search-enabled="false">
 		            <ui-select-match placeholder="Год">
-			            <span ng-bind-html="$select.selected"></span>
+			            <span ng-if="!isLoading" ng-bind-html="$select.selected"></span>
 			        </ui-select-match>
 		            <ui-select-choices repeat="year in years">
 		                <span ng-bind-html="year"></span>
@@ -31,7 +31,7 @@
 
 				<ui-select ng-model="currentDate.month" ng-change="init()" skip-focusser="true" search-enabled="false">
 		            <ui-select-match placeholder="Месяц">
-			            <span ng-bind-html="$select.selected.name"></span>
+			            <span ng-if="!isLoading" ng-bind-html="$select.selected.name"></span>
 			        </ui-select-match>
 		            <ui-select-choices repeat="month.id as month in monthes">
 		                <span ng-bind-html="month.name"></span>

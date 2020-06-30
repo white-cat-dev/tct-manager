@@ -32,7 +32,13 @@ class EmploymentsController extends Controller
                 $day = 0;
             }
 
-            $workers = Worker::where('status', Worker::STATUS_ACTIVE)->get();
+            $workers = Worker::where('status', Worker::STATUS_ACTIVE)
+                ->orWhereHas('employments', function($query) use ($year, $month)
+                {
+                    $query->whereYear('date', $year)
+                        ->whereMonth('date', $month);
+                })
+                ->get();
 
             foreach ($workers as $key => $worker) 
             {
