@@ -14,6 +14,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 		EmploymentsRepository
 	){
 
+	$scope.Math = window.Math;
+
 	$scope.Object = Object;
 
 	$scope.days = 0;
@@ -30,6 +32,9 @@ angular.module('tctApp').controller('EmploymentsController', [
 	$scope.workers = [];
 	$scope.manager = [];
 	$scope.statuses = {};
+	$scope.employments = {};
+
+	$scope.dayEmployments = {};
 
 	$scope.isSalariesShown = false;
 
@@ -61,11 +66,13 @@ angular.module('tctApp').controller('EmploymentsController', [
 			$scope.workers = response.workers;
 			$scope.manager = response.manager;
 			$scope.statuses = response.statuses;
+			$scope.employments = response.employments;
 
 			if (Object.keys($scope.statuses).length > 0)
 			{
 				$scope.chooseCurrentEmploymentStatus(Object.keys($scope.statuses)[0]);
 			}
+
 
 			$scope.initScroll();
 		});
@@ -280,6 +287,23 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 			$scope.init();
 		});
+	}
+
+
+	$scope.isEmploymentModalShown = false;
+
+	$scope.showEmploymentModal = function(day)
+	{
+		$scope.modalEmployment = $scope.employments[day];
+		$scope.modalDate = new Date($scope.currentDate.year, $scope.currentDate.month - 1, day);
+		$scope.modalDay = day;
+		$scope.isEmploymentModalShown = true;
+	}
+
+
+	$scope.hideEmploymentModal = function()
+	{
+		$scope.isEmploymentModalShown = false;
 	}
 
 

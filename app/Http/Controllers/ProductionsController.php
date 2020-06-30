@@ -187,12 +187,15 @@ class ProductionsController extends Controller
             }
             else
             {
-                if (empty($productionData['planned']) && empty($productionData['performed']))
+                if (empty($productionData['manual_planned']) && empty($productionData['performed']))
                 {
                     continue;
                 }
   
                 $production = Production::create($this->getData($productionData));
+                $production->update([
+                    'salary' => $production->performed * $production->product->product_group->salary_units
+                ]);
                 $productionPerformed = $production->performed;
             }
 

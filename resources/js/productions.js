@@ -534,6 +534,8 @@ angular.module('tctApp').controller('ProductionsController', [
 			$scope.isModalLoading = false;
 
 			$scope.modalProductOrders = response;
+
+			document.querySelector('body').classList.add('modal-open');
 		});
 	}
 
@@ -543,6 +545,8 @@ angular.module('tctApp').controller('ProductionsController', [
 		$scope.isProductOrdersModalShown = false;
 		$scope.modalProductOrders = [];
 
+		document.querySelector('body').classList.remove('modal-open');
+		document.querySelector('.production-block .productions-block-content').focus();
 	}
 
 

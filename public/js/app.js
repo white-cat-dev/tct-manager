@@ -81812,6 +81812,7 @@ angular.module('tctApp').controller('ClientsController', ['$scope', '$routeParam
 /***/ (function(module, exports) {
 
 angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'EmploymentsRepository', function ($scope, $routeParams, $location, $timeout, toastr, EmploymentsRepository) {
+  $scope.Math = window.Math;
   $scope.Object = Object;
   $scope.days = 0;
   $scope.monthes = [];
@@ -81825,6 +81826,8 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
   $scope.workers = [];
   $scope.manager = [];
   $scope.statuses = {};
+  $scope.employments = {};
+  $scope.dayEmployments = {};
   $scope.isSalariesShown = false;
 
   $scope.init = function () {
@@ -81849,6 +81852,7 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       $scope.workers = response.workers;
       $scope.manager = response.manager;
       $scope.statuses = response.statuses;
+      $scope.employments = response.employments;
 
       if (Object.keys($scope.statuses).length > 0) {
         $scope.chooseCurrentEmploymentStatus(Object.keys($scope.statuses)[0]);
@@ -82036,6 +82040,19 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       $scope.isSalaryModalShown = false;
       $scope.init();
     });
+  };
+
+  $scope.isEmploymentModalShown = false;
+
+  $scope.showEmploymentModal = function (day) {
+    $scope.modalEmployment = $scope.employments[day];
+    $scope.modalDate = new Date($scope.currentDate.year, $scope.currentDate.month - 1, day);
+    $scope.modalDay = day;
+    $scope.isEmploymentModalShown = true;
+  };
+
+  $scope.hideEmploymentModal = function () {
+    $scope.isEmploymentModalShown = false;
   };
 
   $scope.initScroll = function () {
@@ -83904,12 +83921,15 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
     }, function (response) {
       $scope.isModalLoading = false;
       $scope.modalProductOrders = response;
+      document.querySelector('body').classList.add('modal-open');
     });
   };
 
   $scope.hideProductOrdersModal = function () {
     $scope.isProductOrdersModalShown = false;
     $scope.modalProductOrders = [];
+    document.querySelector('body').classList.remove('modal-open');
+    document.querySelector('.production-block .productions-block-content').focus();
   };
 
   $scope.showReplanModal = function (order) {

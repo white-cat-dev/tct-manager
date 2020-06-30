@@ -14556,7 +14556,7 @@ i.far {
   z-index: 1;
   border-right: solid 1px #dadada;
   background: #f3f3f3;
-  max-height: calc(100vh - 199px);
+  max-height: calc(100vh - 241px);
   overflow: hidden;
   padding-bottom: 17px;
 }
@@ -14599,7 +14599,7 @@ i.far {
 
 .employments-page .employment-block .workers-block .workers-block-content {
   overflow: hidden;
-  max-height: calc(100vh - 259px);
+  max-height: calc(100vh - 300px);
   border-bottom: solid 1px #dadada;
 }
 
@@ -14614,7 +14614,7 @@ i.far {
 .employments-page .employment-block .employments-block {
   overflow-x: scroll;
   border-right: solid 1px #dadada;
-  max-height: calc(100vh - 199px);
+  max-height: calc(100vh - 241px);
   overflow: hidden;
 }
 
@@ -14716,8 +14716,18 @@ i.far {
   border-right: solid 1px #dadada;
 }
 
+.employments-page .employment-block .employments-block .employments-block-top-table th {
+  position: relative;
+}
+
+.employments-page .employment-block .employments-block .employments-block-top-table th .employments-total {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
 .employments-page .employment-block .employments-block .employments-block-content {
-  max-height: calc(100vh - 242px);
+  max-height: calc(100vh - 283px);
   overflow: scroll;
   width: 100%;
 }
@@ -14867,7 +14877,7 @@ i.far {
 
 .employments-page .salaries-block .table-block {
   border: solid 1px #dadada;
-  padding: 10px 20px 0px 20px;
+  padding: 5px 15px 0px 15px;
   border-radius: 5px;
   box-shadow: 1px 1px 5px #e6e6e6;
 }
@@ -14876,9 +14886,19 @@ i.far {
   margin-bottom: 5px;
 }
 
+.employments-page .salaries-block .table-block .table th {
+  font-size: 14px;
+}
+
 .employments-page .salaries-block .table-block .table td {
   padding-top: 10px;
   padding-bottom: 10px;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.employments-page .salaries-block .table-block .table tr td:first-child {
+  font-weight: 500;
 }
 
 .employments-page .salary-modal .modal-title {
@@ -14895,6 +14915,29 @@ i.far {
   display: inline-block;
   width: 200px;
   margin-right: 5px;
+}
+
+.employments-page .employment-modal .table {
+  margin-top: 5px;
+}
+
+.employments-page .employment-modal .table th,
+.employments-page .employment-modal .table td {
+  border: solid 1px #dadada;
+  padding: 5px 10px;
+  font-size: 12px;
+  position: relative;
+}
+
+.employments-page .employment-modal .table th small,
+.employments-page .employment-modal .table td small {
+  position: absolute;
+  bottom: 1px;
+  right: 3px;
+}
+
+.employments-page .employment-modal .table th {
+  text-align: center;
 }
 
 .statuses-page .table td {

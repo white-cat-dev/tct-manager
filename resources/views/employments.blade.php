@@ -98,7 +98,12 @@
 						<div>
 							<table class="table top-table">
 								<tr>
-									<th ng-repeat="x in [].constructor(days) track by $index" ng-class="{'current': $index + 1 == currentDate.day}">@{{ $index + 1 }}</th>
+									<th ng-repeat="x in [].constructor(days) track by $index" ng-class="{'current': $index + 1 == currentDate.day}" ng-click="showEmploymentModal($index+1)">
+										@{{ $index + 1 }}
+										<div class="employments-total" ng-if="employments[$index+1]">
+											@{{ employments[$index+1].team }}
+										</div>
+									</th>
 									<th ng-if="isSalariesShown" style="min-width: 70px">Итого</th>
 								</tr>
 							</table>
@@ -108,7 +113,7 @@
 					<div class="employments-block-content">
 						<table class="table">
 							<tr ng-repeat="worker in workers">
-								<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(worker, $index+1)" ng-style="{'color': worker.employments[$index+1] ? statuses[worker.employments[$index+1].status_id].icon_color : ''}" ng-class="{'current': $index + 1 == currentDate.day}">
+								<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(worker, $index+1)" ng-style="{'color': worker.employments[$index+1] ? statuses[worker.employments[$index+1].status_id].icon_color : ''}" ng-class="{'current': $index + 1 == currentDate.day}" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
 									<div class="employment" ng-if="worker.employments[$index+1]">
 										<div ng-if="!isSalariesShown">
 											<div ng-bind-html="statuses[worker.employments[$index+1].status_id].icon" ng-if="!statuses[worker.employments[$index+1].status_id].customable"></div>
@@ -138,7 +143,7 @@
 
 						<table class="table">			
 							<tr>
-								<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(manager, $index+1)" ng-style="{'color': manager.employments[$index+1] ? statuses[manager.employments[$index+1].status_id].icon_color : ''}" ng-class="{'current': $index + 1 == currentDate.day}">
+								<td ng-repeat="x in [].constructor(days) track by $index" ng-click="changeEmploymentStatus(manager, $index+1)" ng-style="{'color': manager.employments[$index+1] ? statuses[manager.employments[$index+1].status_id].icon_color : ''}" ng-class="{'current': $index + 1 == currentDate.day}" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
 									<div class="employment" ng-if="manager.employments[$index+1]">
 										<div ng-if="!isSalariesShown">
 											<div ng-bind-html="statuses[manager.employments[$index+1].status_id].icon" ng-if="!statuses[manager.employments[$index+1].status_id].customable"></div>
@@ -241,9 +246,10 @@
 			<table class="table table-with-buttons">
 				<tr>
 					<th>Работник</th>
-					<th>По графику</th>
+					<th>График</th>
 					<th>Аванс</th>
 					<th>Налоги</th>
+					<th>Обед</th>
 					<th>Премия</th>
 					<th>Доплата</th>
 					<th>Итого</th>
@@ -264,6 +270,9 @@
 						@{{ worker.salary.tax | number }} руб.
 					</td>
 					<td>
+						@{{ worker.salary.lunch | number }} руб.
+					</td>
+					<td>
 						@{{ worker.salary.bonus | number }} руб.
 					</td>
 					<td>
@@ -275,6 +284,39 @@
 					<td>
 						@if (Auth::user() && Auth::user()->type == 'admin')
 						<button type="button" class="btn btn-sm btn-primary" ng-click="showSalaryModal(worker)">
+							<i class="fas fa-edit"></i> Изменить
+						</button>
+						@endif
+					</td>
+				</tr>
+				<tr>
+					<td>
+						@{{ manager.name }}
+					</td>
+					<td>
+						@{{ manager.salary.employments | number }} руб.
+					</td>
+					<td>
+						@{{ manager.salary.advance | number }} руб.
+					</td>
+					<td>
+						@{{ manager.salary.tax | number }} руб.
+					</td>
+					<td>
+						@{{ manager.salary.lunch | number }} руб.
+					</td>
+					<td>
+						@{{ manager.salary.bonus | number }} руб.
+					</td>
+					<td>
+						@{{ manager.salary.surcharge | number }} руб.
+					</td>
+					<td>
+						@{{ (manager.salary.employments - manager.salary.advance - manager.salary.tax - manager.salary.lunch + +manager.salary.bonus + +manager.salary.surcharge) | number }} руб.
+					</td>
+					<td>
+						@if (Auth::user() && Auth::user()->type == 'admin')
+						<button type="button" class="btn btn-sm btn-primary" ng-click="showSalaryModal(manager)">
 							<i class="fas fa-edit"></i> Изменить
 						</button>
 						@endif
@@ -314,13 +356,25 @@
 						<input type="text" class="form-control" ng-model="modalWorker.salary.advance"> руб
 					</div>
 					<div class="form-group">
+						<div class="param-label">Налоги</div>
+						<input type="text" class="form-control" ng-model="modalWorker.salary.tax"> руб
+					</div>
+					<div class="form-group">
+						<div class="param-label">Обед</div>
+						<input type="text" class="form-control" ng-model="modalWorker.salary.lunch"> руб
+					</div>
+					<div class="form-group">
 						<div class="param-label">Премия</div>
 						<input type="text" class="form-control" ng-model="modalWorker.salary.bonus"> руб
 					</div>
 					<div class="form-group">
+						<div class="param-label">Доплата</div>
+						<input type="text" class="form-control" ng-model="modalWorker.salary.surcharge"> руб
+					</div>
+					<div class="form-group">
 						<div class="param-label">Итого</div>
 						<div class="param-value">
-							@{{ (modalWorker.salary.employments - modalWorker.salary.advance + +modalWorker.salary.bonus) | number }} руб.
+							@{{ (modalWorker.salary.employments - modalWorker.salary.advance - modalWorker.salary.tax - modalWorker.salary.lunch + +modalWorker.salary.bonus + +modalWorker.salary.surcharge) | number }} руб.
 						</div>
 					</div>
 				</div>
@@ -328,6 +382,65 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" ng-click="saveSalary()">
 						<i class="fas fa-save"></i> Сохранить
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal employment-modal" ng-show="isEmploymentModalShown" tabindex="0">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="modal-title">
+						Расчет зарплаты на @{{ modalDate | date: 'dd.MM.yyyy' }}
+					</div>
+					<button type="button" class="close" ng-click="hideEmploymentModal()">
+						<i class="fas fa-times"></i>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div class="table-responsive-block" ng-if="modalEmployment">
+						<table class="table">
+							<tr>
+								<th>Категория</th>
+								<th>Оплата</th>
+								<th>Команда</th>
+								<th>На человека</th>
+							</tr>
+
+						    <tr ng-repeat="(category, employment) in modalEmployment">
+						        <td>
+						        	<span ng-switch on="category">
+						        		<span ng-switch-when="tiles">Плитка</span>
+						        		<span ng-switch-when="blocks">Блоки</span>
+						        	</span>
+						        </td>
+
+						        <td class="text-center">
+						        	@{{ employment.salary | number }} - @{{ employment.manager | number }} = @{{ employment.final_salary | number }}
+						        </td>
+
+						        <td class="text-center">
+						        	@{{ Math.round(employment.team * 100) / 100 }}
+						        </td>
+
+						        <td class="text-center">
+									@{{ employment.person_salary  | number }}
+								</td>
+						    </tr>
+						</table>
+					</div>
+
+					<div class="alert alert-secondary" ng-if="!modalEmployment">
+						<i class="far fa-calendar-times"></i> Нет расчетов на данный день
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" ng-click="hideEmploymentModal()">
+						<i class="fas fa-times"></i> Закрыть
 					</button>
 				</div>
 			</div>

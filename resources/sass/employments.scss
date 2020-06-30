@@ -16,7 +16,7 @@
 	    	z-index: 1;
 	    	border-right: solid 1px darken($grey, 10%);
 	    	background: $grey;
-	    	max-height: calc(100vh - 199px);
+	    	max-height: calc(100vh - 241px);
 	    	overflow: hidden;
 	    	padding-bottom: 17px;
 
@@ -58,7 +58,7 @@
 
 			.workers-block-content {
 		    	overflow: hidden;
-				max-height: calc(100vh - 259px);
+				max-height: calc(100vh - 300px);
 				border-bottom: solid 1px darken($grey, 10%);
 
 				.table:last-child {
@@ -74,7 +74,7 @@
 		.employments-block {
 			overflow-x: scroll;
 			border-right: solid 1px darken($grey, 10%);
-	    	max-height: calc(100vh - 199px);
+	    	max-height: calc(100vh - 241px);
     		overflow: hidden;
 
 			.table {
@@ -172,10 +172,20 @@
 			    	overflow-x: hidden;
     				border-right: solid 1px #dadada;
 			    }
+
+			    th {
+			    	position: relative;
+
+			    	.employments-total {
+			    		position: absolute;
+			    		top: 0px;
+			    		left: 0px;
+			    	}
+			    }
 			}
 
 			.employments-block-content {
-				max-height: calc(100vh - 242px);
+				max-height: calc(100vh - 283px);
 			    overflow: scroll;
 			    width: 100%;
 
@@ -326,16 +336,26 @@
 
 		.table-block {
 			border: solid 1px #dadada;
-		    padding: 10px 20px 0px 20px;
+		    padding: 5px 15px 0px 15px;
 		    border-radius: 5px;
 		    box-shadow: 1px 1px 5px #e6e6e6;
 
 		    .table {
 		    	margin-bottom: 5px;
 
+		    	th {
+		    		font-size: 14px;
+		    	}
+
 		    	td {
 		    		padding-top: 10px;
 		    		padding-bottom: 10px;
+		    		white-space: nowrap;
+    				font-size: 14px;
+		    	}
+
+		    	tr td:first-child {
+		    		font-weight: 500;
 		    	}
 		    }
 		}
@@ -356,6 +376,29 @@
  			width: 200px;
  			margin-right: 5px;
  		}
+ 	}
+
+ 	.employment-modal {
+ 		.table {
+			margin-top: 5px;
+
+			th, td {
+				border: solid 1px darken($grey, 10%);
+				padding: 5px 10px;
+				font-size: 12px;
+				position: relative;
+
+				small {
+					position: absolute;
+				    bottom: 1px;
+				    right: 3px;
+				}
+			}
+
+			th {
+				text-align: center;
+			}
+		}
  	}
 }
 

@@ -123,6 +123,8 @@ class EmploymentsController extends Controller
             $statuses = EmploymentStatus::all()->keyBy('id');
 
             $facilities = Facility::all()->keyBy('id');
+
+            $employments = EmploymentsService::getInstance()->getEmploymentsTotal($year, $month);
                
             return ['days' => $days,
                     'monthes' => $monthes,
@@ -133,7 +135,8 @@ class EmploymentsController extends Controller
                     'workers' => $workers,
                     'manager' => $manager,
                     'statuses' => $statuses,
-                    'facilities' => $facilities
+                    'facilities' => $facilities,
+                    'employments' => $employments
                 ];
         }
 
