@@ -268,12 +268,16 @@ angular.module('tctApp').controller('EmploymentsController', [
 	{
 		$scope.modalWorker = worker;
 		$scope.isSalaryModalShown = true;
+
+		document.querySelector('body').classList.add('modal-open');
 	}
 
 
 	$scope.hideSalaryModal = function()
 	{
 		$scope.isSalaryModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
 	}
 
 
@@ -298,12 +302,16 @@ angular.module('tctApp').controller('EmploymentsController', [
 		$scope.modalDate = new Date($scope.currentDate.year, $scope.currentDate.month - 1, day);
 		$scope.modalDay = day;
 		$scope.isEmploymentModalShown = true;
+
+		document.querySelector('body').classList.add('modal-open');
 	}
 
 
 	$scope.hideEmploymentModal = function()
 	{
 		$scope.isEmploymentModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
 	}
 
 
