@@ -287,7 +287,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 		{
 			toastr.success('Все изменения успешно сохранены!');
 
-			$scope.isSalaryModalShown = false;
+			$scope.hideSalaryModal();
 
 			$scope.init();
 		});

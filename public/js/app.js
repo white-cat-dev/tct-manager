@@ -82039,7 +82039,7 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       id: $scope.modalWorker.salary.id
     }, $scope.modalWorker.salary, function (response) {
       toastr.success('Все изменения успешно сохранены!');
-      $scope.isSalaryModalShown = false;
+      $scope.hideSalaryModal();
       $scope.init();
     });
   };
