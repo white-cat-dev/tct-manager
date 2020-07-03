@@ -2,6 +2,8 @@
 	<h1 ng-if="!id">Создание нового продукта</h1>
 	<h1 ng-if="id">Редактирование продукта</h1>
 
+	@include('partials.loading')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<a href="{{ route('products') }}" class="btn btn-primary">
@@ -32,7 +34,7 @@
 		</div>
 	</div>
 
-	<div class="edit-form-block">
+	<div class="edit-form-block" ng-if="!isLoading">
 		<div class="row justify-content-around">
 			<div class="col-6 col-xl-5">
 				<div class="params-title">

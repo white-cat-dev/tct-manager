@@ -1,48 +1,13 @@
 .workers-page {
 	position: relative;
 
-	.worker-block {
-		border: solid 1px darken($grey, 10%);
-		box-shadow: 1px 1px 5px darken($grey, 5%);
-		border-radius: 5px;
-		padding: 15px;
-		position: relative;
-		margin-bottom: 30px;
-
-		.btn-group {
-			position: absolute;
-		    top: 15px;
-		    right: 15px;
-		    z-index: 1;
-		}
-
-		.worker-title {
-			font-weight: 500;
-			font-size: 20px;
-			margin-bottom: 5px;
-		}
-
-		.worker-param {
-			font-size: 14px;
-			margin-bottom: 5px;
-
-			.param-name {
-				color: darken($grey, 75%);
-				font-size: 16px;
-				font-weight: 500;
-				margin-bottom: 3px;
-			}
-		}
-
-		.buttons-block {
-			margin-top: 15px;
-		}
+	.dropdown-menu {
+		margin: 0px;
+    	padding: 1px 0px 3px 0px;
 	}
 
 	.worker-status {
 	    color: darken($grey, 35%);
-	    font-size: 14px;
-	    margin-bottom: 5px;
 
 	    &.active {
 	    	color: lighten($green, 10%);

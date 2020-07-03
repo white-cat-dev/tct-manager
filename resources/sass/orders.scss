@@ -2,7 +2,6 @@
 	position: relative;
 
 	.statuses-menu-block {
-		margin-bottom: 20px;
 		position: relative;
 
 		@include media-breakpoint-down(sm) {
@@ -99,6 +98,46 @@
 		}
 	}
 
+	.date-pagination-block {
+		display: flex;
+    	justify-content: space-between;
+  //   	padding: 10px;
+		// background: $grey;
+		margin-top: 20px;
+
+    	.pagination {
+    		margin: 0px;
+
+    		.previous .btn,
+    		.next .btn {
+    			padding: 6px 10px;
+    		}
+
+    		.previous {
+    			margin-right: 5px;
+    		}
+
+    		.next {
+    			margin-left: 5px;
+    		}
+
+    		li:first-child {
+    			padding: 5px 10px 5px 0px;
+    		}
+
+    		.btn:not(.btn-primary) {
+				background: #FFFFFF;
+				border: solid 1px darken($grey, 5%);
+				width: 42px;
+
+				&.active {
+					background: #276090;
+    				color: white;
+				}
+			}
+    	}
+	}
+
 	.top-statuses-menu-block {
 		position: sticky;
 	    margin: 0px -10px;
@@ -126,6 +165,7 @@
 	.main-orders-block {
 		box-shadow: 1px 1px 5px darken($grey, 5%);
 		border: solid 1px darken($grey, 10%);
+		margin-top: 20px;
 
 		.table {
 			font-size: 14px;
@@ -171,7 +211,8 @@
 		padding: 15px;
 		position: relative;
 		position: sticky;
-		top: 156px;
+		top: 20px;
+		margin-top: 20px;
 
 		.table {
 			font-size: 14px;

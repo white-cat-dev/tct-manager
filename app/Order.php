@@ -157,7 +157,24 @@ class Order extends Model
 
     public function getFullFormattedDateAttribute()
     {
-        return Carbon::createFromDate($this->date_to)->format('d F Y \г.');
+        $date = Carbon::createFromDate($this->date);
+        $day = $date->day;
+        $monthes = ['января', 'ферваля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+        $month = $monthes[$date->month - 1];
+        $year = $date->year;
+
+        return $day . ' ' . $month . ' ' . $year . ' г.';
+    }
+
+    public function getFullFormattedDateToAttribute()
+    {
+        $date = Carbon::createFromDate($this->date_to);
+        $day = $date->day;
+        $monthes = ['января', 'ферваля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+        $month = $monthes[$date->month - 1];
+        $year = $date->year;
+
+        return $day . ' ' . $month . ' ' . $year . ' г.';
     }
 
     public function getDeliveryTextAttribute()

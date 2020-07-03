@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use DB;
-
 
 class MenuService
 {

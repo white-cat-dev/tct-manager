@@ -28,11 +28,7 @@ angular.module('tctApp').controller('ProductionsController', [
 	$scope.monthes = [];
 	$scope.years = [];
 
-	$scope.currentDate = {
-		'day': 0,
-		'month': 0,
-		'year': 0
-	};
+	$scope.currentDate = {};
 
 	$scope.productionProducts = [];
 	$scope.productionOrders = [];

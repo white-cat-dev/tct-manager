@@ -7,6 +7,7 @@ use App\MaterialGroup;
 use App\Material;
 use App\MaterialSupply;
 use Carbon\Carbon;
+use App\Services\DateService;
 
 
 class MaterialsController extends Controller
@@ -130,17 +131,61 @@ class MaterialsController extends Controller
     }
 
 
+    public function supplies(Request $request, MaterialGroup $materialGroup)
+    {
+        if ($request->wantsJson())
+        {
+            $today = Carbon::today();
+
+            $month = (int)$request->get('month', $today->month);
+            $year = (int)$request->get('year', $today->year);
+
+            $monthes = DateService::getMonthes();
+            $years = DateService::getYears(MaterialSupply::select('date'));
+
+            $materialIds = $materialGroup->materials()->select('id')->pluck('id');
+
+            $supplies = MaterialSupply::whereIn('material_id', $materialIds)
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->with('material')
+                ->get();
+
+            return ['monthes' => $monthes,
+                'years' => $years,
+                'year' => $year,
+                'month' => $month,
+                'supplies' => $supplies
+            ];
+        }
+    }
+
+
     public function saveSupply(Request $request)
     {
-        $suppliesData = $request->get('supplies');
-
-        foreach ($suppliesData as $supplyData) 
+        if ($request->wantsJson())
         {
-            $supply = MaterialSupply::create($this->getSupplyData($supplyData));
+            $suppliesData = $request->get('supplies');
 
-            $supply->material->update([
-                'in_stock' => $supply->material->in_stock + $supply->performed
-            ]);
+            foreach ($suppliesData as $supplyData) 
+            {
+                if ($supplyData['id'])
+                {
+                    $supply = MaterialSupply::find($supplyData['id']);
+                    $supplyPerformed = $supply->performed;
+                    $supply->update($this->getSupplyData($supplyData));
+                    $supplyPerformed = $supply->performed - $supplyPerformed;
+                }
+                else
+                {
+                    $supply = MaterialSupply::create($this->getSupplyData($supplyData));
+                    $supplyPerformed = $supply->performed;
+                }
+
+                $supply->material->update([
+                    'in_stock' => $supply->material->in_stock + $supplyPerformed
+                ]);
+            }
         }
     }
 

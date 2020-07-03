@@ -28,6 +28,7 @@ angular.module('tctApp').controller('ProductsController', [
 
 	$scope.productGroups = [];
 	$scope.productGroup = {
+		'url': '#',
 		'products': [
 			{
 				'variation': '',
@@ -126,13 +127,13 @@ angular.module('tctApp').controller('ProductsController', [
 
 	$scope.init = function()
 	{
-		$scope.isLoading = true;
-
 		if ($location.search().category)
 		{
 			$scope.currentCategory = $location.search().category;
 		}
 		
+		$scope.isLoading = true;
+
 		$scope.loadCategories();
 		$scope.loadProducts();
 		$scope.loadMaterials();
@@ -145,8 +146,10 @@ angular.module('tctApp').controller('ProductsController', [
 
 		$scope.id = $routeParams['id'];
 
+		$scope.isLoading = true;
 		ProductsRepository.get({id: $scope.id}, function(response) 
 		{
+			$scope.isLoading = false;
 			$scope.productGroup = response;
 		});
 	}
@@ -162,8 +165,10 @@ angular.module('tctApp').controller('ProductsController', [
 
 		if ($scope.id)
 		{
+			$scope.isLoading = true;
 			ProductsRepository.get({id: $scope.id}, function(response) 
 			{
+				$scope.isLoading = false;
 				$scope.productGroup = response;
 
 				if ($scope.productGroup.set_pair_id) 
@@ -307,9 +312,8 @@ angular.module('tctApp').controller('ProductsController', [
 
 		ProductsRepository.query(request, function(response) 
 		{
-			$scope.productGroups = response;
-
 			$scope.isLoading = false;
+			$scope.productGroups = response;
 		});
 	}
 
@@ -327,6 +331,7 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.chooseCategory = function(category)
 	{
 		$scope.currentCategory = category;
+		$scope.isLoading = true;
 		$scope.loadProducts();
 	}
 

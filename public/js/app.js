@@ -81496,6 +81496,10 @@ tctApp.factory('ProductsRepository', ['$resource', function ($resource) {
 }]);
 tctApp.factory('MaterialsRepository', ['$resource', function ($resource) {
   return $resource('/materials/:id', null, {
+    supplies: {
+      method: 'GET',
+      url: '/materials/:id/supplies'
+    },
     saveSupply: {
       method: 'POST',
       url: '/materials/supply'
@@ -81521,6 +81525,10 @@ tctApp.factory('OrdersRepository', ['$resource', function ($resource) {
     getDate: {
       method: 'POST',
       url: '/orders/date'
+    },
+    query: {
+      method: 'GET',
+      url: '/orders'
     }
   });
 }]);
@@ -81625,7 +81633,9 @@ tctApp.run(function ($rootScope, AuthRepository) {
 angular.module('tctApp').controller('CategoriesController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'CategoriesRepository', function ($scope, $routeParams, $location, $timeout, toastr, CategoriesRepository) {
   $scope.baseUrl = '';
   $scope.categories = [];
-  $scope.category = {};
+  $scope.category = {
+    'url': '#'
+  };
   $scope.id = 0;
   $scope.categoryErrors = {};
   $scope.units = [{
@@ -81640,7 +81650,9 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
   }];
 
   $scope.init = function () {
+    $scope.isLoading = true;
     CategoriesRepository.query(function (response) {
+      $scope.isLoading = false;
       $scope.categories = response;
     });
   };
@@ -81648,9 +81660,11 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
   $scope.initShow = function () {
     $scope.baseUrl = 'categories';
     $scope.id = $routeParams['id'];
+    $scope.isLoading = true;
     CategoriesRepository.get({
       id: $scope.id
     }, function (response) {
+      $scope.isLoading = false;
       $scope.category = response;
     });
   };
@@ -81660,9 +81674,11 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
     $scope.id = $routeParams['id'];
 
     if ($scope.id) {
+      $scope.isLoading = true;
       CategoriesRepository.get({
         id: $scope.id
       }, function (response) {
+        $scope.isLoading = false;
         $scope.category = response;
       });
     }
@@ -81817,17 +81833,14 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
   $scope.days = 0;
   $scope.monthes = [];
   $scope.years = [];
-  $scope.currentDate = {
-    'day': 0,
-    'month': 0,
-    'year': 0
-  };
+  $scope.currentDate = {};
   $scope.worker = {};
   $scope.workers = [];
   $scope.manager = [];
   $scope.statuses = {};
   $scope.employments = {};
   $scope.dayEmployments = {};
+  $scope.totalSalary = {};
   $scope.isSalariesShown = false;
 
   $scope.init = function () {
@@ -81858,6 +81871,8 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
         $scope.chooseCurrentEmploymentStatus(Object.keys($scope.statuses)[0]);
       }
 
+      $scope.updateTotalSalary();
+      $scope.updateTotalEmployment();
       $scope.initScroll();
     });
   };
@@ -82018,6 +82033,8 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       worker.employments[day].main_category = mainCategory;
       worker.employments[day].status_custom = statusCustom;
     }
+
+    $scope.updateTotalEmployment(worker);
   };
 
   $scope.isSalaryModalShown = false;
@@ -82057,6 +82074,69 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
   $scope.hideEmploymentModal = function () {
     $scope.isEmploymentModalShown = false;
     document.querySelector('body').classList.remove('modal-open');
+  };
+
+  $scope.updateTotalSalary = function () {
+    $scope.totalSalary = {
+      'employments': 0,
+      'advance': 0,
+      'tax': 0,
+      'lunch': 0,
+      'bonus': 0,
+      'surcharge': 0
+    };
+    var workers = angular.copy($scope.workers);
+    workers.push($scope.manager);
+
+    for (var i = 0; i < workers.length; i++) {
+      for (key in $scope.totalSalary) {
+        $scope.totalSalary[key] += workers[i].salary[key];
+      }
+    }
+  };
+
+  $scope.updateTotalEmployment = function (worker) {
+    var workers = worker ? [worker] : $scope.workers;
+
+    for (var i = 0; i < workers.length; i++) {
+      workers[i].totalEmployment = 0;
+
+      for (key in workers[i].employments) {
+        var status = $scope.statuses[workers[i].employments[key].status_id];
+
+        if (!status) {
+          continue;
+        }
+
+        if (status.customable) {
+          workers[i].totalEmployment += +workers[i].employments[key].status_custom;
+        } else {
+          workers[i].totalEmployment += status.salary_production;
+        }
+      }
+
+      workers[i].totalEmployment = Math.round(workers[i].totalEmployment * 100) / 100;
+    }
+
+    if (!worker) {
+      $scope.manager.totalEmployment = 0;
+
+      for (key in $scope.manager.employments) {
+        var status = $scope.statuses[$scope.manager.employments[key].status_id];
+
+        if (!status) {
+          continue;
+        }
+
+        if (status.customable) {
+          $scope.manager.totalEmployment += +$scope.manager.employments[key].status_custom;
+        } else {
+          $scope.manager.totalEmployment += status.salary_production;
+        }
+      }
+
+      $scope.manager.totalEmployment = Math.round($scope.manager.totalEmployment * 100) / 100;
+    }
   };
 
   $scope.initScroll = function () {
@@ -82099,6 +82179,7 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
   $scope.baseUrl = '';
   $scope.facilities = [];
   $scope.facility = {
+    'url': '#',
     'workers': []
   };
   $scope.id = 0;
@@ -82107,8 +82188,9 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
   $scope.workers = [];
 
   $scope.init = function () {
+    $scope.isLoading = true;
     FacilitiesRepository.query(function (response) {
-      console.log(response);
+      $scope.isLoading = false;
       $scope.facilities = response;
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
@@ -82133,17 +82215,17 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
           }
         }
       }
-
-      console.log($scope.facilities);
     });
   };
 
   $scope.initShow = function () {
     $scope.baseUrl = 'facilities';
     $scope.id = $routeParams['id'];
+    $scope.isLoading = true;
     FacilitiesRepository.get({
       id: $scope.id
     }, function (response) {
+      $scope.isLoading = false;
       $scope.facility = response;
       $scope.facility.status_date_raw = $scope.facility.status_date ? new Date(Date.parse($scope.facility.status_date.replace(/-/, '/'))) : null;
     });
@@ -82154,9 +82236,11 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
     $scope.id = $routeParams['id'];
 
     if ($scope.id) {
+      $scope.isLoading = true;
       FacilitiesRepository.get({
         id: $scope.id
       }, function (response) {
+        $scope.isLoading = false;
         $scope.facility = response;
         $scope.facility.status_date_raw = $scope.facility.status_date ? new Date(Date.parse($scope.facility.status_date.replace(/-/, '/'))) : null;
         var categories = $scope.facility.categories;
@@ -82356,6 +82440,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
   $scope.materialGroups = [];
   $scope.materials = [];
   $scope.materialGroup = {
+    'url': '#',
     'variations': '',
     'materials': [{
       'variation': '',
@@ -82461,9 +82546,11 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
   $scope.initShow = function () {
     $scope.baseUrl = 'materials';
     $scope.id = $routeParams['id'];
+    $scope.isLoading = true;
     MaterialsRepository.get({
       id: $scope.id
     }, function (response) {
+      $scope.isLoading = false;
       $scope.materialGroup = response;
     });
   };
@@ -82473,9 +82560,11 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
     $scope.id = $routeParams['id'];
 
     if ($scope.id) {
+      $scope.isLoading = true;
       MaterialsRepository.get({
         id: $scope.id
       }, function (response) {
+        $scope.isLoading = false;
         $scope.materialGroup = response;
       });
     }
@@ -82571,16 +82660,23 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
     'supplies': []
   };
 
-  $scope.showSupplyModal = function () {
-    $scope.modalSupply.date_raw = $filter('date')(new Date(), 'ddMMyyyy'), $scope.addSupplyMaterial();
+  $scope.showSupplyModal = function (supply) {
+    if (supply) {
+      $scope.modalSupply['supplies'] = [supply];
+      var date = supply.date.split("-");
+      $scope.modalSupply.date_raw = date[2] + date[1] + date[0];
+      $scope.isSupplyModalEditing = true;
+    } else {
+      $scope.modalSupply['supplies'] = [];
+      $scope.modalSupply.date_raw = $filter('date')(new Date(), 'ddMMyyyy'), $scope.addSupplyMaterial();
+      $scope.isSupplyModalEditing = false;
+    }
+
     $scope.isSupplyModalShown = true;
   };
 
   $scope.hideSupplyModal = function () {
     $scope.isSupplyModalShown = false;
-    $scope.modalSupply = {
-      'supplies': []
-    };
   };
 
   $scope.addSupplyMaterial = function () {
@@ -82624,7 +82720,41 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
     }, function (response) {
       toastr.success('Все изменения успешно сохранены!');
       $scope.hideSupplyModal();
-      $scope.init();
+
+      if ($scope.baseUrl) {
+        $scope.initShow();
+      } else {
+        $scope.init();
+      }
+    });
+  };
+
+  $scope.monthes = [];
+  $scope.years = [];
+  $scope.currentDate = {};
+  $scope.supplies = [];
+
+  $scope.initSupplies = function () {
+    var request = {
+      'id': $scope.id
+    };
+
+    if ($scope.currentDate.year) {
+      request.year = $scope.currentDate.year;
+    }
+
+    if ($scope.currentDate.month) {
+      request.month = $scope.currentDate.month;
+    }
+
+    $scope.isAddLoading = true;
+    MaterialsRepository.supplies(request, function (response) {
+      $scope.isAddLoading = false;
+      $scope.monthes = response.monthes;
+      $scope.years = response.years;
+      $scope.currentDate.month = response.month;
+      $scope.currentDate.year = response.year;
+      $scope.supplies = response.supplies;
     });
   };
 }]);
@@ -82641,11 +82771,17 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
 angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductsRepository', 'OrdersRepository', 'ExportsRepository', function ($scope, $routeParams, $location, $timeout, $filter, toastr, ProductsRepository, OrdersRepository, ExportsRepository) {
   $scope.Math = window.Math;
   $scope.baseUrl = '';
+  $scope.monthes = [];
+  $scope.years = [];
+  $scope.currentDate = {};
   $scope.currentStatus = 0;
   $scope.currentMainCategory = ['tiles', 'blocks'];
+  $scope.currentPage = 1;
+  $scope.lastPage = -1;
   $scope.currentOrder = null;
   $scope.orders = [];
   $scope.order = {
+    'url': '#',
     'cost': 0,
     'paid': 0,
     'pay_type': 'cash',
@@ -82698,8 +82834,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
   $scope.init = function (status) {
     $scope.chooseStatus(status);
-    console.log(status);
-    $scope.loadOrders();
   };
 
   $scope.initShow = function () {
@@ -82713,6 +82847,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       id: $scope.id
     }, function (response) {
       $scope.order = response;
+      $scope.isLoading = false;
     });
   };
 
@@ -82952,16 +83087,30 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   $scope.loadOrders = function () {
     $scope.isLoading = true;
     var request = {
-      'main_category': $scope.currentMainCategory.join(',')
+      'main_category': $scope.currentMainCategory.join(','),
+      'page': $scope.currentPage
     };
 
     if ($scope.currentStatus) {
       request.status = $scope.currentStatus;
     }
 
+    if ($scope.currentDate.year) {
+      request.year = $scope.currentDate.year;
+    }
+
+    if ($scope.currentDate.month) {
+      request.month = $scope.currentDate.month;
+    }
+
     OrdersRepository.query(request, function (response) {
       $scope.isLoading = false;
-      $scope.orders = response;
+      $scope.orders = response.orders;
+      $scope.lastPage = response.last_page;
+      $scope.monthes = response.monthes;
+      $scope.years = response.years;
+      $scope.currentDate.month = response.month;
+      $scope.currentDate.year = response.year;
 
       if ($scope.currentOrder) {
         var _iteratorNormalCompletion5 = true;
@@ -83014,6 +83163,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     }
 
     $scope.loadOrders();
+  };
+
+  $scope.choosePage = function (page) {
+    if (page != $scope.currentPage) {
+      $scope.currentPage = page;
+      $scope.loadOrders();
+    }
   };
 
   $scope.chooseOrder = function (order) {
@@ -83177,7 +83333,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     $scope.order.cost += $scope.order.delivery_price;
     $scope.order.cost = Math.ceil($scope.order.cost);
     $scope.order.weight = Math.ceil($scope.order.weight);
-    console.log($scope.isFullPaymentChosen);
 
     if ($scope.isFullPaymentChosen) {
       $scope.order.paid = $scope.order.cost;
@@ -83429,11 +83584,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
   $scope.days = 0;
   $scope.monthes = [];
   $scope.years = [];
-  $scope.currentDate = {
-    'day': 0,
-    'month': 0,
-    'year': 0
-  };
+  $scope.currentDate = {};
   $scope.productionProducts = [];
   $scope.productionOrders = [];
   $scope.productionCategories = [];
@@ -84001,6 +84152,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   $scope.baseUrl = '';
   $scope.productGroups = [];
   $scope.productGroup = {
+    'url': '#',
     'products': [{
       'variation': '',
       'main_variation': '',
@@ -84073,12 +84225,11 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   }];
 
   $scope.init = function () {
-    $scope.isLoading = true;
-
     if ($location.search().category) {
       $scope.currentCategory = $location.search().category;
     }
 
+    $scope.isLoading = true;
     $scope.loadCategories();
     $scope.loadProducts();
     $scope.loadMaterials();
@@ -84087,9 +84238,11 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   $scope.initShow = function () {
     $scope.baseUrl = 'products';
     $scope.id = $routeParams['id'];
+    $scope.isLoading = true;
     ProductsRepository.get({
       id: $scope.id
     }, function (response) {
+      $scope.isLoading = false;
       $scope.productGroup = response;
     });
   };
@@ -84100,9 +84253,11 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     $scope.isStockProductsShown = false;
 
     if ($scope.id) {
+      $scope.isLoading = true;
       ProductsRepository.get({
         id: $scope.id
       }, function (response) {
+        $scope.isLoading = false;
         $scope.productGroup = response;
 
         if ($scope.productGroup.set_pair_id) {
@@ -84205,8 +84360,8 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     }
 
     ProductsRepository.query(request, function (response) {
-      $scope.productGroups = response;
       $scope.isLoading = false;
+      $scope.productGroups = response;
     });
   };
 
@@ -84218,6 +84373,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 
   $scope.chooseCategory = function (category) {
     $scope.currentCategory = category;
+    $scope.isLoading = true;
     $scope.loadProducts();
   };
 
@@ -84424,6 +84580,7 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
   $scope.baseUrl = '';
   $scope.recipes = [];
   $scope.recipe = {
+    'url': '#',
     'material_groups': [{
       'id': '',
       'pivot': {
@@ -84437,7 +84594,9 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
   $scope.recipeErrors = {};
 
   $scope.init = function () {
+    $scope.isLoading = true;
     RecipesRepository.query(function (response) {
+      $scope.isLoading = false;
       $scope.recipes = response;
     });
   };
@@ -84445,9 +84604,11 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
   $scope.initShow = function () {
     $scope.baseUrl = 'recipes';
     $scope.id = $routeParams['id'];
+    $scope.isLoading = true;
     RecipesRepository.get({
       id: $scope.id
     }, function (response) {
+      $scope.isLoading = false;
       $scope.recipe = response;
     });
   };
@@ -84457,9 +84618,11 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
     $scope.id = $routeParams['id'];
 
     if ($scope.id) {
+      $scope.isLoading = true;
       RecipesRepository.get({
         id: $scope.id
       }, function (response) {
+        $scope.isLoading = false;
         $scope.recipe = response;
       });
     }
@@ -84594,12 +84757,16 @@ angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '
 angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'FacilitiesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $timeout, toastr, FacilitiesRepository, WorkersRepository) {
   $scope.Object = Object;
   $scope.baseUrl = '';
-  $scope.worker = {};
+  $scope.worker = {
+    'url': '#'
+  };
   $scope.facilities = [];
   $scope.workers = [];
 
   $scope.init = function () {
+    $scope.isLoading = true;
     WorkersRepository.query(function (response) {
+      $scope.isLoading = false;
       $scope.workers = response;
     });
   };
@@ -84607,9 +84774,11 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
   $scope.initShow = function () {
     $scope.baseUrl = 'workers';
     $scope.id = $routeParams['id'];
+    $scope.isLoading = true;
     WorkersRepository.get({
       id: $scope.id
     }, function (response) {
+      $scope.isLoading = false;
       $scope.worker = response;
     });
   };
@@ -84619,9 +84788,11 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
     $scope.id = $routeParams['id'];
 
     if ($scope.id) {
+      $scope.isLoading = true;
       WorkersRepository.get({
         id: $scope.id
       }, function (response) {
+        $scope.isLoading = false;
         $scope.worker = response;
 
         if ($scope.worker.birthdate) {

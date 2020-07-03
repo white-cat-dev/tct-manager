@@ -79,10 +79,6 @@
 	}
 
 	.supply-modal {
-		.table, .form-group {
-			margin-bottom: 5px;
-		}
-
 		.param-label {
 	    	color: darken($grey, 75%);
 	    	margin-bottom: 10px;
@@ -106,5 +102,29 @@
 				padding: 5px 0px;
 			}
 		}
+	}
+}
+
+.material-supplies-block {
+	margin-top: 20px;
+	position: relative;
+	min-height: 170px;
+
+	.modal-loading-block {
+		padding-top: 105px;
+	}
+
+	.date-groups {
+		margin-bottom: 20px;
+	}
+
+	.table-block {
+		border: solid 1px darken($grey, 10%);
+	    padding: 10px 15px;
+	    box-shadow: 1px 1px 5px darken($grey, 5%);
+
+	    .table {
+	    	margin-bottom: 0px;
+	    }
 	}
 }

@@ -12490,10 +12490,6 @@ i.far {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 10;
   background: #FFF;
   margin: 0px -10px;
 }
@@ -12502,33 +12498,6 @@ i.far {
   .top-buttons-block {
     display: block;
   }
-}
-
-.top-buttons-block .input-group.search-group {
-  width: 350px;
-  max-width: 100%;
-}
-
-@media (max-width: 767.98px) {
-  .top-buttons-block .input-group.search-group {
-    width: 100%;
-  }
-}
-
-.top-buttons-block .input-group.date-group {
-  width: 200px;
-}
-
-.top-buttons-block .input-group.date-group .input-group-append {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  padding: 10px 12px;
-}
-
-.top-buttons-block .input-group.date-group .input-group-prepend {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  padding: 10px 12px;
 }
 
 .top-buttons-block .left-buttons {
@@ -12585,6 +12554,47 @@ i.far {
   font-weight: 500;
 }
 
+.input-group.search-group {
+  width: 350px;
+  max-width: 100%;
+}
+
+@media (max-width: 767.98px) {
+  .input-group.search-group {
+    width: 100%;
+  }
+}
+
+.input-group.date-group {
+  width: 200px;
+  height: 38px;
+}
+
+.input-group.date-group .ui-select-container {
+  background: #FFFFFF;
+}
+
+.input-group.date-group .input-group-append {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 10px;
+}
+
+.input-group.date-group .input-group-prepend {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 10px;
+}
+
+.date-groups {
+  display: flex;
+  align-items: center;
+}
+
+.date-groups .date-group {
+  margin-right: 10px;
+}
+
 .edit-form-block {
   border-radius: 5px;
   box-shadow: 0px 0px 5px #dadada;
@@ -12634,9 +12644,10 @@ i.far {
 
 .show-block {
   border-radius: 5px;
-  box-shadow: 0px 0px 5px #dadada;
+  box-shadow: 1px 1px 5px #dadada;
   padding: 20px 20px 30px 20px;
   border: solid 1px #dadada;
+  margin-bottom: 30px;
 }
 
 .show-block .show-block-title {
@@ -12670,8 +12681,8 @@ i.far {
 }
 
 .show-block .params-title {
-  color: #4d4d4d;
-  font-size: 20px;
+  color: #173854;
+  font-size: 21px;
   font-weight: 500;
   margin: 25px 0px 15px 0px;
 }
@@ -12703,13 +12714,13 @@ i.far {
 }
 
 .show-block .param-block .param-name {
-  color: #a7a7a7;
+  color: #343434;
+  font-weight: 500;
   font-size: 16px;
   margin-bottom: 5px;
 }
 
 .show-block .param-block .param-value {
-  color: #000000;
   font-size: 16px;
 }
 
@@ -13237,11 +13248,6 @@ i.far {
   width: 30%;
 }
 
-.materials-page .supply-modal .table,
-.materials-page .supply-modal .form-group {
-  margin-bottom: 5px;
-}
-
 .materials-page .supply-modal .param-label {
   color: #343434;
   margin-bottom: 10px;
@@ -13262,6 +13268,30 @@ i.far {
 
 .materials-page .supply-modal .ui-select-container .ui-select-choices {
   padding: 5px 0px;
+}
+
+.material-supplies-block {
+  margin-top: 20px;
+  position: relative;
+  min-height: 170px;
+}
+
+.material-supplies-block .modal-loading-block {
+  padding-top: 105px;
+}
+
+.material-supplies-block .date-groups {
+  margin-bottom: 20px;
+}
+
+.material-supplies-block .table-block {
+  border: solid 1px #dadada;
+  padding: 10px 15px;
+  box-shadow: 1px 1px 5px #e6e6e6;
+}
+
+.material-supplies-block .table-block .table {
+  margin-bottom: 0px;
 }
 
 .recipes-page {
@@ -13948,7 +13978,6 @@ i.far {
 }
 
 .orders-page .statuses-menu-block {
-  margin-bottom: 20px;
   position: relative;
 }
 
@@ -14055,6 +14084,44 @@ i.far {
   transition: 0.3s;
 }
 
+.orders-page .date-pagination-block {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.orders-page .date-pagination-block .pagination {
+  margin: 0px;
+}
+
+.orders-page .date-pagination-block .pagination .previous .btn,
+.orders-page .date-pagination-block .pagination .next .btn {
+  padding: 6px 10px;
+}
+
+.orders-page .date-pagination-block .pagination .previous {
+  margin-right: 5px;
+}
+
+.orders-page .date-pagination-block .pagination .next {
+  margin-left: 5px;
+}
+
+.orders-page .date-pagination-block .pagination li:first-child {
+  padding: 5px 10px 5px 0px;
+}
+
+.orders-page .date-pagination-block .pagination .btn:not(.btn-primary) {
+  background: #FFFFFF;
+  border: solid 1px #e6e6e6;
+  width: 42px;
+}
+
+.orders-page .date-pagination-block .pagination .btn:not(.btn-primary).active {
+  background: #276090;
+  color: white;
+}
+
 .orders-page .top-statuses-menu-block {
   position: -webkit-sticky;
   position: sticky;
@@ -14083,6 +14150,7 @@ i.far {
 .orders-page .main-orders-block {
   box-shadow: 1px 1px 5px #e6e6e6;
   border: solid 1px #dadada;
+  margin-top: 20px;
 }
 
 .orders-page .main-orders-block .table {
@@ -14130,7 +14198,8 @@ i.far {
   position: relative;
   position: -webkit-sticky;
   position: sticky;
-  top: 156px;
+  top: 20px;
+  margin-top: 20px;
 }
 
 .orders-page .main-products-block .table {
@@ -14398,48 +14467,13 @@ i.far {
   position: relative;
 }
 
-.workers-page .worker-block {
-  border: solid 1px #dadada;
-  box-shadow: 1px 1px 5px #e6e6e6;
-  border-radius: 5px;
-  padding: 15px;
-  position: relative;
-  margin-bottom: 30px;
-}
-
-.workers-page .worker-block .btn-group {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 1;
-}
-
-.workers-page .worker-block .worker-title {
-  font-weight: 500;
-  font-size: 20px;
-  margin-bottom: 5px;
-}
-
-.workers-page .worker-block .worker-param {
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-.workers-page .worker-block .worker-param .param-name {
-  color: #343434;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 3px;
-}
-
-.workers-page .worker-block .buttons-block {
-  margin-top: 15px;
+.workers-page .dropdown-menu {
+  margin: 0px;
+  padding: 1px 0px 3px 0px;
 }
 
 .workers-page .worker-status {
   color: #9a9a9a;
-  font-size: 14px;
-  margin-bottom: 5px;
 }
 
 .workers-page .worker-status.active {
@@ -14868,11 +14902,15 @@ i.far {
 
 .employments-page .salaries-block .block-title {
   font-size: 21px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .employments-page .salaries-block .block-title span {
   font-weight: 500;
+}
+
+.employments-page .salaries-block .alert {
+  margin-bottom: 20px;
 }
 
 .employments-page .salaries-block .table-block {
@@ -14899,6 +14937,12 @@ i.far {
 
 .employments-page .salaries-block .table-block .table tr td:first-child {
   font-weight: 500;
+}
+
+.employments-page .salaries-block .table-block .table tr:last-child td {
+  font-weight: 500;
+  border-top: solid 1px silver;
+  line-height: 31px;
 }
 
 .employments-page .salary-modal .modal-title {

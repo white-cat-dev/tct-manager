@@ -11,7 +11,9 @@ use App\Production;
 use App\Facility;
 use App\Product;
 use Carbon\Carbon;
+use App\Services\DateService;
 use App\Services\ProductionsService;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class OrdersController extends Controller
@@ -24,13 +26,27 @@ class OrdersController extends Controller
     {
         if ($request->wantsJson())
         {
+            $today = Carbon::today();
+
+            $month = (int)$request->get('month', $today->month);
+            $year = (int)$request->get('year', $today->year);
+
+            $monthes = DateService::getMonthes();
+            $years = DateService::getYears(Order::select('date'));
+
+
             $query = Order::with('realizations', 'realizations.product');
 
             $status = $request->get('status', -1);
             if ($status != -1)
             {
-                switch ($status) {
+                switch ($status) 
+                {
                     case 'production':
+                        $query->where('status', Order::STATUS_PRODUCTION);
+                        break;
+
+                    case 'ready':
                         $query->where('status', Order::STATUS_PRODUCTION);
                         break;
 
@@ -51,38 +67,73 @@ class OrdersController extends Controller
                 $query = $query->whereIn('main_category', $mainCategories);
             }
 
+            $query = $query->orderBy('date', 'DESC')->orderBy('number', 'DESC');
 
-            $tempOrders = $query->orderBy('date', 'DESC')->orderBy('number', 'DESC')->get();
-            $orders = collect([]);
-
-            foreach ($tempOrders as $order) 
+            switch ($status) 
             {
-                $isOrderReady = true;
+                case 'production':
+                    $orders = $query->get();
+                    break;
 
+                case 'ready':
+                    $tempOrders = $query->get();
+                    $orders = collect([]);
+
+                    foreach ($tempOrders as $order) 
+                    {
+                        $isOrderReady = true;
+
+                        $order->progress = $order->getProgress();
+                        foreach ($order->products as $product) 
+                        {
+                            $product->progress = $product->getProgress($order);
+
+                            if ($product->progress['total'] - $product->progress['realization'] > $product->in_stock)
+                            {
+                                $isOrderReady = false;
+                            }
+                        }
+
+                        if ($isOrderReady && ($order->status != Order::STATUS_FINISHED))
+                        {
+                            $orders->push($order);
+                        }
+                    }
+                    break;
+
+                case 'finished':
+                    $orders = $query->whereYear('date', $year)
+                        ->whereMonth('date', $month)
+                        ->paginate(50);
+                    break;
+
+                case 'new':
+                    $orders = $query->get();
+                    break;
+
+                default:
+                    $orders = $query->whereYear('date', $year)
+                        ->whereMonth('date', $month)
+                        ->paginate(50);
+            }
+
+            foreach ($orders as $order) 
+            {
                 $order->progress = $order->getProgress();
                 foreach ($order->products as $product) 
                 {
                     $product->progress = $product->getProgress($order);
-
-                    if ($product->progress['total'] - $product->progress['realization'] > $product->in_stock)
-                    {
-                        $isOrderReady = false;
-                    }
-                }
-
-                if ($status == 'ready')
-                {
-                    if ($isOrderReady && ($order->status != Order::STATUS_FINISHED))
-                    {
-                        $orders->push($order);
-                    }
-                }
-                else
-                {
-                    $orders->push($order);
                 }
             }
-            return $orders;
+
+            return [
+                'orders' => ($orders instanceof LengthAwarePaginator) ? $orders->items() : $orders,
+                'last_page' => ($orders instanceof LengthAwarePaginator) ? $orders->lastPage() : -1,
+                'monthes' => $monthes,
+                'years' => $years,
+                'year' => $year,
+                'month' => $month
+            ];
         }
 
         return view('index', ['ngTemplate' => 'orders']);

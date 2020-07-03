@@ -25,6 +25,7 @@ angular.module('tctApp').controller('FacilitiesController', [
 	$scope.facilities = [];
 
 	$scope.facility = {
+		'url': '#',
 		'workers': []
 	};
 	$scope.id = 0;
@@ -37,15 +38,15 @@ angular.module('tctApp').controller('FacilitiesController', [
 
 	$scope.init = function()
 	{
+		$scope.isLoading = true;
 		FacilitiesRepository.query(function(response) 
 		{
-			console.log(response);
+			$scope.isLoading = false;
 			$scope.facilities = response;
 			for (var facility of $scope.facilities) 
 			{
 				facility.status_date_raw = facility.status_date ? new Date(Date.parse(facility.status_date.replace(/-/, '/'))) : null;
 			}
-			console.log($scope.facilities);
 		});
 	}
 
@@ -56,8 +57,10 @@ angular.module('tctApp').controller('FacilitiesController', [
 
 		$scope.id = $routeParams['id'];
 
+		$scope.isLoading = true;
 		FacilitiesRepository.get({id: $scope.id}, function(response) 
 		{
+			$scope.isLoading = false;
 			$scope.facility = response;
 			$scope.facility.status_date_raw = $scope.facility.status_date ? new Date(Date.parse($scope.facility.status_date.replace(/-/, '/'))) : null;
 		});
@@ -72,8 +75,10 @@ angular.module('tctApp').controller('FacilitiesController', [
 
 		if ($scope.id)
 		{
+			$scope.isLoading = true;
 			FacilitiesRepository.get({id: $scope.id}, function(response) 
 			{
+				$scope.isLoading = false;
 				$scope.facility = response;
 				$scope.facility.status_date_raw = $scope.facility.status_date ? new Date(Date.parse($scope.facility.status_date.replace(/-/, '/'))) : null;
 

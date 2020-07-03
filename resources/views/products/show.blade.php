@@ -1,5 +1,7 @@
 <div class="products-page" ng-init="initShow()">
 	<h1>Просмотр товара</h1>
+
+	@include('partials.loading')
 	
 	<div class="top-buttons-block">
 		<div class="left-buttons">
@@ -24,18 +26,10 @@
 	</div>
 
 
-	<div class="show-block">
+	<div class="show-block" ng-if="!isLoading">
 		<div class="row justify-content-around">
-			<div class="col-12 col-xl-11">
-				<div class="show-block-title m-0">
-					Продукт "@{{ productGroup.name }}"
-				</div>
-			</div>
-		</div>
-
-		<div class="row justify-content-around">
-			<div class="col-6 col-xl-5">
-				<div class="params-title">
+			<div class="col-12 col-lg-6 col-xl-5">
+				<div class="params-title mt-0">
 					Общая информация
 				</div>
 				<div class="param-block">
@@ -74,8 +68,8 @@
 				</div>
 			</div>
 
-			<div class="col-6 col-xl-5">
-				<div class="params-title">
+			<div class="col-12 col-lg-6 col-xl-5">
+				<div class="params-title mt-0">
 					Характеристики
 				</div>
 
@@ -173,14 +167,6 @@
 								<span ng-switch-when="unit">шт</span>
 							</span>
 						</td>
-						{{-- <td>
-							@{{ product.free_in_stock }}
-							<span ng-switch on="productGroup.category.units">
-								<span ng-switch-when="area">м<sup>2</sup></span>
-								<span ng-switch-when="volume">м<sup>3</sup></span>
-								<span ng-switch-when="unit">шт</span>
-							</span>
-						</td> --}}
 					</tr>
 				</table>
 			</div>
@@ -205,7 +191,7 @@
 				</div>
 			</div>
 
-			<div class="col-6 col-xl-5">
+			<div class="col-12 col-lg-6 col-xl-5">
 				<div class="param-block">
 					<div class="param-name">
 						Количество из одного замеса
@@ -249,7 +235,7 @@
 				</div>
 			</div>
 
-			<div class="col-6 col-xl-5">
+			<div class="col-12 col-lg-6 col-xl-5">
 				<div class="param-block">
 					<div class="param-name">
 						Стоимость работы 

@@ -2,6 +2,8 @@
 	<h1 ng-if="!id">Создание нового рецепта</h1>
 	<h1 ng-if="id">Редактирование рецепта</h1>
 
+	@include('partials.loading')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<a href="{{ route('recipes') }}" class="btn btn-primary">
@@ -19,7 +21,7 @@
 		</div>
 	</div>
 
-	<div class="edit-form-block">
+	<div class="edit-form-block" ng-if="!isLoading">
 		<div class="row justify-content-around">
 			<div class="col-12 col-lg-8 col-xl-6">
 				<div class="form-group">

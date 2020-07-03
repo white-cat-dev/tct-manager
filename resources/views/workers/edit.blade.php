@@ -2,6 +2,8 @@
 	<h1 ng-if="!id">Создание нового работника</h1>
 	<h1 ng-if="id">Редактирование данных работника</h1>
 
+	@include('partials.loading')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<a href="{{ route('workers') }}" class="btn btn-primary">
@@ -29,9 +31,9 @@
 		</div>
 	</div>
 
-	<div class="edit-form-block">
+	<div class="edit-form-block" ng-if="!isLoading">
 		<div class="row justify-content-around">
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="form-group">
 					<div class="param-label">Рабочее имя</div>
 					<input type="text" class="form-control" ng-model="worker.name" ng-class="{'is-invalid': workerErrors.name}">
@@ -57,7 +59,7 @@
 
 			</div>
 
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="form-group">
 					<div class="param-label">Номер телефона</div>
 					<input type="text" class="form-control" ui-mask="+7 (9999) 99-99-99" ui-mask-placeholder-char="_" ng-model="worker.phone">

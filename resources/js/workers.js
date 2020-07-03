@@ -20,7 +20,9 @@ angular.module('tctApp').controller('WorkersController', [
 
 	$scope.baseUrl = '';
 
-	$scope.worker = {};
+	$scope.worker = {
+		'url': '#'
+	};
 
 	$scope.facilities = [];
 	$scope.workers = [];
@@ -28,8 +30,10 @@ angular.module('tctApp').controller('WorkersController', [
 
 	$scope.init = function()
 	{
+		$scope.isLoading = true;
 		WorkersRepository.query(function(response)
 		{
+			$scope.isLoading = false;
 			$scope.workers = response;
 		});
 	}
@@ -41,8 +45,10 @@ angular.module('tctApp').controller('WorkersController', [
 
 		$scope.id = $routeParams['id'];
 
+		$scope.isLoading = true;
 		WorkersRepository.get({id: $scope.id}, function(response) 
 		{
+			$scope.isLoading = false;
 			$scope.worker = response;
 		});
 	}
@@ -56,8 +62,10 @@ angular.module('tctApp').controller('WorkersController', [
 
 		if ($scope.id)
 		{
+			$scope.isLoading = true;
 			WorkersRepository.get({id: $scope.id}, function(response) 
 			{
+				$scope.isLoading = false;
 				$scope.worker = response;
 				if ($scope.worker.birthdate)
 				{

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use App\Exports\ProductsExport;
 use App\Exports\MaterialsExport;
 use App\Order;
@@ -15,13 +16,15 @@ class ExportsController extends Controller
 {
     public function index(Request $request) 
     {
-
         $fileName = $request->route('file', '');
         $type = $request->route('type', '');
 
         if ($type == 'order')
         {
-            return Storage::download('exports/' . $type . '/' . $fileName);
+            $file = Storage::get('exports/' . $type . '/' . $fileName);
+            $response = Response::make($file, 200);
+            $response->header('Content-Type', 'application/pdf');
+            return $response;
         }
         else
         {

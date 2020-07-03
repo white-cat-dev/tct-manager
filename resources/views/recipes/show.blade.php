@@ -1,5 +1,7 @@
 <div class="recipes-page" ng-init="initShow()">
 	<h1>Просмотр рецепта</h1>
+
+	@include('partials.loading')
 	
 	<div class="top-buttons-block">
 		<div class="left-buttons">
@@ -21,13 +23,9 @@
 	</div>
 
 
-	<div class="show-block">
+	<div class="show-block" ng-if="!isLoading">
 		<div class="row justify-content-center">
 			<div class="col-12 col-lg-8 col-xl-6">
-				<div class="show-block-title">
-					Рецепт «@{{ recipe.name }}»
-				</div>
-
 				<div class="param-block">
 					<div class="param-name">
 						Название

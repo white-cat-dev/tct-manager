@@ -257,6 +257,7 @@ tctApp.factory('ProductsRepository', ['$resource', function($resource) {
 
 tctApp.factory('MaterialsRepository', ['$resource', function($resource) { 
 	return $resource('/materials/:id', null, {
+		supplies: { method: 'GET', url: '/materials/:id/supplies' },
 		saveSupply: { method: 'POST', url: '/materials/supply' }
     });  
 }]);
@@ -273,7 +274,8 @@ tctApp.factory('OrdersRepository', ['$resource', function($resource) {
 	return $resource('/orders/:id', null, {
 		saveRealization: { method: 'POST', url: '/orders/realization' },
 		savePayment: { method: 'POST', url: '/orders/payment' },
-		getDate: { method: 'POST', url: '/orders/date' }
+		getDate: { method: 'POST', url: '/orders/date' },
+		query: { method: 'GET', url: '/orders' }
     });  
 }]);
 

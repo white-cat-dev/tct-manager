@@ -29,7 +29,6 @@
 	</div>
 
 
-
 	<div class="statuses-menu-block" ng-init="isStatusesShown = false">	
 		<div class="statuses-menu" ng-class="{'shown': isStatusesShown}" ng-click="isStatusesShown = !isStatusesShown">
 			<div class="statuses-title btn d-block d-md-none">
@@ -80,6 +79,8 @@
 		</div>
 	</div>
 
+	@include('partials.date-pagination')
+
 	<div class="row" ng-if="(orders | filter: {'number': searchQuery}).length > 0">
 		<div class="col-12 col-lg-7">
 			<div class="main-orders-block">
@@ -108,10 +109,10 @@
 							@{{ order.formatted_date_to }}
 						</td>
 						<td ng-class="{'text-success': order.pay_type != 'cash'}">
-							@{{ order.cost | number }} руб.
+							@{{ order.cost | number }} руб
 						</td>
 						<td ng-class="{'text-success': order.pay_type != 'cash'}" class="d-none d-lg-table-cell">
-							@{{ order.payments_paid | number }} руб.
+							@{{ order.payments_paid | number }} руб
 						</td>
 					</tr>
 				</table>
@@ -132,9 +133,9 @@
 						<a ng-href="@{{ currentOrder.url + '/edit' }}" class="btn btn-primary btn-sm">
 							<i class="fas fa-edit"></i>
 						</a>
-						{{-- <button type="button" class="btn btn-primary btn-sm" ng-click="loadExportFile(currentOrder)">
+						<button type="button" class="btn btn-primary btn-sm" ng-click="loadExportFile(currentOrder)">
 							<i class="fas fa-print"></i>
-						</button> --}}
+						</button>
 					</div>
 
 					<table class="table table-sm" ng-if="currentOrder.products.length > 0">
@@ -200,6 +201,10 @@
 		</div>
 	</div>
 
+	<div ng-if="(orders | filter: {'number': searchQuery}).length > 20">	
+		@include('partials.date-pagination')
+	</div>
+
 	<div class="no-data-block" ng-if="(orders | filter: {'number': searchQuery}).length == 0 && !isLoading">
 		<div class="icon">
 			<i class="fas fa-th"></i>
@@ -217,6 +222,17 @@
 		<small ng-if="searchQuery"> по запросу «@{{ searchQuery }}»</small>
 		<div ng-if="currentMainCategory.length == 0">
 			<small>Выберите категорию (плитка или блоки)</small>
+		</div>
+		<div ng-if="currentStatus == 'finished' || !currentStatus">
+			<small>
+				за
+				<span ng-repeat="month in monthes" ng-if="currentDate.month == month.id">
+					@{{ month.name | lowercase }}
+				</span> 
+				<span>
+					@{{ currentDate.year }} года
+				</span>
+			</small>
 		</div>
 
 		@if (Auth::user() && Auth::user()->type == 'admin')

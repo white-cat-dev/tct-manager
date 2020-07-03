@@ -114,7 +114,7 @@
 		</div>
 	</div>
 
-	<div class="no-data-block" ng-if="(facilities | filter: {'name': searchQuery}).length == 0">
+	<div class="no-data-block" ng-if="(facilities | filter: {'name': searchQuery}).length == 0 && !isLoading">
 		<div class="icon">
 			<i class="fas fa-th"></i>
 		</div>

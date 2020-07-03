@@ -23,6 +23,7 @@ angular.module('tctApp').controller('MaterialsController', [
 	$scope.materialGroups = [];
 	$scope.materials = [];
 	$scope.materialGroup = {
+		'url': '#',
 		'variations': '',
 		'materials': [
 			{
@@ -115,8 +116,10 @@ angular.module('tctApp').controller('MaterialsController', [
 		$scope.baseUrl = 'materials';
 		$scope.id = $routeParams['id'];
 
+		$scope.isLoading = true;
 		MaterialsRepository.get({id: $scope.id}, function(response) 
 		{
+			$scope.isLoading = false;
 			$scope.materialGroup = response;
 		});
 	}
@@ -129,8 +132,10 @@ angular.module('tctApp').controller('MaterialsController', [
 
 		if ($scope.id)
 		{
+			$scope.isLoading = true;
 			MaterialsRepository.get({id: $scope.id}, function(response) 
 			{
+				$scope.isLoading = false;
 				$scope.materialGroup = response;
 			});
 		}
@@ -264,10 +269,22 @@ angular.module('tctApp').controller('MaterialsController', [
 	};
 
 
-    $scope.showSupplyModal = function()
+    $scope.showSupplyModal = function(supply)
     {
-    	$scope.modalSupply.date_raw = $filter('date')(new Date(), 'ddMMyyyy'),
-    	$scope.addSupplyMaterial();
+    	if (supply)
+    	{
+    		$scope.modalSupply['supplies'] = [supply];
+    		var date = supply.date.split("-");
+			$scope.modalSupply.date_raw = date[2] + date[1] + date[0];
+			$scope.isSupplyModalEditing = true;
+    	}
+    	else
+    	{
+    		$scope.modalSupply['supplies'] = [];
+    		$scope.modalSupply.date_raw = $filter('date')(new Date(), 'ddMMyyyy'),
+    		$scope.addSupplyMaterial();
+    		$scope.isSupplyModalEditing = false;
+    	}
     	$scope.isSupplyModalShown = true;
     }
 
@@ -275,9 +292,6 @@ angular.module('tctApp').controller('MaterialsController', [
     $scope.hideSupplyModal = function()
     {
     	$scope.isSupplyModalShown = false;
-    	$scope.modalSupply = {
-			'supplies': []
-		};
     }
 
 
@@ -308,7 +322,52 @@ angular.module('tctApp').controller('MaterialsController', [
 			toastr.success('Все изменения успешно сохранены!');
 
 			$scope.hideSupplyModal();
-			$scope.init();
+			if ($scope.baseUrl)
+			{
+				$scope.initShow();
+			}
+			else
+			{
+				$scope.init();
+			}
+		});
+    }
+
+
+    $scope.monthes = [];
+	$scope.years = [];
+
+    $scope.currentDate = {};
+    
+    $scope.supplies = [];
+
+    $scope.initSupplies = function()
+    {
+		var request = {
+			'id': $scope.id
+		};
+		if ($scope.currentDate.year)
+		{
+			request.year = $scope.currentDate.year;
+		}
+		if ($scope.currentDate.month)
+		{
+			request.month = $scope.currentDate.month;
+		}
+
+    	$scope.isAddLoading = true;
+
+    	MaterialsRepository.supplies(request, function(response) 
+		{
+			$scope.isAddLoading = false;
+
+			$scope.monthes = response.monthes;
+			$scope.years = response.years;
+
+			$scope.currentDate.month = response.month;
+			$scope.currentDate.year = response.year;
+
+			$scope.supplies = response.supplies;
 		});
     }
 }]);

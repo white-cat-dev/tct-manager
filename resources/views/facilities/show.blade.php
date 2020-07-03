@@ -1,6 +1,8 @@
 <div class="facilities-page" ng-init="initShow()">
 	<h1>Просмотр цеха</h1>
 	
+	@include('partials.loading')
+
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<a href="{{ route('facilities') }}" class="btn btn-primary">
@@ -43,29 +45,24 @@
 		</div>
 	</div>
 
-	<div class="show-block">
+	<div class="show-block" ng-if="!isLoading">
 		<div class="row justify-content-around">
 			<div class="col-12 col-lg-8 col-xl-6">
-				<div class="show-block-title facility-show-block-title m-0">
-					@{{ facility.name }}
-
-					<span ng-style="{'background': facility.icon_color}"></span>
-
-					<div class="status-block">
-						@{{ facility.status_text }}
-					</div>
-				</div>
-
-				<div class="params-title">
-					Общая информация
-				</div>
-
 				<div class="param-block">
 					<div class="param-name">
 						Название цеха
 					</div>
 					<div class="param-value">
 						@{{ facility.name }}
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Статус цеха
+					</div>
+					<div class="param-value">
+						@{{ facility.status_text }}
 					</div>
 				</div>
 

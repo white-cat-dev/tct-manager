@@ -24,6 +24,7 @@ angular.module('tctApp').controller('RecipesController', [
 
 	$scope.recipes = [];
 	$scope.recipe = {
+		'url': '#',
 		'material_groups': [
 			{
 				'id': '',
@@ -43,8 +44,10 @@ angular.module('tctApp').controller('RecipesController', [
 
 	$scope.init = function()
 	{
+		$scope.isLoading = true;
 		RecipesRepository.query(function(response) 
 		{
+			$scope.isLoading = false;
 			$scope.recipes = response;
 		});
 	}
@@ -56,8 +59,10 @@ angular.module('tctApp').controller('RecipesController', [
 
 		$scope.id = $routeParams['id'];
 
+		$scope.isLoading = true;
 		RecipesRepository.get({id: $scope.id}, function(response) 
 		{
+			$scope.isLoading = false;
 			$scope.recipe = response;
 		});
 	}
@@ -71,8 +76,10 @@ angular.module('tctApp').controller('RecipesController', [
 
 		if ($scope.id)
 		{
+			$scope.isLoading = true;
 			RecipesRepository.get({id: $scope.id}, function(response) 
 			{
+				$scope.isLoading = false;
 				$scope.recipe = response;
 			});
 		}

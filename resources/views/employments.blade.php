@@ -12,7 +12,7 @@
 
 				<ui-select ng-model="currentDate.year" ng-change="init()" skip-focusser="true" search-enabled="false">
 		            <ui-select-match placeholder="Год">
-			            <span ng-if="!isLoading" ng-bind-html="$select.selected"></span>
+			            <span ng-bind-html="$select.selected"></span>
 			        </ui-select-match>
 		            <ui-select-choices repeat="year in years">
 		                <span ng-bind-html="year"></span>
@@ -31,7 +31,7 @@
 
 				<ui-select ng-model="currentDate.month" ng-change="init()" skip-focusser="true" search-enabled="false">
 		            <ui-select-match placeholder="Месяц">
-			            <spanng-if="!isLoading"  ng-bind-html="$select.selected.name"></span>
+			            <span ng-bind-html="$select.selected.name"></span>
 			        </ui-select-match>
 		            <ui-select-choices repeat="month.id as month in monthes">
 		                <span ng-bind-html="month.name"></span>
@@ -104,7 +104,7 @@
 											@{{ employments[$index+1].team }}
 										</div>
 									</th>
-									<th ng-if="isSalariesShown" style="min-width: 70px">Итого</th>
+									<th style="min-width: 70px">Итого</th>
 								</tr>
 							</table>
 						</div>
@@ -123,7 +123,7 @@
 													@{{ worker.employments[$index+1].status_custom }} 
 												</div>
 												<div ng-if="statuses[currentEmploymentStatus].customable">
-													<input type="text" class="form-control" ng-model="worker.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)">
+													<input type="text" class="form-control" ng-model="worker.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)" ng-blur="updateTotalEmployment(worker)">
 												</div>
 											</div>
 
@@ -135,8 +135,9 @@
 										</div>
 									</div>
 								</td>
-								<td ng-if="isSalariesShown" style="min-width: 70px">
-									@{{ worker.salary.employments }}
+								<td style="min-width: 70px">
+									<span ng-if="isSalariesShown">@{{ worker.salary.employments | number }}</span>
+									<span ng-if="!isSalariesShown">@{{ worker.totalEmployment }}</span> 
 								</td>
 							</tr>
 						</table>
@@ -153,7 +154,7 @@
 													@{{ manager.employments[$index+1].status_custom }} 
 												</div>
 												<div ng-if="statuses[currentEmploymentStatus].customable">
-													<input type="text" class="form-control" ng-model="manager.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)">
+													<input type="text" class="form-control" ng-model="manager.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)" ng-blur="updateTotalEmployment(worker)">
 												</div>
 											</div>
 
@@ -165,8 +166,9 @@
 										</div>
 									</div>
 								</td>
-								<td ng-if="isSalariesShown" style="min-width: 70px">
-									@{{ manager.salary.employments }}
+								<td style="min-width: 70px">
+									<span ng-if="isSalariesShown">@{{ manager.salary.employments | number }}</span>
+									<span ng-if="!isSalariesShown">@{{ manager.totalEmployment }}</span> 
 								</td>
 							</tr>
 						</table>
@@ -240,6 +242,10 @@
 			<span>
 				@{{ currentDate.year }} года
 			</span>
+		</div>
+
+		<div class="alert alert-warning">
+			Не забудьте сохранить все изменения в графике работ, прежде чем просматривать расчет зарплаты
 		</div>
 			
 		<div class="table-block">
@@ -321,6 +327,33 @@
 						</button>
 						@endif
 					</td>
+				</tr>
+				<tr>
+					<td>
+						Итого:
+					</td>
+					<td>
+						@{{ totalSalary.employments | number }} руб.
+					</td>
+					<td>
+						@{{ totalSalary.advance | number }} руб.
+					</td>
+					<td>
+						@{{ totalSalary.tax | number }} руб.
+					</td>
+					<td>
+						@{{ totalSalary.lunch | number }} руб.
+					</td>
+					<td>
+						@{{ totalSalary.bonus | number }} руб.
+					</td>
+					<td>
+						@{{ totalSalary.surcharge | number }} руб.
+					</td>
+					<td>
+						@{{ (totalSalary.employments - totalSalary.advance - totalSalary.tax - totalSalary.lunch + +totalSalary.bonus + +totalSalary.surcharge) | number }} руб.
+					</td>
+					<td></td>
 				</tr>
 			</table>
 		</div>
@@ -436,12 +469,6 @@
 					<div class="alert alert-secondary" ng-if="!modalEmployment">
 						<i class="far fa-calendar-times"></i> Нет расчетов на данный день
 					</div>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" ng-click="hideEmploymentModal()">
-						<i class="fas fa-times"></i> Закрыть
-					</button>
 				</div>
 			</div>
 		</div>

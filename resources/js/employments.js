@@ -22,11 +22,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 	$scope.monthes = [];
 	$scope.years = [];
 
-	$scope.currentDate = {
-		'day': 0,
-		'month': 0,
-		'year': 0
-	};
+	$scope.currentDate = {};
 
 	$scope.worker = {};
 	$scope.workers = [];
@@ -35,6 +31,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 	$scope.employments = {};
 
 	$scope.dayEmployments = {};
+	$scope.totalSalary = {};
 
 	$scope.isSalariesShown = false;
 
@@ -73,6 +70,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 				$scope.chooseCurrentEmploymentStatus(Object.keys($scope.statuses)[0]);
 			}
 
+			$scope.updateTotalSalary();
+			$scope.updateTotalEmployment();
 
 			$scope.initScroll();
 		});
@@ -256,6 +255,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 			worker.employments[day].main_category = mainCategory;
 			worker.employments[day].status_custom = statusCustom;
 		}
+
+		$scope.updateTotalEmployment(worker);
 	};
 
 
@@ -312,6 +313,85 @@ angular.module('tctApp').controller('EmploymentsController', [
 		$scope.isEmploymentModalShown = false;
 
 		document.querySelector('body').classList.remove('modal-open');
+	}
+
+
+
+	$scope.updateTotalSalary = function()
+	{
+		$scope.totalSalary = {
+			'employments': 0,
+			'advance': 0, 
+			'tax': 0, 
+			'lunch': 0, 
+			'bonus': 0, 
+			'surcharge': 0
+		};
+
+		var workers = angular.copy($scope.workers);
+		workers.push($scope.manager);
+
+		for (var i = 0; i < workers.length; i++)
+		{
+			for (key in $scope.totalSalary)
+			{
+				$scope.totalSalary[key] += workers[i].salary[key];
+			}
+		}
+	}
+
+
+	$scope.updateTotalEmployment = function(worker) 
+	{
+		var workers = worker ? [worker] : $scope.workers;
+
+		for (var i = 0; i < workers.length; i++)
+		{
+			workers[i].totalEmployment = 0;
+
+			for (key in workers[i].employments)
+			{
+				var status = $scope.statuses[workers[i].employments[key].status_id];
+				if (!status)
+				{
+					continue;
+				}
+				if (status.customable)
+				{
+					workers[i].totalEmployment += +workers[i].employments[key].status_custom;
+				}
+				else
+				{
+					workers[i].totalEmployment += status.salary_production;
+				}
+			}
+
+			workers[i].totalEmployment = Math.round(workers[i].totalEmployment * 100) / 100;
+		}
+
+		if (!worker)
+		{
+			$scope.manager.totalEmployment = 0;
+
+			for (key in $scope.manager.employments)
+			{
+				var status = $scope.statuses[$scope.manager.employments[key].status_id];
+				if (!status)
+				{
+					continue;
+				}
+				if (status.customable)
+				{
+					$scope.manager.totalEmployment += +$scope.manager.employments[key].status_custom;
+				}
+				else
+				{
+					$scope.manager.totalEmployment += status.salary_production;
+				}
+			}
+
+			$scope.manager.totalEmployment = Math.round($scope.manager.totalEmployment * 100) / 100;
+		}
 	}
 
 

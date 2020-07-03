@@ -17,7 +17,9 @@ angular.module('tctApp').controller('CategoriesController', [
 	$scope.baseUrl = '';
 
 	$scope.categories = [];
-	$scope.category = {};
+	$scope.category = {
+		'url': '#'
+	};
 	$scope.id = 0;
 
 	$scope.categoryErrors = {};
@@ -40,8 +42,10 @@ angular.module('tctApp').controller('CategoriesController', [
 
 	$scope.init = function()
 	{
+		$scope.isLoading = true;
 		CategoriesRepository.query(function(response) 
 		{
+			$scope.isLoading = false;
 			$scope.categories = response;
 		});
 	}
@@ -53,8 +57,10 @@ angular.module('tctApp').controller('CategoriesController', [
 
 		$scope.id = $routeParams['id'];
 
+		$scope.isLoading = true;
 		CategoriesRepository.get({id: $scope.id}, function(response) 
 		{
+			$scope.isLoading = false;
 			$scope.category = response;
 		});
 	}
@@ -68,8 +74,10 @@ angular.module('tctApp').controller('CategoriesController', [
 
 		if ($scope.id)
 		{
+			$scope.isLoading = true;
 			CategoriesRepository.get({id: $scope.id}, function(response) 
 			{
+				$scope.isLoading = false;
 				$scope.category = response;
 			});
 		}

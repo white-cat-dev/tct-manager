@@ -327,18 +327,22 @@
 
 		.block-title {
 			font-size: 21px;
-			margin-bottom: 20px;
+			margin-bottom: 16px;
 
 			span {
 				font-weight: 500;
 			}
 		}
 
+		.alert {
+			margin-bottom: 20px;
+		}
+
 		.table-block {
-			border: solid 1px #dadada;
+			border: solid 1px darken($grey, 10%);
 		    padding: 5px 15px 0px 15px;
 		    border-radius: 5px;
-		    box-shadow: 1px 1px 5px #e6e6e6;
+		    box-shadow: 1px 1px 5px darken($grey, 5%); 
 
 		    .table {
 		    	margin-bottom: 5px;
@@ -356,6 +360,12 @@
 
 		    	tr td:first-child {
 		    		font-weight: 500;
+		    	}
+
+		    	tr:last-child td {
+		    		font-weight: 500;
+		    		border-top: solid 1px darken($grey, 20%);
+		    		line-height: 31px;
 		    	}
 		    }
 		}

@@ -24,12 +24,20 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.baseUrl = '';
 
+	$scope.monthes = [];
+	$scope.years = [];
+
+    $scope.currentDate = {};
+
 	$scope.currentStatus = 0;
 	$scope.currentMainCategory = ['tiles', 'blocks'];
+	$scope.currentPage = 1;
+	$scope.lastPage = -1;
 	$scope.currentOrder = null;
 
 	$scope.orders = [];
 	$scope.order = {
+		'url': '#',
 		'cost': 0,
 		'paid': 0,
 		'pay_type': 'cash',
@@ -100,8 +108,6 @@ angular.module('tctApp').controller('OrdersController', [
 	$scope.init = function(status)
 	{
 		$scope.chooseStatus(status);
-		console.log(status);
-		$scope.loadOrders();
 	}
 
 
@@ -121,6 +127,7 @@ angular.module('tctApp').controller('OrdersController', [
 		OrdersRepository.get({id: $scope.id}, function(response) 
 		{
 			$scope.order = response;
+			$scope.isLoading = false;
 		});
 	}
 
@@ -338,19 +345,35 @@ angular.module('tctApp').controller('OrdersController', [
 		$scope.isLoading = true;
 
 		var request = {
-			'main_category': $scope.currentMainCategory.join(',')
+			'main_category': $scope.currentMainCategory.join(','),
+			'page': $scope.currentPage
 		};
 
 		if ($scope.currentStatus)
 		{
 			request.status = $scope.currentStatus;
 		}
-
+		if ($scope.currentDate.year)
+		{
+			request.year = $scope.currentDate.year;
+		}
+		if ($scope.currentDate.month)
+		{
+			request.month = $scope.currentDate.month;
+		}
+		
 		OrdersRepository.query(request, function(response) 
 		{
 			$scope.isLoading = false;
 
-			$scope.orders = response;
+			$scope.orders = response.orders;
+			$scope.lastPage = response.last_page;
+
+			$scope.monthes = response.monthes;
+			$scope.years = response.years;
+
+			$scope.currentDate.month = response.month;
+			$scope.currentDate.year = response.year;
 
 			if ($scope.currentOrder)
 			{
@@ -394,6 +417,16 @@ angular.module('tctApp').controller('OrdersController', [
 		}
 
 		$scope.loadOrders();
+	}
+
+
+	$scope.choosePage = function(page)
+	{
+		if (page != $scope.currentPage)
+		{
+			$scope.currentPage = page;
+			$scope.loadOrders();
+		}
 	}
 
 
@@ -576,7 +609,6 @@ angular.module('tctApp').controller('OrdersController', [
 		$scope.order.cost = Math.ceil($scope.order.cost);
 		$scope.order.weight = Math.ceil($scope.order.weight);
 
-		console.log($scope.isFullPaymentChosen);
 		if ($scope.isFullPaymentChosen)
 		{
 			$scope.order.paid = $scope.order.cost;

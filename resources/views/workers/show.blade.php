@@ -1,5 +1,7 @@
 <div class="workers-page" ng-init="initShow()">
 	<h1>Просмотр данных работника</h1>
+
+	@include('partials.loading')
 	
 	<div class="top-buttons-block">
 		<div class="left-buttons">
@@ -44,26 +46,24 @@
 	</div>
 
 
-	<div class="show-block">
+	<div class="show-block" ng-if="!isLoading">
 		<div class="row justify-content-around">
-			<div class="col-11">
-				<div class="show-block-title">
-					Работник «@{{ worker.name }}»
-
-					<div class="status-block">
-						@{{ worker.status_text }}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row justify-content-around">
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="param-block">
 					<div class="param-name">
 						Рабочее имя
 					</div>
 					<div class="param-value">
 						@{{ worker.name }}
+					</div>
+				</div>
+
+				<div class="param-block">
+					<div class="param-name">
+						Статус работника
+					</div>
+					<div class="param-value">
+						@{{ worker.status_text }}
 					</div>
 				</div>
 
@@ -110,7 +110,7 @@
 				</div>
 			</div>
 
-			<div class="col-5">
+			<div class="col-6 col-xl-5">
 				<div class="param-block">
 					<div class="param-name">
 						Номер телефона
