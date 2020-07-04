@@ -346,7 +346,10 @@ angular.module('tctApp').controller('ProductsController', [
 			if (category.id == $scope.productGroup.category_id)
 			{
 				$scope.productGroup.category = category;
-				$scope.productGroup.adjectives = category.adjectives;
+				if (!$scope.productGroup.adjectives)
+				{
+					$scope.productGroup.adjectives = category.adjectives;
+				}
 				break;
 			}
 		}

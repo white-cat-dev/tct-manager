@@ -84390,7 +84390,11 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 
         if (category.id == $scope.productGroup.category_id) {
           $scope.productGroup.category = category;
-          $scope.productGroup.adjectives = category.adjectives;
+
+          if (!$scope.productGroup.adjectives) {
+            $scope.productGroup.adjectives = category.adjectives;
+          }
+
           break;
         }
       }

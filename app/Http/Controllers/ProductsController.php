@@ -213,7 +213,7 @@ class ProductsController extends Controller
             'width' => $request->get('width', 0),
             'length' => $request->get('length', 0),
             'height' => $request->get('height', 0),
-            'adjectives' => $request->get('noun', 'feminine'),
+            'adjectives' => $request->get('adjectives', 'feminine'),
             'weight_unit' => $request->get('weight_unit', 0),
             'weight_pallete' => $request->get('weight_pallete', 0),
             'unit_in_units' => $request->get('unit_in_units', 0),
