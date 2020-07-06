@@ -34,12 +34,12 @@
 
 	<table class="table main-table table-with-buttons" ng-if="(materialGroups | filter: {'name': searchQuery}).length > 0">
 		<tr>
-			<th>№</th>
-			<th>Название</th>
-			<th>Виды</th>
-			<th>Цена</th>
-			<th>В наличии</th>
-			<th></th>
+			<th><div>№</div></th>
+			<th><div>Название</div></th>
+			<th><div>Виды</div></th>
+			<th><div>Цена</div></th>
+			<th><div>В наличии</div></th>
+			<th><div>&nbsp;</div></th>
 		</tr>
 
 		<tr ng-repeat="(materialGroupNum, materialGroup) in materialGroups | filter: {'name': searchQuery}">

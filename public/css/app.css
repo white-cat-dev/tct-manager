@@ -12918,12 +12918,39 @@ i.far {
   margin-top: 20px;
 }
 
+.categories-block .main-table th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  background: #FFFFFF;
+  z-index: 2;
+  padding: 0px;
+}
+
+.categories-block .main-table th > div {
+  border-bottom: solid 1px #dadada;
+  height: 100%;
+  width: 100%;
+  padding: 20px 12px 12px 12px;
+}
+
+.categories-block .main-table td {
+  border-top: none;
+  border-bottom: solid 1px #dadada;
+}
+
+@media (min-width: 1210px) {
+  .categories-block .main-table td:last-child {
+    padding: 8px 0px;
+  }
+}
+
 .products-page {
   position: relative;
 }
 
 .products-page .categories-menu-block {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   position: relative;
 }
 
@@ -13024,6 +13051,8 @@ i.far {
 .products-page .main-table td {
   cursor: default;
   vertical-align: top;
+  border-top: none;
+  border-bottom: solid 1px #dadada;
 }
 
 @media (max-width: 1209.98px) {
@@ -13037,6 +13066,22 @@ i.far {
   .products-page .main-table td:last-child {
     padding: 8px 0px;
   }
+}
+
+.products-page .main-table th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  background: #FFFFFF;
+  z-index: 2;
+  padding: 0px;
+}
+
+.products-page .main-table th > div {
+  border-bottom: solid 1px #dadada;
+  height: 100%;
+  width: 100%;
+  padding: 20px 12px 12px 12px;
 }
 
 .products-page .main-table .edit-field {
@@ -13177,9 +13222,27 @@ i.far {
   }
 }
 
+.materials-page .main-table th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  background: #FFFFFF;
+  z-index: 2;
+  padding: 0px;
+}
+
+.materials-page .main-table th > div {
+  border-bottom: solid 1px #dadada;
+  height: 100%;
+  width: 100%;
+  padding: 20px 12px 12px 12px;
+}
+
 .materials-page .main-table td {
   cursor: default;
   vertical-align: top;
+  border-top: none;
+  border-bottom: solid 1px #dadada;
 }
 
 @media (max-width: 1209.98px) {
@@ -13304,9 +13367,27 @@ i.far {
   }
 }
 
+.recipes-page .main-table th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  background: #FFFFFF;
+  z-index: 2;
+  padding: 0px;
+}
+
+.recipes-page .main-table th > div {
+  border-bottom: solid 1px #dadada;
+  height: 100%;
+  width: 100%;
+  padding: 20px 12px 12px 12px;
+}
+
 .recipes-page .main-table td {
   cursor: default;
   vertical-align: top;
+  border-top: none;
+  border-bottom: solid 1px #dadada;
 }
 
 @media (max-width: 1209.98px) {
@@ -14465,6 +14546,33 @@ i.far {
 
 .workers-page {
   position: relative;
+}
+
+.workers-page .main-table th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  background: #FFFFFF;
+  z-index: 2;
+  padding: 0px;
+}
+
+.workers-page .main-table th > div {
+  border-bottom: solid 1px #dadada;
+  height: 100%;
+  width: 100%;
+  padding: 20px 12px 12px 12px;
+}
+
+.workers-page .main-table td {
+  border-top: none;
+  border-bottom: solid 1px #dadada;
+}
+
+@media (min-width: 1210px) {
+  .workers-page .main-table td:last-child {
+    padding: 8px 0px;
+  }
 }
 
 .workers-page .dropdown-menu {

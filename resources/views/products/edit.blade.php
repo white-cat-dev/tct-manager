@@ -34,7 +34,7 @@
 		</div>
 	</div>
 
-	<div class="edit-form-block" ng-if="!isLoading">
+	<div class="edit-form-block" ng-show="!isLoading">
 		<div class="row justify-content-around">
 			<div class="col-6 col-xl-5">
 				<div class="params-title">

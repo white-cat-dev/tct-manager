@@ -46,7 +46,7 @@
 	</div>
 
 
-	<div class="show-block" ng-if="!isLoading">
+	<div class="show-block" ng-show="!isLoading">
 		<div class="row justify-content-around">
 			<div class="col-6 col-xl-5">
 				<div class="param-block">

@@ -604,7 +604,7 @@ angular.module('tctApp').controller('OrdersController', [
 			$scope.order.delivery_price = $scope.order.manual_delivery_price;
 		}
 
-		$scope.order.cost += $scope.order.delivery_price;
+		$scope.order.cost += +$scope.order.delivery_price;
 
 		$scope.order.cost = Math.ceil($scope.order.cost);
 		$scope.order.weight = Math.ceil($scope.order.weight);
@@ -749,7 +749,6 @@ angular.module('tctApp').controller('OrdersController', [
 
     $scope.chooseFullPayment = function()
     {
-    		console.log(111);
     	if ($scope.isFullPaymentChosen)
     	{
     		if ($scope.modalPayment)
@@ -758,7 +757,6 @@ angular.module('tctApp').controller('OrdersController', [
     		}
     		else
     		{
-    			console.log(345);
     			$scope.order.paid = $scope.order.cost;
     		}
     	}

@@ -25,14 +25,14 @@
 			</div>
 		</div>
 
-		<table class="table table-with-buttons" ng-if="(workers | filter: {'name': searchQuery}).length > 0">
+		<table class="table main-table table-with-buttons" ng-if="(workers | filter: {'name': searchQuery}).length > 0">
 			<tr>
-				<th>№</th>
-				<th>Имя</th>
-				<th>Полное имя</th>
-				<th>Номер телефона</th>
-				<th>Статус</th>
-				<th></th>
+				<th><div>№</div></th>
+				<th><div>Имя</div></th>
+				<th><div>Полное имя</div></th>
+				<th><div>Номер телефона</div></th>
+				<th><div>Статус</div></th>
+				<th><div>&nbsp;</div></th>
 			</tr>
 			<tr ng-repeat="worker in workers | filter: {'name': searchQuery}">
 				<td>

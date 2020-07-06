@@ -2,7 +2,7 @@
 	position: relative;
 	
 	.categories-menu-block {
-		margin-bottom: 20px;
+		margin-bottom: 10px;
 		position: relative;
 
 		@include media-breakpoint-down(sm) {
@@ -94,6 +94,8 @@
 		td {
 			cursor: default;
 			vertical-align: top;
+			border-top: none;
+			border-bottom: solid 1px darken($grey, 10%);
 
 			@include media-breakpoint-down(md) {
 				border: none;
@@ -105,6 +107,21 @@
 					padding: 8px 0px;
 				}
 			}
+		}
+
+		th {
+			position: sticky;
+		    top: 0px;
+		    background: #FFFFFF;
+		    z-index: 2;
+		    padding: 0px;
+
+		    & > div {
+	    	    border-bottom: solid 1px darken($grey, 10%);
+			    height: 100%;
+			    width: 100%;
+			    padding: 20px 12px 12px 12px;
+		    }
 		}
 
 		.edit-field {

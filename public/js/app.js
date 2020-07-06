@@ -83330,7 +83330,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       $scope.order.delivery_price = $scope.order.manual_delivery_price;
     }
 
-    $scope.order.cost += $scope.order.delivery_price;
+    $scope.order.cost += +$scope.order.delivery_price;
     $scope.order.cost = Math.ceil($scope.order.cost);
     $scope.order.weight = Math.ceil($scope.order.weight);
 
@@ -83521,13 +83521,10 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.chooseFullPayment = function () {
-    console.log(111);
-
     if ($scope.isFullPaymentChosen) {
       if ($scope.modalPayment) {
         $scope.modalPayment.paid = $scope.modalOrder.cost - $scope.modalOrder.paid;
       } else {
-        console.log(345);
         $scope.order.paid = $scope.order.cost;
       }
     }

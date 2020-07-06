@@ -65,14 +65,14 @@
 	<div>
 		<table class="table main-table table-with-buttons d-none d-lg-table" ng-if="(productGroups | filter: {'name': searchQuery}).length > 0">
 			<tr>
-				<th>№</th>
-				<th>Название</th>
-				<th>Виды</th>
-				<th>Цена</th>
-				<th>В наличии</th>
-				<th>Заказано</th>
-				<th>Свободно</th>
-				<th></th>
+				<th><div>№</div></th>
+				<th><div>Название</div></th>
+				<th><div>Виды</div></th>
+				<th><div>Цена</div></th>
+				<th><div>В наличии</div></th>
+				<th><div>Заказано</div></th>
+				<th><div>Свободно</div></th>
+				<th><div>&nbsp;</div></th>
 			</tr>
 		
 			<tr ng-repeat="(productGroupNum, productGroup) in productGroups | filter: {'name': searchQuery}"  ng-init="isProductsListShown = true">

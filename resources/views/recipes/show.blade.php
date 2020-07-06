@@ -23,7 +23,7 @@
 	</div>
 
 
-	<div class="show-block" ng-if="!isLoading">
+	<div class="show-block" ng-show="!isLoading">
 		<div class="row justify-content-center">
 			<div class="col-12 col-lg-8 col-xl-6">
 				<div class="param-block">

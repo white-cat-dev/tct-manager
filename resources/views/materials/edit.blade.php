@@ -31,7 +31,7 @@
 		</div>
 	</div>
 
-	<div class="edit-form-block" ng-if="!isLoading">
+	<div class="edit-form-block" ng-show="!isLoading">
 		<div class="row justify-content-around">
 			<div class="col-12 col-lg-8 col-xl-6">
 				<div class="params-title">

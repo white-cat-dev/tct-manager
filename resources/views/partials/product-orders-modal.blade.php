@@ -31,7 +31,7 @@
 
 					<tr ng-repeat="order in modalProductOrders">
 						<td style="width: 25%;">
-							<a ng-href="@{{ order.url }}">@{{ order.number }}</a>
+							<a ng-href="@{{ order.url }}" ng-click="hideProductOrdersModal()">@{{ order.number }}</a>
 						</td>
 						<td style="width: 25%;">
 							@{{ order.progress.total }} <span ng-bind-html="modalProduct.units_text"></span>

@@ -24,13 +24,13 @@
 		</div>
 	</div>
 
-	<table class="table table-with-buttons" ng-if="(categories | filter: {'name': searchQuery}).length > 0">
+	<table class="table main-table table-with-buttons" ng-if="(categories | filter: {'name': searchQuery}).length > 0">
 		<tr>
-			<th>№</th>
-			<th>Название</th>
-			<th>Единицы измерения</th>
-			<th>Разновидности</th>
-			<th></th>
+			<th><div>№</div></th>
+			<th><div>Название</div></th>
+			<th><div>Единицы измерения</div></th>
+			<th><div>Разновидности</div></th>
+			<th><div>&nbsp;</div></th>
 		</tr>
 
 		<tr ng-repeat="category in categories | filter: {'name': searchQuery}">

@@ -26,11 +26,11 @@
 
 	<table class="table main-table table-with-buttons" ng-if="(recipes | filter: {'name': searchQuery}).length > 0">
 		<tr>
-			<th>№</th>
-			<th>Название</th>
-			<th>Материалы</th>
-			<th>Стоимость</th>
-			<th></th>
+			<th><div>№</div></th>
+			<th><div>Название</div></th>
+			<th><div>Материалы</div></th>
+			<th><div>Стоимость</div></th>
+			<th><div>&nbsp;</div></th>
 		</tr>
 
 		<tr ng-repeat="recipe in recipes | filter: {'name': searchQuery}">

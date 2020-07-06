@@ -6,9 +6,26 @@
 			margin-bottom: 0px;
 		}
 
+		th {
+			position: sticky;
+		    top: 0px;
+		    background: #FFFFFF;
+		    z-index: 2;
+		    padding: 0px;
+
+		    & > div {
+	    	    border-bottom: solid 1px darken($grey, 10%);
+			    height: 100%;
+			    width: 100%;
+			    padding: 20px 12px 12px 12px;
+		    }
+		}
+
 		td {
 			cursor: default;
 			vertical-align: top;
+			border-top: none;
+			border-bottom: solid 1px darken($grey, 10%);
 
 			@include media-breakpoint-down(md) {
 				border: none;
