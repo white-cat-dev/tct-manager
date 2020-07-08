@@ -169,7 +169,7 @@ class MaterialsController extends Controller
 
             foreach ($suppliesData as $supplyData) 
             {
-                if ($supplyData['id'])
+                if (!empty($supplyData['id']))
                 {
                     $supply = MaterialSupply::find($supplyData['id']);
                     $supplyPerformed = $supply->performed;
