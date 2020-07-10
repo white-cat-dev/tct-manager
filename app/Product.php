@@ -159,7 +159,29 @@ class Product extends Model
 
     public function getBaseProduction()
     {
-        return $this->productions()->whereNull('date')->where('order_id', 0)->first();
+        $baseProduction = $this->productions()->whereNull('date')->where('order_id', 0)->first();
+
+        if (!$baseProduction)
+        {
+            $baseProduction = Production::create([
+                'date' => null,
+                'category_id' => $this->category_id,
+                'product_group_id' => $this->product_group_id,
+                'product_id' => $this->id,
+                'order_id' => 0,
+                'facility_id' => 0,
+                'manual_planned' => -1,
+                'auto_planned' => 0,
+                'priority' => Order::PRIORITY_NORMAL,
+                'date_to' => null,
+                'performed' => 0,
+                'auto_batches' => 0,
+                'manual_batches' => -1,
+                'salary' => 0
+            ]);
+        }
+        
+        return $baseProduction;
     }
 
     public function getRealized($orderId = null)
