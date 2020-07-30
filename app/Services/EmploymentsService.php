@@ -123,6 +123,43 @@ class EmploymentsService
                 ]);
             }
         }
+
+        $employments = Employment::where('worker_id', 0)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->get();
+
+        $employmentsSalary = 0;
+
+        foreach ($employments as $employment) 
+        {
+            $employmentsSalary += $employment->salary;
+        }
+
+        $managerSalary = WorkerSalary::where('worker_id', 0)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->first();
+
+        if (!$managerSalary)
+        {
+            $managerSalary = WorkerSalary::create([
+                'date' => Carbon::createFromDate($year, $month, 1)->format('Y-m-d'),
+                'worker_id' => $worker->id,
+                'employments' => $employmentsSalary,
+                'advance' => 0,
+                'bonus' => 0,
+                'tax' => 0,
+                'lunch' => 0,
+                'surcharge' => 0
+            ]);
+        }
+        else 
+        {
+            $managerSalary->update([
+                'employments' => $employmentsSalary
+            ]);
+        }
     }
 
 
