@@ -216,7 +216,7 @@ class ProductionsController extends Controller
                 // ProductionsService::getInstance()->replanProduct($production->product);
             }
 
-            $this->updateMaterialsApply($production, $productionPerformed);
+            $this->updateMaterialsApply($production, $production->performed);
         }
 
 
