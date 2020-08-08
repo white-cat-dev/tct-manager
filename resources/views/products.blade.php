@@ -107,7 +107,7 @@
 					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
 						<div ng-repeat="(productNum, product) in productGroup.products">
 							<div class="edit-field" ng-init="product.new_in_stock = product.in_stock">
-								<input type="text" class="form-control" ng-model="product.new_in_stock" ng-blur="saveEditField(productGroupNum, productNum, 'in_stock')" ng-keypress="inputKeyPressed($event)">
+								<input type="text" class="form-control" ng-model="product.new_in_stock" ng-blur="saveEditField(productGroupNum, productNum, 'in_stock')" ng-keypress="inputKeyPressed($event)" ng-change="inputFloat(product, 'new_in_stock')">
 								<span class="units">
 									@{{ product.new_in_stock }}
 									<span ng-bind-html="product.units_text"></span>
@@ -188,7 +188,7 @@
 					</td>
 					<td>
 						<div class="edit-field" ng-init="product.new_in_stock = product.in_stock">
-							<input type="text" class="form-control" ng-model="product.new_in_stock" ng-blur="saveEditField(productGroupNum, productNum, 'in_stock')" ng-keypress="inputKeyPressed($event)">
+							<input type="text" class="form-control" ng-model="product.new_in_stock" ng-blur="saveEditField(productGroupNum, productNum, 'in_stock')" ng-keypress="inputKeyPressed($event)" ng-change="inputFloat(product, 'new_in_stock')">
 							<span class="units">
 								@{{ product.new_in_stock }}
 								<span ng-bind-html="product.units_text"></span>

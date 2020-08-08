@@ -42,7 +42,7 @@
 
 				<div class="form-group">
 					<div class="param-label">Производительность цеха</div>
-					<input type="text" class="form-control" ng-model="facility.performance" ng-class="{'is-invalid': facilityErrors.performance}">
+					<input type="text" class="form-control" ng-model="facility.performance" ng-change="inputFloat(facility, 'performance')" ng-class="{'is-invalid': facilityErrors.performance}">
 					<small class="form-text">
 						Информация о количестве замесов в день необходима для планирования производства
 					</small>

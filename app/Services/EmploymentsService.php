@@ -145,7 +145,7 @@ class EmploymentsService
         {
             $managerSalary = WorkerSalary::create([
                 'date' => Carbon::createFromDate($year, $month, 1)->format('Y-m-d'),
-                'worker_id' => $worker->id,
+                'worker_id' => 0,
                 'employments' => $employmentsSalary,
                 'advance' => 0,
                 'bonus' => 0,

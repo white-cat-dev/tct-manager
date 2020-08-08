@@ -123,7 +123,7 @@
 													@{{ worker.employments[$index+1].status_custom }} 
 												</div>
 												<div ng-if="statuses[currentEmploymentStatus].customable">
-													<input type="text" class="form-control" ng-model="worker.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)" ng-blur="updateTotalEmployment(worker)">
+													<input type="text" class="form-control" ng-model="worker.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)" ng-change="inputFloat(worker.employments[$index+1], 'status_custom')" ng-blur="updateTotalEmployment(worker)">
 												</div>
 											</div>
 
@@ -154,7 +154,7 @@
 													@{{ manager.employments[$index+1].status_custom }} 
 												</div>
 												<div ng-if="statuses[currentEmploymentStatus].customable">
-													<input type="text" class="form-control" ng-model="manager.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)" ng-blur="updateTotalEmployment(worker)">
+													<input type="text" class="form-control" ng-model="manager.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)" ng-change="inputFloat(manager.employments[$index+1], 'status_custom')" ng-blur="updateTotalEmployment(worker)">
 												</div>
 											</div>
 
@@ -386,23 +386,23 @@
 					</div>
 					<div class="form-group">
 						<div class="param-label">Аванс</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.advance"> руб
+						<input type="text" class="form-control" ng-model="modalWorker.salary.advance" ng-change="inputFloat(modalWorker.salary, 'advance')"> руб
 					</div>
 					<div class="form-group">
 						<div class="param-label">Налоги</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.tax"> руб
+						<input type="text" class="form-control" ng-model="modalWorker.salary.tax" ng-change="inputFloat(modalWorker.salary, 'tax')"> руб
 					</div>
 					<div class="form-group">
 						<div class="param-label">Обед</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.lunch"> руб
+						<input type="text" class="form-control" ng-model="modalWorker.salary.lunch" ng-change="inputFloat(modalWorker.salary, 'lunch')"> руб
 					</div>
 					<div class="form-group">
 						<div class="param-label">Премия</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.bonus"> руб
+						<input type="text" class="form-control" ng-model="modalWorker.salary.bonus" ng-change="inputFloat(modalWorker.salary, 'bonus')"> руб
 					</div>
 					<div class="form-group">
 						<div class="param-label">Доплата</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.surcharge"> руб
+						<input type="text" class="form-control" ng-model="modalWorker.salary.surcharge" ng-change="inputFloat(modalWorker.salary, 'surcharge')"> руб
 					</div>
 					<div class="form-group">
 						<div class="param-label">Итого</div>

@@ -40,7 +40,7 @@ class Product extends Model
         'variation_noun_text',
         'main_variation_text',
         'units_text',
-        'in_stock_text'
+        // 'in_stock_text'
     ];
 
     protected $with = [
@@ -228,25 +228,25 @@ class Product extends Model
     {
         $units = $this->units_text;
 
-        if ($this->in_stock == 0)
+        if ($this->free_in_stock == 0)
         {
-            return 'нет в наличии';
+            return 'под заказ';
         }
-        else if ($this->in_stock < 10)
+        else if ($this->free_in_stock < 5)
+        {
+            return 'меньше 5 ' . $units;
+        }
+        else if ($this->free_in_stock < 10)
         {
             return 'меньше 10 ' . $units;
         }
-        else if ($this->in_stock < 50)
+        else if ($this->free_in_stock < 50)
         {
             return 'меньше 50 ' . $units;
         }
-        else if ($this->in_stock < 100)
-        {
-            return 'меньше 100 ' . $units;
-        }
         else
         {
-            return 'больше 100 ' . $units;
+            return 'больше 50 ' . $units;
         }
     }
 

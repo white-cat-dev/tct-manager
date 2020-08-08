@@ -7,7 +7,7 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 
-header('Access-Control-Allow-Origin: http://582907.local');
+header('Access-Control-Allow-Origin: https://582907.ru');
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS, post, get');
 header('Access-Control-Max-Age: 3600');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');

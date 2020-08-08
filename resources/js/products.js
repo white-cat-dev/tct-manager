@@ -414,13 +414,13 @@ angular.module('tctApp').controller('ProductsController', [
 			}
 		}
 
-		if (currentProduct.productGroup.category.units != 'unit')
-		{
-			if (key == 'price') 
-			{
+		// if (currentProduct.productGroup.category.units != 'unit')
+		// {
+		// 	if (key == 'price') 
+		// 	{
 
-			}
-		}
+		// 	}
+		// }
 	}
 
 

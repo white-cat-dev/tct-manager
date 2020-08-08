@@ -57,7 +57,7 @@
 								</ui-select>
 							</td>
 							<td>
-								<input type="text" class="form-control" ng-model="materialGroup.pivot.count">
+								<input type="text" class="form-control" ng-model="materialGroup.pivot.count" ng-change="inputFloat(materialGroup.pivot, 'count')">
 							</td>
 							<td>
 								<button type="button" class="btn btn-primary" ng-click="deleteMaterialGroup($index)">

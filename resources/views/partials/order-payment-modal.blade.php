@@ -31,7 +31,7 @@
 
 				<div class="form-group">
 					<div class="param-label">Сумма платежа</div>
-					<input type="text" class="form-control" ng-model="modalPayment.paid" ng-change="checkFullPayment()">
+					<input type="text" class="form-control" ng-model="modalPayment.paid" ng-change="inputFloat(modalPayment, 'paid'); checkFullPayment()">
 				</div>
 
 				<div class="custom-control custom-checkbox">

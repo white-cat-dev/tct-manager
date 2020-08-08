@@ -118,10 +118,10 @@
 								</ui-select>
 							</td>
 							<td>
-								<input type="text" class="form-control" ng-model="material.price">
+								<input type="text" class="form-control" ng-model="material.price" ng-change="inputFloat(material, 'price')">
 							</td>
 							<td>
-								<input type="text" class="form-control" ng-model="material.in_stock">
+								<input type="text" class="form-control" ng-model="material.in_stock" ng-change="inputFloat(material, 'in_stock')">
 							</td>
 							<td>
 								<button type="button" class="btn btn-primary" ng-click="deleteMaterial($index)">
@@ -149,7 +149,7 @@
 										<span ng-switch-default>Цена, руб.</span>
 									</span>
 								</div>
-								<input type="text" class="form-control" ng-model="materialGroup.materials[0].price">
+								<input type="text" class="form-control" ng-model="materialGroup.materials[0].price" ng-change="inputFloat(materialGroup.materials[0], 'price')">
 							</div>
 						</div>
 						<div class="col-6">
@@ -163,7 +163,7 @@
 										<span ng-switch-default>В наличии</span>
 									</span>
 								</div>
-								<input type="text" class="form-control" ng-model="materialGroup.materials[0].in_stock">
+								<input type="text" class="form-control" ng-model="materialGroup.materials[0].in_stock" ng-change="inputFloat(materialGroup.materials[0], 'in_stock')">
 							</div>
 						</div>
 					</div>

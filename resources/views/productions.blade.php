@@ -246,7 +246,7 @@
 							        </td>
 
 							        <td style="width: 12%;">
-										<input type="text" class="form-control form-control-num" ng-model="product.production.batches" ng-change="updateProductionPlanned(product)"> 
+										<input type="text" class="form-control form-control-num" ng-model="product.production.batches" ng-change="inputFloat(product.production, 'batches'); updateProductionPlanned(product)"> 
 										<small>@{{ product.production.planned }} <span ng-bind-html="product.units_text"></span></small>
 									</td>
 							    </tr>
@@ -327,7 +327,7 @@
 									</td>
 
 									<td style="width: 25%;">
-										<input type="text" class="form-control form-control-num" ng-model="product.production.performed"{{--  ng-change="updateOrderProductionsPerformed(product)" --}}> 
+										<input type="text" class="form-control form-control-num" ng-model="product.production.performed" ng-change="inputFloat(product.production, 'performed')"{{--  ng-change="updateOrderProductionsPerformed(product)" --}}> 
 									</td>
 							    </tr>
 							</table>

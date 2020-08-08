@@ -458,7 +458,7 @@ angular.module('tctApp').controller('ProductionsController', [
 
 	$scope.updateProductionPlanned = function(product)
 	{
-		product.production.planned = product.production.batches * product.product_group.units_from_batch;
+		product.production.planned = Math.round((product.production.batches * product.product_group.units_from_batch) * 1000) / 1000;
 		product.production.manual_batches = product.production.batches;
 		product.production.manual_planned = product.production.planned;
 	}

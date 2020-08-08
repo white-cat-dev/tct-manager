@@ -38,7 +38,7 @@
 							</span>
 						</td>
 						<td style="width: 40%;">
-							<input type="text" class="form-control form-control-sm" ng-model="supply.performed">
+							<input type="text" class="form-control form-control-sm" ng-model="supply.performed" ng-change="inputFloat(supply, 'performed')">
 						</td>
 						<td ng-if="!isSupplyModalEditing">
 							<button type="button" class="btn btn-sm btn-primary" ng-click="deleteSupplyMaterial($index)">

@@ -70,7 +70,7 @@
 			<td>
 				<div ng-repeat="(materialNum, material) in materialGroup.materials">
 					<div class="edit-field" ng-init="material.new_in_stock = material.in_stock">
-						<input type="text" class="form-control" ng-model="material.new_in_stock" ng-blur="saveEditField(materialGroupNum, materialNum, 'in_stock')" ng-keypress="inputKeyPressed($event)">
+						<input type="text" class="form-control" ng-model="material.new_in_stock" ng-blur="saveEditField(materialGroupNum, materialNum, 'in_stock')" ng-keypress="inputKeyPressed($event)" ng-change="inputFloat(material, 'new_in_stock')">
 						<span class="units">
 							@{{ material.new_in_stock }}
 							<span ng-switch on="materialGroup.units">

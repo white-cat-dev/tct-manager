@@ -308,7 +308,7 @@
 					<div ng-show="!id">
 						<div class="order-paid-block">
 							<div class="param-label">Оплачено:</div>
-							<input type="text" class="form-control" ng-model="order.paid" ng-blur="checkFullPayment()">
+							<input type="text" class="form-control" ng-model="order.paid" ng-change="inputFloat(order, 'paid')" ng-blur="checkFullPayment()">
 							<span class="product-units">
 								@{{ order.paid }} <span>руб</span>
 							</span>
@@ -348,7 +348,7 @@
 									<input type="text" class="form-control" ng-model="payment.date_raw" ui-mask="99.99.9999">
 								</td>
 								<td>
-									<input type="text" class="form-control" ng-model="payment.paid">
+									<input type="text" class="form-control" ng-model="payment.paid" ng-change="inputFloat(payment, 'paid')">
 									<span class="product-units">
 										@{{ payment.paid }} <span>руб</span>
 									</span>
@@ -380,7 +380,7 @@
 									<div class="product-color">@{{ realization.product.variation_text }}</div>
 								</td>
 								<td>
-									<input type="text" class="form-control" ng-model="realization.performed">
+									<input type="text" class="form-control" ng-model="realization.performed" ng-change="inputFloat(realization, 'performed')">
 									<span class="product-units">
 										@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>
 									</span>

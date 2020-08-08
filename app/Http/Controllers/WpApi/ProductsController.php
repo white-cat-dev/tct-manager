@@ -60,19 +60,31 @@ class ProductsController extends Controller
             $response['id'] = $productGroup->id;
             $response['name'] = $productGroup->wp_name;
             $response['units'] = $productGroup->units_text;
-            $response['set_pair'] = null;
+            $response['set_pair'] = !empty($productGroup->set_pair);
 
             $products = [];
 
             foreach ($productGroup->products as $product) 
             {
-                
-                $products[] = [
+                $newProduct = [
                     'id' => $product->id,
                     'variation' => $product->variation_text,
                     'stock' => $product->in_stock > 0,
-                    'default' => $product->variation == 'grey'
+                    'default' => $product->variation == 'grey',
+                    'in_stock' => $product->in_stock_text
                 ];
+
+                if (!empty($productGroup->set_pair))
+                {
+                    $setPairProduct = $productGroup->set_pair->products->where('variation', $product->variation)->first();
+                    $newProduct['in_stock_pair'] = $setPairProduct ? $setPairProduct->in_stock_text : 'под заказ';
+                }
+                else
+                {
+                    $newProduct['in_stock_pair'] = '';
+                }
+
+                $products[] = $newProduct;
             }
 
             $response['products'] = $products;
