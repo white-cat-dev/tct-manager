@@ -50,6 +50,7 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.categories = [];
 	$scope.currentCategory = 0;
 	$scope.isStockProductsShown = true;
+	$scope.isFreeStockProductsShown = false;
 
 	$scope.materials = [];
 	$scope.recipes = [];
@@ -131,8 +132,6 @@ angular.module('tctApp').controller('ProductsController', [
 		{
 			$scope.currentCategory = $location.search().category;
 		}
-		
-		$scope.isLoading = true;
 
 		$scope.loadCategories();
 		$scope.loadProducts();
@@ -282,7 +281,6 @@ angular.module('tctApp').controller('ProductsController', [
 	}
 
 
-
 	$scope.loadCategories = function()
 	{
 		CategoriesRepository.query(function(response) 
@@ -297,6 +295,27 @@ angular.module('tctApp').controller('ProductsController', [
 	}
 
 
+	$scope.chooseInStock = function(isFreeStock)
+	{
+		if (isFreeStock)
+		{
+			if ($scope.isFreeStockProductsShown && !$scope.isStockProductsShown)
+			{
+				$scope.isStockProductsShown = true;
+			}
+		}
+		else
+		{
+			if ($scope.isFreeStockProductsShown && !$scope.isStockProductsShown)
+			{
+				$scope.isFreeStockProductsShown = false;
+			}
+		}
+
+		$scope.loadProducts();
+	}
+
+
 	$scope.loadProducts = function()
 	{
 		var request = {};
@@ -305,10 +324,16 @@ angular.module('tctApp').controller('ProductsController', [
 		{
 			request['category'] = $scope.currentCategory;
 		}
-		if ($scope.isStockProductsShown)
+		if ($scope.isFreeStockProductsShown)
 		{
-			request['stock'] = $scope.isStockProductsShown;
+			request['stock'] = 'free';
 		}
+		else if ($scope.isStockProductsShown)
+		{
+			request['stock'] = 'all';
+		}
+
+		$scope.isLoading = true;
 
 		ProductsRepository.query(request, function(response) 
 		{
@@ -331,7 +356,6 @@ angular.module('tctApp').controller('ProductsController', [
 	$scope.chooseCategory = function(category)
 	{
 		$scope.currentCategory = category;
-		$scope.isLoading = true;
 		$scope.loadProducts();
 	}
 

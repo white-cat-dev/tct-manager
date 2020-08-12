@@ -84167,6 +84167,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   $scope.categories = [];
   $scope.currentCategory = 0;
   $scope.isStockProductsShown = true;
+  $scope.isFreeStockProductsShown = false;
   $scope.materials = [];
   $scope.recipes = [];
   $scope.colors = [{
@@ -84226,7 +84227,6 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       $scope.currentCategory = $location.search().category;
     }
 
-    $scope.isLoading = true;
     $scope.loadCategories();
     $scope.loadProducts();
     $scope.loadMaterials();
@@ -84345,6 +84345,20 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     });
   };
 
+  $scope.chooseInStock = function (isFreeStock) {
+    if (isFreeStock) {
+      if ($scope.isFreeStockProductsShown && !$scope.isStockProductsShown) {
+        $scope.isStockProductsShown = true;
+      }
+    } else {
+      if ($scope.isFreeStockProductsShown && !$scope.isStockProductsShown) {
+        $scope.isFreeStockProductsShown = false;
+      }
+    }
+
+    $scope.loadProducts();
+  };
+
   $scope.loadProducts = function () {
     var request = {};
 
@@ -84352,10 +84366,13 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       request['category'] = $scope.currentCategory;
     }
 
-    if ($scope.isStockProductsShown) {
-      request['stock'] = $scope.isStockProductsShown;
+    if ($scope.isFreeStockProductsShown) {
+      request['stock'] = 'free';
+    } else if ($scope.isStockProductsShown) {
+      request['stock'] = 'all';
     }
 
+    $scope.isLoading = true;
     ProductsRepository.query(request, function (response) {
       $scope.isLoading = false;
       $scope.productGroups = response;
@@ -84370,7 +84387,6 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 
   $scope.chooseCategory = function (category) {
     $scope.currentCategory = category;
-    $scope.isLoading = true;
     $scope.loadProducts();
   };
 

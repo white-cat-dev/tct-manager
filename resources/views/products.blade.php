@@ -54,11 +54,19 @@
 			</button>
 		</div>
 
-		<div class="custom-control custom-checkbox">
-			<input type="checkbox" class="custom-control-input" ng-model="isStockProductsShown" id="checkboxStock" ng-change="init()">
-			<label class="custom-control-label" for="checkboxStock">
-				Только в наличии
-			</label>
+		<div class="in-stock-category-block">
+			<div class="custom-control custom-checkbox custom-control-inline">
+				<input type="checkbox" class="custom-control-input" ng-model="isStockProductsShown" id="checkboxStock" ng-change="chooseInStock(false)">
+				<label class="custom-control-label" for="checkboxStock">
+					В наличии
+				</label>
+			</div>
+			<div class="custom-control custom-checkbox custom-control-inline">
+				<input type="checkbox" class="custom-control-input" ng-model="isFreeStockProductsShown" id="checkboxFreeStock" ng-change="chooseInStock(true)">
+				<label class="custom-control-label" for="checkboxFreeStock">
+					Свободно
+				</label>
+			</div>
 		</div>
 	</div>
 	

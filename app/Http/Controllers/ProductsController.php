@@ -7,6 +7,7 @@ use App\ProductGroup;
 use App\Product; 
 use App\Order; 
 use Str;
+use App\Http\Resources\ProductGroupResourceCollection;
 
 
 class ProductsController extends Controller
@@ -16,7 +17,7 @@ class ProductsController extends Controller
         if ($request->wantsJson())
         {
             $category = $request->get('category', 0);
-            $stock = $request->get('stock', false);
+            $stock = $request->get('stock', '');
 
             $query = ProductGroup::with('products');
 
@@ -35,6 +36,21 @@ class ProductsController extends Controller
             }
 
             $productGroups = $query->orderBy('name')->get();
+
+            if ($stock == 'free')
+            {
+                foreach ($productGroups as $key => $productGroup) 
+                {
+                    $products = $productGroup->products->where('free_in_stock', '>', 0);
+                    $productGroup = $productGroup->toArray();
+                    $productGroup['products'] = $products;
+                    $productGroups[$key] = $productGroup;
+                }
+
+                $productGroups = $productGroups->filter(function($value, $key) {
+                    return count($value['products']) > 0;
+                })->values();
+            }
 
             return $productGroups;
         }
