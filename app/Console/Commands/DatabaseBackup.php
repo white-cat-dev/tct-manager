@@ -43,7 +43,7 @@ class DatabaseBackup extends Command
         //     storage_path('backups/backup_' . date('Y_m_d_H_i_s') . '.sql')));
 
         $this->process = new Process([
-            'mysqldump -u' . config('database.connections.mysql.username') . ' -p' . config('database.connections.mysql.password') . ' ' .  config('database.connections.mysql.database') . ' > ' . storage_path('backups\backup.sql')
+            'mysqldump -u' . config('database.connections.mysql.username') . ' -p' . config('database.connections.mysql.password') . ' ' .  config('database.connections.mysql.database') . ' > ' . storage_path('backups/backup.sql')
         ]);
     }
 
