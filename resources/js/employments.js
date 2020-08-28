@@ -201,7 +201,10 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 		if ($scope.cleanCurrent)
 		{
-			delete worker.employments[day]; 
+			worker.employments[day].status_id = 0;
+			worker.employments[day].main_category = '';
+			worker.employments[day].status_custom = 1;
+			// delete worker.employments[day]; 
 			return;
 		}
 
@@ -242,7 +245,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 				if ($scope.statuses[$scope.currentEmploymentStatus].customable > 0)
 				{
 					statusCustom = (worker.id > 0) ? 1 : 9;
-					mainCategory = 'tiles';
+					// mainCategory = 'tiles';
 				}
 			}
 
