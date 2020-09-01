@@ -87,7 +87,11 @@ class ProductionsController extends Controller
                             $query2->whereYear('date', $year)
                                 ->whereMonth('date', $month);
                         })
-                        ->orWhereNull('date');
+                        ->orWhere(function ($query2) 
+                        {
+                            $query2->whereNull('date')
+                                ->where('auto_planned', '>', 'performed');
+                        });
                     });
                 })
                 ->get();
@@ -104,7 +108,11 @@ class ProductionsController extends Controller
                             $query2->whereYear('date', $year)
                                 ->whereMonth('date', $month);
                         })
-                        ->orWhereNull('date');
+                        ->orWhere(function ($query2) 
+                        {
+                            $query2->whereNull('date')
+                                ->where('auto_planned', '>', 'performed');
+                        });
                     })
                     ->get()
                     ->keyBy('day');
@@ -210,10 +218,11 @@ class ProductionsController extends Controller
             if ($baseProduction)
             {
                 $baseProduction->update([
-                    'performed' => ($baseProduction->product->in_stock > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $baseProduction->product->in_stock
+                    'performed' => ($baseProduction->product->in_stock > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $baseProduction->product->in_stock,
+                    'priority' => ($production->manual_batches > 0) ? $production->manual_batches : $baseProduction->priority
                 ]);
 
-                // ProductionsService::getInstance()->replanProduct($production->product);
+                ProductionsService::getInstance()->replanProduct($production->product);
             }
 
             $this->updateMaterialsApply($production, $productionPerformed);

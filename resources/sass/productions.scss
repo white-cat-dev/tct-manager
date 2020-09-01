@@ -81,10 +81,14 @@
 				}
 
 				tr td:nth-child(2), tr th:nth-child(2),
-				tr td:nth-child(3), tr th:nth-child(3),
-				tr td:nth-child(4), tr th:nth-child(4) {
+				tr td:nth-child(3), tr th:nth-child(3){
 					width: 70px;
 					max-width: 70px;
+				}
+
+				tr td:nth-child(4), tr th:nth-child(4) {
+					width: 80px;
+					max-width: 80px;
 				}
 
 				tr:last-child td {

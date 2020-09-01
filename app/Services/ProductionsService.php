@@ -26,7 +26,7 @@ class ProductionsService
     }
 
 
-    public function testPlanOrder($products, $priority)
+    public function testPlanOrder($products)
     {
         $orderDateTo = date('Y-m-d');
 
@@ -37,10 +37,12 @@ class ProductionsService
 
             $baseProduction = $product->getBaseProduction();
 
+            $priority = $baseProduction->priority;
+
             if ($baseProduction)
             {
                 $basePlanned = $baseProduction->auto_planned + $count;
-                $basePerformed = ($baseProduction->product->in_stock > $basePlanned) ? $basePlanned : $baseProduction->product->in_stock;
+                $basePerformed = ($product->in_stock > $basePlanned) ? $basePlanned : $product->in_stock;
             }
             else
             {
@@ -128,7 +130,7 @@ class ProductionsService
                     'performed' => ($baseProduction->performed > $autoPlanned) ? $autoPlanned : $baseProduction->performed
                 ]);
 
-                // $this->replanProduct($product);
+                $this->replanProduct($product);
             }
         }
 
@@ -149,7 +151,7 @@ class ProductionsService
                 'performed' => ($baseProduction->performed > $autoPlanned) ? $autoPlanned : $baseProduction->performed
             ]);
 
-            // $this->replanProduct($oldProduct);
+            $this->replanProduct($oldProduct);
         }
     }
 
@@ -170,8 +172,8 @@ class ProductionsService
 
             $baseProduction->update([
                 'auto_planned' => $baseProductionPlanned,
-                'performed' => ($baseProduction->product->in_stock > $baseProductionPlanned) ? $baseProductionPlanned : $baseProduction->product->in_stock,
-                'priority' => ($order->priority > $baseProduction->priority) ? $order->priority : $baseProduction->priority
+                'performed' => ($baseProduction->product->in_stock > $baseProductionPlanned) ? $baseProductionPlanned : $baseProduction->product->in_stock
+                // 'priority' => ($order->priority > $baseProduction->priority) ? $order->priority : $baseProduction->priority
             ]);
         }
         else
@@ -185,7 +187,8 @@ class ProductionsService
                 'facility_id' => 0,
                 'manual_planned' => -1,
                 'auto_planned' => $count,
-                'priority' => $order->priority,
+                // 'priority' => $order->priority,
+                'priority' => 1,
                 'date_to' => null,
                 'performed' => ($product->in_stock > $count) ? $count : $product->in_stock,
                 'auto_batches' => 0,
@@ -194,7 +197,7 @@ class ProductionsService
             ]);
         }
 
-        // $this->replanProduct($product);  
+        $this->replanProduct($product);  
     }
 
 
@@ -205,7 +208,7 @@ class ProductionsService
         if (($baseProduction->auto_planned == 0) && ($baseProduction->performed == 0))
         {
             $baseProduction->update([
-                'priority' => Order::PRIORITY_NORMAL
+                'priority' => 1
             ]);
 
             return;
@@ -317,86 +320,88 @@ class ProductionsService
             return;
         }
 
-        $facilitiesBatches = $this->getFacilityBatches($day, $facilities);
+        // $facilitiesBatches = $this->getFacilityBatches($day, $facilities);
 
-        $currentBatches = 0;
-        $currentForms = 0;
+        // $currentBatches = 0;
+        // $currentForms = 0;
 
-        foreach ($currentProductions as $currentProduction) 
-        {
-            if ($currentProduction->product_id == $product->id)
-            {
-                continue;
-            }
+        // foreach ($currentProductions as $currentProduction) 
+        // {
+        //     if ($currentProduction->product_id == $product->id)
+        //     {
+        //         continue;
+        //     }
 
-            $currentBatches += $currentProduction->batches;
+        //     $currentBatches += $currentProduction->batches;
 
-            if ($currentProduction->product_group_id == $product->product_group_id)
-            {
-                $currentForms += $currentProduction->planned;
-            }
-        }
+        //     if ($currentProduction->product_group_id == $product->product_group_id)
+        //     {
+        //         $currentForms += $currentProduction->planned;
+        //     }
+        // }
 
 
         // $currentBatches = $facilitiesBatches - $currentBatches;
-        $currentBatches = $facilitiesBatches;
+        // $currentBatches = $facilitiesBatches;
 
-        if ($currentBatches <= 0)
-        {
-            return;
-        }
+        // if ($currentBatches <= 0)
+        // {
+        //     return;
+        // }
 
-        $currentForms = $product->product_group->forms - $currentForms;
+        // $currentForms = $product->product_group->forms - $currentForms;
+        // $currentForms = $product->product_group->forms;
 
-        if ($currentForms <= 0)
-        {
-            return;
-        }
+        // if ($currentForms <= 0)
+        // {
+        //     return;
+        // }
 
-        switch ($priority) 
-        {
-            case Order::PRIORITY_NORMAL:
-                $maxForms = $product->product_group->units_from_batch;
-                break;
+        // switch ($priority) 
+        // {
+        //     case Order::PRIORITY_NORMAL:
+        //         $maxForms = $product->product_group->units_from_batch;
+        //         break;
             
-            case Order::PRIORITY_HIGH:
-                $maxForms = 2 * $product->product_group->units_from_batch;
-                if ($maxForms > $product->product_group->forms)
-                {
-                    $maxForms = $product->product_group->units_from_batch;
-                }
-                break;
+        //     case Order::PRIORITY_HIGH:
+        //         $maxForms = 2 * $product->product_group->units_from_batch;
+        //         if ($maxForms > $product->product_group->forms)
+        //         {
+        //             $maxForms = $product->product_group->units_from_batch;
+        //         }
+        //         break;
 
-            case Order::PRIORITY_VERY_HIGH:
-                $maxForms = $product->product_group->forms;
-                break;
+        //     case Order::PRIORITY_VERY_HIGH:
+        //         $maxForms = $product->product_group->forms;
+        //         break;
 
-            default:
-                $maxForms = 0;
-                break;
-        }
+        //     default:
+        //         $maxForms = 0;
+        //         break;
+        // }
 
-        $maxBatches = round($maxForms / $product->product_group->units_from_batch, 1);
+        // $maxBatches = round($maxForms / $product->product_group->units_from_batch, 1);
 
-        if ($maxBatches > $currentBatches) 
-        {
-            $maxBatches = $currentBatches;
-        }
+        // if ($maxForms > $currentForms)
+        // {
+        //     $maxForms = $currentForms;
+        // }
+        
+        // if ($maxBatches > $currentBatches) 
+        // {
+        //     $maxBatches = $currentBatches;
+        // }
 
-        if ($maxForms > $currentForms)
-        {
-            $maxForms = $currentForms;
-        }
+        // if ($maxForms > $maxBatches * $product->product_group->units_from_batch)
+        // {
+        //     $plannedBatches = round($maxForms / $product->product_group->units_from_batch, 1);
+        // }
+        // else
+        // {
+        //     $plannedBatches = round($maxBatches, 1);
+        // }
 
-        if ($maxForms > $maxBatches * $product->product_group->units_from_batch)
-        {
-            $plannedBatches = round($maxForms / $product->product_group->units_from_batch, 1);
-        }
-        else
-        {
-            $plannedBatches = round($maxBatches, 1);
-        }
-
+        $plannedBatches = $priority;
 
         if ($plannedBatches == 0)
         {

@@ -13527,11 +13527,15 @@ i.far {
 .production-page .production-block .products-block .table tr td:nth-child(2),
 .production-page .production-block .products-block .table tr th:nth-child(2),
 .production-page .production-block .products-block .table tr td:nth-child(3),
-.production-page .production-block .products-block .table tr th:nth-child(3),
-.production-page .production-block .products-block .table tr td:nth-child(4),
-.production-page .production-block .products-block .table tr th:nth-child(4) {
+.production-page .production-block .products-block .table tr th:nth-child(3) {
   width: 70px;
   max-width: 70px;
+}
+
+.production-page .production-block .products-block .table tr td:nth-child(4),
+.production-page .production-block .products-block .table tr th:nth-child(4) {
+  width: 80px;
+  max-width: 80px;
 }
 
 .production-page .production-block .products-block .table tr:last-child td {

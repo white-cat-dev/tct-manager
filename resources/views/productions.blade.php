@@ -110,7 +110,7 @@
 								<span ng-switch-when="unit">шт.</span>
 							</span>
 							<div class="production-date-to" ng-if="product.productions[0].planned != product.productions[0].performed">
-								@{{ product.productions[0] ? product.productions[0].formatted_date_to : '' }}
+								@{{ product.productions[0] ? product.productions[0].formatted_date_to + ' (' + product.productions[0].priority + ')' : '' }}
 							</div>
 						</td>
 					</tr>

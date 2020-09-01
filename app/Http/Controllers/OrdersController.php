@@ -435,7 +435,7 @@ class OrdersController extends Controller
     public function getDate(Request $request)
     {
         $orderData = $this->getData($request);
-        $priority = $orderData['priority'];
+        // $priority = $orderData['priority'];
 
         $products = [];
 
@@ -454,7 +454,7 @@ class OrdersController extends Controller
             ];
         }
 
-        $dateTo = ProductionsService::getInstance()->testPlanOrder($products, $priority);
+        $dateTo = ProductionsService::getInstance()->testPlanOrder($products);
 
         if ($dateTo > $orderData['date'])
         {
@@ -518,7 +518,7 @@ class OrdersController extends Controller
             'pay_type' => $request->get('pay_type', 'cash'),
             'weight' => $request->get('weight', 0),
             'pallets' => $request->get('pallets', 0),
-            'pallets_price' => $request->get('pallets_price', 150)
+            'pallets_price' => $request->get('pallets_price', 200)
         ];
     }
 

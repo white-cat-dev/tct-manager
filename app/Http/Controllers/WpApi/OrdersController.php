@@ -235,7 +235,7 @@ class OrdersController extends Controller
                 'cost' => 0,
                 'weight' => 0,
                 'pallets' => 0,
-                'pallets_price' => 150,
+                'pallets_price' => 200,
                 'paid' => 0,
                 'pay_type' => 'cash',
                 'delivery_price' => 0,
@@ -271,7 +271,7 @@ class OrdersController extends Controller
             'pay_type' => $request->get('pay_type', 'cash'),
             'weight' => $request->get('weight', 0),
             'pallets' => $request->get('pallets', 0),
-            'pallets_price' => $request->get('pallets_price', 150)
+            'pallets_price' => $request->get('pallets_price', 200)
         ];
     }
 

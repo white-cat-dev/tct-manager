@@ -82789,7 +82789,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     'pay_type': 'cash',
     'weight': 0,
     'pallets': 0,
-    'pallets_price': 150,
+    'pallets_price': 200,
     'priority': '1',
     'delivery': '',
     'delivery_distance': 0,
@@ -82829,9 +82829,9 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     }]
   };
   $scope.palletsPrices = {
-    'cash': 150,
-    'cashless': 160,
-    'vat': 175
+    'cash': 200,
+    'cashless': 210,
+    'vat': 230
   };
 
   $scope.init = function (status) {
