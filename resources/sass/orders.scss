@@ -214,6 +214,15 @@
 		top: 20px;
 		margin-top: 20px;
 
+		.order-info-block {
+			font-size: 14px;
+    		margin-bottom: 5px;
+
+			.order-info-title {
+				font-weight: 500;
+			}
+		}
+
 		.table {
 			font-size: 14px;
 			margin-bottom: 0px;
@@ -243,8 +252,15 @@
 		.title-block {
 			font-size: 20px;
 		    font-weight: 500;
-		    margin-bottom: 10px;
+		    margin-bottom: 5px;
 		    color: $primary;
+		    line-height: 22px;
+
+		    .order-status-block {
+		    	font-size: 14px;
+		    	font-weight: normal;
+		    	color: darken($grey, 35%);
+		    }
 		}
 
 		.btn-group {
@@ -482,14 +498,28 @@
 	    }
 	}
 
+	.history-table-block {
+		border: solid 1px darken($grey, 10%);
+	    padding: 10px 15px;
+	    box-shadow: 1px 1px 5px darken($grey, 5%);
+
+	    .table {
+	    	margin-bottom: 0px;
+	    	font-size: 15px;
+
+	    	tr td,
+			tr th {
+				.product-color {
+					color: darken($grey, 35%);
+				}
+			}
+	    }
+	}
+
 	.history-table {
 		tr td,
 		tr th {
 			vertical-align: top;
-
-			.product-color {
-				color: darken($grey, 35%);
-			}
 		}
 	}
 }

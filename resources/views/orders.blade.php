@@ -37,6 +37,7 @@
 				<span ng-switch on="currentStatus" ng-if="!isCategoriesShown">
 					<span ng-switch-when="production">В работе</span>
 					<span ng-switch-when="ready">Готовые к выдаче</span>
+					<span ng-switch-when="unpaid">Неоплаченные</span>
 					<span ng-switch-when="finished">Завершенные</span>
 					<span ng-switch-when="new">С сайта</span>
 				</span>
@@ -54,6 +55,9 @@
 			</button>
 			<button type="button" class="btn" ng-class="{'active': currentStatus == 'ready'}" ng-click="chooseStatus('ready')">
 				Готовые к выдаче
+			</button>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == 'unpaid'}" ng-click="chooseStatus('unpaid')">
+				Неоплаченные
 			</button>
 			<button type="button" class="btn" ng-class="{'active': currentStatus == 'finished'}" ng-click="chooseStatus('finished')">
 				Завершенные
@@ -124,6 +128,7 @@
 				<div ng-if="currentOrder">
 					<div class="title-block">
 						Заказ №<span ng-if="currentOrder.number">@{{ currentOrder.number }}</span><span ng-if="!currentOrder.number">@{{ currentOrder.id }}</span>
+						<div class="order-status-block">@{{ currentOrder.status_text }}</div>
 					</div>
 
 					<div class="btn-group">
@@ -138,12 +143,35 @@
 						</button>
 					</div>
 
+					<div class="order-info-block">
+						<div ng-if="currentOrder.pay_type != 'cash'">
+							<span class="order-info-title">Способ оплаты:</span>
+							@{{ currentOrder.pay_type_text }}
+						</div> 
+						<div ng-if="currentOrder.delivery">
+							<span class="order-info-title">Доставка:</span>
+							@{{ currentOrder.delivery_text }}
+						</div> 
+						<div ng-if="currentOrder.priority > {{ App\Order::PRIORITY_NORMAL }}">
+							<span class="order-info-title">Приоритет:</span>
+							@{{ currentOrder.priority_text }}
+						</div> 
+						<div ng-if="currentOrder.client.name || currentOrder.client.phone || currentOrder.client.email">
+							<span class="order-info-title">Данные клиента:</span> 
+							@{{ currentOrder.client.name }} @{{ currentOrder.client.phone }} @{{ currentOrder.client.email }}
+						</div> 
+						<div ng-if="currentOrder.comment">
+							<span class="order-info-title">Комментарий к заказу:</span>
+							@{{ currentOrder.comment }}
+						</div> 
+					</div>
+
 					<table class="table table-sm" ng-if="currentOrder.products.length > 0">
 						<tr>
 							<th>Продукт</th>
 							<th>Кол-во</th>
 							<th>Отпущено</th>
-							<th ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }}">В наличии</th>
+							<th ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }} && currentOrder.status != {{ App\Order::STATUS_UNPAID }}">В наличии</th>
 						</tr>
 						<tr ng-repeat="product in currentOrder.products">
 							<td>
@@ -151,15 +179,15 @@
 								<div>@{{ product.product_group.size }}</div>
 								<div class="product-color">@{{ product.variation_noun_text }}</div>
 							</td>
-							<td>
+							<td ng-class="{'text-success': product.progress.total == product.progress.realization}">
 								@{{ product.progress.total }}
 								<span ng-bind-html="product.units_text"></span>
 							</td>
-							<td>
+							<td ng-class="{'text-success': product.progress.total == product.progress.realization}">
 								@{{ product.progress.realization }}
 								<span ng-bind-html="product.units_text"></span>
 							</td>
-							<td ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }}">
+							<td ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }} && currentOrder.status != {{ App\Order::STATUS_UNPAID }}">
 								<span ng-if="product.progress.total != product.progress.realization">
 									@{{ product.in_stock }}
 									<span ng-bind-html="product.units_text"></span>
@@ -179,7 +207,7 @@
 							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.status != {{ App\Order::STATUS_NEW }}" ng-click="showRealizationModal(currentOrder)">
 								Отпустить заказ
 							</button>
-							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.payments_paid < currentOrder.cost" ng-click="showPaymentModal(currentOrder)">
+							<button type="button" class="btn-sm dropdown-item" {{-- ng-if="currentOrder.paid < currentOrder.cost" --}} ng-click="showPaymentModal(currentOrder)">
 								Внести платеж
 							</button>
 							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.status == {{ App\Order::STATUS_NEW }}" ng-click="save()">
@@ -213,6 +241,7 @@
 		<span ng-switch on="currentStatus">
 			<span ng-switch-when="production">заказа в работе</span>
 			<span ng-switch-when="ready">готового к выдаче заказа</span>
+			<span ng-switch-when="unpaid">неоплаченного заказа</span>
 			<span ng-switch-when="finished">завершенного заказа</span>
 			<span ng-switch-when="new">заказа с сайта</span>
 			<span ng-switch-default>заказа</span>

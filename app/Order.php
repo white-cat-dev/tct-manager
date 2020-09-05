@@ -15,6 +15,7 @@ class Order extends Model
     const STATUS_PAUSED = 4;
     const STATUS_FINISHED = 5;
     const STATUS_CART = 6;
+    const STATUS_UNPAID = 7;
 
     const PRIORITY_NORMAL = 1;
     const PRIORITY_HIGH = 2;
@@ -71,7 +72,9 @@ class Order extends Model
         2 => 'Готов к выдаче',
         3 => 'Новый',
         4 => 'Приостановлен',
-        5 => 'Завершен'
+        5 => 'Завершен',
+        6 => 'С сайта',
+        7 => 'Не оплачен',
     ];
 
     protected static $priorities = [

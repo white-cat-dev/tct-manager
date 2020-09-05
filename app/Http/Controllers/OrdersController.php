@@ -50,6 +50,10 @@ class OrdersController extends Controller
                         $query->where('status', Order::STATUS_PRODUCTION);
                         break;
 
+                    case 'unpaid':
+                        $query->where('status', Order::STATUS_UNPAID);
+                        break;
+
                     case 'finished':
                         $query->where('status', Order::STATUS_FINISHED);
                         break;
@@ -99,6 +103,10 @@ class OrdersController extends Controller
                             $orders->push($order);
                         }
                     }
+                    break;
+
+                case 'unpaid':
+                    $orders = $query->get();
                     break;
 
                 case 'finished':
@@ -400,6 +408,8 @@ class OrdersController extends Controller
         $payment->order->update([
             'paid' => $payment->order->paid + $payment->paid
         ]);
+
+        $this->checkFinishedOrder($payment->order);
     }
 
 
@@ -417,11 +427,20 @@ class OrdersController extends Controller
             }
         }
 
-        if ($isOrderFinished)
+        if ($isOrderFinished) 
         {
-            $order->update([
-                'status' => Order::STATUS_FINISHED
-            ]);
+            if ($order->paid >= $order->cost)
+            {
+                $order->update([
+                    'status' => Order::STATUS_FINISHED
+                ]);
+            }
+            else
+            {
+                $order->update([
+                    'status' => Order::STATUS_UNPAID
+                ]);   
+            }
         }
         else
         {

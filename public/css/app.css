@@ -13371,6 +13371,7 @@ i.far {
 
 .material-supplies-block .table-block .table {
   margin-bottom: 0px;
+  font-size: 15px;
 }
 
 .recipes-page {
@@ -14303,6 +14304,15 @@ i.far {
   margin-top: 20px;
 }
 
+.orders-page .main-products-block .order-info-block {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.orders-page .main-products-block .order-info-block .order-info-title {
+  font-weight: 500;
+}
+
 .orders-page .main-products-block .table {
   font-size: 14px;
   margin-bottom: 0px;
@@ -14333,8 +14343,15 @@ i.far {
 .orders-page .main-products-block .title-block {
   font-size: 20px;
   font-weight: 500;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   color: #276090;
+  line-height: 22px;
+}
+
+.orders-page .main-products-block .title-block .order-status-block {
+  font-size: 14px;
+  font-weight: normal;
+  color: #9a9a9a;
 }
 
 .orders-page .main-products-block .btn-group {
@@ -14554,14 +14571,25 @@ i.far {
   border: solid 1px #dadada;
 }
 
+.orders-page .history-table-block {
+  border: solid 1px #dadada;
+  padding: 10px 15px;
+  box-shadow: 1px 1px 5px #e6e6e6;
+}
+
+.orders-page .history-table-block .table {
+  margin-bottom: 0px;
+  font-size: 15px;
+}
+
+.orders-page .history-table-block .table tr td .product-color,
+.orders-page .history-table-block .table tr th .product-color {
+  color: #9a9a9a;
+}
+
 .orders-page .history-table tr td,
 .orders-page .history-table tr th {
   vertical-align: top;
-}
-
-.orders-page .history-table tr td .product-color,
-.orders-page .history-table tr th .product-color {
-  color: #9a9a9a;
 }
 
 .workers-page {

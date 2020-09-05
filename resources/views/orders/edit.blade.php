@@ -15,6 +15,9 @@
 			<a ng-href="@{{ order.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
+			<button type="button" class="btn btn-primary" ng-click="loadExportFile(order)">
+				<i class="fas fa-print"></i> Распечатать
+			</button>
 			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(order)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>

@@ -14,6 +14,9 @@
 			<a ng-href="@{{ order.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
+			<button type="button" class="btn btn-primary" ng-click="loadExportFile(order)">
+				<i class="fas fa-print"></i> Распечатать
+			</button>
 			<button type="button" class="btn btn-primary" ng-if="order.id" ng-click="showDelete(order)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
@@ -265,11 +268,12 @@
 					История оплаты
 				</div>
 
-				<div class="alert alert-secondary">
-					<table class="table table-sm history-table" ng-if="order.payments.length > 0">
+				<div class="history-table-block" ng-if="order.payments.length > 0">
+					<table class="table table-sm table-with-buttons">
 						<tr>
 							<th>Дата</th>
 							<th>Сумма</th>
+							<th></th>
 						</tr>
 						<tr ng-repeat="payment in order.payments">
 							<td>
@@ -277,6 +281,11 @@
 							</td>
 							<td>
 								@{{ payment.paid | number }} руб
+							</td>
+							<td>
+								<button type="button" class="btn btn-sm btn-primary" disabled ng-click="showPaymentModal(order)">
+									<i class="fas fa-edit"></i> Изменить
+								</button>
 							</td>
 						</tr>
 						<tr>
@@ -286,12 +295,14 @@
 							<td>
 								@{{ order.payments_paid | number }} руб
 							</td>
+							<td>
+							</td>
 						</tr>
 					</table>
+				</div>
 
-					<div ng-if="order.payments.length == 0">
-						<i class="far fa-calendar-times"></i> Оплат заказа еще не поступало
-					</div>
+				<div class="alert alert-secondary" ng-if="order.payments.length == 0">
+					<i class="far fa-calendar-times"></i> Оплат заказа еще не поступало
 				</div>
 			</div>
 
@@ -300,12 +311,13 @@
 					История выдачи
 				</div>
 
-				<div class="alert alert-secondary">
-					<table class="table table-sm history-table" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
+				<div class="history-table-block" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
+					<table class="table table-sm table-with-buttons">
 						<tr>
 							<th>Дата</th>
 							<th>Продукт</th>
 							<th>Количество</th>
+							<th></th>
 						</tr>
 						<tr ng-repeat="realization in order.realizations | filter: {'date': '!= null'}">
 							<td>@{{ realization.formatted_date }}</td>
@@ -316,12 +328,17 @@
 							<td>
 								@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>
 							</td>
+							<td>
+								<button type="button" class="btn btn-sm btn-primary" disabled ng-click="showRealizationModal(order)">
+									<i class="fas fa-edit"></i> Изменить
+								</button>
+							</td>
 						</tr>
 					</table>
+				</div>
 
-					<div ng-if="(order.realizations | filter: {'date': '!= null'}).length == 0">
-						<i class="far fa-calendar-times"></i> Заказ еще не выдан
-					</div>
+				<div class="alert alert-secondary" ng-if="(order.realizations | filter: {'date': '!= null'}).length == 0">
+					<i class="far fa-calendar-times"></i> Заказ еще не выдан
 				</div>
 			</div>
 		</div>
