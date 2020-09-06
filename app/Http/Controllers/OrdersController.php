@@ -160,6 +160,7 @@ class OrdersController extends Controller
 
             $order->productions = $order->productions()->with('product')->where('performed', '>', 0)->get();
             $order->realizations = $order->realizations()->with('product')->get();
+            $order->realizations_cost = $order->realizations_cost;
             $order->payments = $order->payments()->get();
 
             return $order;
@@ -370,18 +371,21 @@ class OrdersController extends Controller
 
             $realization = Realization::create($realizationData);
 
-            $realization->product->update([
-                'in_stock' => $realization->product->in_stock - $realization->performed
-            ]);
-
-            $baseProduction = $realization->product->getBaseProduction();
-
-            if ($baseProduction)
+            if ($realization->product)
             {
-                $baseProduction->update([
-                    'auto_planned' => $baseProduction->auto_planned - $realization->performed,
-                    'performed' => $baseProduction->performed - $realization->performed,
+                $realization->product->update([
+                    'in_stock' => $realization->product->in_stock - $realization->performed
                 ]);
+
+                $baseProduction = $realization->product->getBaseProduction();
+
+                if ($baseProduction)
+                {
+                    $baseProduction->update([
+                        'auto_planned' => $baseProduction->auto_planned - $realization->performed,
+                        'performed' => $baseProduction->performed - $realization->performed,
+                    ]);
+                }
             }
 
             $order = $realization->order;

@@ -191,7 +191,7 @@
 							—
 						</td>
 						<td>
-							@{{ order.pallets_price | number }} руб
+							@{{ order.pallets_price | number }} руб/шт
 						</td>
 						<td>
 							@{{ order.pallets | number }} шт
@@ -263,6 +263,56 @@
 			</div>
 
 
+			<div class="col-7 col-xl-6">
+				<div class="params-title">
+					История выдачи
+				</div>
+
+				<div class="history-table-block" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
+					<table class="table table-sm table-with-buttons">
+						<tr>
+							<th>Дата</th>
+							<th>Продукт</th>
+							<th>Количество</th>
+							<th></th>
+						</tr>
+						<tr ng-repeat="realization in order.realizations | filter: {'date': '!= null'}">
+							<td>@{{ realization.formatted_date }}</td>
+							<td style="width: 50%">
+								<div ng-if="realization.product">
+									@{{ realization.product.product_group.name }} @{{ realization.product.product_group.size }}
+									<span class="product-color">@{{ realization.product.variation_text }}</span>
+								</div>
+								<div ng-if="!realization.product">
+									Поддоны
+								</div>
+							</td>
+							<td>
+								@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>
+								<span ng-if="!realization.product">шт</span>
+							</td>
+							<td>
+								<button type="button" class="btn btn-sm btn-primary" disabled ng-click="showRealizationModal(order)">
+									<i class="fas fa-edit"></i> Изменить
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<th>Итого:</th>
+							<th>
+								@{{ order.realizations_cost | number }} руб
+							</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</table>
+				</div>
+
+				<div class="alert alert-secondary" ng-if="(order.realizations | filter: {'date': '!= null'}).length == 0">
+					<i class="far fa-calendar-times"></i> Заказ еще не выдан
+				</div>
+			</div>
+
 			<div class="col-5 col-xl-4">
 				<div class="params-title">
 					История оплаты
@@ -289,56 +339,17 @@
 							</td>
 						</tr>
 						<tr>
-							<td>
-								Итого:
-							</td>
-							<td>
+							<th>Итого:</th>
+							<th>
 								@{{ order.payments_paid | number }} руб
-							</td>
-							<td>
-							</td>
+							</th>
+							<th></th>
 						</tr>
 					</table>
 				</div>
 
 				<div class="alert alert-secondary" ng-if="order.payments.length == 0">
 					<i class="far fa-calendar-times"></i> Оплат заказа еще не поступало
-				</div>
-			</div>
-
-			<div class="col-7 col-xl-6">
-				<div class="params-title">
-					История выдачи
-				</div>
-
-				<div class="history-table-block" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
-					<table class="table table-sm table-with-buttons">
-						<tr>
-							<th>Дата</th>
-							<th>Продукт</th>
-							<th>Количество</th>
-							<th></th>
-						</tr>
-						<tr ng-repeat="realization in order.realizations | filter: {'date': '!= null'}">
-							<td>@{{ realization.formatted_date }}</td>
-							<td style="width: 50%">
-								@{{ realization.product.product_group.name }} @{{ realization.product.product_group.size }}
-								<span class="product-color">@{{ realization.product.variation_text }}</span>
-							</td>
-							<td>
-								@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>
-							</td>
-							<td>
-								<button type="button" class="btn btn-sm btn-primary" disabled ng-click="showRealizationModal(order)">
-									<i class="fas fa-edit"></i> Изменить
-								</button>
-							</td>
-						</tr>
-					</table>
-				</div>
-
-				<div class="alert alert-secondary" ng-if="(order.realizations | filter: {'date': '!= null'}).length == 0">
-					<i class="far fa-calendar-times"></i> Заказ еще не выдан
 				</div>
 			</div>
 		</div>

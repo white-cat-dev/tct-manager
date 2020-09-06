@@ -196,6 +196,35 @@ class Order extends Model
         return $this->payments->sum('paid');
     }
 
+    public function getRealizationsCostAttribute()
+    {
+        $realizationsCost = 0;
+
+        foreach ($this->realizations as $realization) 
+        {
+            if ($realization->product_id)
+            {
+                $product = $this->products->where('id', $realization->product->id)->first();
+                if ($product)
+                {
+                    $price = $product->pivot->price;
+                }
+                else
+                {
+                    $price = 0;
+                }
+            }
+            else
+            {
+                $price = $this->pallets_price;
+            }
+
+            $realizationsCost += $price * $realization->performed;
+        }
+
+        return ceil($realizationsCost);
+    }
+
 
     public function getProgress()
     {

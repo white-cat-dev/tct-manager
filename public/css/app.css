@@ -14582,9 +14582,18 @@ i.far {
   font-size: 15px;
 }
 
-.orders-page .history-table-block .table tr td .product-color,
-.orders-page .history-table-block .table tr th .product-color {
+.orders-page .history-table-block .table .product-color {
   color: #9a9a9a;
+}
+
+.orders-page .history-table-block .table tr:first-child th {
+  padding-bottom: 10px;
+}
+
+.orders-page .history-table-block .table tr:last-child th {
+  border-top: solid 1px #dadada;
+  padding-top: 10px;
+  padding-bottom: 5px;
 }
 
 .orders-page .history-table tr td,

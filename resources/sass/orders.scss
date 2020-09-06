@@ -507,11 +507,18 @@
 	    	margin-bottom: 0px;
 	    	font-size: 15px;
 
-	    	tr td,
-			tr th {
-				.product-color {
-					color: darken($grey, 35%);
-				}
+			.product-color {
+				color: darken($grey, 35%);
+			}
+
+			tr:first-child th {
+				padding-bottom: 10px;
+			}
+
+			tr:last-child th {
+				border-top: solid 1px darken($grey, 10%);
+				padding-top: 10px;
+    			padding-bottom: 5px;
 			}
 	    }
 	}

@@ -379,13 +379,19 @@
 									<input type="text" class="form-control" ng-model="realization.date_raw" ui-mask="99.99.9999">
 								</td>
 								<td style="width: 50%">
-									@{{ realization.product.product_group.name }} @{{ realization.product.product_group.size }}
-									<div class="product-color">@{{ realization.product.variation_text }}</div>
+									<div ng-if="realization.product">
+										@{{ realization.product.product_group.name }} @{{ realization.product.product_group.size }}
+										<div class="product-color">@{{ realization.product.variation_text }}</div>
+									</div>
+									<div ng-if="!realization.product">
+										Поддоны
+									</div>
 								</td>
 								<td>
 									<input type="text" class="form-control" ng-model="realization.performed" ng-change="inputFloat(realization, 'performed')">
 									<span class="product-units">
-										@{{ realization.performed }} <span ng-bind-html="realization.product.units_text"></span>
+										@{{ realization.performed }} <span ng-bind-html="realization.product.units_text" ng-if="realization.product"></span>
+										<span ng-if="!realization.product">шт</span>
 									</span>
 								</td>
 							</tr>

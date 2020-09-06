@@ -25,17 +25,32 @@
 
 					<tr ng-repeat="realization in modalOrder.realizations" ng-class="{'disabled': realization.max_performed == 0}">
 						<td style="width: 40%;">
-							@{{ realization.product.product_group.name }}
-							@{{ realization.product.product_group.size }}
-							<div class="product-color" ng-if="realization.product.variation_noun_text">
-								@{{ realization.product.variation_noun_text }}
+							<div ng-if="realization.product.id">
+								@{{ realization.product.product_group.name }}
+								@{{ realization.product.product_group.size }}
+								<div class="product-color" ng-if="realization.product.variation_noun_text">
+									@{{ realization.product.variation_noun_text }}
+								</div>		
+							</div>
+							<div ng-if="!realization.product.id">
+								Поддоны
 							</div>
 						</td>
 						<td style="width: 20%;">
-							@{{ realization.planned }} <span ng-bind-html="realization.product.units_text"></span>
+							<div ng-if="realization.product.id">
+								@{{ realization.planned }} <span ng-bind-html="realization.product.units_text"></span>
+							</div>
+							<div ng-if="!realization.product.id">
+								—
+							</div>
 						</td>
 						<td style="width: 20%;">
-							@{{ realization.product.in_stock }} <span ng-bind-html="realization.product.units_text"></span>
+							<div ng-if="realization.product.id">
+								@{{ realization.product.in_stock }} <span ng-bind-html="realization.product.units_text"></span>
+							</div>
+							<div ng-if="!realization.product.id">
+								—
+							</div>
 						</td>
 						<td ng-init="realization.old_performed = realization.performed" style="width: 20%;">
 							<input type="text" class="form-control" ng-model="realization.performed" ng-change="inputFloat(realization, 'performed'); checkAllRealizations(realization)" ng-disabled="realization.max_performed == 0"> 

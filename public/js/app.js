@@ -83387,7 +83387,15 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       }
     }
 
-    console.log($scope.modalOrder.realizations);
+    $scope.modalOrder.realizations.push({
+      'order_id': $scope.modalOrder.id,
+      'product': {
+        'id': 0
+      },
+      'planned': order.pallets,
+      'performed': 0,
+      'max_performed': order.pallets
+    });
     $scope.isAllRealizationsChosen = false;
   };
 
@@ -83397,7 +83405,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
   $scope.chooseAllRealizations = function () {
     if ($scope.isAllRealizationsChosen) {
-      console.log($scope.modalOrder.realizations);
       var _iteratorNormalCompletion8 = true;
       var _didIteratorError8 = false;
       var _iteratorError8 = undefined;
@@ -83405,6 +83412,11 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       try {
         for (var _iterator8 = $scope.modalOrder.realizations[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
           realization = _step8.value;
+
+          if (!realization.product.id) {
+            continue;
+          }
+
           realization.performed = realization.max_performed;
         }
       } catch (err) {
@@ -83425,7 +83437,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.checkAllRealizations = function (realization) {
-    if (realization.performed > realization.max_performed) {
+    if (realization.performed > realization.max_performed && realization.product.id) {
       realization.performed = realization.max_performed;
     }
 
@@ -83436,6 +83448,10 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     try {
       for (var _iterator9 = $scope.modalOrder.realizations[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
         realization = _step9.value;
+
+        if (!realization.product.id) {
+          continue;
+        }
 
         if (realization.performed < realization.max_performed) {
           $scope.isAllRealizationsChosen = false;
