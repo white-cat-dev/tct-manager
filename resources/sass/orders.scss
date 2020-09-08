@@ -1,6 +1,18 @@
 .orders-page {
 	position: relative;
 
+	.orders-row {
+
+		.col:first-child {
+			flex: 0 0 54%;
+	    	max-width: 54%;
+	    }
+	    .col:last-child {
+			flex: 0 0 46%;
+	    	max-width: 46%;
+	    }
+	}
+
 	.statuses-menu-block {
 		position: relative;
 
@@ -149,7 +161,7 @@
 	
 	.order-name {
 		position: relative;
-    	padding-right: 35px;
+    	// padding-right: 35px;
 
 		.order-priority {
 			background: $danger;
@@ -193,6 +205,10 @@
 				padding: 10px;
 				white-space: nowrap;
 			}
+
+			th {
+				font-size: 13px;
+			}
 		}
 
 		.no-current-order {
@@ -208,7 +224,7 @@
 	.main-products-block {
 		box-shadow: 1px 1px 5px darken($grey, 5%);
 		border: solid 1px darken($grey, 10%);
-		padding: 15px;
+		padding: 15px 10px;
 		position: relative;
 		position: sticky;
 		top: 20px;
@@ -247,6 +263,10 @@
 				padding: 7px;
 				white-space: nowrap;
 			}
+
+			th {
+				font-size: 13px;
+			}
 		}
 
 		.title-block {
@@ -266,7 +286,7 @@
 		.btn-group {
 			position: absolute;
 		    top: 15px;
-		    right: 15px;
+		    right: 10px;
 		}
 
 		.buttons-block {

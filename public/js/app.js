@@ -81491,6 +81491,10 @@ tctApp.factory('ProductsRepository', ['$resource', function ($resource) {
       method: 'GET',
       url: '/products/:id/orders',
       'isArray': true
+    },
+    stocks: {
+      method: 'GET',
+      url: '/products/:id/stocks'
     }
   });
 }]);
@@ -84259,6 +84263,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     }, function (response) {
       $scope.isLoading = false;
       $scope.productGroup = response;
+      $scope.initStocks();
     });
   };
 
@@ -84601,6 +84606,41 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   $scope.hideProductOrdersModal = function () {
     $scope.isProductOrdersModalShown = false;
     $scope.modalProductOrders = [];
+  };
+
+  $scope.stocksMonthes = [];
+  $scope.stocksYears = [];
+  $scope.stocksCurrentDate = {};
+  $scope.stocksCurrentProduct = 0;
+  $scope.stocks = [];
+
+  $scope.initStocks = function () {
+    if ($scope.stocksCurrentProduct == 0) {
+      $scope.stocksCurrentProduct = $scope.productGroup.products[0].id;
+    }
+
+    var request = {
+      'id': $scope.stocksCurrentProduct
+    };
+
+    if ($scope.stocksCurrentDate.year) {
+      request.year = $scope.stocksCurrentDate.year;
+    }
+
+    if ($scope.stocksCurrentDate.month) {
+      request.month = $scope.stocksCurrentDate.month;
+    }
+
+    console.log(request);
+    $scope.isStocksLoading = true;
+    ProductsRepository.stocks(request, function (response) {
+      $scope.isStocksLoading = false;
+      $scope.stocksMonthes = response.monthes;
+      $scope.stocksYears = response.years;
+      $scope.stocksCurrentDate.month = response.month;
+      $scope.stocksCurrentDate.year = response.year;
+      $scope.stocks = response.stocks;
+    });
   };
 }]);
 

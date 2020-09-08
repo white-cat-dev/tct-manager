@@ -209,21 +209,8 @@ class ProductionsController extends Controller
             }
 
 
-            $production->product->update([
-                'in_stock' => $production->product->in_stock + $productionPerformed
-            ]);
-
-            $baseProduction = $production->product->getBaseProduction();
-
-            if ($baseProduction)
-            {
-                $baseProduction->update([
-                    'performed' => ($baseProduction->product->in_stock > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $baseProduction->product->in_stock,
-                    'priority' => ($production->manual_batches > 0) ? $production->manual_batches : $baseProduction->priority
-                ]);
-
-                ProductionsService::getInstance()->replanProduct($production->product);
-            }
+            $product = $production->product;
+            $product->updateInStock($product->in_stock + $productionPerformed, 'production', $production);
 
             $this->updateMaterialsApply($production, $productionPerformed);
         }

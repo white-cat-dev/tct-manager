@@ -28,8 +28,115 @@
 
 	<div class="show-block" ng-show="!isLoading">
 		<div class="row justify-content-around">
+			<div class="col-12 col-xl-11">
+				<div class="product-stocks-block">
+					<div class="params-title mt-0">История остатков</div>	
+
+					<div class="modal-loading-block" ng-if="isStocksLoading">
+						<i class="fa fa-cog fa-spin"></i>
+					</div>
+
+					<div class="date-groups">
+						<div class="input-group date-group">
+							<button class="btn btn-primary input-group-prepend" type="button" ng-click="stocksCurrentDate.year = stocksCurrentDate.year - 1; initStocks()" ng-disabled="stocksCurrentDate.year == stocksYears[0]">
+							    <i class="fas fa-chevron-left"></i>
+							</button>
+
+							<ui-select ng-model="stocksCurrentDate.year" ng-change="initStocks()" skip-focusser="true" search-enabled="false">
+					            <ui-select-match placeholder="Год">
+						            <span ng-bind-html="$select.selected"></span>
+						        </ui-select-match>
+					            <ui-select-choices repeat="year in stocksYears">
+					                <span ng-bind-html="year"></span>
+					            </ui-select-choices>
+							</ui-select>
+
+							<button class="btn btn-primary input-group-append" type="button" ng-click="stocksCurrentDate.year = stocksCurrentDate.year + 1; initStocks()" ng-disabled="stocksCurrentDate.year == stocksYears[stocksYears.length - 1]">
+							    <i class="fas fa-chevron-right"></i>
+							</button>
+						</div>
+
+						<div class="input-group date-group">
+						    <button class="btn btn-primary input-group-prepend" type="button" ng-click="stocksCurrentDate.month = stocksCurrentDate.month - 1; initStocks()" ng-disabled="stocksCurrentDate.month == stocksMonthes[0].id">
+							    <i class="fas fa-chevron-left"></i>
+							</button>
+
+							<ui-select ng-model="stocksCurrentDate.month" ng-change="initStocks()" skip-focusser="true" search-enabled="false">
+					            <ui-select-match placeholder="Месяц">
+						            <span ng-bind-html="$select.selected.name"></span>
+						        </ui-select-match>
+					            <ui-select-choices repeat="month.id as month in stocksMonthes">
+					                <span ng-bind-html="month.name"></span>
+					            </ui-select-choices>
+							</ui-select>
+
+							<button class="btn btn-primary input-group-append" type="button" ng-click="stocksCurrentDate.month = stocksCurrentDate.month + 1; initStocks()" ng-disabled="stocksCurrentDate.month == stocksMonthes[stocksMonthes.length - 1].id">
+							    <i class="fas fa-chevron-right"></i>
+							</button>
+						</div>
+					</div>
+
+					<div ng-if="productGroup.category.variations">
+						<div class="custom-control custom-radio custom-control-inline" ng-repeat="product in productGroup.products">
+						  <input type="radio" id="product-radio-@{{ product.id }}" class="custom-control-input" ng-model="$parent.$parent.stocksCurrentProduct" ng-value="product.id" ng-change="initStocks()">
+						  <label class="custom-control-label" for="product-radio-@{{product.id}}">@{{ product.variation_text }}</label>
+						</div>
+					</div>
+					
+					<div class="table-block" ng-if="stocks.length > 0">
+						<table class="table table-sm">
+							<tr>
+								<th>Дата</th>
+								<th>До</th>
+								<th>Изменение</th>
+								<th>После</th>
+								<th>Основание</th>
+							</tr>
+							<tr ng-repeat="stock in stocks">
+								<td>
+									@{{ stock.formatted_date }}
+								</td>
+								<td>
+									<span ng-if="stock.reason != 'create' && stock.reason != 'month_start'">
+										@{{ stock.in_stock }} <span ng-bind-html="stock.model.units_text"></span>
+									</span>
+									<span ng-if="stock.reason == 'create' || stock.reason == 'month_start'">
+										—
+									</span>
+								</td>
+								<td>
+									<span ng-if="stock.reason != 'create' && stock.reason != 'month_start'">
+										<span ng-if="stock.new_in_stock - stock.in_stock >= 0">
+											+ @{{ stock.new_in_stock - stock.in_stock }} <span ng-bind-html="stock.model.units_text"></span>
+										</span>
+										<span ng-if="stock.new_in_stock - stock.in_stock < 0">
+											– @{{ -(stock.new_in_stock - stock.in_stock) }} <span ng-bind-html="stock.model.units_text"></span>
+										</span>
+									</span>
+									<span ng-if="stock.reason == 'create' || stock.reason == 'month_start'">
+										—
+									</span>
+								</td>
+								<td>
+									@{{ stock.new_in_stock }} <span ng-bind-html="stock.model.units_text"></span>
+								</td>
+								<td>
+									@{{ stock.reason_text }}
+								</td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="alert alert-secondary" ng-if="stocks.length == 0 && !isLoading">
+						<i class="far fa-calendar-times"></i> Нет истории остатков в этом месяце
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row justify-content-around">
 			<div class="col-12 col-lg-6 col-xl-5">
-				<div class="params-title mt-0">
+				<div class="params-title">
 					Общая информация
 				</div>
 				<div class="param-block">
@@ -69,7 +176,7 @@
 			</div>
 
 			<div class="col-12 col-lg-6 col-xl-5">
-				<div class="params-title mt-0">
+				<div class="params-title">
 					Характеристики
 				</div>
 

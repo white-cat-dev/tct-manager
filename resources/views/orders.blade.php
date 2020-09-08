@@ -85,8 +85,8 @@
 
 	@include('partials.date-pagination')
 
-	<div class="row" ng-if="(orders | filter: {'number': searchQuery}).length > 0">
-		<div class="col-12 col-lg-7">
+	<div class="row orders-row" ng-if="(orders | filter: {'number': searchQuery}).length > 0">
+		<div class="col">
 			<div class="main-orders-block">
 				<table class="table">
 					<tr>
@@ -123,7 +123,7 @@
 			</div>
 		</div>
 
-		<div class="col-12 col-lg-5">
+		<div class="col">
 			<div class="main-products-block">
 				<div ng-if="currentOrder">
 					<div class="title-block">
@@ -171,6 +171,7 @@
 							<th>Продукт</th>
 							<th>Кол-во</th>
 							<th>Отпущено</th>
+							<th>Осталось</th>
 							<th ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }} && currentOrder.status != {{ App\Order::STATUS_UNPAID }}">В наличии</th>
 						</tr>
 						<tr ng-repeat="product in currentOrder.products">
@@ -185,6 +186,10 @@
 							</td>
 							<td ng-class="{'text-success': product.progress.total == product.progress.realization}">
 								@{{ product.progress.realization }}
+								<span ng-bind-html="product.units_text"></span>
+							</td>
+							<td ng-class="{'text-success': product.progress.total == product.progress.realization}">
+								@{{ product.progress.planned }}
 								<span ng-bind-html="product.units_text"></span>
 							</td>
 							<td ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }} && currentOrder.status != {{ App\Order::STATUS_UNPAID }}">

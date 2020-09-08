@@ -39,7 +39,9 @@ Route::middleware('auth')->group(function()
 		Route::get('create', 'ProductsController@create')->name('product-create');
 		Route::get('{productGroup}', 'ProductsController@show')->name('product-show');
 		Route::get('{productGroup}/edit', 'ProductsController@edit')->name('product-edit');
+
 		Route::get('{product}/orders', 'ProductsController@orders')->name('product-orders');
+		Route::get('{product}/stocks', 'ProductsController@stocks')->name('product-stocks');
 
 		Route::post('/', 'ProductsController@create');
 		Route::post('{productGroup}', 'ProductsController@edit');

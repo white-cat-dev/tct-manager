@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\ProductGroup;
 use App\Product; 
 use App\Order; 
+use App\Stock;
+use Carbon\Carbon;
+use App\Services\DateService;
 use Str;
 use App\Http\Resources\ProductGroupResourceCollection;
 
@@ -87,6 +90,15 @@ class ProductsController extends Controller
                 $productData = $this->getProductData($productData, $productGroup);
 
                 $product = $productGroup->products()->create($productData);
+
+                $productStock = $product->stocks()->create([
+                    'date' => date('Y-m-d'),
+                    'process_id' => 0,
+                    'process_type' => '',
+                    'in_stock' => $product->in_stock,
+                    'new_in_stock' => $product->in_stock,
+                    'reason' => 'create'
+                ]);
             }
 
             $productGroup->products = $productGroup->products;
@@ -123,19 +135,19 @@ class ProductsController extends Controller
                 if (!$product) 
                 {
                     $product = $productGroup->products()->create($productData);
+
+                    $productStock = $product->stocks()->create([
+                        'date' => date('Y-m-d'),
+                        'process_id' => 0,
+                        'process_type' => '',
+                        'in_stock' => $product->in_stock,
+                        'new_in_stock' => $product->in_stock,
+                        'reason' => 'create'
+                    ]);
                 }
                 else 
                 {
-                    if ($product->in_stock != $productData['in_stock'])
-                    {
-                        $productStock = $product->stocks()->where('date', date('Y-m-d'))->first();
-                        if ($productStock)
-                        {
-                            $productStock->update([
-                                'new_in_stock' => $productData['in_stock']
-                            ]);
-                        }
-                    }
+                    $product->updateInStock($productData['in_stock'], 'manual');
                     $product->update($productData);
                 }
             }
@@ -190,6 +202,33 @@ class ProductsController extends Controller
         }
 
         return $orders;
+    }
+
+
+    public function stocks(Request $request, Product $product)
+    {
+        if ($request->wantsJson())
+        {
+            $today = Carbon::today();
+
+            $month = (int)$request->get('month', $today->month);
+            $year = (int)$request->get('year', $today->year);
+
+            $monthes = DateService::getMonthes();
+            $years = DateService::getYears(Stock::select('date'));
+
+            $stocks = $product->stocks()
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->get();
+
+            return ['monthes' => $monthes,
+                'years' => $years,
+                'year' => $year,
+                'month' => $month,
+                'stocks' => $stocks
+            ];
+        }
     }
 
 

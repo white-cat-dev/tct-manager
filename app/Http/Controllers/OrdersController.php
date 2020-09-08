@@ -211,7 +211,7 @@ class OrdersController extends Controller
             {   
                 foreach ($order->products as $product) 
                 {
-                    $order->realizations()->create([
+                    $realization = $order->realizations()->create([
                         'date' => $order->date,
                         'category_id' => $product->category_id,
                         'product_group_id' => $product->product_group_id,
@@ -222,9 +222,7 @@ class OrdersController extends Controller
                         'performed' => $product->pivot->count
                     ]);
 
-                    $product->update([
-                        'in_stock' => $product->in_stock - $product->pivot->count
-                    ]);
+                    $product->updateInStock($product->in_stock - $product->pivot->count, 'realization', $realization);
                 }
 
                 $this->checkFinishedOrder($order);
@@ -307,12 +305,10 @@ class OrdersController extends Controller
 
                     $realizationPerformed = $realization->performed - $realizationPerformed;
 
+                    $product = $realization->product;
+                    $product->updateInStock($product->in_stock - $realizationPerformed, 'realization', $realization);
 
-                    $realization->product->update([
-                        'in_stock' => $realization->product->in_stock - $realizationPerformed
-                    ]);
-
-                    $baseProduction = $realization->product->getBaseProduction();
+                    $baseProduction = $product->getBaseProduction();
 
                     if ($baseProduction)
                     {
@@ -373,11 +369,10 @@ class OrdersController extends Controller
 
             if ($realization->product)
             {
-                $realization->product->update([
-                    'in_stock' => $realization->product->in_stock - $realization->performed
-                ]);
+                $product = $realization->product;
+                $product->updateInStock($product->in_stock - $realization->performed, 'realization', $realization);
 
-                $baseProduction = $realization->product->getBaseProduction();
+                $baseProduction = $product->getBaseProduction();
 
                 if ($baseProduction)
                 {

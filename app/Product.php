@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Services\ProductionsService;
 use Arr;
 
 
@@ -198,6 +199,45 @@ class Product extends Model
         }
 
         return $production;
+    }
+
+
+    public function updateInStock($newInStock, $reason, $process = null)
+    {
+        if ($this->in_stock == $newInStock)
+        {
+            return;
+        }
+
+        $processTypes = [
+            'production' => 'App\Production',
+            'realization' => 'App\Realization',
+            'manual' => ''
+        ];
+
+        $productStock = $this->stocks()->create([
+            'date' => date('Y-m-d'),
+            'process_id' => !empty($process) ? $process->id : 0,
+            'process_type' => !empty($processTypes[$reason]) ? $processTypes[$reason] : '',
+            'in_stock' => $this->in_stock,
+            'new_in_stock' => $newInStock,
+            'reason' => $reason
+        ]);
+
+        $this->update([
+            'in_stock' => $newInStock
+        ]);
+
+        $baseProduction = $this->getBaseProduction();
+
+        if ($baseProduction)
+        {
+            $baseProduction->update([
+                'performed' => ($this->in_stock > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $this->in_stock
+            ]);
+
+            ProductionsService::getInstance()->replanProduct($this);
+        }
     }
 
 

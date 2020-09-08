@@ -13228,6 +13228,47 @@ i.far {
   color: #9a9a9a;
 }
 
+.product-stocks-block {
+  position: relative;
+  min-height: 170px;
+  margin-bottom: 10px;
+}
+
+.product-stocks-block .modal-loading-block {
+  padding-top: 105px;
+}
+
+.product-stocks-block .date-groups {
+  padding-bottom: 10px;
+}
+
+.product-stocks-block .table-block {
+  border: solid 1px #dadada;
+  padding: 10px 15px;
+  box-shadow: 1px 1px 5px #e6e6e6;
+  margin-top: 10px;
+}
+
+.product-stocks-block .table-block .table {
+  margin-bottom: 0px;
+  font-size: 15px;
+}
+
+.product-stocks-block .table-block .table tr td:nth-child(2),
+.product-stocks-block .table-block .table tr td:nth-child(3),
+.product-stocks-block .table-block .table tr td:nth-child(4) {
+  width: 15%;
+}
+
+.product-stocks-block .alert {
+  border: solid 1px #dadada;
+  margin-top: 10px;
+}
+
+.product-stocks-block .custom-control-inline {
+  margin-bottom: 5px;
+}
+
 .materials-page {
   position: relative;
 }
@@ -14079,6 +14120,16 @@ i.far {
   position: relative;
 }
 
+.orders-page .orders-row .col:first-child {
+  flex: 0 0 54%;
+  max-width: 54%;
+}
+
+.orders-page .orders-row .col:last-child {
+  flex: 0 0 46%;
+  max-width: 46%;
+}
+
 .orders-page .statuses-menu-block {
   position: relative;
 }
@@ -14236,7 +14287,6 @@ i.far {
 
 .orders-page .order-name {
   position: relative;
-  padding-right: 35px;
 }
 
 .orders-page .order-name .order-priority {
@@ -14284,6 +14334,10 @@ i.far {
   white-space: nowrap;
 }
 
+.orders-page .main-orders-block .table th {
+  font-size: 13px;
+}
+
 .orders-page .main-orders-block .no-current-order {
   text-align: center;
   padding: 20px 0px;
@@ -14296,7 +14350,7 @@ i.far {
 .orders-page .main-products-block {
   box-shadow: 1px 1px 5px #e6e6e6;
   border: solid 1px #dadada;
-  padding: 15px;
+  padding: 15px 10px;
   position: relative;
   position: -webkit-sticky;
   position: sticky;
@@ -14340,6 +14394,10 @@ i.far {
   white-space: nowrap;
 }
 
+.orders-page .main-products-block .table th {
+  font-size: 13px;
+}
+
 .orders-page .main-products-block .title-block {
   font-size: 20px;
   font-weight: 500;
@@ -14357,7 +14415,7 @@ i.far {
 .orders-page .main-products-block .btn-group {
   position: absolute;
   top: 15px;
-  right: 15px;
+  right: 10px;
 }
 
 .orders-page .main-products-block .buttons-block {

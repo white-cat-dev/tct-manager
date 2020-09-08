@@ -272,3 +272,45 @@
 		}
 	}
 }
+
+
+.product-stocks-block {
+	position: relative;
+	min-height: 170px;
+	margin-bottom: 10px;
+
+	.modal-loading-block {
+		padding-top: 105px;
+	}
+
+	.date-groups {
+		padding-bottom: 10px;
+	}
+
+	.table-block {
+		border: solid 1px darken($grey, 10%);
+	    padding: 10px 15px;
+	    box-shadow: 1px 1px 5px darken($grey, 5%);
+	    margin-top: 10px;
+
+	    .table {
+	    	margin-bottom: 0px;
+	    	font-size: 15px;
+
+	    	tr td:nth-child(2),
+			tr td:nth-child(3),
+			tr td:nth-child(4) {
+				width: 15%;
+			}
+	    }
+	}
+
+	.alert {
+		border: solid 1px darken($grey, 10%);
+		margin-top: 10px;
+	}
+
+	.custom-control-inline {
+		margin-bottom: 5px;
+	}
+}

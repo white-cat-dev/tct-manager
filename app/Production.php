@@ -62,6 +62,11 @@ class Production extends Model
         return $this->belongsTo(Order::class);
     }
 
+    public function stocks()
+    {
+        return $this->morphMany(Stock::class, 'process');
+    }
+
 
     public function getDayAttribute()
     {

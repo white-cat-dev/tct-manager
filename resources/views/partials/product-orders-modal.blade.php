@@ -29,7 +29,7 @@
 						<th>Осталось</th>
 					</tr>
 
-					<tr ng-repeat="order in modalProductOrders">
+					<tr ng-repeat="order in modalProductOrders" ng-if="order.progress.planned > 0">
 						<td style="width: 25%;">
 							<a ng-href="@{{ order.url }}" ng-click="hideProductOrdersModal()">@{{ order.number }}</a>
 						</td>

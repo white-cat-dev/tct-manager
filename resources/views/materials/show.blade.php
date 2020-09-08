@@ -26,6 +26,92 @@
 	<div class="show-block" ng-show="!isLoading">
 		<div class="row justify-content-center">
 			<div class="col-12 col-lg-8 col-xl-6">
+				<div class="material-supplies-block mb-5" ng-init="initSupplies()">
+					<div class="params-title mt-0">История поступлений</div>	
+
+					<div class="modal-loading-block" ng-if="isAddLoading">
+						<i class="fa fa-cog fa-spin"></i>
+					</div>
+
+					<div class="date-groups">
+						<div class="input-group date-group">
+							<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.year = currentDate.year - 1; initSupplies()" ng-disabled="currentDate.year == years[0]">
+							    <i class="fas fa-chevron-left"></i>
+							</button>
+
+							<ui-select ng-model="currentDate.year" ng-change="initSupplies()" skip-focusser="true" search-enabled="false">
+					            <ui-select-match placeholder="Год">
+						            <span ng-bind-html="$select.selected"></span>
+						        </ui-select-match>
+					            <ui-select-choices repeat="year in years">
+					                <span ng-bind-html="year"></span>
+					            </ui-select-choices>
+							</ui-select>
+
+							<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.year = currentDate.year + 1; initSupplies()" ng-disabled="currentDate.year == years[years.length - 1]">
+							    <i class="fas fa-chevron-right"></i>
+							</button>
+						</div>
+
+						<div class="input-group date-group">
+						    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.month = currentDate.month - 1; initSupplies()" ng-disabled="currentDate.month == monthes[0].id">
+							    <i class="fas fa-chevron-left"></i>
+							</button>
+
+							<ui-select ng-model="currentDate.month" ng-change="initSupplies()" skip-focusser="true" search-enabled="false">
+					            <ui-select-match placeholder="Месяц">
+						            <span ng-bind-html="$select.selected.name"></span>
+						        </ui-select-match>
+					            <ui-select-choices repeat="month.id as month in monthes">
+					                <span ng-bind-html="month.name"></span>
+					            </ui-select-choices>
+							</ui-select>
+
+							<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.month = currentDate.month + 1; initSupplies()" ng-disabled="currentDate.month == monthes[monthes.length - 1].id">
+							    <i class="fas fa-chevron-right"></i>
+							</button>
+						</div>
+					</div>
+					
+					<div class="table-block" ng-if="supplies.length > 0">
+						<table class="table table-sm table-with-buttons">
+							<tr>
+								<th>Дата</th>
+								<th>Материал</th>
+								<th>Количество</th>
+								<th></th>
+							</tr>
+							<tr ng-repeat="supply in supplies">
+								<td>
+									@{{ supply.formatted_date }}
+								</td>
+								<td>
+									@{{ supply.material.material_group.name }} @{{ supply.material.variation_text }}
+								</td>
+								<td>
+									@{{ supply.performed }}
+									<span ng-switch on="supply.material.material_group.units">
+										<span ng-switch-when="volume_l">л</span>
+										<span ng-switch-when="volume_ml">мл</span>
+										<span ng-switch-when="weight_kg">кг</span>
+										<span ng-switch-when="weight_t">т</span>
+									</span>
+								</td>
+								<td>
+									<button type="button" class="btn btn-sm btn-primary" ng-click="showSupplyModal(supply)">
+										<i class="fas fa-edit"></i> Изменить
+									</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="alert alert-secondary" ng-if="supplies.length == 0 && !isLoading">
+						<i class="far fa-calendar-times"></i> Поступлений материала в этом месяце не было
+					</div>
+				</div>
+
+
 				<div class="params-title mt-0">
 					Общая информация
 				</div>
@@ -144,91 +230,6 @@
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-
-				<div class="material-supplies-block" ng-init="initSupplies()">
-					<div class="params-title mt-0">История поступлений</div>	
-
-					<div class="modal-loading-block" ng-if="isAddLoading">
-						<i class="fa fa-cog fa-spin"></i>
-					</div>
-
-					<div class="date-groups">
-						<div class="input-group date-group">
-							<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.year = currentDate.year - 1; initSupplies()" ng-disabled="currentDate.year == years[0]">
-							    <i class="fas fa-chevron-left"></i>
-							</button>
-
-							<ui-select ng-model="currentDate.year" ng-change="initSupplies()" skip-focusser="true" search-enabled="false">
-					            <ui-select-match placeholder="Год">
-						            <span ng-bind-html="$select.selected"></span>
-						        </ui-select-match>
-					            <ui-select-choices repeat="year in years">
-					                <span ng-bind-html="year"></span>
-					            </ui-select-choices>
-							</ui-select>
-
-							<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.year = currentDate.year + 1; initSupplies()" ng-disabled="currentDate.year == years[years.length - 1]">
-							    <i class="fas fa-chevron-right"></i>
-							</button>
-						</div>
-
-						<div class="input-group date-group">
-						    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.month = currentDate.month - 1; initSupplies()" ng-disabled="currentDate.month == monthes[0].id">
-							    <i class="fas fa-chevron-left"></i>
-							</button>
-
-							<ui-select ng-model="currentDate.month" ng-change="initSupplies()" skip-focusser="true" search-enabled="false">
-					            <ui-select-match placeholder="Месяц">
-						            <span ng-bind-html="$select.selected.name"></span>
-						        </ui-select-match>
-					            <ui-select-choices repeat="month.id as month in monthes">
-					                <span ng-bind-html="month.name"></span>
-					            </ui-select-choices>
-							</ui-select>
-
-							<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.month = currentDate.month + 1; initSupplies()" ng-disabled="currentDate.month == monthes[monthes.length - 1].id">
-							    <i class="fas fa-chevron-right"></i>
-							</button>
-						</div>
-					</div>
-					
-					<div class="table-block" ng-if="supplies.length > 0">
-						<table class="table table-sm table-with-buttons">
-							<tr>
-								<th>Дата</th>
-								<th>Материал</th>
-								<th>Количество</th>
-								<th></th>
-							</tr>
-							<tr ng-repeat="supply in supplies">
-								<td>
-									@{{ supply.formatted_date }}
-								</td>
-								<td>
-									@{{ supply.material.material_group.name }} @{{ supply.material.variation_text }}
-								</td>
-								<td>
-									@{{ supply.performed }}
-									<span ng-switch on="supply.material.material_group.units">
-										<span ng-switch-when="volume_l">л</span>
-										<span ng-switch-when="volume_ml">мл</span>
-										<span ng-switch-when="weight_kg">кг</span>
-										<span ng-switch-when="weight_t">т</span>
-									</span>
-								</td>
-								<td>
-									<button type="button" class="btn btn-sm btn-primary" ng-click="showSupplyModal(supply)">
-										<i class="fas fa-edit"></i> Изменить
-									</button>
-								</td>
-							</tr>
-						</table>
-					</div>
-
-					<div class="alert alert-secondary" ng-if="supplies.length == 0 && !isLoading">
-						<i class="far fa-calendar-times"></i> Поступлений материала в этом месяце не было
 					</div>
 				</div>
 			</div>
