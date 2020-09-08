@@ -53,11 +53,16 @@
 
 		<div class="right-buttons d-none d-md-flex">
 			<button type="button" class="btn btn-primary" ng-click="showReplanModal()">
-				<i class="far fa-calendar-check"></i> Перестроить план
+				<i class="far fa-calendar-check"></i> План
 			</button>
 
-			<button type="button" class="btn btn-primary" ng-click="showModal(currentDate.day)">
-				<i class="far fa-calendar-plus"></i> Сегодня
+			<button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="isSaving" style="width: 220px;">
+				<span ng-if="isSaving">
+					<i class="fa fa-spinner fa-spin"></i> Сохранение изменений
+				</span>
+				<span ng-if="!isSaving">
+					<i class="fas fa-save"></i> Сохранить изменения
+				</span>
 			</button>
 		</div>
 	</div>
@@ -76,7 +81,12 @@
 			
 			<div class="products-block-content">
 				<table class="table">
-					<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
+					<tr ng-repeat="product in productionProducts" 
+						ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed" 
+						ng-class="{'hover': product.id == hoverProduct}"
+						ng-mouseenter="chooseHoverProduct(product.id)" 
+						ng-mouseleave="chooseHoverProduct(0)">
+
 						<td>
 							<div class="product-name">
 								@{{ product.product_group.name }}<br class="d-block d-md-none">
@@ -110,7 +120,7 @@
 								<span ng-switch-when="unit">шт.</span>
 							</span>
 							<div class="production-date-to" ng-if="product.productions[0].planned != product.productions[0].performed">
-								@{{ product.productions[0] ? product.productions[0].formatted_date_to + ' (' + product.productions[0].priority + ')' : '' }}
+								@{{ product.productions[0] ? product.productions[0].formatted_date_to : '' }}
 							</div>
 						</td>
 					</tr>
@@ -123,7 +133,11 @@
 				<div>
 					<table class="table top-table">
 						<tr>
-							<th ng-repeat="x in [].constructor(days) track by $index" ng-click="showModal($index + 1)" ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
+							<th ng-repeat="x in [].constructor(days) track by $index"
+								ng-click="showModal($index + 1)" 
+								ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" 
+								ng-mouseenter="chooseHoverDay($index + 1)" 
+								ng-mouseleave="chooseHoverDay(0)">
 								@{{ $index + 1 }}
 							</th>
 						</tr>
@@ -133,20 +147,20 @@
 
 			<div class="productions-block-content" tabindex="0">
 				<table class="table">
-					<tr ng-repeat="product in productionProducts" ng-if="(isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed)">
+					<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
 						<td ng-repeat="x in [].constructor(days) track by $index" 
-							ng-class="{'hover': $index + 1 == hoverDay, 'current': $index + 1 == currentDate.day}" 
-							ng-click="showModal($index + 1)" ng-mouseenter="chooseHoverDay($index + 1)" ng-mouseleave="chooseHoverDay(0)">
+							ng-class="{'hover': ($index + 1 == hoverDay) || (product.id == hoverProduct), 'current': $index + 1 == currentDate.day}" 
+							ng-mouseenter="chooseHoverDay($index + 1); chooseHoverProduct(product.id)" 
+							ng-mouseleave="chooseHoverDay(0); chooseHoverProduct(0)">
 
-							<div class="production" ng-style="{'background': getOrderMarkColor(product.productions[$index+1])}" ng-class="{'marked': getOrderMarkColor(product.productions[$index+1]) != 'transparent'}">
-								<div class="production-performed" ng-if="product.productions[$index+1].performed > 0">
-									@{{ product.productions[$index+1] ? product.productions[$index+1].performed : 0 }} 
+							<div class="production">
+								<div class="production-planned" ng-if="product.productions[$index+1].performed <= 0">
+									<input type="text" class="form-control" ng-model="product.productions[$index+1].batches" ng-class="{'manual': product.productions[$index+1].manual_batches >= 0}" ng-change="updateProductionPlanned(product, $index+1)">
 								</div>
-								<div class="production-planned" ng-if="product.productions[$index+1].performed == 0" ng-class="{'manual': product.productions[$index+1].manual_batches >= 0}">
-									@{{ product.productions[$index+1] ? product.productions[$index+1].batches : 0 }} 
+
+								<div class="production-performed" ng-if="(product.productions[$index+1].date < (currentDatetime | date: 'yyyy-MM-dd')) || ((product.productions[$index+1].date == (currentDatetime | date: 'yyyy-MM-dd')) && ((currentDatetime | date: 'HH:mm:ss') > '12:00:00'))" ng-class="{'visible': product.productions[$index+1].performed !== ''}">
+									<input type="text" class="form-control" ng-model="product.productions[$index+1].performed" ng-class="{'visible': product.productions[$index+1].performed !== ''}" ng-change="updateProductionPerformed(product, $index+1)">
 								</div>
-								{{-- <div class="production-facility" ng-style="{'border-bottom-color': product.productions[$index+1] ? facilities[product.productions[$index+1].facility_id].icon_color : ''}">
-								</div> --}}
 							</div>
 						</td>
 					</tr>
@@ -454,7 +468,7 @@
 					{{-- <button type="button" class="btn btn-primary">
 						<i class="fas fa-print"></i> Распечатать
 					</button> --}}
-					<button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="isSaving">
+					<button type="button" class="btn btn-primary" ng-click="save(); saveMaterials()" ng-disabled="isSaving">
 						<span ng-if="isSaving">
 							<i class="fa fa-spinner fa-spin"></i> Сохранение
 						</span>

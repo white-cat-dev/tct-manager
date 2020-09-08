@@ -29,6 +29,7 @@ angular.module('tctApp').controller('ProductionsController', [
 	$scope.years = [];
 
 	$scope.currentDate = {};
+	$scope.currentDatetime = new Date();
 
 	$scope.productionProducts = [];
 	$scope.productionOrders = [];
@@ -75,13 +76,36 @@ angular.module('tctApp').controller('ProductionsController', [
 			$scope.productionsPlanned = false;
 			for (product of $scope.productionProducts)
 			{
+				for (day = 1; day <= $scope.days; day++)
+				{
+					if (!product.productions[day])
+					{
+						product.productions[day] = {
+							'day': day,
+							'date': $filter('date')(new Date($scope.currentDate.year, $scope.currentDate.month - 1, day), 'yyyy-MM-dd'),
+							'category_id': product.category_id,
+							'product_group_id': product.product_group_id,
+							'facility_id': 0,
+							'product_id': product.id,
+							'order_id': 0,
+							'manual_planned': -1,
+							'performed': '',
+							'batches': '',
+							'manual_batches': -1
+						};
+					}
+					else if (product.productions[day].performed == 0)
+					{
+						product.productions[day].performed = '';
+					}
+				}
+
 				if (product.productions[0] && product.productions[0].planned > 0)
 				{
 					$scope.productionsPlanned = true;
-					break;
+					// break;
 				}
 			}
-			
 			$scope.initScroll();
 		});
 	}
@@ -276,19 +300,70 @@ angular.module('tctApp').controller('ProductionsController', [
 
 	
 
-
 	$scope.save = function()
 	{
+		var productions = [];
+
+		if ($scope.isModalShown)
+		{
+			for (product of $scope.productionProducts)
+			{
+				if (product.productions[$scope.modalDay])
+				{
+					productions.push(product.productions[$scope.modalDay]);
+				}
+			}
+		}
+		else
+		{
+			for (product of $scope.productionProducts)
+			{
+				for (day = 1; day <= $scope.days; day++)
+				{
+					if ($scope.updatedProductions[product.id] && $scope.updatedProductions[product.id].indexOf(day) != -1)
+					{
+						productions.push(product.productions[day]);
+					}
+				}
+			}
+		}
+
+		console.log(123, productions, $scope.updatedProductions);
+
 		var request = {
-			'materials': $scope.modalProductionMaterials,
-			'products': $scope.modalProductionProducts,
+			'productions': productions,
 			'year': $scope.currentDate.year,
-			'month': $scope.currentDate.month,
-			'day': $scope.modalDay
+			'month': $scope.currentDate.month
 		}
 
 		$scope.isSaving = true;
 		ProductionsRepository.save(request, function(response) 
+		{
+			$scope.isSaving = false;
+			$scope.updatedProductions = {};
+			toastr.success('Все изменения успешно сохранены!');
+
+			$scope.hideModal();
+			$scope.init();
+		}, 
+		function(response) 
+		{
+            $scope.isSaving = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
+	}
+
+
+	$scope.saveMaterials = function()
+	{
+		var request = {
+			'materials': $scope.modalProductionMaterials,
+			'year': $scope.currentDate.year,
+			'month': $scope.currentDate.month
+		}
+
+		$scope.isSaving = true;
+		ProductionsRepository.saveMaterials(request, function(response) 
 		{
 			$scope.isSaving = false;
 			toastr.success('Все изменения успешно сохранены!');
@@ -353,10 +428,44 @@ angular.module('tctApp').controller('ProductionsController', [
 
 
 	$scope.hoverDay = 0;
+	$scope.hoverProduct = 0;
 
 	$scope.chooseHoverDay = function(day)
 	{
 		$scope.hoverDay = day;
+	}
+	$scope.chooseHoverProduct = function(product)
+	{
+		$scope.hoverProduct = product;
+	}
+
+
+	$scope.updatedProductions = {};
+
+	$scope.updateProductionPerformed = function(product, day)
+	{
+		$scope.updateProduction(product, day);
+	}
+
+	$scope.updateProductionPlanned = function(product, day)
+	{
+		console.log(product.productions[day]);
+		product.productions[day].manual_batches = product.productions[day].batches;
+		product.productions[day].manual_planned = Math.round((product.productions[day].batches * product.product_group.units_from_batch) * 1000) / 1000;;
+
+		$scope.updateProduction(product, day);
+	}
+
+	$scope.updateProduction = function(product, day)
+	{
+		if (!$scope.updatedProductions[product.id])
+		{
+			$scope.updatedProductions[product.id] = [day];
+		}
+		else if ($scope.updatedProductions[product.id].indexOf(day) == -1)
+		{
+			$scope.updatedProductions[product.id].push(day);
+		}
 	}
 
 
@@ -446,7 +555,7 @@ angular.module('tctApp').controller('ProductionsController', [
 
 
 	
-	$scope.chosenModalType = 'perform';
+	$scope.chosenModalType = 'total';
 
 
 	$scope.chooseModalType = function(type)
