@@ -81555,6 +81555,10 @@ tctApp.factory('EmploymentsRepository', ['$resource', function ($resource) {
 }]);
 tctApp.factory('ProductionsRepository', ['$resource', function ($resource) {
   return $resource('/productions', null, {
+    saveMaterials: {
+      method: 'POST',
+      url: '/productions/materials'
+    },
     replan: {
       method: 'GET',
       url: '/productions/replan'
@@ -83604,6 +83608,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
   $scope.monthes = [];
   $scope.years = [];
   $scope.currentDate = {};
+  $scope.currentDatetime = new Date();
   $scope.productionProducts = [];
   $scope.productionOrders = [];
   $scope.productionCategories = [];
@@ -83645,9 +83650,28 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
         for (var _iterator = $scope.productionProducts[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           product = _step.value;
 
+          for (day = 1; day <= $scope.days; day++) {
+            if (!product.productions[day]) {
+              product.productions[day] = {
+                'day': day,
+                'date': $filter('date')(new Date($scope.currentDate.year, $scope.currentDate.month - 1, day), 'yyyy-MM-dd'),
+                'category_id': product.category_id,
+                'product_group_id': product.product_group_id,
+                'facility_id': 0,
+                'product_id': product.id,
+                'order_id': 0,
+                'manual_planned': -1,
+                'performed': '',
+                'batches': '',
+                'manual_batches': -1
+              };
+            } else if (product.productions[day].performed == 0) {
+              product.productions[day].performed = '';
+            }
+          }
+
           if (product.productions[0] && product.productions[0].planned > 0) {
-            $scope.productionsPlanned = true;
-            break;
+            $scope.productionsPlanned = true; // break;
           }
         }
       } catch (err) {
@@ -83858,15 +83882,93 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
   };
 
   $scope.save = function () {
+    var productions = [];
+
+    if ($scope.isModalShown) {
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = $scope.productionProducts[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          product = _step5.value;
+
+          if (product.productions[$scope.modalDay]) {
+            productions.push(product.productions[$scope.modalDay]);
+          }
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+            _iterator5["return"]();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+    } else {
+      var _iteratorNormalCompletion6 = true;
+      var _didIteratorError6 = false;
+      var _iteratorError6 = undefined;
+
+      try {
+        for (var _iterator6 = $scope.productionProducts[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+          product = _step6.value;
+
+          for (day = 1; day <= $scope.days; day++) {
+            if ($scope.updatedProductions[product.id] && $scope.updatedProductions[product.id].indexOf(day) != -1) {
+              productions.push(product.productions[day]);
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError6 = true;
+        _iteratorError6 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
+            _iterator6["return"]();
+          }
+        } finally {
+          if (_didIteratorError6) {
+            throw _iteratorError6;
+          }
+        }
+      }
+    }
+
+    console.log(123, productions, $scope.updatedProductions);
     var request = {
-      'materials': $scope.modalProductionMaterials,
-      'products': $scope.modalProductionProducts,
+      'productions': productions,
       'year': $scope.currentDate.year,
-      'month': $scope.currentDate.month,
-      'day': $scope.modalDay
+      'month': $scope.currentDate.month
     };
     $scope.isSaving = true;
     ProductionsRepository.save(request, function (response) {
+      $scope.isSaving = false;
+      $scope.updatedProductions = {};
+      toastr.success('Все изменения успешно сохранены!');
+      $scope.hideModal();
+      $scope.init();
+    }, function (response) {
+      $scope.isSaving = false;
+      toastr.error('Произошла ошибка на сервере');
+    });
+  };
+
+  $scope.saveMaterials = function () {
+    var request = {
+      'materials': $scope.modalProductionMaterials,
+      'year': $scope.currentDate.year,
+      'month': $scope.currentDate.month
+    };
+    $scope.isSaving = true;
+    ProductionsRepository.saveMaterials(request, function (response) {
       $scope.isSaving = false;
       toastr.success('Все изменения успешно сохранены!');
       $scope.hideModal();
@@ -83916,9 +84018,36 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
   };
 
   $scope.hoverDay = 0;
+  $scope.hoverProduct = 0;
 
   $scope.chooseHoverDay = function (day) {
     $scope.hoverDay = day;
+  };
+
+  $scope.chooseHoverProduct = function (product) {
+    $scope.hoverProduct = product;
+  };
+
+  $scope.updatedProductions = {};
+
+  $scope.updateProductionPerformed = function (product, day) {
+    $scope.updateProduction(product, day);
+  };
+
+  $scope.updateProductionPlanned = function (product, day) {
+    console.log(product.productions[day]);
+    product.productions[day].manual_batches = product.productions[day].batches;
+    product.productions[day].manual_planned = Math.round(product.productions[day].batches * product.product_group.units_from_batch * 1000) / 1000;
+    ;
+    $scope.updateProduction(product, day);
+  };
+
+  $scope.updateProduction = function (product, day) {
+    if (!$scope.updatedProductions[product.id]) {
+      $scope.updatedProductions[product.id] = [day];
+    } else if ($scope.updatedProductions[product.id].indexOf(day) == -1) {
+      $scope.updatedProductions[product.id].push(day);
+    }
   };
 
   $scope.isAddProductShown = {};
@@ -83990,7 +84119,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
     $scope.isAddProductShown[facility] = false;
   };
 
-  $scope.chosenModalType = 'perform';
+  $scope.chosenModalType = 'total';
 
   $scope.chooseModalType = function (type) {
     $scope.chosenModalType = type;
@@ -84005,13 +84134,13 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
 
   $scope.updateOrderProductionsPerformed = function (product) {
     performed = product.production.performed;
-    var _iteratorNormalCompletion5 = true;
-    var _didIteratorError5 = false;
-    var _iteratorError5 = undefined;
+    var _iteratorNormalCompletion7 = true;
+    var _didIteratorError7 = false;
+    var _iteratorError7 = undefined;
 
     try {
-      for (var _iterator5 = product.orders[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-        order = _step5.value;
+      for (var _iterator7 = product.orders[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+        order = _step7.value;
 
         if (order.production.planned > performed) {
           order.production.performed = performed;
@@ -84022,16 +84151,16 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
         performed -= order.production.performed;
       }
     } catch (err) {
-      _didIteratorError5 = true;
-      _iteratorError5 = err;
+      _didIteratorError7 = true;
+      _iteratorError7 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
-          _iterator5["return"]();
+        if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
+          _iterator7["return"]();
         }
       } finally {
-        if (_didIteratorError5) {
-          throw _iteratorError5;
+        if (_didIteratorError7) {
+          throw _iteratorError7;
         }
       }
     }
@@ -84059,26 +84188,26 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
   };
 
   $scope.updateOrderProductionsFacility = function (product) {
-    var _iteratorNormalCompletion6 = true;
-    var _didIteratorError6 = false;
-    var _iteratorError6 = undefined;
+    var _iteratorNormalCompletion8 = true;
+    var _didIteratorError8 = false;
+    var _iteratorError8 = undefined;
 
     try {
-      for (var _iterator6 = product.orders[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-        order = _step6.value;
+      for (var _iterator8 = product.orders[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+        order = _step8.value;
         order.production.facility_id = product.production.facility_id;
       }
     } catch (err) {
-      _didIteratorError6 = true;
-      _iteratorError6 = err;
+      _didIteratorError8 = true;
+      _iteratorError8 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
-          _iterator6["return"]();
+        if (!_iteratorNormalCompletion8 && _iterator8["return"] != null) {
+          _iterator8["return"]();
         }
       } finally {
-        if (_didIteratorError6) {
-          throw _iteratorError6;
+        if (_didIteratorError8) {
+          throw _iteratorError8;
         }
       }
     }

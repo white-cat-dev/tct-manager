@@ -300,6 +300,7 @@ tctApp.factory('EmploymentsRepository', ['$resource', function($resource) {
 
 tctApp.factory('ProductionsRepository', ['$resource', function($resource) { 
 	return $resource('/productions', null, {
+		saveMaterials: { method: 'POST', url: '/productions/materials' },
 		replan: { method: 'GET', url: '/productions/replan' }
 	});
 }]);

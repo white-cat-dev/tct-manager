@@ -165,24 +165,98 @@ class ProductionsController extends Controller
     }
 
 
+    // public function save(Request $request)
+    // {
+    //     $today = Carbon::today();
+    //     $month = $request->get('month', $today->month);
+    //     $year = $request->get('year', $today->year);
+    //     $day = $request->get('day', $today->day);
+
+    //     $productsData = $request->get('products');
+
+    //     foreach ($productsData as $productData) 
+    //     {
+    //         $productionData = $productData['production'];
+
+    //         if (!empty($productionData['id']))
+    //         {
+    //             $production = Production::find($productionData['id']);
+
+    //             $productionPerformed = $production->performed;
+
+    //             $production->update([
+    //                 'manual_planned' => (float)$productionData['manual_planned'],
+    //                 'manual_batches' => (float)$productionData['manual_batches'],
+    //                 'performed' => (float)$productionData['performed'],
+    //                 'salary' => (float)$productionData['performed'] * $production->product->product_group->salary_units,
+    //                 'facility_id' => $productionData['facility_id']
+    //             ]);
+
+    //             $productionPerformed = $production->performed - $productionPerformed;
+    //         }
+    //         else
+    //         {
+    //             if (empty($productionData['manual_planned']) && empty($productionData['performed']))
+    //             {
+    //                 continue;
+    //             }
+  
+    //             $production = Production::create($this->getData($productionData));
+    //             $production->update([
+    //                 'salary' => $production->performed * $production->product->product_group->salary_units
+    //             ]);
+    //             $productionPerformed = $production->performed;
+    //         }
+
+
+    //         $production->product->update([
+    //             'in_stock' => $production->product->in_stock + $productionPerformed
+    //         ]);
+
+    //         $baseProduction = $production->product->getBaseProduction();
+
+    //         if ($baseProduction)
+    //         {
+    //             $baseProduction->update([
+    //                 'performed' => ($baseProduction->product->in_stock > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $baseProduction->product->in_stock,
+    //                 'priority' => ($production->manual_batches > 0) ? $production->manual_batches : $baseProduction->priority
+    //             ]);
+
+    //             ProductionsService::getInstance()->replanProduct($production->product);
+    //         }
+
+    //         $this->updateMaterialsApply($production, $productionPerformed);
+    //     }
+
+
+    //     $this->updateControlMaterialsApply($request->get('materials'));
+
+    //     if (!empty($production))
+    //     {
+    //         $this->updateCategoryProductions($production->date);
+    //     }
+
+    //     EmploymentsService::getInstance()->updateEmployments($year, $month, $day);
+    // }
+
+
     public function save(Request $request)
     {
-        $today = Carbon::today();
-        $month = $request->get('month', $today->month);
-        $year = $request->get('year', $today->year);
-        $day = $request->get('day', $today->day);
+        $productionsData = $request->get('productions');
+        $updatedDates = collect([]);
+        $updatedProducts = collect([]);
 
-        $productsData = $request->get('products');
-
-        foreach ($productsData as $productData) 
+        foreach ($productionsData as $productionData) 
         {
-            $productionData = $productData['production'];
-
             if (!empty($productionData['id']))
             {
                 $production = Production::find($productionData['id']);
-
                 $productionPerformed = $production->performed;
+
+                if ($production->performed != $productionData['performed'])
+                {
+                    $updatedDates->push($production->date);
+                }
 
                 $production->update([
                     'manual_planned' => (float)$productionData['manual_planned'],
@@ -196,34 +270,86 @@ class ProductionsController extends Controller
             }
             else
             {
-                if (empty($productionData['manual_planned']) && empty($productionData['performed']))
+                if (empty($productionData['manual_planned']) && empty($productionData['auto_planned']) && empty($productionData['performed']))
                 {
                     continue;
                 }
   
                 $production = Production::create($this->getData($productionData));
+
+                if ($production->performed > 0)
+                {
+                    $updatedDates->push($production->date);
+                }
+
                 $production->update([
                     'salary' => $production->performed * $production->product->product_group->salary_units
                 ]);
                 $productionPerformed = $production->performed;
             }
 
-
             $product = $production->product;
             $product->updateInStock($product->in_stock + $productionPerformed, 'production', $production);
-
-            $this->updateMaterialsApply($production, $productionPerformed);
+            $updatedProducts->push($product);
         }
 
 
-        $this->updateControlMaterialsApply($request->get('materials'));
+        $updatedDates = $updatedDates->unique();
+        $updatedProducts = $updatedProducts->unique('id');
 
-        if (!empty($production))
+        foreach ($updatedProducts as $product)
         {
-            $this->updateCategoryProductions($production->date);
+            $baseProduction = $product->getBaseProduction();
+
+            if ($baseProduction)
+            {
+                $baseProduction->update([
+                    'performed' => ($product->in_stock > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $product->in_stock
+                ]);
+
+                ProductionsService::getInstance()->replanProduct($product);
+            }
         }
 
-        EmploymentsService::getInstance()->updateEmployments($year, $month, $day);
+        foreach ($updatedDates as $updatedDate) 
+        {
+            $this->updateCategoryProductions($updatedDate);
+            $this->updateMaterialsApplies($updatedDate);
+
+            $updatedDate = Carbon::createFromDate($updatedDate);
+            EmploymentsService::getInstance()->updateEmployments($updatedDate->year, $updatedDate->month, $updatedDate->day);
+        }
+    }
+
+
+    public function saveMaterials(Request $request)
+    {
+        $materialsData = $request->get('materials');
+
+        foreach ($materialsData as $materialData) 
+        {
+            $materialApplyData = $materialData['apply'];
+
+            if (!empty($materialApplyData['id']))
+            {
+                $materialAppy = MaterialApply::find($materialApplyData['id']);
+
+                if ($materialAppy->material->material_group->control)
+                {
+                    $applyPerformed = $materialAppy->performed;
+
+                    $materialAppy->update([
+                        'performed' => $materialApplyData['performed']
+                    ]);
+
+                    $applyPerformed = $materialAppy->performed - $applyPerformed;
+
+                    $materialAppy->material->update([
+                        'in_stock' => $materialAppy->material->in_stock - $applyPerformed
+                    ]);
+                }
+            }
+        }
     }
 
 
@@ -316,98 +442,99 @@ class ProductionsController extends Controller
     }
 
 
-    protected function updateMaterialsApply($production, $performed)
+    protected function updateMaterialsApplies($date)
     {
         $material = MaterialGroup::where('name', 'Цемент насыпь')->first()->materials()->first();
-        $materialAppy = $material->applies()->where(['date' => $production->date])->first();
+        $materialAppy = $material->applies()->where(['date' => $date])->first();
+
         if (!$materialAppy)
         {
             $materialAppy = $material->applies()->create([
-                'date' => $production->date,
+                'date' => $date,
                 'performed' => 0,
                 'planned' => 0
             ]);
         }
 
+        $productions = Production::where('product_id', '!=', 0)
+            ->where('date', $date)
+            ->get();
 
-        $recipe = $production->product_group->recipe;
+        $materialApplies = [];
 
-        if (!$recipe)
+        foreach ($productions as $production) 
         {
-            return;
-        }
+            $recipe = $production->product_group->recipe;
 
-        foreach ($recipe->material_groups as $materialGroup) 
-        {
-            if ($materialGroup->variations)
-            {
-                $material = $materialGroup->materials->where('variation', $production->product->variation)->first();
-            }
-            else
-            {
-                $material = $materialGroup->materials->first();
-            }
-
-            if (!$material)
+            if (!$recipe)
             {
                 continue;
             }
 
-            $planned = $materialGroup->pivot->count * $performed;
 
-            $materialAppy = $material->applies()->where(['date' => $production->date])->first();
-
-            if ($materialAppy)
+            foreach ($recipe->material_groups as $materialGroup) 
             {
-                $materialAppy->update([
-                    'planned' => $materialAppy->planned + $planned
-                ]);
-            }
-            else
-            {
-                $materialAppy = $material->applies()->create([
-                    'date' => $production->date,
-                    'performed' => 0,
-                    'planned' => $planned
-                ]);
-            }
-
-            if (!$materialGroup->control)
-            {
-                $materialAppy->update([
-                    'performed' => $materialAppy->performed + $planned
-                ]);
-
-                $material->update([
-                    'in_stock' => $material->in_stock - $planned
-                ]);
-            }
-        }
-    }
-
-
-    protected function updateControlMaterialsApply($materialsData)
-    {
-        foreach ($materialsData as $materialData) 
-        {
-            $materialApplyData = $materialData['apply'];
-
-            if (!empty($materialApplyData['id']))
-            {
-                $materialAppy = MaterialApply::find($materialApplyData['id']);
-
-                if ($materialAppy->material->material_group->control)
+                if ($materialGroup->variations)
                 {
-                    $appyPerformed = $materialAppy->performed;
+                    $material = $materialGroup->materials->where('variation', $production->product->variation)->first();
+                }
+                else
+                {
+                    $material = $materialGroup->materials->first();
+                }
 
-                    $materialAppy->update([
-                        'performed' => $materialApplyData['performed']
+                if (!$material)
+                {
+                    continue;
+                }
+
+                if (!empty($materialApplies[$material->id]))
+                {
+                    $materialApplies[$material->id]['planned'] += $materialGroup->pivot->count * $production->performed;
+                }
+                else
+                {
+                    $materialApplies[$material->id] = [
+                        'material' => $material,
+                        'planned' => $materialGroup->pivot->count * $production->performed
+                    ];
+                }
+            }
+
+            foreach ($materialApplies as $materialApplyData) 
+            {
+                $material = $materialApplyData['material'];
+
+                $materialApply = MaterialApply::where('material_id', $material->id)
+                    ->where(['date' => $date])
+                    ->first();
+
+                if ($materialApply)
+                {
+                    $materialApply->update([
+                        'planned' => $materialApplyData['planned']
+                    ]);
+                }
+                else
+                {
+                    $materialApply = MaterialApply::create([
+                        'date' => $production->date,
+                        'material_id' => $material->id,
+                        'performed' => 0,
+                        'planned' => $materialApplyData['planned']
+                    ]);
+                }
+
+                if (!$material->material_group->control)
+                {
+                    $performed = $materialApply->planned - $materialApply->performed;
+
+                    $materialApply->update([
+                        'performed' => $materialApply->planned
                     ]);
 
-                    $appyPerformed = $materialAppy->performed - $appyPerformed;
-
-                    $materialAppy->material->update([
-                        'in_stock' => $materialAppy->material->in_stock - $appyPerformed
+                    $material->update([
+                        'in_stock' => $performed
                     ]);
                 }
             }
