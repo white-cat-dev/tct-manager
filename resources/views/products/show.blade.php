@@ -106,11 +106,11 @@
 								</td>
 								<td>
 									<span ng-if="stock.reason != 'create' && stock.reason != 'month_start'">
-										<span ng-if="stock.new_in_stock - stock.in_stock >= 0">
-											+ @{{ stock.new_in_stock - stock.in_stock }} <span ng-bind-html="stock.model.units_text"></span>
+										<span ng-if="stock.change >= 0">
+											+ @{{ stock.change }} <span ng-bind-html="stock.model.units_text"></span>
 										</span>
-										<span ng-if="stock.new_in_stock - stock.in_stock < 0">
-											– @{{ -(stock.new_in_stock - stock.in_stock) }} <span ng-bind-html="stock.model.units_text"></span>
+										<span ng-if="stock.change < 0">
+											– @{{ -stock.change }} <span ng-bind-html="stock.model.units_text"></span>
 										</span>
 									</span>
 									<span ng-if="stock.reason == 'create' || stock.reason == 'month_start'">

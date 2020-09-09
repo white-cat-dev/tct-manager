@@ -31,7 +31,8 @@ class Stock extends Model
 
     protected $appends = [
         'formatted_date',
-        'reason_text'
+        'reason_text',
+        'change'
     ];
 
 
@@ -49,6 +50,11 @@ class Stock extends Model
     public function getFormattedDateAttribute()
     {
         return Carbon::createFromDate($this->date)->format('d.m.Y');
+    }
+
+    public function getChangeAttribute()
+    {
+        return $this->new_in_stock - $this->in_stock;
     }
 
     public function getReasonTextAttribute()
