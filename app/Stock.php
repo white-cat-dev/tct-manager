@@ -54,7 +54,7 @@ class Stock extends Model
 
     public function getChangeAttribute()
     {
-        return $this->new_in_stock - $this->in_stock;
+        return round($this->new_in_stock - $this->in_stock, 3);
     }
 
     public function getReasonTextAttribute()
