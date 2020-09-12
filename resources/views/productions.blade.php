@@ -6,11 +6,11 @@
 	<div class="top-buttons-block">
 		<div class="left-buttons">
 			<div class="input-group date-group">
-				<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.year = currentDate.year - 1; init()" ng-disabled="currentDate.year == years[0]">
+				<button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.year = currentDate.year - 1; init()" ng-disabled="currentDate.year == years[0] || Object.keys(updatedProductions).length > 0">
 				    <i class="fas fa-chevron-left"></i>
 				</button>
 
-				<ui-select ng-model="currentDate.year" ng-change="init()" skip-focusser="true" search-enabled="false">
+				<ui-select ng-model="currentDate.year" ng-change="init()" skip-focusser="true" search-enabled="false" ng-disabled="Object.keys(updatedProductions).length > 0">
 		            <ui-select-match placeholder="Год">
 			            <span ng-bind-html="$select.selected"></span>
 			        </ui-select-match>
@@ -19,17 +19,17 @@
 		            </ui-select-choices>
 				</ui-select>
 
-				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.year = currentDate.year + 1; init()" ng-disabled="currentDate.year == years[years.length - 1]">
+				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.year = currentDate.year + 1; init()" ng-disabled="currentDate.year == years[years.length - 1] || Object.keys(updatedProductions).length > 0">
 				    <i class="fas fa-chevron-right"></i>
 				</button>
 			</div>
 
 			<div class="input-group date-group">
-			    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.month = currentDate.month - 1; init()" ng-disabled="currentDate.month == monthes[0].id">
+			    <button class="btn btn-primary input-group-prepend" type="button" ng-click="currentDate.month = currentDate.month - 1; init()" ng-disabled="currentDate.month == monthes[0].id || Object.keys(updatedProductions).length > 0">
 				    <i class="fas fa-chevron-left"></i>
 				</button>
 
-				<ui-select ng-model="currentDate.month" ng-change="init()" skip-focusser="true" search-enabled="false">
+				<ui-select ng-model="currentDate.month" ng-change="init()" skip-focusser="true" search-enabled="false" ng-disabled="Object.keys(updatedProductions).length > 0">
 		            <ui-select-match placeholder="Месяц">
 			            <span ng-bind-html="$select.selected.name"></span>
 			        </ui-select-match>
@@ -38,7 +38,7 @@
 		            </ui-select-choices>
 				</ui-select>
 
-				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.month = currentDate.month + 1; init()" ng-disabled="currentDate.month == monthes[monthes.length - 1].id">
+				<button class="btn btn-primary input-group-append" type="button" ng-click="currentDate.month = currentDate.month + 1; init()" ng-disabled="currentDate.month == monthes[monthes.length - 1].id || Object.keys(updatedProductions).length > 0">
 				    <i class="fas fa-chevron-right"></i>
 				</button>
 			</div>
@@ -52,7 +52,7 @@
 		</div>
 
 		<div class="right-buttons d-none d-md-flex">
-			<button type="button" class="btn btn-primary" ng-click="showReplanModal()">
+			<button type="button" class="btn btn-primary" ng-click="showReplanModal()" ng-disabled="Object.keys(updatedProductions).length > 0">
 				<i class="far fa-calendar-check"></i> План
 			</button>
 
@@ -68,7 +68,7 @@
 	</div>
 
 
-	<div class="production-block" ng-show="isAllProductionsShown && productionProducts.length > 0 || !isAllProductionsShown && productionsPlanned">
+	<div class="production-block" ng-show="(isAllProductionsShown && productionProducts.length > 0) || (!isAllProductionsShown && isProductionsPlanned)">
 		<div class="products-block">
 			<table class="table top-table">
 				<tr>
@@ -82,7 +82,7 @@
 			<div class="products-block-content">
 				<table class="table">
 					<tr ng-repeat="product in productionProducts" 
-						ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed" 
+						ng-if="isAllProductionsShown || product.isPlanned" 
 						ng-class="{'hover': product.id == hoverProduct}"
 						ng-mouseenter="chooseHoverProduct(product.id)" 
 						ng-mouseleave="chooseHoverProduct(0)">
@@ -124,6 +124,49 @@
 							</div>
 						</td>
 					</tr>
+
+					<tr>
+						<td colspan="4">
+							<button type="button" class="btn btn-primary btn-sm" ng-click="showAddProduct(0)" ng-if="!isAddProductShown[0]">
+								<i class="fas fa-plus"></i> Добавить продукт
+							</button>
+
+							<div class="add-product-block" ng-if="isAddProductShown[0]">
+								<div>
+									<ui-select ng-model="newProduct[0].product_group_id" ng-change="chooseProductGroup(0, $select.selected)" skip-focusser="true">
+							            <ui-select-match placeholder="Название продукта...">
+								            @{{ $select.selected.name }} @{{ $select.selected.size }}
+								        </ui-select-match>
+							            <ui-select-choices repeat="productGroup.id as productGroup in productGroups | filter: $select.search" position='up'>
+							                <span ng-bind-html="productGroup.name + ' ' + productGroup.size | highlight: $select.search"></span>
+							            </ui-select-choices>
+									</ui-select>
+								</div>
+								<div>
+									<div ng-if="newProduct[0].category && newProduct[0].category.variations">
+										<ui-select ng-model="newProduct[0].product_id" ng-change="chooseProduct(0, $select.selected)" skip-focusser="true">
+								            <ui-select-match placeholder="Вид...">
+									            @{{ $select.selected.variation_text }}
+									        </ui-select-match>
+								            <ui-select-choices repeat="product.id as product in newProduct[0].products | filter: $select.search" position='up'>
+								                <span ng-bind-html="product.variation_text | highlight: $select.search"></span>
+								            </ui-select-choices>
+										</ui-select>
+									</div>
+									<div ng-if="newProduct[0].category && !newProduct[0].category.variations" class="empty-select">
+										—
+									</div>
+									<div ng-if="!newProduct[0].category" class="empty-select">
+									</div>
+								</div>
+								<div>
+									<button type="button" class="btn btn-primary btn-sm" ng-click="addProduct(0)">
+										<i class="fas fa-plus"></i> Добавить
+									</button>
+								</div>
+							</div>
+						</td>
+					</tr>
 				</table>
 			</div>
 		</div>
@@ -147,29 +190,32 @@
 
 			<div class="productions-block-content" tabindex="0">
 				<table class="table">
-					<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.productions[0] && product.productions[0].planned > product.productions[0].performed">
+					<tr ng-repeat="product in productionProducts" ng-if="isAllProductionsShown || product.isPlanned">
 						<td ng-repeat="x in [].constructor(days) track by $index" 
 							ng-class="{'hover': ($index + 1 == hoverDay) || (product.id == hoverProduct), 'current': $index + 1 == currentDate.day}" 
 							ng-mouseenter="chooseHoverDay($index + 1); chooseHoverProduct(product.id)" 
 							ng-mouseleave="chooseHoverDay(0); chooseHoverProduct(0)">
 
 							<div class="production">
-								<div class="production-planned" ng-if="product.productions[$index+1].performed <= 0">
-									<input type="text" class="form-control" ng-model="product.productions[$index+1].batches" ng-class="{'manual': product.productions[$index+1].manual_batches >= 0}" ng-change="updateProductionPlanned(product, $index+1)">
+								<div class="production-planned" ng-if="product.productions[$index+1].performed <= 0" ng-init="product.productions[$index+1].new_batches = (product.productions[$index+1].batches > 0) ? product.productions[$index+1].batches : ''">
+									<input type="text" class="form-control" ng-model="product.productions[$index+1].new_batches" ng-class="{'manual': product.productions[$index+1].manual_batches >= 0}" ng-change="changeProductionPlanned(product, $index+1)">
 								</div>
 
-								<div class="production-performed" ng-if="(product.productions[$index+1].date < (currentDatetime | date: 'yyyy-MM-dd')) || ((product.productions[$index+1].date == (currentDatetime | date: 'yyyy-MM-dd')) && ((currentDatetime | date: 'HH:mm:ss') > '12:00:00'))" ng-class="{'visible': product.productions[$index+1].performed !== ''}">
-									<input type="text" class="form-control" ng-model="product.productions[$index+1].performed" ng-class="{'visible': product.productions[$index+1].performed !== ''}" ng-change="updateProductionPerformed(product, $index+1)">
+								<div class="production-performed" ng-if="(product.productions[$index+1].date < (currentDatetime | date: 'yyyy-MM-dd')) || ((product.productions[$index+1].date == (currentDatetime | date: 'yyyy-MM-dd')) && ((currentDatetime | date: 'HH:mm:ss') > '12:00:00'))" ng-class="{'visible': product.productions[$index+1].performed !== ''}" ng-init="product.productions[$index+1].new_performed = (product.productions[$index+1].performed > 0) ? product.productions[$index+1].performed : ''">
+									<input type="text" class="form-control" ng-model="product.productions[$index+1].new_performed" ng-class="{'visible': product.productions[$index+1].new_performed !== ''}" ng-change="changeProductionPerformed(product, $index+1)">
 								</div>
 							</div>
 						</td>
+					</tr>
+					<tr>
+						<td colspan="@{{ days }}"></td>
 					</tr>
 				</table>
 			</div>
 		</div>
 	</div>
 
-	<div class="no-productions" ng-if="((isAllProductionsShown && productionProducts.length == 0) || (!isAllProductionsShown && !productionsPlanned)) && !isLoading">
+	<div class="no-productions" ng-if="((isAllProductionsShown && productionProducts.length == 0) || (!isAllProductionsShown && !isProductionsPlanned)) && !isLoading">
 		<div class="icon">
 			<i class="far fa-calendar-times"></i>
 		</div>
@@ -192,9 +238,9 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<div class="modal-title">
-						План 
+						Итоги
 						<span class="d-none d-md-inline">производства</span>
-						на @{{ modalDate | date: 'dd.MM.yyyy' }}
+						за @{{ modalDate | date: 'dd.MM.yyyy' }}
 					</div>
 					<button type="button" class="close" ng-click="hideModal()">
 						<i class="fas fa-times"></i>
@@ -202,7 +248,7 @@
 				</div>
 
 				<div class="modal-body">
-					<ul class="nav nav-tabs">
+					{{-- <ul class="nav nav-tabs">
 						<li class="nav-item">
 							<button type="button" class="nav-link" ng-click="chooseModalType('plan')" ng-class="{'active': chosenModalType == 'plan'}">
 								Планирование
@@ -218,7 +264,7 @@
 								Итоги
 							</button>
 						</li>
-					</ul>
+					</ul> --}}
 
 					<div class="plan-block" ng-if="chosenModalType == 'plan'">	
 						<div class="table-responsive-block" ng-if="modalProductionProducts.length > 0">
@@ -468,7 +514,7 @@
 					{{-- <button type="button" class="btn btn-primary">
 						<i class="fas fa-print"></i> Распечатать
 					</button> --}}
-					<button type="button" class="btn btn-primary" ng-click="save(); saveMaterials()" ng-disabled="isSaving">
+					<button type="button" class="btn btn-primary" ng-click="{{-- save(); --}} saveMaterials()" ng-disabled="isSaving">
 						<span ng-if="isSaving">
 							<i class="fa fa-spinner fa-spin"></i> Сохранение
 						</span>

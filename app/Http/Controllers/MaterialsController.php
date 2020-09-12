@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\MaterialGroup;
 use App\Material;
 use App\MaterialSupply;
+use App\Stock;
 use Carbon\Carbon;
 use App\Services\DateService;
 
@@ -54,6 +55,15 @@ class MaterialsController extends Controller
                     $materialData['variation'] = '';
                 }
                 $material = $materialGroup->materials()->create($materialData);
+
+                $materialStock = $material->stocks()->create([
+                    'date' => date('Y-m-d'),
+                    'process_id' => 0,
+                    'process_type' => '',
+                    'in_stock' => $material->in_stock,
+                    'new_in_stock' => $material->in_stock,
+                    'reason' => 'create'
+                ]);
             }
 
             $materialGroup->materials = $materialGroup->materials;
@@ -96,19 +106,19 @@ class MaterialsController extends Controller
                 if (!$material) 
                 {
                     $material = $materialGroup->materials()->create($materialData);
+
+                    $materialStock = $material->stocks()->create([
+                        'date' => date('Y-m-d'),
+                        'process_id' => 0,
+                        'process_type' => '',
+                        'in_stock' => $material->in_stock,
+                        'new_in_stock' => $material->in_stock,
+                        'reason' => 'create'
+                    ]);
                 }
                 else 
                 {
-                    if ($material->in_stock != $materialData['in_stock'])
-                    {
-                        $materialStock = $material->stocks()->where('date', date('Y-m-d'))->first();
-                        if ($materialStock)
-                        {
-                            $materialStock->update([
-                                'new_in_stock' => $materialData['in_stock']
-                            ]);
-                        }
-                    }
+                    $material->updateInStock($materialData['in_stock'], 'manual');
                     $material->update($materialData);
                 }
             }
@@ -161,6 +171,33 @@ class MaterialsController extends Controller
     }
 
 
+    public function stocks(Request $request, Material $material)
+    {
+        if ($request->wantsJson())
+        {
+            $today = Carbon::today();
+
+            $month = (int)$request->get('month', $today->month);
+            $year = (int)$request->get('year', $today->year);
+
+            $monthes = DateService::getMonthes();
+            $years = DateService::getYears(Stock::select('date'));
+
+            $stocks = $material->stocks()
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->get();
+
+            return ['monthes' => $monthes,
+                'years' => $years,
+                'year' => $year,
+                'month' => $month,
+                'stocks' => $stocks
+            ];
+        }
+    }
+
+
     public function saveSupply(Request $request)
     {
         if ($request->wantsJson())
@@ -182,9 +219,8 @@ class MaterialsController extends Controller
                     $supplyPerformed = $supply->performed;
                 }
 
-                $supply->material->update([
-                    'in_stock' => $supply->material->in_stock + $supplyPerformed
-                ]);
+                $material = $supply->material;
+                $material->updateInStock($material->in_stock + $supplyPerformed, 'material_supply', $supply);
             }
         }
     }

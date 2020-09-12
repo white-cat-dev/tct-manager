@@ -81507,6 +81507,10 @@ tctApp.factory('MaterialsRepository', ['$resource', function ($resource) {
     saveSupply: {
       method: 'POST',
       url: '/materials/supply'
+    },
+    stocks: {
+      method: 'GET',
+      url: '/materials/:id/stocks'
     }
   });
 }]);
@@ -82562,6 +82566,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
     }, function (response) {
       $scope.isLoading = false;
       $scope.materialGroup = response;
+      $scope.initStocks();
     });
   };
 
@@ -82765,6 +82770,40 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
       $scope.currentDate.month = response.month;
       $scope.currentDate.year = response.year;
       $scope.supplies = response.supplies;
+    });
+  };
+
+  $scope.stocksMonthes = [];
+  $scope.stocksYears = [];
+  $scope.stocksCurrentDate = {};
+  $scope.stocksCurrentMaterial = 0;
+  $scope.stocks = [];
+
+  $scope.initStocks = function () {
+    if ($scope.stocksCurrentMaterial == 0) {
+      $scope.stocksCurrentMaterial = $scope.materialGroup.materials[0].id;
+    }
+
+    var request = {
+      'id': $scope.stocksCurrentMaterial
+    };
+
+    if ($scope.stocksCurrentDate.year) {
+      request.year = $scope.stocksCurrentDate.year;
+    }
+
+    if ($scope.stocksCurrentDate.month) {
+      request.month = $scope.stocksCurrentDate.month;
+    }
+
+    $scope.isStocksLoading = true;
+    MaterialsRepository.stocks(request, function (response) {
+      $scope.isStocksLoading = false;
+      $scope.stocksMonthes = response.monthes;
+      $scope.stocksYears = response.years;
+      $scope.stocksCurrentDate.month = response.month;
+      $scope.stocksCurrentDate.year = response.year;
+      $scope.stocks = response.stocks;
     });
   };
 }]);
@@ -83602,8 +83641,9 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductionsRepository', 'OrdersRepository', 'ProductsRepository', function ($scope, $routeParams, $location, $timeout, $filter, toastr, ProductionsRepository, OrdersRepository, ProductsRepository) {
+angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductionsRepository', 'OrdersRepository', 'ProductsRepository', function ($rootScope, $scope, $routeParams, $location, $timeout, $filter, toastr, ProductionsRepository, OrdersRepository, ProductsRepository) {
   $scope.Math = window.Math;
+  $scope.Object = window.Object;
   $scope.days = 0;
   $scope.monthes = [];
   $scope.years = [];
@@ -83629,6 +83669,9 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
       request.month = $scope.currentDate.month;
     }
 
+    ProductsRepository.query(function (response) {
+      $scope.productGroups = response;
+    });
     ProductionsRepository.get(request, function (response) {
       $scope.days = response.days;
       $scope.monthes = response.monthes;
@@ -83660,18 +83703,25 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
                 'facility_id': 0,
                 'product_id': product.id,
                 'order_id': 0,
+                'planned': 0,
                 'manual_planned': -1,
-                'performed': '',
-                'batches': '',
-                'manual_batches': -1
+                'auto_planned': 0,
+                'performed': 0,
+                'batches': 0,
+                'manual_batches': -1,
+                'auto_batches': 0
               };
-            } else if (product.productions[day].performed == 0) {
-              product.productions[day].performed = '';
+            } else if (product.productions[day].performed == 0) {// product.productions[day].performed = '';
+            }
+
+            if (product.productions[day] && day >= $scope.currentDate.day && product.productions[day].planned > 0) {
+              product.isPlanned = true;
             }
           }
 
-          if (product.productions[0] && product.productions[0].planned > 0) {
-            $scope.productionsPlanned = true; // break;
+          if (product.productions[0] && product.productions[0].planned > product.productions[0].performed) {
+            $scope.isProductionsPlanned = true;
+            product.isPlanned = true; // break;
           }
         }
       } catch (err) {
@@ -83724,6 +83774,10 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
   $scope.isOrdersShown = false;
 
   $scope.showModal = function (day) {
+    if (Object.keys($scope.updatedProductions).length > 0) {
+      return;
+    }
+
     ProductsRepository.query(function (response) {
       $scope.productGroups = response;
     });
@@ -83942,7 +83996,6 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
       }
     }
 
-    console.log(123, productions, $scope.updatedProductions);
     var request = {
       'productions': productions,
       'year': $scope.currentDate.year,
@@ -84030,15 +84083,33 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
 
   $scope.updatedProductions = {};
 
-  $scope.updateProductionPerformed = function (product, day) {
+  $scope.changeProductionPerformed = function (product, day) {
+    $rootScope.inputFloat(product.productions[day], 'new_performed');
+
+    if (product.productions[day].new_performed == product.productions[day].performed) {
+      return;
+    }
+
+    var performed = product.productions[day].new_performed - product.productions[day].performed;
+    product.productions[day].performed = product.productions[day].new_performed;
+    product.in_stock = Math.round((product.in_stock + performed) * 1000) / 1000;
+
+    if (product.productions[0]) {
+      product.productions[0].performed = Math.round((product.productions[0].performed + performed) * 1000) / 1000;
+    }
+
     $scope.updateProduction(product, day);
   };
 
-  $scope.updateProductionPlanned = function (product, day) {
-    console.log(product.productions[day]);
-    product.productions[day].manual_batches = product.productions[day].batches;
-    product.productions[day].manual_planned = Math.round(product.productions[day].batches * product.product_group.units_from_batch * 1000) / 1000;
-    ;
+  $scope.changeProductionPlanned = function (product, day) {
+    $rootScope.inputFloat(product.productions[day], 'new_batches');
+
+    if (product.productions[day].manual_batches == product.productions[day].new_batches) {
+      return;
+    }
+
+    product.productions[day].manual_batches = +product.productions[day].new_batches;
+    product.productions[day].manual_planned = Math.round(product.productions[day].manual_batches * product.product_group.units_from_batch * 1000) / 1000;
     $scope.updateProduction(product, day);
   };
 
@@ -84048,6 +84119,67 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
     } else if ($scope.updatedProductions[product.id].indexOf(day) == -1) {
       $scope.updatedProductions[product.id].push(day);
     }
+
+    if (product.productions[0]) {
+      var basePlanned = product.productions[0].planned - product.productions[0].performed;
+      var lastBatches = basePlanned <= 100 ? basePlanned <= 50 ? 1 : 2 : 3;
+      var productionDateTo = null;
+
+      for (day = 1; day <= $scope.days; day++) {
+        if (day == $scope.currentDate.day) {
+          if (product.productions[day].performed <= 0) {
+            basePlanned -= product.productions[day].manual_batches < 0 ? product.productions[day].auto_planned : product.productions[day].manual_planned;
+            continue;
+          }
+        } else if (day < $scope.currentDate.day) {
+          continue;
+        }
+
+        if (basePlanned <= 0) {
+          if (product.productions[day].manual_batches < 0) {
+            product.productions[day].auto_batches = 0;
+            product.productions[day].auto_planned = 0;
+            product.productions[day].new_batches = '';
+          }
+
+          continue;
+        }
+
+        if (product.productions[day].manual_batches > 0) {
+          lastBatches = product.productions[day].manual_batches;
+        }
+
+        if (product.productions[day].manual_batches < 0) {
+          if (lastBatches * product.product_group.units_from_batch > basePlanned && lastBatches > 1) {
+            lastBatches = Math.ceil(basePlanned / product.product_group.units_from_batch);
+          }
+
+          product.productions[day].auto_batches = lastBatches;
+          product.productions[day].auto_planned = Math.round(product.productions[day].auto_batches * product.product_group.units_from_batch * 1000) / 1000;
+          product.productions[day].new_batches = product.productions[day].auto_batches;
+          basePlanned -= product.productions[day].auto_planned;
+        } else {
+          basePlanned -= product.productions[day].manual_planned;
+        }
+
+        if (basePlanned <= 0 && !productionDateTo) {
+          var productionDate = new Date($scope.currentDate.year, $scope.currentDate.month - 1, day);
+          productionDateTo = $filter('date')(productionDate, 'yyyy-MM-dd');
+          productionFormattedDateTo = $filter('date')(productionDate, 'dd.MM.yyyy');
+        }
+      }
+
+      if (basePlanned > 0) {
+        var days = Math.ceil(basePlanned / product.product_group.units_from_batch);
+        var productionDate = new Date($scope.currentDate.year, $scope.currentDate.month - 1, day);
+        productionDate = productionDate.setDate(productionDate.getDate() + days);
+        productionDateTo = $filter('date')(productionDate, 'yyyy-MM-dd');
+        productionFormattedDateTo = $filter('date')(productionDate, 'dd.MM.yyyy');
+      }
+
+      product.productions[0].date_to = productionDateTo;
+      product.productions[0].formatted_date_to = productionFormattedDateTo;
+    }
   };
 
   $scope.isAddProductShown = {};
@@ -84055,6 +84187,7 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
 
   $scope.showAddProduct = function (facility) {
     $scope.isAddProductShown[facility] = true;
+    $scope.newProduct[facility] = {};
   };
 
   $scope.chooseProductGroup = function (facility, productGroup) {
@@ -84083,9 +84216,14 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
     $scope.newProduct[facility].units_text = product.units_text;
     $scope.newProduct[facility].variation = product.variation;
     $scope.newProduct[facility].variation_noun_text = product.variation_noun_text;
+    $scope.newProduct[facility].in_stock = product.in_stock;
   };
 
   $scope.addProduct = function (facility) {
+    if (!$scope.newProduct[facility].id) {
+      return;
+    }
+
     var facilityId = facility;
 
     if (facility == 0) {
@@ -84096,27 +84234,42 @@ angular.module('tctApp').controller('ProductionsController', ['$scope', '$routeP
       }
     }
 
-    var production = {
-      'day': $scope.modalDate.getDate(),
-      'date': $filter('date')($scope.modalDate, 'yyyy-MM-dd'),
-      'category_id': $scope.newProduct[facility].category_id,
-      'product_group_id': $scope.newProduct[facility].product_group_id,
-      'facility_id': facilityId,
-      'product_id': $scope.newProduct[facility].id,
-      'order_id': 0,
-      'planned': 0,
-      'performed': 0,
-      'batches': 0
-    };
-    $scope.newProduct[facility].production = production;
-
-    if (!$scope.newProduct[facility].base_planned) {
-      $scope.newProduct[facility].base_planned = 0;
+    for (var i = 0; i < $scope.productionProducts.length; i++) {
+      if ($scope.newProduct[facility].id == $scope.productionProducts[i].id) {
+        $scope.newProduct[facility] = $scope.productionProducts[i];
+        $scope.productionProducts.splice(i, 1);
+        break;
+      }
     }
 
-    $scope.modalProductionProducts.push($scope.newProduct[facility]);
+    if (!$scope.newProduct[facility].productions) {
+      $scope.newProduct[facility].productions = [];
+
+      for (day = 1; day <= $scope.days; day++) {
+        $scope.newProduct[facility].productions[day] = {
+          'day': day,
+          'date': $filter('date')(new Date($scope.currentDate.year, $scope.currentDate.month - 1, day), 'yyyy-MM-dd'),
+          'category_id': $scope.newProduct[facility].category_id,
+          'product_group_id': $scope.newProduct[facility].product_group_id,
+          'facility_id': 0,
+          'product_id': $scope.newProduct[facility].id,
+          'order_id': 0,
+          'planned': 0,
+          'manual_planned': -1,
+          'auto_planned': 0,
+          'performed': 0,
+          'batches': 0,
+          'manual_batches': -1,
+          'auto_batches': 0
+        };
+      }
+    }
+
+    $scope.newProduct[facility].isPlanned = true;
+    $scope.productionProducts.push($scope.newProduct[facility]);
     $scope.newProduct[facility] = {};
     $scope.isAddProductShown[facility] = false;
+    document.querySelector('.production-block .productions-block-content').focus();
   };
 
   $scope.chosenModalType = 'total';

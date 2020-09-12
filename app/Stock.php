@@ -70,11 +70,11 @@ class Stock extends Model
                 break;
 
             case 'material_apply':
-                return 'Расход ' . $this->process->formatted_date;
+                return 'Расход, ' . $this->process->formatted_date;
                 break;
 
             case 'material_supply':
-                return 'Поступление ' . $this->process->formatted_date;
+                return 'Поступление, ' . $this->process->formatted_date;
                 break;
 
             case 'manual':
@@ -86,7 +86,7 @@ class Stock extends Model
                 break;
 
             case 'create':
-                return 'Создание продукта';
+                return 'Создание';
                 break;
             
             default:

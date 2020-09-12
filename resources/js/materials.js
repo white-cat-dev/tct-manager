@@ -121,6 +121,8 @@ angular.module('tctApp').controller('MaterialsController', [
 		{
 			$scope.isLoading = false;
 			$scope.materialGroup = response;
+
+			$scope.initStocks();
 		});
 	}
 
@@ -368,6 +370,50 @@ angular.module('tctApp').controller('MaterialsController', [
 			$scope.currentDate.year = response.year;
 
 			$scope.supplies = response.supplies;
+		});
+    }
+
+
+    $scope.stocksMonthes = [];
+	$scope.stocksYears = [];
+
+    $scope.stocksCurrentDate = {};
+    $scope.stocksCurrentMaterial = 0;
+    
+    $scope.stocks = [];
+
+    $scope.initStocks = function()
+    {
+		if ($scope.stocksCurrentMaterial == 0)
+		{
+			$scope.stocksCurrentMaterial = $scope.materialGroup.materials[0].id;
+		}
+
+		var request = {
+			'id': $scope.stocksCurrentMaterial
+		};
+		if ($scope.stocksCurrentDate.year)
+		{
+			request.year = $scope.stocksCurrentDate.year;
+		}
+		if ($scope.stocksCurrentDate.month)
+		{
+			request.month = $scope.stocksCurrentDate.month;
+		}
+
+    	$scope.isStocksLoading = true;
+
+    	MaterialsRepository.stocks(request, function(response) 
+		{
+			$scope.isStocksLoading = false;
+
+			$scope.stocksMonthes = response.monthes;
+			$scope.stocksYears = response.years;
+
+			$scope.stocksCurrentDate.month = response.month;
+			$scope.stocksCurrentDate.year = response.year;
+
+			$scope.stocks = response.stocks;
 		});
     }
 }]);

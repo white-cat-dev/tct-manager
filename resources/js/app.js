@@ -259,7 +259,8 @@ tctApp.factory('ProductsRepository', ['$resource', function($resource) {
 tctApp.factory('MaterialsRepository', ['$resource', function($resource) { 
 	return $resource('/materials/:id', null, {
 		supplies: { method: 'GET', url: '/materials/:id/supplies' },
-		saveSupply: { method: 'POST', url: '/materials/supply' }
+		saveSupply: { method: 'POST', url: '/materials/supply' },
+		stocks:  { method: 'GET', url: '/materials/:id/stocks' }
     });  
 }]);
 

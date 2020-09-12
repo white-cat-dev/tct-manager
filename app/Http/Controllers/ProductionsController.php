@@ -91,9 +91,15 @@ class ProductionsController extends Controller
                         {
                             $query2->whereNull('date')
                                 ->where('auto_planned', '>', 'performed');
+                        })
+                        ->orWhere(function ($query2) 
+                        {
+                            $query2->whereNull('date')
+                                ->where('auto_planned', '>', 'performed');
                         });
                     });
                 })
+                // ->orWhere('in_stock', '>', 0)
                 ->get();
 
             $allOrders = collect([]);
@@ -332,21 +338,20 @@ class ProductionsController extends Controller
 
             if (!empty($materialApplyData['id']))
             {
-                $materialAppy = MaterialApply::find($materialApplyData['id']);
+                $materialApply = MaterialApply::find($materialApplyData['id']);
 
-                if ($materialAppy->material->material_group->control)
+                if ($materialApply->material->material_group->control)
                 {
-                    $applyPerformed = $materialAppy->performed;
+                    $applyPerformed = $materialApply->performed;
 
-                    $materialAppy->update([
+                    $materialApply->update([
                         'performed' => $materialApplyData['performed']
                     ]);
 
-                    $applyPerformed = $materialAppy->performed - $applyPerformed;
+                    $applyPerformed = $materialApply->performed - $applyPerformed;
 
-                    $materialAppy->material->update([
-                        'in_stock' => $materialAppy->material->in_stock - $applyPerformed
-                    ]);
+                    $material = $materialApply->material;
+                    $material->updateInStock($material->in_stock - $applyPerformed, 'material_apply', $materialApply);
                 }
             }
         }
@@ -456,6 +461,7 @@ class ProductionsController extends Controller
             ]);
         }
 
+
         $productions = Production::where('product_id', '!=', 0)
             ->where('date', $date)
             ->get();
@@ -500,43 +506,41 @@ class ProductionsController extends Controller
                     ];
                 }
             }
+        }
 
-            foreach ($materialApplies as $materialApplyData) 
+        foreach ($materialApplies as $materialApplyData) 
+        {
+            $material = $materialApplyData['material'];
+
+            $materialApply = MaterialApply::where('material_id', $material->id)
+                ->where(['date' => $date])
+                ->first();
+
+            if ($materialApply)
             {
-                $material = $materialApplyData['material'];
+                $materialApply->update([
+                    'planned' => $materialApplyData['planned']
+                ]);
+            }
+            else
+            {
+                $materialApply = MaterialApply::create([
+                    'date' => $production->date,
+                    'material_id' => $material->id,
+                    'performed' => 0,
+                    'planned' => $materialApplyData['planned']
+                ]);
+            }
 
-                $materialApply = MaterialApply::where('material_id', $material->id)
-                    ->where(['date' => $date])
-                    ->first();
+            if (!$material->material_group->control)
+            {
+                $performed = $materialApply->performed - $materialApply->planned;
 
-                if ($materialApply)
-                {
-                    $materialApply->update([
-                        'planned' => $materialApplyData['planned']
-                    ]);
-                }
-                else
-                {
-                    $materialApply = MaterialApply::create([
-                        'date' => $production->date,
-                        'material_id' => $material->id,
-                        'performed' => 0,
-                        'planned' => $materialApplyData['planned']
-                    ]);
-                }
+                $materialApply->update([
+                    'performed' => $materialApply->planned
+                ]);
 
-                if (!$material->material_group->control)
-                {
-                    $performed = $materialApply->planned - $materialApply->performed;
-
-                    $materialApply->update([
-                        'performed' => $materialApply->planned
-                    ]);
-
-                    $material->update([
-                        'in_stock' => $performed
-                    ]);
-                }
+                $material->updateInStock($material->in_stock + $performed, 'material_apply', $materialApply);
             }
         }
     }

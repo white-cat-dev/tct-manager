@@ -22,7 +22,8 @@ class Material extends Model
 
 
     protected $appends = [
-        'variation_text'
+        'variation_text',
+        'units_text'
     ];
 
     protected $with = [
@@ -61,6 +62,61 @@ class Material extends Model
         {
         	return '';
         }
+    }
+
+
+    public function getUnitsTextAttribute()
+    {
+        switch ($this->material_group->units) 
+        {
+            case 'volume_l':
+                return 'л';
+                break;
+
+            case 'volume_ml':
+                return 'мл';
+                break;
+
+            case 'weight_kg':
+                return 'кг';
+                break;
+
+            case 'weight_t':
+                return 'т';
+                break;
+            
+            default:
+                return '';
+                break;
+        }
+    }
+
+
+    public function updateInStock($newInStock, $reason, $process = null)
+    {
+        if ($this->in_stock == $newInStock)
+        {
+            return;
+        }
+
+        $processTypes = [
+            'material_supply' => 'App\MaterialSupply',
+            'material_apply' => 'App\MaterialApply',
+            'manual' => ''
+        ];
+
+        $materialStock = $this->stocks()->create([
+            'date' => date('Y-m-d'),
+            'process_id' => !empty($process) ? $process->id : 0,
+            'process_type' => !empty($processTypes[$reason]) ? $processTypes[$reason] : '',
+            'in_stock' => $this->in_stock,
+            'new_in_stock' => $newInStock,
+            'reason' => $reason
+        ]);
+
+        $this->update([
+            'in_stock' => $newInStock
+        ]);
     }
 
 

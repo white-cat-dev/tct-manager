@@ -59,7 +59,9 @@ Route::middleware('auth')->group(function()
 		Route::get('create', 'MaterialsController@create')->name('material-create');
 		Route::get('{materialGroup}', 'MaterialsController@show')->name('material-show');
 		Route::get('{materialGroup}/edit', 'MaterialsController@edit')->name('material-edit');
+
 		Route::get('{materialGroup}/supplies', 'MaterialsController@supplies')->name('material-supplies');
+		Route::get('{material}/stocks', 'MaterialsController@stocks')->name('material-stocks');
 
 		Route::post('/', 'MaterialsController@create');
 		Route::post('{materialGroup}', 'MaterialsController@edit');

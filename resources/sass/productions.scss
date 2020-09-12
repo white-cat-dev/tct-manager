@@ -24,6 +24,10 @@
 					border-top: none;
 				}
 
+				tr:last-child td:hover {
+					background: unset;
+				}
+
 				th {
 					height: 41px;
 					font-size: 12px;
@@ -118,6 +122,94 @@
 				max-height: calc(100vh - 300px);
 				border-bottom: solid 1px darken($grey, 10%);
 			}
+
+			.add-product-block {
+				display: flex;
+	    		width: 100%;
+	    		background: $grey;
+
+	    		@include media-breakpoint-down(sm) {
+					display: block;
+				}
+
+	    		& > div {
+	    			background: #FFFFFF;
+	    			flex: 2;
+	    			margin-right: 5px;
+
+	    			@include media-breakpoint-down(sm) {
+						display: block;
+						margin-bottom: 7px;
+						margin-right: 0px;
+					}
+
+	    			&:first-child {
+	    				flex: unset;
+	    				width: 193px;
+	    			}
+
+	    			&:nth-child(2) {
+	    				width: 99px;
+	    			}
+
+	    			&:last-child {
+	    				flex: unset;
+	    				margin-right: 0px;
+
+	    				@include media-breakpoint-down(sm) {
+							display: inline-block;
+							margin-bottom: 0px;
+						}
+	    			}
+	    		}
+
+	    		.empty-select {
+	    			border: solid 1px darken($grey, 10%);
+	    			height: 100%;
+	    			min-height: 31px;
+	    			text-align: center;
+	    		}
+
+	    		.ui-select-container {
+
+	    			.ui-select-match {
+	    				border: none;
+	    			}
+
+	    			.ui-select-match-text {
+	    				white-space: nowrap;
+	    				text-overflow: ellipsis;
+	    				width: 100%;
+	    				display: block;
+    					overflow: hidden;
+    					padding-right: 0px;
+					}
+	    				
+					.btn {
+						padding: 5px 8px;
+						font-size: 14px;
+
+						&:focus {
+							box-shadow: none;
+						}
+					}
+
+					.form-control {
+						padding: 6px 8px;
+					    font-size: 12px;
+					}
+
+					.dropdown-menu {
+						font-size: 12px;
+						padding: 6px 0px;
+
+						.ui-select-choices-row-inner {
+							padding: 4px 7px;
+							font-size: 12px;
+						}
+					}
+				}
+			}
 		}
 
 		.productions-block {
@@ -128,6 +220,10 @@
 			.table {
 				margin: 0px -1px;
 				font-size: 14px;
+
+				tr:last-child td:hover {
+					background: unset;
+				}
 
 				th, td {
 					padding: 10px;
@@ -388,7 +484,7 @@
 
 		.alert {
 			font-size: 14px;
-			margin-top: 10px;
+			margin-top: 0px;
     		padding: 10px;
 		}
 
@@ -619,7 +715,7 @@
 		}
 
 		.total-block {
-			margin-top: 15px;
+			margin-top: 0px;
 
 			.block-title {
     			font-size: 18px;

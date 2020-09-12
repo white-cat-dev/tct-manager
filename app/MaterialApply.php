@@ -21,7 +21,8 @@ class MaterialApply extends Model
     ];
 
     protected $appends = [
-    	'day'
+    	'day',
+        'formatted_date'
     ];
 
 
@@ -40,5 +41,10 @@ class MaterialApply extends Model
     public function material()
     {
         return $this->belongsTo(Material::class);
+    }
+
+    public function getFormattedDateAttribute()
+    {
+        return Carbon::createFromDate($this->date)->format('d.m.Y');
     }
 }

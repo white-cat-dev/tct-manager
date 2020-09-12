@@ -50,7 +50,10 @@ class MaterialsStocks extends Command
                 $stock = $material->stocks()->create([
                     'date' => date('Y-m-d'),
                     'in_stock' => $material->in_stock,
-                    'new_in_stock' => $material->in_stock
+                    'new_in_stock' => $material->in_stock,
+                    'process_id' => 0,
+                    'process_type' => '',
+                    'reason' => 'create'
                 ]);
             }
         }

@@ -37,8 +37,6 @@ class ProductionsService
 
             $baseProduction = $product->getBaseProduction();
 
-            $priority = $baseProduction->priority;
-
             if ($baseProduction)
             {
                 $basePlanned = $baseProduction->auto_planned + $count;
@@ -51,7 +49,7 @@ class ProductionsService
             }
 
             $basePlanned = $basePlanned - $basePerformed;
-
+            $lastBatches = ($basePlanned <= 100) ? (($basePlanned <= 50) ? 1 : 2) : 3;
             
             $facilities = Facility::whereHas('categories', function($query) use ($product) {
                 $query->where('categories.id', $product->category_id);
@@ -66,10 +64,14 @@ class ProductionsService
                     break;
                 }
 
-                $production = $this->getProduction($currentDay, $product, $basePlanned, $priority, $facilities, true);
+                $production = $this->getProduction($currentDay, $product, $basePlanned, $lastBatches, $facilities, true);
 
                 if ($production)
                 {
+                    if ($production->manual_batches > 0)
+                    {
+                        $lastBatches = $production->manual_batches;
+                    }
                     $basePlanned -= $production->planned;
                 }
 
@@ -173,7 +175,6 @@ class ProductionsService
             $baseProduction->update([
                 'auto_planned' => $baseProductionPlanned,
                 'performed' => ($baseProduction->product->in_stock > $baseProductionPlanned) ? $baseProductionPlanned : $baseProduction->product->in_stock
-                // 'priority' => ($order->priority > $baseProduction->priority) ? $order->priority : $baseProduction->priority
             ]);
         }
         else
@@ -187,7 +188,7 @@ class ProductionsService
                 'facility_id' => 0,
                 'manual_planned' => -1,
                 'auto_planned' => $count,
-                // 'priority' => $order->priority,
+                'priority' => $order->priority,
                 'priority' => 1,
                 'date_to' => null,
                 'performed' => ($product->in_stock > $count) ? $count : $product->in_stock,
@@ -216,6 +217,7 @@ class ProductionsService
 
         $basePlanned = $baseProduction->auto_planned - $baseProduction->performed;
         $baseBatches = ceil($basePlanned / $product->product_group->units_from_batch);
+        $lastBatches = ($basePlanned <= 100) ? (($basePlanned <= 50) ? 1 : 2) : 3;
 
         $productions = $product->productions()->whereNotNull('date')->where('date', '>=', date('Y-m-d'))->get();
 
@@ -247,10 +249,15 @@ class ProductionsService
                     break;
                 }
 
-                $production = $this->getProduction($currentDay, $product, $basePlanned, $baseProduction->priority, $facilities);
+                $production = $this->getProduction($currentDay, $product, $basePlanned, $lastBatches, $facilities);
 
                 if ($production)
                 {
+                    if ($production->manual_batches > 0)
+                    {
+                        $lastBatches = $production->manual_batches;
+                    }
+
                     $basePlanned -= $production->planned;
                 }
 
@@ -307,7 +314,7 @@ class ProductionsService
     }
 
 
-    protected function getProduction($day, $product, $count, $priority, $facilities, $testPlan = false)
+    protected function getProduction($day, $product, $count, $lastBatches, $facilities, $testPlan = false)
     {
         $currentProductions = Production::where('date', $day->format('Y-m-d'))->get();
 
@@ -401,7 +408,7 @@ class ProductionsService
         //     $plannedBatches = round($maxBatches, 1);
         // }
 
-        $plannedBatches = $priority;
+        $plannedBatches = $lastBatches;
 
         if ($plannedBatches == 0)
         {
@@ -430,8 +437,7 @@ class ProductionsService
                 {
                     $production->update([
                         'auto_planned' => $plannedBatches * $product->product_group->units_from_batch,
-                        'auto_batches' => $plannedBatches,
-                        'priority' => $priority
+                        'auto_batches' => $plannedBatches
                     ]);
                 }
             }
@@ -449,7 +455,7 @@ class ProductionsService
                     'facility_id' => ($facilities->count() == 1) ? $facilities->first()->id : 0,
                     'auto_planned' => $plannedBatches * $product->product_group->units_from_batch,
                     'manual_planned' => -1,
-                    'priority' => $priority,
+                    'priority' => 1,
                     'performed' => 0,
                     'auto_batches' => $plannedBatches,
                     'manual_batches' => -1,
@@ -467,7 +473,7 @@ class ProductionsService
                     'facility_id' => ($facilities->count() == 1) ? $facilities->first()->id : 0,
                     'auto_planned' => $plannedBatches * $product->product_group->units_from_batch,
                     'manual_planned' => -1,
-                    'priority' => $priority,
+                    'priority' => 1,
                     'performed' => 0,
                     'auto_batches' => $plannedBatches,
                     'manual_batches' => -1,
