@@ -225,6 +225,17 @@ class OrdersController extends Controller
                     $product->updateInStock($product->in_stock - $product->pivot->count, 'realization', $realization);
                 }
 
+                $realization = $order->realizations()->create([
+                    'date' => $order->date,
+                    'category_id' => 0,
+                    'product_group_id' => 0,
+                    'product_id' => 0,
+                    'order_id' => $order->id,
+                    'planned' => 0,
+                    'ready' => 0,
+                    'performed' => $order->pallets
+                ]);
+
                 $this->checkFinishedOrder($order);
             }
             else
