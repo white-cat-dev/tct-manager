@@ -49,7 +49,8 @@ class Order extends Model
         'pay_type_text',
         'formatted_date',
         'formatted_date_to',
-        'payments_paid'
+        'payments_paid',
+        'pallets_progress'
     ];
 
     protected $with = [
@@ -223,6 +224,24 @@ class Order extends Model
         }
 
         return ceil($realizationsCost);
+    }
+
+
+    public function getPalletsProgressAttribute()
+    {
+        $progress = [
+            'total' => 0,
+            'realization' => 0,
+            'ready' => 0,
+            'left' => 0,
+            'planned' => 0
+        ];
+
+        $progress['total'] = $this->pallets;
+        $progress['realization'] = round($this->realizations()->where('product_id', 0)->get()->sum('performed'), 3);
+        $progress['planned'] = round($progress['total'] - $progress['realization'], 3);
+
+        return $progress;
     }
 
 

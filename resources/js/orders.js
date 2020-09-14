@@ -654,10 +654,15 @@ angular.module('tctApp').controller('OrdersController', [
 			'product': {
 				'id': 0,
 			},
-			'planned': order.pallets,
+			'planned': $scope.modalOrder.pallets_progress.planned,
 			'performed': 0,
-			'max_performed': order.pallets
+			'max_performed': $scope.modalOrder.pallets_progress.planned
 		});
+
+		if ($scope.modalOrder.pallets_progress.planned > 0)
+		{
+			$scope.modalOrder.disabled_realizations = false;
+		}
 
 
     	$scope.isAllRealizationsChosen = false;
@@ -676,10 +681,6 @@ angular.module('tctApp').controller('OrdersController', [
     	{
     		for (realization of $scope.modalOrder.realizations)
     		{
-    			if (!realization.product.id)
-				{
-					continue;
-				}
     			realization.performed = realization.max_performed;
     		}
     	}
@@ -687,18 +688,13 @@ angular.module('tctApp').controller('OrdersController', [
 
     $scope.checkAllRealizations = function(realization) 
     {
-    	if ((realization.performed > realization.max_performed) && (realization.product.id))
+    	if (realization.performed > realization.max_performed)
 		{
 			realization.performed = realization.max_performed;
 		}
 
     	for (realization of $scope.modalOrder.realizations)
 		{
-			if (!realization.product.id)
-			{
-				continue;
-			}
-
 			if (realization.performed < realization.max_performed)
 			{
 				$scope.isAllRealizationsChosen = false;

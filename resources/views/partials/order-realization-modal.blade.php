@@ -41,7 +41,7 @@
 								@{{ realization.planned }} <span ng-bind-html="realization.product.units_text"></span>
 							</div>
 							<div ng-if="!realization.product.id">
-								—
+								@{{ modalOrder.pallets_progress.planned }} шт
 							</div>
 						</td>
 						<td style="width: 20%;">

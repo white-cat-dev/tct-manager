@@ -202,6 +202,23 @@
 								</span>
 							</td>
 						</tr>
+						<tr ng-if="currentOrder.pallets > 0">
+							<td>
+								<div>Поддоны</div>
+							</td>
+							<td ng-class="{'text-success': currentOrder.pallets_progress.total == currentOrder.pallets_progress.realization}">
+								@{{ currentOrder.pallets_progress.total }} шт
+							</td>
+							<td ng-class="{'text-success': currentOrder.pallets_progress.total == currentOrder.pallets_progress.realization}">
+								@{{ currentOrder.pallets_progress.realization }} шт
+							</td>
+							<td ng-class="{'text-success': currentOrder.pallets_progress.total == currentOrder.pallets_progress.realization}">
+								@{{ currentOrder.pallets_progress.planned }} шт
+							</td>
+							<td ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }} && currentOrder.status != {{ App\Order::STATUS_UNPAID }}">
+								—
+							</td>
+						</tr>
 					</table>
 
 					<div class="buttons-block">

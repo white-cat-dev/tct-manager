@@ -313,8 +313,8 @@ class OrdersController extends Controller
                     if ($baseProduction)
                     {
                         $baseProduction->update([
-                            'auto_planned' => $baseProduction->auto_planned - $realizationPerformed,
-                            'performed' => $baseProduction->performed - $realizationPerformed
+                            'auto_planned' => ($baseProduction->auto_planned > $realizationPerformed) ? ($baseProduction->auto_planned - $realizationPerformed) : 0,
+                            'performed' => ($baseProduction->performed > $realizationPerformed) ? ($baseProduction->performed - $realizationPerformed) : 0
                         ]);
                     }
                 }
@@ -377,8 +377,8 @@ class OrdersController extends Controller
                 if ($baseProduction)
                 {
                     $baseProduction->update([
-                        'auto_planned' => $baseProduction->auto_planned - $realization->performed,
-                        'performed' => $baseProduction->performed - $realization->performed,
+                        'auto_planned' => ($baseProduction->auto_planned > $realization->performed) ? ($baseProduction->auto_planned - $realization->performed) : 0,
+                        'performed' => ($baseProduction->performed > $realization->performed) ? ($baseProduction->performed - $realization->performed) : 0
                     ]);
                 }
             }
