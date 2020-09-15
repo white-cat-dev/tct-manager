@@ -524,6 +524,10 @@ angular.module('tctApp').controller('ProductionsController', [
 					if (product.productions[day].performed <= 0)
 					{
 						basePlanned -= (product.productions[day].manual_batches < 0) ? product.productions[day].auto_planned : product.productions[day].manual_planned;
+						if (product.productions[day].manual_batches > 0)
+						{
+							lastBatches = product.productions[day].manual_batches;
+						}
 						continue;
 					}
 				}
@@ -696,6 +700,15 @@ angular.module('tctApp').controller('ProductionsController', [
 		$scope.newProduct[facility] = {};
 		$scope.isAddProductShown[facility] = false;
 		document.querySelector('.production-block .productions-block-content').focus();
+	}
+
+
+	$scope.focusProductionsBlock = function($event)
+	{
+		if (($event.which === 38) || (($event.which === 40)))
+        {
+        	document.querySelector('.production-block .productions-block-content').focus();
+        }
 	}
 
 

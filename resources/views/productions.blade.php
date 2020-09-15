@@ -1,4 +1,4 @@
-<div class="production-page" ng-init="init()">
+<div class="production-page" ng-init="init()" ng-keydown="focusProductionsBlock($event)">
 	<h1>Производство</h1>
 
 	@include('partials.loading')
