@@ -22,6 +22,9 @@
 		</div>
 
 		<div class="right-buttons d-none d-md-flex">
+			<button type="button" class="btn btn-primary" ng-click="showPaidCostReportModal()">
+				<i class="fas fa-paste"></i> Отчёт
+			</button>
 			<a href="{{ route('order-create') }}" class="btn btn-primary">
 				<i class="fas fa-plus"></i> Создать заказ
 			</a>
@@ -295,6 +298,7 @@
 		@endif
 	</div>
 
+	@include('partials.orders-paid-cost-report-modal')
 	@include('partials.order-realization-modal')
 	@include('partials.order-payment-modal')
 	@include('partials.delete-modal')

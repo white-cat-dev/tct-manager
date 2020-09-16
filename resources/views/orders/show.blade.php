@@ -273,7 +273,7 @@
 						<tr>
 							<th>Дата</th>
 							<th>Продукт</th>
-							<th>Количество</th>
+							<th>Отпущено</th>
 							<th></th>
 						</tr>
 						<tr ng-repeat="realization in order.realizations | filter: {'date': '!= null'}">
@@ -281,7 +281,7 @@
 							<td style="width: 50%">
 								<div ng-if="realization.product">
 									@{{ realization.product.product_group.name }} @{{ realization.product.product_group.size }}
-									<span class="product-color">@{{ realization.product.variation_text }}</span>
+									<div class="product-color">@{{ realization.product.variation_noun_text }}</div>
 								</div>
 								<div ng-if="!realization.product">
 									Поддоны
@@ -292,7 +292,7 @@
 								<span ng-if="!realization.product">шт</span>
 							</td>
 							<td>
-								<button type="button" class="btn btn-sm btn-primary" disabled ng-click="showRealizationModal(order)">
+								<button type="button" class="btn btn-sm btn-primary" ng-click="showRealizationModal(order, realization)">
 									<i class="fas fa-edit"></i> Изменить
 								</button>
 							</td>
@@ -333,7 +333,7 @@
 								@{{ payment.paid | number }} руб
 							</td>
 							<td>
-								<button type="button" class="btn btn-sm btn-primary" disabled ng-click="showPaymentModal(order)">
+								<button type="button" class="btn btn-sm btn-primary" ng-click="showPaymentModal(order, payment)">
 									<i class="fas fa-edit"></i> Изменить
 								</button>
 							</td>
@@ -355,5 +355,7 @@
 		</div>
 	</div>
 
+	@include('partials.order-realization-modal')
+	@include('partials.order-payment-modal')
 	@include('partials.delete-modal')
 </div>

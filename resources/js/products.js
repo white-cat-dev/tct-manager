@@ -528,7 +528,12 @@ angular.module('tctApp').controller('ProductsController', [
 			$scope.isModalLoading = false;
 
 			$scope.modalProductOrders = response;
-		});
+		}, 
+		function(response) 
+		{
+            $scope.isModalLoading = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
 	}
 
 

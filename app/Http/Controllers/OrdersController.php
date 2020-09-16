@@ -305,44 +305,44 @@ class OrdersController extends Controller
             $order->products()->detach($productsIds);
 
 
-            foreach ($request->get('realizations', []) as $realizationData) 
-            {
-                if ($realizationData['id'])
-                {
-                    $realization = $order->realizations()->find($realizationData['id']);
-                    $realizationPerformed = $realization->performed;
+            // foreach ($request->get('realizations', []) as $realizationData) 
+            // {
+            //     if ($realizationData['id'])
+            //     {
+            //         $realization = $order->realizations()->find($realizationData['id']);
+            //         $realizationPerformed = $realization->performed;
 
-                    $realization->update($this->getRealizationData($realizationData));
+            //         $realization->update($this->getRealizationData($realizationData));
 
-                    $realizationPerformed = $realization->performed - $realizationPerformed;
+            //         $realizationPerformed = $realization->performed - $realizationPerformed;
 
-                    $product = $realization->product;
-                    $product->updateInStock($product->in_stock - $realizationPerformed, 'realization', $realization);
+            //         $product = $realization->product;
+            //         $product->updateInStock($product->in_stock - $realizationPerformed, 'realization', $realization);
 
-                    $baseProduction = $product->getBaseProduction();
+            //         $baseProduction = $product->getBaseProduction();
 
-                    if ($baseProduction)
-                    {
-                        $baseProduction->update([
-                            'auto_planned' => ($baseProduction->auto_planned > $realizationPerformed) ? ($baseProduction->auto_planned - $realizationPerformed) : 0,
-                            'performed' => ($baseProduction->performed > $realizationPerformed) ? ($baseProduction->performed - $realizationPerformed) : 0
-                        ]);
-                    }
-                }
+            //         if ($baseProduction)
+            //         {
+            //             $baseProduction->update([
+            //                 'auto_planned' => ($baseProduction->auto_planned > $realizationPerformed) ? ($baseProduction->auto_planned - $realizationPerformed) : 0,
+            //                 'performed' => ($baseProduction->performed > $realizationPerformed) ? ($baseProduction->performed - $realizationPerformed) : 0
+            //             ]);
+            //         }
+            //     }
 
-                $this->checkFinishedOrder($order);
-            }
+            //     $this->checkFinishedOrder($order);
+            // }
 
 
-            foreach ($request->get('payments') as $paymentData) 
-            {
-                if ($paymentData['id'])
-                {
-                    $payment = $order->payments()->find($paymentData['id']);
+            // foreach ($request->get('payments') as $paymentData) 
+            // {
+            //     if ($paymentData['id'])
+            //     {
+            //         $payment = $order->payments()->find($paymentData['id']);
 
-                    $payment->update($this->getPaymentData($paymentData));
-                }
-            }
+            //         $payment->update($this->getPaymentData($paymentData));
+            //     }
+            // }
 
 
             ProductionsService::getInstance()->replanOrder($order, $oldProducts);
@@ -369,19 +369,34 @@ class OrdersController extends Controller
 
         foreach ($realizationsData as $realizationData) 
         {
-            $realizationData = $this->getRealizationData($realizationData);
-
-            if (!$realizationData['order_id'] || $realizationData['performed'] == 0)
+            if (!empty($realizationData['id']))
             {
-                continue;
-            }
+                $realization = Realization::find($realizationData['id']);
+                $realizationPerformed = $realization->performed;
+                $realization->update($this->getrealizationData($realizationData));
+                $realizationPerformed = $realization->performed - $realizationPerformed;
 
-            $realization = Realization::create($realizationData);
+                if ($realization->performed == 0)
+                {
+                    $realization->delete();
+                }
+            }
+            else
+            {
+                $realizationData = $this->getRealizationData($realizationData);
+                if (!$realizationData['order_id'] || $realizationData['performed'] == 0)
+                {
+                    continue;
+                }
+
+                $realization = Realization::create($realizationData);
+                $realizationPerformed = $realization->performed;
+            }
 
             if ($realization->product)
             {
                 $product = $realization->product;
-                $product->updateInStock($product->in_stock - $realization->performed, 'realization', $realization);
+                $product->updateInStock($product->in_stock - $realizationPerformed, 'realization', $realization);
 
                 $baseProduction = $product->getBaseProduction();
 
@@ -406,20 +421,82 @@ class OrdersController extends Controller
 
     public function savePayment(Request $request)
     {
-        $paymentData = $this->getPaymentData($request);
+        $paymentData = $request->all();
 
-        if (!$paymentData['order_id'])
+        if (!empty($paymentData['id']))
         {
-            return;
+            $payment = OrderPayment::find($paymentData['id']);
+
+            if (!$payment)
+            {
+                return;
+            }
+
+            $paymentPaid = $payment->paid;
+            $payment->update($this->getPaymentData($paymentData));   
+            $paymentPaid = $payment->paid - $paymentPaid;
+        }
+        else
+        {
+            $paymentData = $this->getPaymentData($paymentData);
+
+            if (!$paymentData['order_id'])
+            {
+                return;
+            }
+
+            $payment = OrderPayment::create($paymentData);
+            $paymentPaid = $payment->paid;
         }
 
-        $payment = OrderPayment::create($paymentData);
-
         $payment->order->update([
-            'paid' => $payment->order->paid + $payment->paid
+            'paid' => $payment->order->paid + $paymentPaid
         ]);
 
         $this->checkFinishedOrder($payment->order);
+    }
+
+
+    public function paidCostReport(Request $request)
+    {
+        $allOrders = Order::whereIn('status', [Order::STATUS_PRODUCTION, Order::STATUS_UNPAID])
+            ->orderBy('date', 'DESC')->orderBy('number', 'DESC')
+            ->get();
+
+        $orders = [
+            'debt' => collect([]),
+            'debt_total' => 0,
+            'overpayment' => collect([]),
+            'overpayment_total' => 0
+        ];
+
+        foreach ($allOrders as $order) 
+        {
+            $orderData = [
+                'id' => $order->id,
+                'url' => $order->url,
+                'number' => $order->number,
+                'client' => $order->client,
+                'payments_paid' => $order->payments_paid,
+                'realizations_cost' => $order->realizations_cost,
+                'total' => ceil($order->realizations_cost - $order->payments_paid)
+            ];
+
+            if ($order->payments_paid > $order->realizations_cost)
+            {
+                $orders['overpayment']->push($orderData);
+                $orders['overpayment_total'] += $orderData['total'];
+            }
+            else if ($order->payments_paid < $order->realizations_cost)
+            {
+                $orders['debt']->push($orderData);
+                $orders['debt_total'] += $orderData['total'];
+            }
+        }
+
+        $orders['total'] = $orders['debt_total'] + $orders['overpayment_total'];
+
+        return $orders;
     }
 
 
@@ -435,6 +512,11 @@ class OrdersController extends Controller
                 $isOrderFinished = false;
                 break;
             }
+        }
+
+        if ($order->pallets_progress['realization'] < $order->pallets_progress['total'])
+        {
+            $isOrderFinished = false;
         }
 
         if ($isOrderFinished) 

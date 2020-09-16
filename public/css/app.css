@@ -12405,6 +12405,7 @@ button:focus,
 .form-control:focus {
   outline: none !important;
   box-shadow: none !important;
+  border-color: #276090;
 }
 
 .form-control:disabled {
@@ -14475,8 +14476,8 @@ i.far {
   cursor: pointer;
 }
 
-.orders-page .main-orders-block .table tr:hover,
-.orders-page .main-orders-block .table tr.active {
+.orders-page .main-orders-block .table tr:hover td,
+.orders-page .main-orders-block .table tr.active td {
   background: #f3f3f3;
 }
 
@@ -14484,15 +14485,27 @@ i.far {
   cursor: default;
 }
 
-.orders-page .main-orders-block .table tr:first-child:hover,
-.orders-page .main-orders-block .table tr:first-child.active {
-  background: none;
+.orders-page .main-orders-block .table tr:first-child th {
+  padding-top: 10px;
+}
+
+.orders-page .main-orders-block .table tr:last-child {
+  cursor: default;
+}
+
+.orders-page .main-orders-block .table tr:last-child td {
+  padding-bottom: 10px;
 }
 
 .orders-page .main-orders-block .table th,
 .orders-page .main-orders-block .table td {
-  padding: 10px;
+  padding: 8px;
   white-space: nowrap;
+}
+
+.orders-page .main-orders-block .table th:first-child,
+.orders-page .main-orders-block .table td:first-child {
+  padding-left: 10px;
 }
 
 .orders-page .main-orders-block .table th {
@@ -14713,52 +14726,62 @@ i.far {
   color: #9a9a9a;
 }
 
-.orders-page .realization-modal .table .form-control {
-  border: none;
-  box-shadow: none;
-  padding: 0px;
-  width: 100%;
-  height: auto;
-  border-bottom: solid 1px transparent;
-  text-align: center;
-  font-size: 14px;
+.orders-page .realization-modal .table .form-group-units {
+  position: relative;
 }
 
-.orders-page .realization-modal .table .form-control:focus {
-  border-bottom: solid 1px #276090;
+.orders-page .realization-modal .table .form-group-units .form-control {
+  background: transparent;
+  z-index: 1;
+  position: relative;
+}
+
+.orders-page .realization-modal .table .form-group-units .form-control:focus {
+  background: transparent;
+}
+
+.orders-page .realization-modal .table .form-group-units .units {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  color: transparent;
+  z-index: 0;
+  line-height: 100%;
+}
+
+.orders-page .realization-modal .table .form-group-units .units > span {
+  color: #747474;
 }
 
 .orders-page .realization-modal .table tr td,
 .orders-page .realization-modal .table tr th {
   width: 25%;
-  text-align: center;
-  border: solid 1px #dadada;
-  padding: 5px 10px;
+  text-align: left;
   font-size: 14px;
 }
 
 .orders-page .realization-modal .table tr td:first-child {
-  width: 50%;
-  text-align: left;
   font-size: 12px;
 }
 
+.orders-page .realization-modal .table tr th:last-child,
+.orders-page .realization-modal .table tr td:last-child {
+  min-width: 100px;
+  padding-left: 20px;
+}
+
 .orders-page .realization-modal .table tr th {
-  text-align: center;
   vertical-align: middle;
-}
-
-.orders-page .realization-modal .table tr.disabled {
-  background: #fbfbfb;
-  color: #9a9a9a;
-}
-
-.orders-page .realization-modal .table tr.disabled .form-control:disabled {
-  background: #fbfbfb;
 }
 
 .orders-page .realization-modal .custom-control-label {
   font-size: 15px;
+}
+
+.orders-page .realization-modal .param-label {
+  color: #343434;
+  margin-bottom: 5px;
+  font-weight: 500;
 }
 
 .orders-page .no-current-order {
@@ -14783,11 +14806,41 @@ i.far {
 }
 
 .orders-page .payment-modal .info-block {
-  background: #fbfbfb;
+  background: #f6f6f6;
   padding: 10px;
   margin-bottom: 20px;
   text-align: center;
-  border: solid 1px #dadada;
+}
+
+.orders-page .payment-modal .info-block .table {
+  margin-bottom: 0px;
+}
+
+.orders-page .payment-modal .form-group-units {
+  position: relative;
+}
+
+.orders-page .payment-modal .form-group-units .form-control {
+  background: transparent;
+  z-index: 1;
+  position: relative;
+}
+
+.orders-page .payment-modal .form-group-units .form-control:focus {
+  background: transparent;
+}
+
+.orders-page .payment-modal .form-group-units .units {
+  position: absolute;
+  top: 12px;
+  left: 13px;
+  color: transparent;
+  z-index: 0;
+  line-height: 100%;
+}
+
+.orders-page .payment-modal .form-group-units .units > span {
+  color: #747474;
 }
 
 .orders-page .history-table-block {
@@ -14818,6 +14871,50 @@ i.far {
 .orders-page .history-table tr td,
 .orders-page .history-table tr th {
   vertical-align: top;
+}
+
+.paid-cost-modal .modal-loading-block {
+  padding-top: 35px;
+}
+
+.paid-cost-modal .modal-dialog {
+  max-width: 600px;
+}
+
+.paid-cost-modal .modal-body {
+  min-height: 152px;
+}
+
+.paid-cost-modal .table tr td,
+.paid-cost-modal .table tr th {
+  width: 25%;
+  text-align: center;
+  border: solid 1px #dadada;
+  padding: 5px 10px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.paid-cost-modal .table tr th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.paid-cost-modal .table tr td:first-child {
+  text-align: left;
+}
+
+.paid-cost-modal .no-paid-cost-block {
+  text-align: center;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.paid-cost-modal .no-paid-cost-block div:first-child {
+  font-size: 35px;
+  color: #9a9a9a;
 }
 
 .workers-page {

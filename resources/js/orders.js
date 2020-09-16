@@ -616,62 +616,81 @@ angular.module('tctApp').controller('OrdersController', [
     }
 
 
-    $scope.isRealizationModalShown = false;
     $scope.modalOrder = null;
+    $scope.isRealizationModalShown = false;
     $scope.isAllRealizationsChosen = false;
+    $scope.isOrderRealizationEditting = true;
 
 
-    $scope.showRealizationModal = function(order)
+    $scope.showRealizationModal = function(order, realization)
     {
-    	$scope.modalOrder = order || $scope.order;
-    	$scope.modalOrder.realization_date_raw = $filter('date')(new Date(), 'ddMMyyyy');
-    	$scope.modalOrder.disabled_realizations = true;
-    	$scope.isRealizationModalShown = true;
+	    $scope.modalOrder = angular.copy(order || $scope.order);
 
-    	$scope.modalOrder.realizations = [];
+	    if (realization)
+	    {
+	    	$scope.isOrderRealizationEditting = true;
+	    	$scope.modalOrder.realization_date_raw = $filter('date')(new Date(realization.date), 'ddMMyyyy');
+	    	$scope.modalOrder.disabled_realizations = false;
 
-    	for (product of $scope.modalOrder.products) 
-    	{
-    		var planned = Math.round((product.progress.total - product.progress.realization) * 100) / 100;
-    		var maxPerformed = (product.in_stock < planned) ? product.in_stock : planned;
+	    	$scope.modalOrder.realizations = [angular.copy(realization)];
+	    }
+	    else
+	    {
+	    	$scope.isOrderRealizationEditting = false;
+	    	$scope.modalOrder.realization_date_raw = $filter('date')(new Date(), 'ddMMyyyy');
+	    	$scope.modalOrder.disabled_realizations = true;
 
-    		$scope.modalOrder.realizations.push({
-    			'order_id': $scope.modalOrder.id, 
-    			'product': product,
-    			'planned': planned,
-    			'performed': 0,
-    			'max_performed': maxPerformed
-    		});
+	    	$scope.modalOrder.realizations = [];
 
-    		if (maxPerformed > 0)
-    		{
-    			$scope.modalOrder.disabled_realizations = false;
-    		}
-    	}
+	    	for (product of $scope.modalOrder.products) 
+	    	{
+	    		var planned = Math.round((product.progress.total - product.progress.realization) * 100) / 100;
+	    		var maxPerformed = (product.in_stock < planned) ? product.in_stock : planned;
 
-    	$scope.modalOrder.realizations.push({
-			'order_id': $scope.modalOrder.id, 
-			'product': {
-				'id': 0,
-			},
-			'planned': $scope.modalOrder.pallets_progress.planned,
-			'performed': 0,
-			'max_performed': $scope.modalOrder.pallets_progress.planned
-		});
+	    		$scope.modalOrder.realizations.push({
+	    			'order_id': $scope.modalOrder.id, 
+	    			'product': product,
+	    			'planned': planned,
+	    			'performed': 0,
+	    			'max_performed': maxPerformed
+	    		});
 
-		if ($scope.modalOrder.pallets_progress.planned > 0)
-		{
-			$scope.modalOrder.disabled_realizations = false;
+	    		if (maxPerformed > 0)
+	    		{
+	    			$scope.modalOrder.disabled_realizations = false;
+	    		}
+	    	}
+
+		    if ($scope.modalOrder.pallets > 0)
+		    {
+		    	$scope.modalOrder.realizations.push({
+					'order_id': $scope.modalOrder.id, 
+					'product': {
+						'id': 0,
+					},
+					'planned': $scope.modalOrder.pallets_progress.planned,
+					'performed': 0,
+					'max_performed': $scope.modalOrder.pallets_progress.planned
+				});
+		    }
+
+			if ($scope.modalOrder.pallets_progress.planned > 0)
+			{
+				$scope.modalOrder.disabled_realizations = false;
+			}
 		}
 
+	    $scope.isRealizationModalShown = true;
+	    $scope.isAllRealizationsChosen = false;
 
-    	$scope.isAllRealizationsChosen = false;
+	    document.querySelector('body').classList.add('modal-open');
     }
 
 
     $scope.hideRealizationModal = function()
     {
     	$scope.isRealizationModalShown = false;
+    	document.querySelector('body').classList.remove('modal-open');
     }
 
 
@@ -719,12 +738,15 @@ angular.module('tctApp').controller('OrdersController', [
 
 			toastr.success('Выдача заказа успешно сохранена!');
 
-			if (!$scope.baseUrl)
+			$scope.hideRealizationModal();
+			if ($scope.baseUrl)
+			{
+				$scope.initShow();
+			}
+			else
 			{
 				$scope.loadOrders();
 			}
-
-			$scope.hideRealizationModal();
 		}, 
 		function(response) 
 		{
@@ -740,23 +762,39 @@ angular.module('tctApp').controller('OrdersController', [
     $scope.isFullPaymentChosen = false;
 
 
-    $scope.showPaymentModal = function(order)
+    $scope.showPaymentModal = function(order, payment)
     {
     	$scope.modalOrder = order || $scope.order;
-    	$scope.modalPayment = {
-    		'order_id': $scope.modalOrder.id,
-    		'date_raw': $filter('date')(new Date(), 'ddMMyyyy'),
-    		'paid': 0
+
+    	if (payment) 
+    	{
+    		$scope.isOrderPaymentEditting = true;
+    		$scope.modalPayment = payment;
+    		$scope.modalPayment.date_raw = $filter('date')(new Date(payment.date), 'ddMMyyyy');
     	}
+    	else
+    	{
+    		$scope.isOrderPaymentEditting = false;
+	    	$scope.modalPayment = {
+	    		'order_id': $scope.modalOrder.id,
+	    		'date_raw': $filter('date')(new Date(), 'ddMMyyyy'),
+	    		'paid': 0
+    		};
+    	}
+
     	$scope.isPaymentModalShown = true;
 
     	$scope.isFullPaymentChosen = false;
+
+    	document.querySelector('body').classList.add('modal-open');
     }
 
 
     $scope.hidePaymentModal = function()
     {
     	$scope.isPaymentModalShown = false;
+
+    	document.querySelector('body').classList.remove('modal-open');
     }
 
 
@@ -795,14 +833,19 @@ angular.module('tctApp').controller('OrdersController', [
 		{
 			$scope.isSaving = false;
 
-			toastr.success('Платеж успешно внесен!');
+			toastr.success('Платеж успешно сохранен!');
 
-			if (!$scope.baseUrl)
+			$scope.hidePaymentModal();
+
+			if ($scope.baseUrl)
+			{
+				$scope.initShow();
+			}
+			else
 			{
 				$scope.loadOrders();
 			}
 
-			$scope.hidePaymentModal();
 		}, 
 		function(response) 
 		{
@@ -810,6 +853,37 @@ angular.module('tctApp').controller('OrdersController', [
             toastr.error('Произошла ошибка на сервере');
         });
     }
+
+
+   	$scope.modalOrders = [];
+
+	$scope.showPaidCostReportModal = function(product)
+	{
+		$scope.isModalLoading = true;
+		$scope.isPaidCostReportModalShown = true;
+		document.querySelector('body').classList.add('modal-open');
+
+		OrdersRepository.paidCostReport(function(response) 
+		{
+			$scope.isModalLoading = false;
+
+			$scope.modalOrders = response;
+		}, 
+		function(response) 
+		{
+            $scope.isModalLoading = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
+	}
+
+
+	$scope.hidePaidCostReportModal = function()
+	{
+		$scope.isPaidCostReportModalShown = false;
+		$scope.modalOrders = [];
+
+		document.querySelector('body').classList.remove('modal-open');
+	}
 
 
     $scope.loadExportFile = function(order) 

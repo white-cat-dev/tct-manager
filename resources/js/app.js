@@ -277,6 +277,7 @@ tctApp.factory('OrdersRepository', ['$resource', function($resource) {
 		saveRealization: { method: 'POST', url: '/orders/realization' },
 		savePayment: { method: 'POST', url: '/orders/payment' },
 		getDate: { method: 'POST', url: '/orders/date' },
+		paidCostReport: { method: 'GET', url: '/orders/paid-cost-report' },
 		query: { method: 'GET', url: '/orders' }
     });  
 }]);

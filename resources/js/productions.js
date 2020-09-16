@@ -799,7 +799,12 @@ angular.module('tctApp').controller('ProductionsController', [
 			$scope.modalProductOrders = response;
 
 			document.querySelector('body').classList.add('modal-open');
-		});
+		}, 
+		function(response) 
+		{
+            $scope.isModalLoading = false;
+            toastr.error('Произошла ошибка на сервере');
+        });
 	}
 
 

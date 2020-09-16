@@ -335,7 +335,7 @@
 			</div>
 		</div>
 
-		<div class="params-section" ng-if="id">
+		{{-- <div class="params-section" ng-if="id">
 			<div class="row justify-content-around">
 				<div class="col-5 col-xl-4">
 					<div class="params-title mb-4">История оплаты</div>
@@ -403,7 +403,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --}}
 
 		<div class="buttons-block">
 			<button class="btn btn-primary" ng-click="save()" ng-disabled="isSaving">

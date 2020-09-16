@@ -439,9 +439,9 @@
 
 
 					<div class="total-block" ng-if="chosenModalType == 'total'">
-						<div class="alert alert-warning" role="alert">
+						{{-- <div class="alert alert-warning" role="alert">
 							Не забудьте сохранить все изменения, прежде чем просматривать итоги
-						</div>
+						</div> --}}
 
 						<div class="block-title">
 							Оплата

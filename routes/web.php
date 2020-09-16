@@ -104,6 +104,8 @@ Route::middleware('auth')->group(function()
 		Route::post('payment', 'OrdersController@savePayment');
 		Route::post('date', 'OrdersController@getDate');
 
+		Route::get('paid-cost-report', 'OrdersController@paidCostReport')->name('orders-paid-cost-report');
+
 		Route::get('/', 'OrdersController@index')->name('orders');
 		Route::get('create', 'OrdersController@create')->name('order-create');
 		Route::get('{order}', 'OrdersController@show')->name('order-show');

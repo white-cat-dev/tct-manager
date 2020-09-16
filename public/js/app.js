@@ -81534,6 +81534,10 @@ tctApp.factory('OrdersRepository', ['$resource', function ($resource) {
       method: 'POST',
       url: '/orders/date'
     },
+    paidCostReport: {
+      method: 'GET',
+      url: '/orders/paid-cost-report'
+    },
     query: {
       method: 'GET',
       url: '/orders'
@@ -83388,71 +83392,85 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     }
   };
 
-  $scope.isRealizationModalShown = false;
   $scope.modalOrder = null;
+  $scope.isRealizationModalShown = false;
   $scope.isAllRealizationsChosen = false;
+  $scope.isOrderRealizationEditting = true;
 
-  $scope.showRealizationModal = function (order) {
-    $scope.modalOrder = order || $scope.order;
-    $scope.modalOrder.realization_date_raw = $filter('date')(new Date(), 'ddMMyyyy');
-    $scope.modalOrder.disabled_realizations = true;
-    $scope.isRealizationModalShown = true;
-    $scope.modalOrder.realizations = [];
-    var _iteratorNormalCompletion7 = true;
-    var _didIteratorError7 = false;
-    var _iteratorError7 = undefined;
+  $scope.showRealizationModal = function (order, realization) {
+    $scope.modalOrder = angular.copy(order || $scope.order);
 
-    try {
-      for (var _iterator7 = $scope.modalOrder.products[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-        product = _step7.value;
-        var planned = Math.round((product.progress.total - product.progress.realization) * 100) / 100;
-        var maxPerformed = product.in_stock < planned ? product.in_stock : planned;
+    if (realization) {
+      $scope.isOrderRealizationEditting = true;
+      $scope.modalOrder.realization_date_raw = $filter('date')(new Date(realization.date), 'ddMMyyyy');
+      $scope.modalOrder.disabled_realizations = false;
+      $scope.modalOrder.realizations = [angular.copy(realization)];
+    } else {
+      $scope.isOrderRealizationEditting = false;
+      $scope.modalOrder.realization_date_raw = $filter('date')(new Date(), 'ddMMyyyy');
+      $scope.modalOrder.disabled_realizations = true;
+      $scope.modalOrder.realizations = [];
+      var _iteratorNormalCompletion7 = true;
+      var _didIteratorError7 = false;
+      var _iteratorError7 = undefined;
+
+      try {
+        for (var _iterator7 = $scope.modalOrder.products[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+          product = _step7.value;
+          var planned = Math.round((product.progress.total - product.progress.realization) * 100) / 100;
+          var maxPerformed = product.in_stock < planned ? product.in_stock : planned;
+          $scope.modalOrder.realizations.push({
+            'order_id': $scope.modalOrder.id,
+            'product': product,
+            'planned': planned,
+            'performed': 0,
+            'max_performed': maxPerformed
+          });
+
+          if (maxPerformed > 0) {
+            $scope.modalOrder.disabled_realizations = false;
+          }
+        }
+      } catch (err) {
+        _didIteratorError7 = true;
+        _iteratorError7 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
+            _iterator7["return"]();
+          }
+        } finally {
+          if (_didIteratorError7) {
+            throw _iteratorError7;
+          }
+        }
+      }
+
+      if ($scope.modalOrder.pallets > 0) {
         $scope.modalOrder.realizations.push({
           'order_id': $scope.modalOrder.id,
-          'product': product,
-          'planned': planned,
+          'product': {
+            'id': 0
+          },
+          'planned': $scope.modalOrder.pallets_progress.planned,
           'performed': 0,
-          'max_performed': maxPerformed
+          'max_performed': $scope.modalOrder.pallets_progress.planned
         });
-
-        if (maxPerformed > 0) {
-          $scope.modalOrder.disabled_realizations = false;
-        }
       }
-    } catch (err) {
-      _didIteratorError7 = true;
-      _iteratorError7 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
-          _iterator7["return"]();
-        }
-      } finally {
-        if (_didIteratorError7) {
-          throw _iteratorError7;
-        }
+
+      if ($scope.modalOrder.pallets_progress.planned > 0) {
+        $scope.modalOrder.disabled_realizations = false;
       }
     }
 
-    $scope.modalOrder.realizations.push({
-      'order_id': $scope.modalOrder.id,
-      'product': {
-        'id': 0
-      },
-      'planned': $scope.modalOrder.pallets_progress.planned,
-      'performed': 0,
-      'max_performed': $scope.modalOrder.pallets_progress.planned
-    });
-
-    if ($scope.modalOrder.pallets_progress.planned > 0) {
-      $scope.modalOrder.disabled_realizations = false;
-    }
-
+    $scope.isRealizationModalShown = true;
     $scope.isAllRealizationsChosen = false;
+    document.querySelector('body').classList.add('modal-open');
   };
 
   $scope.hideRealizationModal = function () {
     $scope.isRealizationModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
   };
 
   $scope.chooseAllRealizations = function () {
@@ -83550,12 +83568,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     }, function (response) {
       $scope.isSaving = false;
       toastr.success('Выдача заказа успешно сохранена!');
+      $scope.hideRealizationModal();
 
-      if (!$scope.baseUrl) {
+      if ($scope.baseUrl) {
+        $scope.initShow();
+      } else {
         $scope.loadOrders();
       }
-
-      $scope.hideRealizationModal();
     }, function (response) {
       $scope.isSaving = false;
       toastr.error('Произошла ошибка на сервере');
@@ -83566,19 +83585,30 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   $scope.modalPayment = null;
   $scope.isFullPaymentChosen = false;
 
-  $scope.showPaymentModal = function (order) {
+  $scope.showPaymentModal = function (order, payment) {
     $scope.modalOrder = order || $scope.order;
-    $scope.modalPayment = {
-      'order_id': $scope.modalOrder.id,
-      'date_raw': $filter('date')(new Date(), 'ddMMyyyy'),
-      'paid': 0
-    };
+
+    if (payment) {
+      $scope.isOrderPaymentEditting = true;
+      $scope.modalPayment = payment;
+      $scope.modalPayment.date_raw = $filter('date')(new Date(payment.date), 'ddMMyyyy');
+    } else {
+      $scope.isOrderPaymentEditting = false;
+      $scope.modalPayment = {
+        'order_id': $scope.modalOrder.id,
+        'date_raw': $filter('date')(new Date(), 'ddMMyyyy'),
+        'paid': 0
+      };
+    }
+
     $scope.isPaymentModalShown = true;
     $scope.isFullPaymentChosen = false;
+    document.querySelector('body').classList.add('modal-open');
   };
 
   $scope.hidePaymentModal = function () {
     $scope.isPaymentModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
   };
 
   $scope.chooseFullPayment = function () {
@@ -83603,17 +83633,39 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     $scope.isSaving = true;
     OrdersRepository.savePayment($scope.modalPayment, function (response) {
       $scope.isSaving = false;
-      toastr.success('Платеж успешно внесен!');
+      toastr.success('Платеж успешно сохранен!');
+      $scope.hidePaymentModal();
 
-      if (!$scope.baseUrl) {
+      if ($scope.baseUrl) {
+        $scope.initShow();
+      } else {
         $scope.loadOrders();
       }
-
-      $scope.hidePaymentModal();
     }, function (response) {
       $scope.isSaving = false;
       toastr.error('Произошла ошибка на сервере');
     });
+  };
+
+  $scope.modalOrders = [];
+
+  $scope.showPaidCostReportModal = function (product) {
+    $scope.isModalLoading = true;
+    $scope.isPaidCostReportModalShown = true;
+    document.querySelector('body').classList.add('modal-open');
+    OrdersRepository.paidCostReport(function (response) {
+      $scope.isModalLoading = false;
+      $scope.modalOrders = response;
+    }, function (response) {
+      $scope.isModalLoading = false;
+      toastr.error('Произошла ошибка на сервере');
+    });
+  };
+
+  $scope.hidePaidCostReportModal = function () {
+    $scope.isPaidCostReportModalShown = false;
+    $scope.modalOrders = [];
+    document.querySelector('body').classList.remove('modal-open');
   };
 
   $scope.loadExportFile = function (order) {
@@ -84385,6 +84437,9 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
       $scope.isModalLoading = false;
       $scope.modalProductOrders = response;
       document.querySelector('body').classList.add('modal-open');
+    }, function (response) {
+      $scope.isModalLoading = false;
+      toastr.error('Произошла ошибка на сервере');
     });
   };
 
@@ -84889,6 +84944,9 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     }, function (response) {
       $scope.isModalLoading = false;
       $scope.modalProductOrders = response;
+    }, function (response) {
+      $scope.isModalLoading = false;
+      toastr.error('Произошла ошибка на сервере');
     });
   };
 

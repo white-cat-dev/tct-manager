@@ -256,6 +256,7 @@ button:focus,
 .form-control:focus {
 	outline: none !important;
 	box-shadow: none !important;
+    border-color: $primary;
 }
 
 .form-control:disabled {
