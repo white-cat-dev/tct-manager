@@ -303,19 +303,19 @@ class ProductionsController extends Controller
         $updatedDates = $updatedDates->unique();
         $updatedProducts = $updatedProducts->unique('id');
 
-        foreach ($updatedProducts as $product)
-        {
-            $baseProduction = $product->getBaseProduction();
+        // foreach ($updatedProducts as $product)
+        // {
+        //     $baseProduction = $product->getBaseProduction();
 
-            if ($baseProduction)
-            {
-                $baseProduction->update([
-                    'performed' => ($product->in_stock > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $product->in_stock
-                ]);
+        //     if ($baseProduction)
+        //     {
+        //         $baseProduction->update([
+        //             'performed' => ($product->in_stock > $baseProduction->auto_planned) ? $baseProduction->auto_planned : $product->in_stock
+        //         ]);
 
-                ProductionsService::getInstance()->replanProduct($product);
-            }
-        }
+        //         ProductionsService::getInstance()->replanProduct($product);
+        //     }
+        // }
 
         foreach ($updatedDates as $updatedDate) 
         {

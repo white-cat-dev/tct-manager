@@ -396,17 +396,18 @@ class OrdersController extends Controller
             if ($realization->product)
             {
                 $product = $realization->product;
-                $product->updateInStock($product->in_stock - $realizationPerformed, 'realization', $realization);
 
                 $baseProduction = $product->getBaseProduction();
 
                 if ($baseProduction)
                 {
                     $baseProduction->update([
-                        'auto_planned' => ($baseProduction->auto_planned > $realization->performed) ? ($baseProduction->auto_planned - $realization->performed) : 0,
-                        'performed' => ($baseProduction->performed > $realization->performed) ? ($baseProduction->performed - $realization->performed) : 0
+                        'auto_planned' => ($baseProduction->auto_planned > $realizationPerformed) ? ($baseProduction->auto_planned - $realizationPerformed) : 0,
+                        'performed' => ($baseProduction->performed > $realizationPerformed) ? ($baseProduction->performed - $realizationPerformed) : 0
                     ]);
                 }
+                
+                $product->updateInStock($product->in_stock - $realizationPerformed, 'realization', $realization);
             }
 
             $order = $realization->order;
