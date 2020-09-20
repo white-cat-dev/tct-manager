@@ -84885,8 +84885,6 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     }
   };
 
-  $scope.modalProductOrders = [];
-
   $scope.showProductStockModal = function (productGroup, productNum) {
     $scope.isModalLoading = true;
     $scope.isProductStockModalShown = true;

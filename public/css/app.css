@@ -13103,6 +13103,7 @@ i.far {
 
 .products-page .main-table .btn-link-block {
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .products-page .main-table .btn-link-block:hover {
@@ -13296,8 +13297,6 @@ i.far {
 .product-stock-modal .product-name {
   margin-bottom: 10px;
   font-weight: 500;
-  border-bottom: solid 1px #dadada;
-  padding-bottom: 10px;
 }
 
 .product-stock-modal .product-color {
