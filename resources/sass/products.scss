@@ -138,6 +138,28 @@
 		    }
 		}
 
+		.btn-link-block {
+			cursor: pointer;	
+
+			&:hover {
+				color: $primary;
+
+				.btn-link {
+					opacity: 1;
+				}
+			}
+
+			& > span {
+				vertical-align: bottom;
+			}
+			.btn-link {
+				display: inline;
+				vertical-align: bottom;
+				opacity: 0;
+				transition: 0.3s;
+			}
+		}
+
 		.edit-field {
 			cursor: pointer;
 			position: relative;
@@ -312,5 +334,51 @@
 
 	.custom-control-inline {
 		margin-bottom: 5px;
+	}
+}
+
+
+.product-stock-modal {
+	.product-name {
+		margin-bottom: 10px;
+		font-weight: 500;
+		border-bottom: solid 1px darken($grey, 10%);
+		padding-bottom: 10px;
+	}
+
+	.product-color {
+		color: darken($grey, 35%);
+		font-weight: 400;
+	}
+
+	.table {
+		margin-bottom: 0px;
+	}
+
+	.form-group-units {
+		position: relative;
+
+		.form-control {
+			background: transparent;
+			z-index: 1;
+    		position: relative;
+
+			&:focus {
+				background: transparent;
+			}
+		}
+
+		.units {
+	    	position: absolute;
+		    top: 12px;
+		    left: 13px;
+		    color: transparent;
+		    z-index: 0;
+		    line-height: 100%;
+
+		    & > span {
+		    	color: darken($grey, 50%);
+		    }
+	    }
 	}
 }

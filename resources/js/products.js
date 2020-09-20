@@ -472,6 +472,51 @@ angular.module('tctApp').controller('ProductsController', [
 	}
 
 
+	$scope.showProductStockModal = function(productGroup, productNum)
+	{
+		$scope.isModalLoading = true;
+		$scope.isProductStockModalShown = true;
+		$scope.modalProductGroup = angular.copy(productGroup);
+		$scope.modalProduct = $scope.modalProductGroup.products[productNum];
+		$scope.modalProduct.old_in_stock = $scope.modalProduct.in_stock;
+	}
+
+
+	$scope.hideProductStockModal = function()
+	{
+		$scope.isProductStockModalShown = false;
+	}
+
+
+	$scope.saveProductStock = function()
+	{
+		$scope.isSaving = true;
+
+		ProductsRepository.save({id: $scope.modalProductGroup.id}, $scope.modalProductGroup, function(response) 
+		{
+			$scope.isSaving = false;
+
+			toastr.success('Изменения успешно сохранены!');
+
+			$scope.hideProductStockModal();
+
+			if ($scope.baseUrl)
+			{
+				$scope.initShow();
+			}
+			else
+			{
+				$scope.init();
+			}
+		}, 
+		function(response) 
+		{
+			$scope.isSaving = false;
+			toastr.error('Произошла ошибка на сервере');
+        });
+	}
+
+
 	$scope.saveEditField = function(groupNum, num, key) 
 	{
 		var productGroup = $scope.productGroups[groupNum];
@@ -500,6 +545,7 @@ angular.module('tctApp').controller('ProductsController', [
 		}, 
 		function(response) 
 		{
+			toastr.error('Произошла ошибка на сервере');
         });
 	}
 
@@ -518,6 +564,7 @@ angular.module('tctApp').controller('ProductsController', [
 		}, 
 		function(response) 
 		{
+			toastr.error('Произошла ошибка на сервере');
         });
 	}
 

@@ -84885,6 +84885,40 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     }
   };
 
+  $scope.modalProductOrders = [];
+
+  $scope.showProductStockModal = function (productGroup, productNum) {
+    $scope.isModalLoading = true;
+    $scope.isProductStockModalShown = true;
+    $scope.modalProductGroup = angular.copy(productGroup);
+    $scope.modalProduct = $scope.modalProductGroup.products[productNum];
+    $scope.modalProduct.old_in_stock = $scope.modalProduct.in_stock;
+  };
+
+  $scope.hideProductStockModal = function () {
+    $scope.isProductStockModalShown = false;
+  };
+
+  $scope.saveProductStock = function () {
+    $scope.isSaving = true;
+    ProductsRepository.save({
+      id: $scope.modalProductGroup.id
+    }, $scope.modalProductGroup, function (response) {
+      $scope.isSaving = false;
+      toastr.success('Изменения успешно сохранены!');
+      $scope.hideProductStockModal();
+
+      if ($scope.baseUrl) {
+        $scope.initShow();
+      } else {
+        $scope.init();
+      }
+    }, function (response) {
+      $scope.isSaving = false;
+      toastr.error('Произошла ошибка на сервере');
+    });
+  };
+
   $scope.saveEditField = function (groupNum, num, key) {
     var productGroup = $scope.productGroups[groupNum];
     var product = productGroup.products[num];
@@ -84924,7 +84958,9 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
           }
         }
       }
-    }, function (response) {});
+    }, function (response) {
+      toastr.error('Произошла ошибка на сервере');
+    });
   };
 
   $scope.loadExportFile = function () {
@@ -84935,7 +84971,9 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     };
     ExportsRepository.products(request, function (response) {
       document.location.href = response.file;
-    }, function (response) {});
+    }, function (response) {
+      toastr.error('Произошла ошибка на сервере');
+    });
   };
 
   $scope.modalProductOrders = [];

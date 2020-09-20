@@ -13101,6 +13101,29 @@ i.far {
   padding: 20px 12px 12px 12px;
 }
 
+.products-page .main-table .btn-link-block {
+  cursor: pointer;
+}
+
+.products-page .main-table .btn-link-block:hover {
+  color: #276090;
+}
+
+.products-page .main-table .btn-link-block:hover .btn-link {
+  opacity: 1;
+}
+
+.products-page .main-table .btn-link-block > span {
+  vertical-align: bottom;
+}
+
+.products-page .main-table .btn-link-block .btn-link {
+  display: inline;
+  vertical-align: bottom;
+  opacity: 0;
+  transition: 0.3s;
+}
+
 .products-page .main-table .edit-field {
   cursor: pointer;
   position: relative;
@@ -13268,6 +13291,49 @@ i.far {
 
 .product-stocks-block .custom-control-inline {
   margin-bottom: 5px;
+}
+
+.product-stock-modal .product-name {
+  margin-bottom: 10px;
+  font-weight: 500;
+  border-bottom: solid 1px #dadada;
+  padding-bottom: 10px;
+}
+
+.product-stock-modal .product-color {
+  color: #9a9a9a;
+  font-weight: 400;
+}
+
+.product-stock-modal .table {
+  margin-bottom: 0px;
+}
+
+.product-stock-modal .form-group-units {
+  position: relative;
+}
+
+.product-stock-modal .form-group-units .form-control {
+  background: transparent;
+  z-index: 1;
+  position: relative;
+}
+
+.product-stock-modal .form-group-units .form-control:focus {
+  background: transparent;
+}
+
+.product-stock-modal .form-group-units .units {
+  position: absolute;
+  top: 12px;
+  left: 13px;
+  color: transparent;
+  z-index: 0;
+  line-height: 100%;
+}
+
+.product-stock-modal .form-group-units .units > span {
+  color: #747474;
 }
 
 .materials-page {

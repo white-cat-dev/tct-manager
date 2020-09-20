@@ -113,22 +113,27 @@
 				</td>
 				<td style="width: 12%;">
 					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
-						<div ng-repeat="(productNum, product) in productGroup.products">
-							<div class="edit-field" ng-init="product.new_in_stock = product.in_stock">
-								<input type="text" class="form-control" ng-model="product.new_in_stock" ng-blur="saveEditField(productGroupNum, productNum, 'in_stock')" ng-keypress="inputKeyPressed($event)" ng-change="inputFloat(product, 'new_in_stock')">
-								<span class="units">
-									@{{ product.new_in_stock }}
-									<span ng-bind-html="product.units_text"></span>
-								</span>
-							</div>
+						<div ng-repeat="(productNum, product) in productGroup.products" class="btn-link-block" ng-click="showProductStockModal(productGroup, productNum)">
+							<span>
+								@{{ product.in_stock }}
+								<span ng-bind-html="product.units_text"></span>
+							</span>
+							<button type="button" class="btn btn-link">
+								<i class="fas fa-pencil-alt"></i>
+							</button>
 						</div>
 					</div>
 				</td>
 				<td style="width: 12%;">
 					<div class="products-list" ng-class="{'shown': isProductsListShown || productGroup.products.length <= 3}">
-						<div ng-repeat="product in productGroup.products" class="pointer-col" ng-click="showProductOrdersModal(product)">
-							@{{ product.planned }} 
-							<span ng-bind-html="product.units_text"></span>
+						<div ng-repeat="product in productGroup.products" class="btn-link-block" ng-click="showProductOrdersModal(product)">
+							<span>
+								@{{ product.planned }} 
+								<span ng-bind-html="product.units_text"></span>
+							</span>
+							<button type="button" class="btn btn-link">
+								<i class="far fa-question-circle"></i>
+							</button>
 						</div>
 					</div>
 				</td>
@@ -232,4 +237,5 @@
 
 	@include('partials.delete-modal')
 	@include('partials/product-orders-modal')
+	@include('partials/product-stock-modal')
 </div>
