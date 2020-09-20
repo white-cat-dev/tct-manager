@@ -267,25 +267,25 @@
 						@{{ worker.name }}
 					</td>
 					<td>
-						@{{ worker.salary.employments | number }} руб.
+						@{{ worker.salary.employments | number }} руб
 					</td>
 					<td>
-						@{{ worker.salary.advance | number }} руб.
+						@{{ worker.salary.advance | number }} руб
 					</td>
 					<td>
-						@{{ worker.salary.tax | number }} руб.
+						@{{ worker.salary.tax | number }} руб
 					</td>
 					<td>
-						@{{ worker.salary.lunch | number }} руб.
+						@{{ worker.salary.lunch | number }} руб
 					</td>
 					<td>
-						@{{ worker.salary.bonus | number }} руб.
+						@{{ worker.salary.bonus | number }} руб
 					</td>
 					<td>
-						@{{ worker.salary.surcharge | number }} руб.
+						@{{ worker.salary.surcharge | number }} руб
 					</td>
 					<td>
-						@{{ (worker.salary.employments - worker.salary.advance - worker.salary.tax - worker.salary.lunch + +worker.salary.bonus + +worker.salary.surcharge) | number }} руб.
+						@{{ (worker.salary.employments - worker.salary.advance - worker.salary.tax - worker.salary.lunch + +worker.salary.bonus + +worker.salary.surcharge) | number }} руб
 					</td>
 					<td>
 						@if (Auth::user() && Auth::user()->type == 'admin')
@@ -300,25 +300,25 @@
 						@{{ manager.name }}
 					</td>
 					<td>
-						@{{ manager.salary.employments | number }} руб.
+						@{{ manager.salary.employments | number }} руб
 					</td>
 					<td>
-						@{{ manager.salary.advance | number }} руб.
+						@{{ manager.salary.advance | number }} руб
 					</td>
 					<td>
-						@{{ manager.salary.tax | number }} руб.
+						@{{ manager.salary.tax | number }} руб
 					</td>
 					<td>
-						@{{ manager.salary.lunch | number }} руб.
+						@{{ manager.salary.lunch | number }} руб
 					</td>
 					<td>
-						@{{ manager.salary.bonus | number }} руб.
+						@{{ manager.salary.bonus | number }} руб
 					</td>
 					<td>
-						@{{ manager.salary.surcharge | number }} руб.
+						@{{ manager.salary.surcharge | number }} руб
 					</td>
 					<td>
-						@{{ (manager.salary.employments - manager.salary.advance - manager.salary.tax - manager.salary.lunch + +manager.salary.bonus + +manager.salary.surcharge) | number }} руб.
+						@{{ (manager.salary.employments - manager.salary.advance - manager.salary.tax - manager.salary.lunch + +manager.salary.bonus + +manager.salary.surcharge) | number }} руб
 					</td>
 					<td>
 						@if (Auth::user() && Auth::user()->type == 'admin')
@@ -333,25 +333,25 @@
 						Итого:
 					</td>
 					<td>
-						@{{ totalSalary.employments | number }} руб.
+						@{{ totalSalary.employments | number }} руб
 					</td>
 					<td>
-						@{{ totalSalary.advance | number }} руб.
+						@{{ totalSalary.advance | number }} руб
 					</td>
 					<td>
-						@{{ totalSalary.tax | number }} руб.
+						@{{ totalSalary.tax | number }} руб
 					</td>
 					<td>
-						@{{ totalSalary.lunch | number }} руб.
+						@{{ totalSalary.lunch | number }} руб
 					</td>
 					<td>
-						@{{ totalSalary.bonus | number }} руб.
+						@{{ totalSalary.bonus | number }} руб
 					</td>
 					<td>
-						@{{ totalSalary.surcharge | number }} руб.
+						@{{ totalSalary.surcharge | number }} руб
 					</td>
 					<td>
-						@{{ (totalSalary.employments - totalSalary.advance - totalSalary.tax - totalSalary.lunch + +totalSalary.bonus + +totalSalary.surcharge) | number }} руб.
+						@{{ (totalSalary.employments - totalSalary.advance - totalSalary.tax - totalSalary.lunch + +totalSalary.bonus + +totalSalary.surcharge) | number }} руб
 					</td>
 					<td></td>
 				</tr>
@@ -372,44 +372,81 @@
 				</div>
 
 				<div class="modal-body">
-					<div class="form-group">
-						<div class="param-label">Работник</div>
-						<div class="param-value">
-							@{{ modalWorker.name }}
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="param-label">Зарплата по графику</div>
-						<div class="param-value">
-							@{{ modalWorker.salary.employments | number }} руб.
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="param-label">Аванс</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.advance" ng-change="inputFloat(modalWorker.salary, 'advance')"> руб
-					</div>
-					<div class="form-group">
-						<div class="param-label">Налоги</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.tax" ng-change="inputFloat(modalWorker.salary, 'tax')"> руб
-					</div>
-					<div class="form-group">
-						<div class="param-label">Обед</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.lunch" ng-change="inputFloat(modalWorker.salary, 'lunch')"> руб
-					</div>
-					<div class="form-group">
-						<div class="param-label">Премия</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.bonus" ng-change="inputFloat(modalWorker.salary, 'bonus')"> руб
-					</div>
-					<div class="form-group">
-						<div class="param-label">Доплата</div>
-						<input type="text" class="form-control" ng-model="modalWorker.salary.surcharge" ng-change="inputFloat(modalWorker.salary, 'surcharge')"> руб
-					</div>
-					<div class="form-group">
-						<div class="param-label">Итого</div>
-						<div class="param-value">
-							@{{ (modalWorker.salary.employments - modalWorker.salary.advance - modalWorker.salary.tax - modalWorker.salary.lunch + +modalWorker.salary.bonus + +modalWorker.salary.surcharge) | number }} руб.
-						</div>
-					</div>
+					<table class="table">
+						<tr>
+							<td>Работник</td>
+							<td>
+								@{{ modalWorker.name }}
+							</td>
+						</tr>
+						<tr>
+							<td>Зарплата по графику</td>
+							<td>
+								@{{ modalWorker.salary.employments | number }} руб
+							</td>
+						</tr>
+						<tr>
+							<td>Аванс</td>
+							<td>
+								<div class="form-group-units">
+									<input type="text" class="form-control form-control-sm" ng-model="modalWorker.salary.advance" ng-change="inputFloat(modalWorker.salary, 'advance')">
+									<div class="units">
+										@{{ modalWorker.salary.advance }} <span>руб</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Налоги</td>
+							<td>
+								<div class="form-group-units">
+									<input type="text" class="form-control form-control-sm" ng-model="modalWorker.salary.tax" ng-change="inputFloat(modalWorker.salary, 'tax')">
+									<div class="units">
+										@{{ modalWorker.salary.tax }} <span>руб</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Обед</td>
+							<td>
+								<div class="form-group-units">
+									<input type="text" class="form-control form-control-sm" ng-model="modalWorker.salary.lunch" ng-change="inputFloat(modalWorker.salary, 'lunch')">
+									<div class="units">
+										@{{ modalWorker.salary.lunch }} <span>руб</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Премия</td>
+							<td>
+								<div class="form-group-units">
+									<input type="text" class="form-control form-control-sm" ng-model="modalWorker.salary.bonus" ng-change="inputFloat(modalWorker.salary, 'bonus')">
+									<div class="units">
+										@{{ modalWorker.salary.bonus }} <span>руб</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Доплата</td>
+							<td>
+								<div class="form-group-units">
+									<input type="text" class="form-control form-control-sm" ng-model="modalWorker.salary.surcharge" ng-change="inputFloat(modalWorker.salary, 'surcharge')">
+									<div class="units">
+										@{{ modalWorker.salary.surcharge }} <span>руб</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Итого</td>
+							<td>
+								@{{ (modalWorker.salary.employments - modalWorker.salary.advance - modalWorker.salary.tax - modalWorker.salary.lunch + +modalWorker.salary.bonus + +modalWorker.salary.surcharge) | number }} руб
+							</td>
+						</tr>
+					</table>
 				</div>
 
 				<div class="modal-footer">

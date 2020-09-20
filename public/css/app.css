@@ -15431,15 +15431,45 @@ i.far {
   font-size: 18px;
 }
 
-.employments-page .salary-modal .param-label {
-  font-weight: 500;
-  margin-bottom: 5px;
+.employments-page .salary-modal .table {
+  margin-bottom: 0px;
 }
 
-.employments-page .salary-modal .form-control {
-  display: inline-block;
-  width: 200px;
-  margin-right: 5px;
+.employments-page .salary-modal .table td:first-child {
+  font-weight: 500;
+  color: #343434;
+}
+
+.employments-page .salary-modal .table tr:first-child td {
+  border-top: none;
+}
+
+.employments-page .salary-modal .form-group-units {
+  position: relative;
+}
+
+.employments-page .salary-modal .form-group-units .form-control {
+  background: transparent;
+  z-index: 1;
+  position: relative;
+  font-size: 16px;
+}
+
+.employments-page .salary-modal .form-group-units .form-control:focus {
+  background: transparent;
+}
+
+.employments-page .salary-modal .form-group-units .units {
+  position: absolute;
+  top: 10px;
+  left: 9px;
+  color: transparent;
+  z-index: 0;
+  line-height: 100%;
+}
+
+.employments-page .salary-modal .form-group-units .units > span {
+  color: #747474;
 }
 
 .employments-page .employment-modal .table {

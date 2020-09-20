@@ -270,7 +270,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 	$scope.showSalaryModal = function(worker)
 	{
-		$scope.modalWorker = worker;
+		$scope.modalWorker = angular.copy(worker);
 		$scope.isSalaryModalShown = true;
 
 		document.querySelector('body').classList.add('modal-open');

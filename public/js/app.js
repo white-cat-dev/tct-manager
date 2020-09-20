@@ -82059,7 +82059,7 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
   $scope.modalWorker = {};
 
   $scope.showSalaryModal = function (worker) {
-    $scope.modalWorker = worker;
+    $scope.modalWorker = angular.copy(worker);
     $scope.isSalaryModalShown = true;
     document.querySelector('body').classList.add('modal-open');
   };
@@ -84793,7 +84793,12 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       }
     }
 
-    $scope.loadProducts();
+    var request = {
+      'category': $scope.productGroup.category_id
+    };
+    ProductsRepository.query(request, function (response) {
+      $scope.productGroups = response;
+    });
   };
 
   $scope.addProduct = function () {
@@ -84978,7 +84983,6 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       request.month = $scope.stocksCurrentDate.month;
     }
 
-    console.log(request);
     $scope.isStocksLoading = true;
     ProductsRepository.stocks(request, function (response) {
       $scope.isStocksLoading = false;

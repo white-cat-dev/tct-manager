@@ -380,7 +380,14 @@ angular.module('tctApp').controller('ProductsController', [
 			}
 		}
 
-		$scope.loadProducts();
+		var request = {
+			'category': $scope.productGroup.category_id
+		};
+
+		ProductsRepository.query(request, function(response) 
+		{
+			$scope.productGroups = response;
+		});
 	}
 
 
@@ -570,7 +577,6 @@ angular.module('tctApp').controller('ProductsController', [
 		{
 			request.month = $scope.stocksCurrentDate.month;
 		}
-		console.log(request);
 
     	$scope.isStocksLoading = true;
 

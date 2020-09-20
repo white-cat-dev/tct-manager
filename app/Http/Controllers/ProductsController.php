@@ -68,6 +68,7 @@ class ProductsController extends Controller
         {
             $productGroup->products = $productGroup->products;
             $productGroup->category = $productGroup->category;
+            $productGroup->recipe = $productGroup->recipe;
 
             return $productGroup;
         }

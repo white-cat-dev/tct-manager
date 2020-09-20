@@ -376,16 +376,46 @@
  			font-weight: 500;
  			font-size: 18px;
  		}
- 		.param-label {
- 			font-weight: 500;
- 			margin-bottom: 5px;
+
+ 		.table {
+ 			margin-bottom: 0px;
+
+ 			td:first-child {
+ 				font-weight: 500;
+ 				color: darken($grey, 75%);
+ 			}
+ 			tr:first-child td {
+ 				border-top: none;
+ 			}
  		}
 
- 		.form-control {
- 			display: inline-block;
- 			width: 200px;
- 			margin-right: 5px;
- 		}
+ 		.form-group-units {
+			position: relative;
+
+			.form-control {
+				background: transparent;
+				z-index: 1;
+	    		position: relative;
+	    		font-size: 16px;
+
+				&:focus {
+					background: transparent;
+				}
+			}
+
+			.units {
+		    	position: absolute;
+			    top: 10px;
+			    left: 9px;
+			    color: transparent;
+			    z-index: 0;
+			    line-height: 100%;
+
+			    & > span {
+			    	color: darken($grey, 50%);
+			    }
+		    }
+		}
  	}
 
  	.employment-modal {
