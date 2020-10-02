@@ -188,14 +188,17 @@ class EmploymentsController extends Controller
                 }
                 else
                 {
-                    $employment = Employment::create([
-                        'date' => $date,
-                        'worker_id' => $employmentData['worker_id'],
-                        'status_id' => $employmentData['status_id'],
-                        'status_custom' => $employmentData['status_custom'],
-                        'main_category' => $employmentData['main_category'] ? $employmentData['main_category'] : 'tiles',
-                        'salary' => 0
-                    ]);
+                    if ($employmentData['status_id'] > 0)
+                    {
+                        $employment = Employment::create([
+                            'date' => $date,
+                            'worker_id' => $employmentData['worker_id'],
+                            'status_id' => $employmentData['status_id'],
+                            'status_custom' => $employmentData['status_custom'],
+                            'main_category' => $employmentData['main_category'] ? $employmentData['main_category'] : 'tiles',
+                            'salary' => 0
+                        ]);
+                    }
                 }
             }
         }
