@@ -87,7 +87,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 			{
 				for (i in worker.employments)
 				{
-					if (worker.employments[i].status_id >= 0)
+					if (worker.employments[i].status_id > 0)
 					{
 						employments.push(worker.employments[i]);
 					}
@@ -97,7 +97,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 		for (i in $scope.manager.employments)
 		{
-			if ($scope.manager.employments[i].status_id >= 0)
+			if ($scope.manager.employments[i].status_id > 0)
 			{
 				employments.push($scope.manager.employments[i]);
 			}
