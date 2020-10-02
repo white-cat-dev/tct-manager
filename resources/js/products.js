@@ -207,12 +207,7 @@ angular.module('tctApp').controller('ProductsController', [
             switch (response.status) 
             {
             	case 422:
-            		toastr.error('Проверьте введенные данные');
             		$scope.productGroupErrors = response.data.errors;
-            		break
-
-            	default:
-            		toastr.error('Произошла ошибка на сервере');
             		break;
             }
         });

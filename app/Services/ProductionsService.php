@@ -92,6 +92,11 @@ class ProductionsService
 
     public function planOrder($order)
     {
+        if ($order->status == Order::STATUS_FINISHED)
+        {
+            return;
+        }
+
         foreach ($order->products as $product)
         {
             $this->planOrderProduct($order, $product);

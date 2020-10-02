@@ -44,6 +44,7 @@ angular.module('tctApp').controller('OrdersController', [
 		'weight': 0,
 		'pallets': 0,
 		'pallets_price': 200,
+		'pallets_realization_performed': 0,
 		'priority': '1',
 		'delivery': '',
 		'delivery_distance': 0,
@@ -167,17 +168,17 @@ angular.module('tctApp').controller('OrdersController', [
 					$scope.order.priority = '' + $scope.order.priority;
 				}
 
-				for (payment of $scope.order.payments)
-				{
-					var date = payment.date.split("-");
-					payment.date_raw = date[2] + date[1] + date[0];
-				}
+				// for (payment of $scope.order.payments)
+				// {
+				// 	var date = payment.date.split("-");
+				// 	payment.date_raw = date[2] + date[1] + date[0];
+				// }
 
-				for (realization of $scope.order.realizations)
-				{
-					var date = realization.date.split("-");
-					realization.date_raw = date[2] + date[1] + date[0];
-				}
+				// for (realization of $scope.order.realizations)
+				// {
+				// 	var date = realization.date.split("-");
+				// 	realization.date_raw = date[2] + date[1] + date[0];
+				// }
 
 				ProductsRepository.query(function(response) 
 				{
@@ -451,7 +452,8 @@ angular.module('tctApp').controller('OrdersController', [
 			'pivot': {
 				'price': 0,
 				'count': 0,
-				'cost': 0
+				'cost': 0,
+				'realization_performed': 0
 			}
 		});
 	}
@@ -474,6 +476,10 @@ angular.module('tctApp').controller('OrdersController', [
 			productData.pivot.price = 0;
 		}
 
+		productData.product_group = {
+			'name': productGroup.name,
+			'size': productGroup.size
+		};
 		productData.category = productGroup.category;
 		productData.weight_unit = productGroup.weight_unit;
 		productData.unit_in_units = productGroup.unit_in_units;
@@ -504,6 +510,7 @@ angular.module('tctApp').controller('OrdersController', [
 		productData.price = product.price;
 		productData.price_cashless = product.price_cashless;
 		productData.price_vat = product.price_vat;
+		productData.variation_noun_text = product.variation_noun_text;
 
 		$scope.updateOrderInfo();
 	}
@@ -516,12 +523,14 @@ angular.module('tctApp').controller('OrdersController', [
 		$scope.order.pallets = 0;
 		$scope.order.main_category = '';
 
-		$scope.isAllRealizationsActive = true;
+		$scope.isOrderAllRealizationsActive = true;
+		$scope.isOrderPartRealizationsActive = false;
 
 		for (product of $scope.order.products) 
 		{
 			if (!product.id)
 			{
+				$scope.isOrderAllRealizationsActive = false;
 				continue;
 			}
 
@@ -556,11 +565,31 @@ angular.module('tctApp').controller('OrdersController', [
 				$scope.order.main_category = product.category.main_category;
 			}
 
+			$scope.isOrderPartRealizationsActive = true;
+
 			if (product.pivot.count > product.in_stock)
 			{
-				$scope.isAllRealizationsActive = false;
-				$scope.order.all_realizations = false;
+				$scope.isOrderAllRealizationsActive = false;
+				$scope.isOrderAllRealizationsChosen = false;
 			}
+
+			if ($scope.isOrderAllRealizationsChosen)
+			{
+				product.pivot.realization_performed = product.pivot.count;
+			}
+			else if (!$scope.isOrderPartRealizationsChosen)
+			{
+				product.pivot.realization_performed = 0;
+			}
+		}
+
+		if ($scope.isOrderAllRealizationsChosen)
+		{
+			$scope.order.pallets_realization_performed = $scope.order.pallets;
+		}
+		else if (!$scope.isOrderPartRealizationsChosen)
+		{
+			$scope.order.pallets_realization_performed = 0;
 		}
 
 		$scope.order.pallets_price = $scope.palletsPrices[$scope.order.pay_type];
@@ -613,6 +642,8 @@ angular.module('tctApp').controller('OrdersController', [
 		{
 			$scope.order.paid = $scope.order.cost;
 		}
+
+		console.log($scope.order.products);
     }
 
 
@@ -753,6 +784,24 @@ angular.module('tctApp').controller('OrdersController', [
             $scope.isSaving = false;
             toastr.error('Произошла ошибка на сервере');
         });
+    }
+
+
+    $scope.isOrderAllRealizationsChosen = false;
+
+
+    $scope.chooseOrderRealizations = function(allRealizations)
+    {
+    	if (allRealizations && $scope.isOrderAllRealizationsChosen)
+    	{
+    		$scope.isOrderPartRealizationsChosen = false;
+    	}
+    	else if (!allRealizations && $scope.isOrderPartRealizationsChosen)
+    	{
+    		$scope.isOrderAllRealizationsChosen = false;
+    	}
+
+    	$scope.updateOrderInfo();
     }
 
 

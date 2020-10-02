@@ -17,6 +17,271 @@ var tctApp = angular.module('tctApp', [
 	'datePicker'
 ]);
 
+// tctApp.config(['$httpProvider', function($httpProvider) {
+//     $httpProvider.useApplyAsync(true);
+
+//     $httpProvider.interceptors.push(['$rootScope', '$q', '$location', function ($rootScope, $q, $location) {
+//     	return {
+// 			responseError: function (response) {
+// 				console.log(111111111111111);
+// 				switch (response.status)
+// 				{	
+// 					case -1:
+// 						toastr.error('Проверьте подключение к Интернету');
+// 						break;
+
+// 					case 301:
+// 					case 302:
+// 						$location.url('/');
+// 						toastr.error('Страница перемещена');
+// 						break;
+
+// 					case 401:
+// 					case 403:
+// 					case 419:
+// 						// $window.location.reload();
+// 						toastr.error('Ваша сессия истекла, обновите страницу');
+// 						break;
+
+// 					case 422:
+//             			toastr.error('Проверьте введенные данные');
+//             			break;
+
+// 					case 404:
+// 						$location.url('/');
+// 						toastr.error('Страница не найдена');
+// 						break;
+
+// 					case 500:
+// 						toastr.error('Произошла ошибка на сервере, сообщите разработчику');
+// 						break;
+
+// 					default:
+// 						toastr.error('Произошла неизвестная ошибка, сообщите разработчику код ответа - ' + response.status);
+// 						break;
+// 				}
+// 				return response;
+// 			}
+//       	};
+//     }]);
+// }]);
+
+tctApp.factory('$page', ['cfpLoadingBar', function (cfpLoadingBar) {
+    var title = '', _title = title;
+    var doc = angular.element(window.document)[0];
+
+    var page = {
+        status: {},
+        key: '',
+        subKey: '',
+        isInitialized: false,
+        initialized: function(){
+          page.isInitialized = true;
+        },
+        isForbidden: false,
+        isNotFound: false,
+        isUnauthorized: false,
+        isSuccess: true,
+        forbidden: function(){
+          page.isForbidden = true;
+          page.isSuccess = false;
+          page.setTitle(trans('access_denied'));
+        },
+        notfound: function(){
+          page.isNotFound = true;
+          page.isSuccess = false;
+          page.setTitle(trans('page_not_found'));
+        },
+        unauthorized: function(){
+          page.isUnauthorized = true;
+          page.isSuccess = false;
+          page.setTitle(trans('authentication'));
+        },
+        clear: function(){
+          page.isSuccess = true;
+          page.isForbidden = false;
+          page.isNotFound = false;
+          page.isUnauthorized = false;
+          page.resetTitle();
+          page.clearErrors();
+          toastr.clear();
+        },
+
+        handleError: function(response) {
+            switch (response.status)
+            {
+              case 422:
+              case 429:
+                console.log(response);
+                page.errors = response.data.errors;
+                page.hasErrors = true;
+                if (!page.isUnauthorized && response.data.message)
+                {
+                  if (response.data.message == 'The given data was invalid.')
+                  {
+                    toastr.error('Введенные данные содержат ошибки');
+                  }
+                  else
+                  {
+                    toastr.error(response.data.message);
+                  }
+                }
+                break;
+
+              case 409:
+                toastr.error('Данные не были сохранены из-за конфликта с другими изменениями за время текущего редактирования');
+                break;
+            }
+        },
+        errors: {},
+        hasErrors: false,
+        clearErrors: function() {
+          page.errors = {};
+          page.hasErrors = false;
+        },
+        isLoading: false,
+        loading: function() {
+          page.isLoading = true;
+          cfpLoadingBar.start();
+          doc.title = trans('page_loading');
+        },
+        finished: function() {
+          page.isLoading = false;
+          cfpLoadingBar.complete();
+          doc.title = title;
+        },
+        title: function() {
+          return _title;
+        },
+        setTitle: function(someTitle) {
+          _title = someTitle;
+          doc.title = _title;
+        },
+        resetTitle: function() {
+          _title = title;
+          doc.title = _title;
+        }
+    };
+
+    return page;
+}]);
+
+
+tctApp.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.useApplyAsync(true);
+
+    $httpProvider.interceptors.push(['$rootScope', '$q', '$page', '$location', function ($rootScope, $q, $page, $location) {
+      return {
+        response: function (response) {
+          // console.log('response');
+          // console.log(response);
+          switch (response.status)
+          {
+            case 301:
+            case 302:
+              console.log("Response Error 301/302");
+              $page.unauthorized();
+              $location.url(lmAppPrefix + '/login');
+              // $rootScope.$broadcast('loginFail', {});
+              break;
+            case 401:
+              console.log("Response 401");
+              $page.unauthorized();
+              $location.url(lmAppPrefix + '/login');
+              break;
+            case 403:
+              $page.forbidden();
+              console.log("Response 403");
+              break;
+            case 404:
+              $page.notfound();
+              console.log("Response 404");
+              break;
+            case 500:
+              console.log("Response 500");
+              break;
+          }
+          return response || $q.when(response);
+        },
+        responseError: function (rejection) {
+          // console.log('rejection');
+          // console.log(rejection);
+          switch (rejection.status)
+          {
+            case -1:
+              toastr.error('Соединение с сервером потеряно');
+              break;
+            case 301:
+            case 302:
+              console.log("Response Error 301/302");
+              $page.unauthorized();
+              // $location.url(lmAppPrefix + '/login');
+              // $rootScope.$broadcast('loginFail', {});
+              break;
+            case 401:
+              console.log("Response Error 401");
+              // $location.url(lmAppPrefix + '/login');
+              $page.unauthorized();
+              // toastr.error('Login failed');
+              // $rootScope.$broadcast('loginFail', {});
+              break;
+            case 403:
+              $page.forbidden();
+              console.log("Response 403");
+              break;
+            case 404:
+              $page.notfound();
+              console.log("Response 404");
+              break;
+            case 419:
+              console.log("Response 419");
+              toastr.error('Ваша сессия истекла, пожалуйста, обновите страницу и повторите действие');
+              break;
+            case 500:
+              console.log("Response 500");
+              if (rejection.data && typeof rejection.data === 'string')
+              {
+                try
+                {
+                  rejection.data = JSON.parse(rejection.data);
+                }
+                catch(e){}
+              }
+              if (rejection.data && rejection.data.message)
+              {
+                if (rejection.data.file && rejection.data.line)
+                {
+                  toastr.error(rejection.data.file + ':' + rejection.data.line, rejection.data.message);
+                }
+                else
+                {
+                  toastr.error(rejection.data.message);
+                }
+              }
+              else
+              {
+                toastr.error(trans('server_error'));
+              }
+              break;
+          }
+
+          return $q.reject(rejection);
+        },
+        request: function(config) {
+          // console.log('config');
+          // console.log(config);
+          return config;
+        },
+        requestError: function(err) {
+          // console.log('err');
+          // console.log(err);
+          $q.reject(err);
+        }
+      };
+    }]);
+
+}]);
+
 
 tctApp.config(['$locationProvider', function($locationProvider) {
     $locationProvider.html5Mode({
@@ -324,7 +589,7 @@ tctApp.factory('AuthRepository', ['$resource', function($resource) {
 
 
 
-tctApp.run(function($rootScope, AuthRepository) 
+tctApp.run(function($rootScope, $location, AuthRepository) 
 {
     $rootScope.searchInputKeyPressed = function($event) 
     {
@@ -370,7 +635,7 @@ tctApp.run(function($rootScope, AuthRepository)
     {
     	AuthRepository.logout(function(response) 
     	{
-			document.location.href = '/login';		
+			$location.url('/login');
     	});
     }
 });
