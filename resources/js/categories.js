@@ -3,14 +3,12 @@ angular.module('tctApp').controller('CategoriesController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
-	'toastr',
 	'CategoriesRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
 		$timeout,
-		toastr,
 		CategoriesRepository
 	){
 
@@ -47,6 +45,10 @@ angular.module('tctApp').controller('CategoriesController', [
 		{
 			$scope.isLoading = false;
 			$scope.categories = response;
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -62,6 +64,10 @@ angular.module('tctApp').controller('CategoriesController', [
 		{
 			$scope.isLoading = false;
 			$scope.category = response;
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -79,6 +85,10 @@ angular.module('tctApp').controller('CategoriesController', [
 			{
 				$scope.isLoading = false;
 				$scope.category = response;
+			},
+			function(response)
+			{
+				$scope.isLoading = false;
 			});
 		}
 	}
@@ -86,8 +96,10 @@ angular.module('tctApp').controller('CategoriesController', [
 
 	$scope.save = function() 
 	{
+		$scope.isSaving = true;
 		CategoriesRepository.save({id: $scope.id}, $scope.category, function(response) 
 		{
+			$scope.isSaving = false;
 			toastr.success($scope.id ? 'Категория успешно обновлена!' : 'Новая категория успешно создана!');
 
 			$scope.categoryErrors = {};
@@ -96,15 +108,11 @@ angular.module('tctApp').controller('CategoriesController', [
 		}, 
 		function(response) 
 		{
+            $scope.isSaving = false;
             switch (response.status) 
             {
             	case 422:
-            		toastr.error('Проверьте введенные данные');
             		$scope.categoryErrors = response.data.errors;
-            		break
-
-            	default:
-            		toastr.error('Произошла ошибка на сервере');
             		break;
             }
         });
@@ -131,10 +139,14 @@ angular.module('tctApp').controller('CategoriesController', [
 
 	$scope.delete = function(id)
 	{
-		$scope.hideDelete();
-
+		$scope.isDeleting = true;
+		
 		CategoriesRepository.delete({id: id}, function(response) 
 		{
+			$scope.isDeleting = false;
+
+			$scope.hideDelete();
+
 			if ($scope.baseUrl)
 			{
 				$location.path($scope.baseUrl).replace();
@@ -148,7 +160,7 @@ angular.module('tctApp').controller('CategoriesController', [
 		}, 
 		function(response) 
 		{
-        	toastr.error('Произошла ошибка на сервере');
+        	$scope.isDeleting = false;
         });
 	}
 }]);

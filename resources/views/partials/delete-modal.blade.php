@@ -34,11 +34,15 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-success" ng-click="delete(deleteData.id)">
+				<button type="button" class="btn btn-success" ng-click="delete(deleteData.id)" ng-if=!isDeleting>
 					<i class="fas fa-check"></i> Да
 				</button>
-				<button type="button" class="btn btn-primary" ng-click="hideDelete()">
+				<button type="button" class="btn btn-primary" ng-click="hideDelete()" ng-if=!isDeleting>
 					<i class="fas fa-times"></i> Нет
+				</button>
+
+				<button type="button" class="btn btn-primary" disabled ng-if="isDeleting">
+					<i class="fa fa-spinner fa-spin"></i> Удаление...
 				</button>
 			</div>
 		</div>

@@ -4,7 +4,6 @@ angular.module('tctApp').controller('FacilitiesController', [
 	'$location',
 	'$filter',
 	'$timeout',
-	'toastr',
 	'FacilitiesRepository',
 	'CategoriesRepository',
 	'WorkersRepository',
@@ -14,7 +13,6 @@ angular.module('tctApp').controller('FacilitiesController', [
 		$location,
 		$filter,
 		$timeout,
-		toastr,
 		FacilitiesRepository,
 		CategoriesRepository,
 		WorkersRepository
@@ -47,6 +45,10 @@ angular.module('tctApp').controller('FacilitiesController', [
 			{
 				facility.status_date_raw = facility.status_date ? new Date(Date.parse(facility.status_date.replace(/-/, '/'))) : null;
 			}
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -63,6 +65,10 @@ angular.module('tctApp').controller('FacilitiesController', [
 			$scope.isLoading = false;
 			$scope.facility = response;
 			$scope.facility.status_date_raw = $scope.facility.status_date ? new Date(Date.parse($scope.facility.status_date.replace(/-/, '/'))) : null;
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -88,6 +94,10 @@ angular.module('tctApp').controller('FacilitiesController', [
 				{
 					$scope.facility.categories[category.id] = true;
 				}
+			},
+			function(response)
+			{
+				$scope.isLoading = false;
 			});
 		}
 
@@ -116,8 +126,12 @@ angular.module('tctApp').controller('FacilitiesController', [
 	{
 		facility = facility || $scope.facility;
 
+		$scope.isSaving = true;
+
 		FacilitiesRepository.save({id: facility.id}, facility, function(response) 
 		{
+			$scope.isSaving = false;
+
 			toastr.success($scope.id ? 'Цех успешно обновлена!' : 'Новый цех успешно создан!');
 
 			$scope.facilityErrors = {};
@@ -126,16 +140,13 @@ angular.module('tctApp').controller('FacilitiesController', [
 		}, 
 		function(response) 
 		{
+            $scope.isSaving = false;
+
             switch (response.status) 
             {
             	case 422:
-            		toastr.error('Проверьте введенные данные');
             		$scope.facilityErrors = response.data.errors;
             		break
-
-            	default:
-            		toastr.error('Произошла ошибка на сервере');
-            		break;
             }
         });
 	}
@@ -161,10 +172,14 @@ angular.module('tctApp').controller('FacilitiesController', [
 
 	$scope.delete = function(id)
 	{
-		$scope.hideDelete();
+		$scope.isDeleting = true;
 
 		FacilitiesRepository.delete({id: id}, function(response) 
 		{
+			$scope.isDeleting = false;
+
+			$scope.hideDelete();
+
 			if ($scope.baseUrl)
 			{
 				$location.path($scope.baseUrl).replace();
@@ -178,7 +193,7 @@ angular.module('tctApp').controller('FacilitiesController', [
 		}, 
 		function(response) 
 		{
-        	toastr.error('Произошла ошибка на сервере');
+        	$scope.isDeleting = false;
         });
 	}
 
@@ -264,17 +279,15 @@ angular.module('tctApp').controller('FacilitiesController', [
 			$scope.modalFacility.status = ($scope.modalFacility.status + 1) % 2;
 		}
 
+		$scope.isModalSaving = true;
+
 		FacilitiesRepository.save({id: $scope.modalFacility.id}, $scope.modalFacility, function(response) 
 		{
-			$scope.modalStatusErrors = {};
-			$scope.successTopAlert = 'Изменения успешно сохранены!';
-			$scope.showTopAlert = true;
-
-			$timeout(function() {
-				$scope.showTopAlert = false;
-			}, 2000);
+			$scope.isModalSaving = false;
 
 			$scope.hideStatusModal();
+
+			toastr.success('Изменения успешно сохранены!');
 
 			if (!$scope.baseUrl)
 			{
@@ -288,7 +301,14 @@ angular.module('tctApp').controller('FacilitiesController', [
 		}, 
 		function(response) 
 		{
-            $scope.modalStatusErrors = response.data.errors;
+            $scope.isModalSaving = false;
+
+            switch (response.status) 
+            {
+            	case 422:
+            		$scope.modalStatusErrors = response.data.errors;
+            		break;
+        	}
         });
 	}
 }]);

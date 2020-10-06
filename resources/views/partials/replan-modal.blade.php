@@ -23,7 +23,7 @@
 				</button>
 
 				<button type="button" class="btn btn-primary" disabled ng-if="isReplaning">
-					<i class="fa fa-spinner fa-spin"></i> Перестроение плана
+					<i class="fa fa-spinner fa-spin"></i> Перестроение плана...
 				</button>
 			</div>
 		</div>

@@ -75,8 +75,13 @@
 		</button>
 
 		<div class="buttons-block">
-			<button class="btn btn-primary" ng-click="save()">
-				<i class="fas fa-save"></i> Сохранить
+			<button class="btn btn-primary" ng-click="save()" ng-disabled="isSaving">
+				<span ng-if="isSaving">
+					<i class="fa fa-spinner fa-spin"></i> Сохранение...
+				</span>
+				<span ng-if="!isSaving">
+					<i class="fas fa-save"></i> Сохранить
+				</span>
 			</button>
 		</div>
 	</div>

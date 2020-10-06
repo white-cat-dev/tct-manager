@@ -36,6 +36,7 @@
         "angularjs-datepicker": "^2.1.23",
         "bootstrap": "^4.4.1",
         "moment": "^2.24.0",
+        "toastr": "^2.1.4",
         "ui-select": "^0.19.8"
     }
 }

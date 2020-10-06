@@ -73,9 +73,9 @@
 					<a ng-href="@{{ recipe.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(recipe)">
+					{{-- <button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(recipe)">
 						<i class="far fa-trash-alt"></i>
-					</button>
+					</button> --}}
 					@endif
 				</div>
 			</td>

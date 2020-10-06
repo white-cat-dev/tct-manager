@@ -60,9 +60,9 @@
 					<a ng-href="@{{ category.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(category)">
+					{{-- <button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(category)">
 						<i class="far fa-trash-alt"></i>
-					</button>
+					</button> --}}
 					@endif
 				</div>
 			</td>

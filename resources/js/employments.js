@@ -3,14 +3,12 @@ angular.module('tctApp').controller('EmploymentsController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
-	'toastr',
 	'EmploymentsRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
 		$timeout,
-		toastr,
 		EmploymentsRepository
 	){
 
@@ -74,6 +72,10 @@ angular.module('tctApp').controller('EmploymentsController', [
 			$scope.updateTotalEmployment();
 
 			$scope.initScroll();
+		},
+		function(response) 
+		{
+			$scope.isLoading = false;
 		});
 	};
 
@@ -122,7 +124,6 @@ angular.module('tctApp').controller('EmploymentsController', [
 		function(response) 
 		{
             $scope.isSaving = false;
-            toastr.error('Произошла ошибка на сервере');
         });
 	};
 
@@ -148,7 +149,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 	{
 		$scope.isSalariesShown = false;
 
-		$scope.currentEmploymentStatus = ($scope.currentEmploymentStatus != status) ? status : null;
+		// $scope.currentEmploymentStatus = ($scope.currentEmploymentStatus != status) ? status : null;
+		$scope.currentEmploymentStatus = status;
 
 		$scope.currentMainCategory = null;
 		$scope.cleanCurrent = false;
@@ -242,7 +244,7 @@ angular.module('tctApp').controller('EmploymentsController', [
 			{
 				statusId = $scope.currentEmploymentStatus;
 
-				if ($scope.statuses[$scope.currentEmploymentStatus].customable > 0)
+				if (($scope.statuses[$scope.currentEmploymentStatus].customable > 0) && (statusCustom <= 0))
 				{
 					statusCustom = (worker.id > 0) ? 1 : 9;
 					// mainCategory = 'tiles';
@@ -287,13 +289,19 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 	$scope.saveSalary = function()
 	{
+		$scope.isModalSaving = true;
 		EmploymentsRepository.saveSalary({id: $scope.modalWorker.salary.id}, $scope.modalWorker.salary, function(response) 
 		{
+			$scope.isModalSaving = false;
 			toastr.success('Все изменения успешно сохранены!');
 
 			$scope.hideSalaryModal();
 
 			$scope.init();
+		},
+		function(response)
+		{
+			$scope.isModalSaving = false;
 		});
 	}
 

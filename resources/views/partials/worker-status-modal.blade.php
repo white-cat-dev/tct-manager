@@ -45,8 +45,13 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" ng-click="saveStatus()">
-					<i class="fas fa-save"></i> Сохранить
+				<button type="button" class="btn btn-primary" ng-click="saveStatus()" ng-disabled="isModalSaving">
+					<span ng-if="isModalSaving">
+						<i class="fa fa-spinner fa-spin"></i> Сохранение...
+					</span>
+					<span ng-if="!isModalSaving">
+						<i class="fas fa-save"></i> Сохранить
+					</span>
 				</button>
 			</div>
 		</div>

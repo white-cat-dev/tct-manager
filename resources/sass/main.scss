@@ -642,7 +642,8 @@ i.fas, i.far {
 	    border-radius: 0px 0px 5px 5px;
 	}
 
-	&.delete-modal {
+	&.delete-modal,
+	&.copy-modal {
 		.modal-content {
 			margin-top: 15vh;
 		}

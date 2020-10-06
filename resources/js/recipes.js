@@ -3,7 +3,6 @@ angular.module('tctApp').controller('RecipesController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
-	'toastr',
 	'RecipesRepository',
 	'MaterialsRepository',
 	'CategoriesRepository',
@@ -12,7 +11,6 @@ angular.module('tctApp').controller('RecipesController', [
 		$routeParams,
 		$location,
 		$timeout,
-		toastr,
 		RecipesRepository,
 		MaterialsRepository,
 		CategoriesRepository
@@ -20,7 +18,6 @@ angular.module('tctApp').controller('RecipesController', [
 
 
 	$scope.baseUrl = '';
-
 
 	$scope.recipes = [];
 	$scope.recipe = {
@@ -49,6 +46,10 @@ angular.module('tctApp').controller('RecipesController', [
 		{
 			$scope.isLoading = false;
 			$scope.recipes = response;
+		},
+		function(response) 
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -64,6 +65,10 @@ angular.module('tctApp').controller('RecipesController', [
 		{
 			$scope.isLoading = false;
 			$scope.recipe = response;
+		},
+		function(response) 
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -81,6 +86,10 @@ angular.module('tctApp').controller('RecipesController', [
 			{
 				$scope.isLoading = false;
 				$scope.recipe = response;
+			},
+			function(response) 
+			{
+				$scope.isLoading = false;
 			});
 		}
 
@@ -98,8 +107,12 @@ angular.module('tctApp').controller('RecipesController', [
 
 	$scope.save = function() 
 	{
+		$scope.isSaving = true;
+
 		RecipesRepository.save({id: $scope.id}, $scope.recipe, function(response) 
 		{
+			$scope.isSaving = false;
+
 			toastr.success($scope.id ? 'Рецепт успешно обновлен!' : 'Новый рецепт успешно создан!');
 
 			$scope.recipeErrors = {};
@@ -108,16 +121,13 @@ angular.module('tctApp').controller('RecipesController', [
 		}, 
 		function(response) 
 		{
+            $scope.isSaving = false;
+
             switch (response.status) 
             {
             	case 422:
-            		toastr.error('Проверьте введенные данные');
             		$scope.recipeErrors = response.data.errors;
             		break
-
-            	default:
-            		toastr.error('Произошла ошибка на сервере');
-            		break;
             }
         });
 	}
@@ -143,10 +153,14 @@ angular.module('tctApp').controller('RecipesController', [
 
 	$scope.delete = function(id)
 	{
-		$scope.hideDelete();
+		$scope.isDeleting = true;
 
 		RecipesRepository.delete({id: id}, function(response) 
 		{
+			$scope.isDeleting = false;
+
+			$scope.hideDelete();
+
 			if ($scope.baseUrl)
 			{
 				$location.path($scope.baseUrl).replace();
@@ -160,7 +174,7 @@ angular.module('tctApp').controller('RecipesController', [
 		}, 
 		function(response) 
 		{
-        	toastr.error('Произошла ошибка на сервере');
+        	$scope.isDeleting = false;
         });
 	}
 

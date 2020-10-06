@@ -3,7 +3,6 @@ angular.module('tctApp').controller('WorkersController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
-	'toastr',
 	'FacilitiesRepository',
 	'WorkersRepository',
 	function(
@@ -11,7 +10,6 @@ angular.module('tctApp').controller('WorkersController', [
 		$routeParams,
 		$location,
 		$timeout,
-		toastr,
 		FacilitiesRepository,
 		WorkersRepository
 	){
@@ -35,6 +33,10 @@ angular.module('tctApp').controller('WorkersController', [
 		{
 			$scope.isLoading = false;
 			$scope.workers = response;
+		},
+		function(response) 
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -50,6 +52,10 @@ angular.module('tctApp').controller('WorkersController', [
 		{
 			$scope.isLoading = false;
 			$scope.worker = response;
+		},
+		function(response) 
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -72,6 +78,10 @@ angular.module('tctApp').controller('WorkersController', [
 					var birthdate = $scope.worker.birthdate.split("-");
 					$scope.worker.birthdate_raw = birthdate[2] + birthdate[1] + birthdate[0];
 				}
+			},
+			function(response) 
+			{
+				$scope.isLoading = false;
 			});
 		}
 
@@ -84,9 +94,12 @@ angular.module('tctApp').controller('WorkersController', [
 
 	$scope.save = function() 
 	{
-		console.log($scope.worker);
+		$scope.isSaving = true;
+
 		WorkersRepository.save({id: $scope.id}, $scope.worker, function(response) 
 		{
+			$scope.isSaving = false;
+
 			toastr.success($scope.id ? 'Работник успешно обновлен!' : 'Новый работник успешно создан!');
 
 			$scope.workerErrors = {};
@@ -95,16 +108,13 @@ angular.module('tctApp').controller('WorkersController', [
 		}, 
 		function(response) 
 		{
+            $scope.isSaving = false;
+
             switch (response.status) 
             {
             	case 422:
-            		toastr.error('Проверьте введенные данные');
             		$scope.workerErrors = response.data.errors;
             		break
-
-            	default:
-            		toastr.error('Произошла ошибка на сервере');
-            		break;
             }
         });
 	}
@@ -130,10 +140,14 @@ angular.module('tctApp').controller('WorkersController', [
 
 	$scope.delete = function(id)
 	{
-		$scope.hideDelete();
+		$scope.isDeleting = true;
 
 		WorkersRepository.delete({id: id}, function(response) 
 		{
+			$scope.isDeleting = false;
+
+			$scope.hideDelete();
+
 			if ($scope.baseUrl)
 			{
 				$location.path($scope.baseUrl).replace();
@@ -147,7 +161,7 @@ angular.module('tctApp').controller('WorkersController', [
 		}, 
 		function(response) 
 		{
-        	toastr.error('Произошла ошибка на сервере');
+        	$scope.isDeleting = false;
         });
 	}
 
@@ -195,8 +209,12 @@ angular.module('tctApp').controller('WorkersController', [
 			$scope.modalWorker.status = ($scope.modalWorker.status + 1) % 2;
 		}
 		
+		$scope.isModalSaving = true;
+
 		WorkersRepository.save({id: $scope.modalWorker.id}, $scope.modalWorker, function(response) 
 		{
+			$scope.isModalSaving = false;
+
 			$scope.modalStatusErrors = {};
 			toastr.success('Изменения успешно сохранены!');
 
@@ -213,7 +231,14 @@ angular.module('tctApp').controller('WorkersController', [
 		}, 
 		function(response) 
 		{
-            $scope.modalStatusErrors = response.data.errors;
+            $scope.isModalSaving = false;
+
+            switch (response.status) 
+            {
+            	case 422:
+            		$scope.modalStatusErrors = response.data.errors;
+            		break;
+            }
         });
 	}
 }]);

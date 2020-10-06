@@ -217,6 +217,8 @@ class OrdersController extends Controller
                         'ready' => 0,
                         'performed' => $productData['pivot']['realization_performed']
                     ]);
+
+                    $product->updateInStock($product->in_stock - $realization->performed, 'realization', $realization);
                 }
             }
 

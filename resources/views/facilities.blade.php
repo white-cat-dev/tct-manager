@@ -42,9 +42,9 @@
 					<a ng-href="@{{ facility.url + '/edit' }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-primary btn-sm" ng-click="showDelete(facility)">
+					{{-- <button type="button" class="btn btn-primary btn-sm" ng-click="showDelete(facility)">
 						<i class="far fa-trash-alt"></i>
-					</button>
+					</button> --}}
 					@endif
 				</div>
 

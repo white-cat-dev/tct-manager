@@ -3,7 +3,6 @@ angular.module('tctApp').controller('ProductsController', [
 	'$routeParams',
 	'$location',
 	'$timeout',
-	'toastr',
 	'CategoriesRepository',
 	'ProductsRepository',
 	'ExportsRepository',
@@ -14,7 +13,6 @@ angular.module('tctApp').controller('ProductsController', [
 		$routeParams,
 		$location,
 		$timeout,
-		toastr,
 		CategoriesRepository,
 		ProductsRepository,
 		ExportsRepository,
@@ -135,7 +133,7 @@ angular.module('tctApp').controller('ProductsController', [
 
 		$scope.loadCategories();
 		$scope.loadProducts();
-		$scope.loadMaterials();
+		// $scope.loadMaterials();
 	}
 
 
@@ -152,6 +150,11 @@ angular.module('tctApp').controller('ProductsController', [
 			$scope.productGroup = response;
 
 			$scope.initStocks();
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
+			$scope.productGroup = null;
 		});
 	}
 
@@ -178,6 +181,11 @@ angular.module('tctApp').controller('ProductsController', [
 				}
 
 				$scope.loadCategories();
+			},
+			function(response)
+			{
+				$scope.isLoading = false;
+				$scope.productGroup = null;
 			});
 		}
 		else
@@ -194,23 +202,28 @@ angular.module('tctApp').controller('ProductsController', [
 
 	$scope.save = function() 
 	{
+		$scope.isSaving = true;
 		ProductsRepository.save({id: $scope.id}, $scope.productGroup, function(response) 
 		{
+			$scope.isSaving = false;
+
 			toastr.success($scope.id ? 'Продукт успешно обновлен!' : 'Новый продукт успешно создан!');
 
 			$scope.productGroupErrors = {};
 			$scope.id = response.id;
 			$scope.productGroup.url = response.url;
 		}, 
-		function(response) 
+		function(response)
 		{
-            switch (response.status) 
+			$scope.isSaving = false;
+
+			switch (response.status) 
             {
             	case 422:
             		$scope.productGroupErrors = response.data.errors;
             		break;
             }
-        });
+		});
 	}
 
 
@@ -234,47 +247,72 @@ angular.module('tctApp').controller('ProductsController', [
 
 	$scope.delete = function(id)
 	{
-		$scope.hideDelete();
+		$scope.isDeleting = true;
 
 		ProductsRepository.delete({id: id}, function(response) 
 		{
+			$scope.isDeleting = false;
+			$scope.hideDelete();
+
+			toastr.success('Продукт успешно удален!');
+
 			if ($scope.baseUrl)
 			{
 				$location.path($scope.baseUrl).replace();
 			}
 			else
 			{
-				toastr.success('Продукт успешно удален!');
-
 				$scope.init();
 			}
-		}, 
+		},
 		function(response) 
 		{
-        	toastr.error('Произошла ошибка на сервере');
-        });
+			$scope.isDeleting = false;
+		});
+	}
+
+
+	$scope.showCopy = function(product)
+	{
+		$scope.isCopyModalShown = true;
+		$scope.copyType = 'product';
+		$scope.copyData = product;
+
+		document.querySelector('body').classList.add('modal-open');
+	}
+
+
+	$scope.hideCopy = function()
+	{
+		$scope.isCopyModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
 	}
 
 
 	$scope.copy = function(id)
 	{
+		$scope.isCopying = true;
 		ProductsRepository.copy({id: id}, {}, function(response) 
 		{
+			$scope.isCopying = false;
+			$scope.hideCopy();
+
+			toastr.success('Копия успешно создана');
+
 			if ($scope.baseUrl)
 			{
 				$location.path($scope.baseUrl + '/' + response.id + '/edit').replace();
 			}
 			else
 			{
-				toastr.success('Копия успешно создана');
-
 				$scope.init();
 			}
-		}, 
-		function(response) 
+		},
+		function(response)
 		{
-           
-        });
+			$scope.isCopying = false;
+		});
 	}
 
 
@@ -336,6 +374,10 @@ angular.module('tctApp').controller('ProductsController', [
 		{
 			$scope.isLoading = false;
 			$scope.productGroups = response;
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -441,14 +483,6 @@ angular.module('tctApp').controller('ProductsController', [
 				}
 			}
 		}
-
-		// if (currentProduct.productGroup.category.units != 'unit')
-		// {
-		// 	if (key == 'price') 
-		// 	{
-
-		// 	}
-		// }
 	}
 
 
@@ -474,22 +508,26 @@ angular.module('tctApp').controller('ProductsController', [
 		$scope.modalProductGroup = angular.copy(productGroup);
 		$scope.modalProduct = $scope.modalProductGroup.products[productNum];
 		$scope.modalProduct.old_in_stock = $scope.modalProduct.in_stock;
+
+		document.querySelector('body').classList.add('modal-open');
 	}
 
 
 	$scope.hideProductStockModal = function()
 	{
 		$scope.isProductStockModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
 	}
 
 
 	$scope.saveProductStock = function()
 	{
-		$scope.isSaving = true;
+		$scope.isModalSaving = true;
 
 		ProductsRepository.save({id: $scope.modalProductGroup.id}, $scope.modalProductGroup, function(response) 
 		{
-			$scope.isSaving = false;
+			$scope.isModalSaving = false;
 
 			toastr.success('Изменения успешно сохранены!');
 
@@ -506,43 +544,42 @@ angular.module('tctApp').controller('ProductsController', [
 		}, 
 		function(response) 
 		{
-			$scope.isSaving = false;
-			toastr.error('Произошла ошибка на сервере');
+			$scope.isModalSaving = false;
         });
 	}
 
 
-	$scope.saveEditField = function(groupNum, num, key) 
-	{
-		var productGroup = $scope.productGroups[groupNum];
-		var product = productGroup.products[num];
+	// $scope.saveEditField = function(groupNum, num, key) 
+	// {
+	// 	var productGroup = $scope.productGroups[groupNum];
+	// 	var product = productGroup.products[num];
 		
-		if (product[key] != product['new_' + key])
-		{
-			product[key] = product['new_' + key];
-		}
-		else
-		{
-			return;
-		}
+	// 	if (product[key] != product['new_' + key])
+	// 	{
+	// 		product[key] = product['new_' + key];
+	// 	}
+	// 	else
+	// 	{
+	// 		return;
+	// 	}
 
-		ProductsRepository.save({id: productGroup.id}, productGroup, function(response) 
-		{
-			toastr.success('Изменения успешно сохранены!');
+	// 	ProductsRepository.save({id: productGroup.id}, productGroup, function(response) 
+	// 	{
+	// 		toastr.success('Изменения успешно сохранены!');
 
-			productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
+	// 		productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
 
-			productGroup.in_stock = 0;
-			for (product of productGroup.products)
-			{
-				productGroup.in_stock += product.in_stock;
-			}
-		}, 
-		function(response) 
-		{
-			toastr.error('Произошла ошибка на сервере');
-        });
-	}
+	// 		productGroup.in_stock = 0;
+	// 		for (product of productGroup.products)
+	// 		{
+	// 			productGroup.in_stock += product.in_stock;
+	// 		}
+	// 	},
+	// 	function(response)
+	// 	{
+	// 		$scope.isLoading = false;
+	// 	});
+	// }
 
 
 	$scope.loadExportFile = function() 
@@ -556,11 +593,11 @@ angular.module('tctApp').controller('ProductsController', [
 		ExportsRepository.products(request, function(response) 
 		{
 			document.location.href = response.file;
-		}, 
-		function(response) 
+		},
+		function(response)
 		{
-			toastr.error('Произошла ошибка на сервере');
-        });
+			
+		});
 	}
 
 
@@ -577,12 +614,13 @@ angular.module('tctApp').controller('ProductsController', [
 			$scope.isModalLoading = false;
 
 			$scope.modalProductOrders = response;
-		}, 
-		function(response) 
+		},
+		function(response)
 		{
-            $scope.isModalLoading = false;
-            toastr.error('Произошла ошибка на сервере');
-        });
+			$scope.isModalLoading = false;
+		});
+
+        document.querySelector('body').classList.add('modal-open');
 	}
 
 
@@ -590,6 +628,8 @@ angular.module('tctApp').controller('ProductsController', [
 	{
 		$scope.isProductOrdersModalShown = false;
 		$scope.modalProductOrders = [];
+
+		document.querySelector('body').classList.remove('modal-open');
 	}
 
 
@@ -633,6 +673,10 @@ angular.module('tctApp').controller('ProductsController', [
 			$scope.stocksCurrentDate.year = response.year;
 
 			$scope.stocks = response.stocks;
+		},
+		function(response)
+		{
+			$scope.isStocksLoading = false;
 		});
     }
 }]);

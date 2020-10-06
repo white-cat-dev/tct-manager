@@ -12,7 +12,7 @@
 
 		<div class="right-buttons">
 			@if (Auth::user() && Auth::user()->type == 'admin')
-			<button class="btn btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			{{-- <button class="btn btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<i class="fas fa-cog"></i> Доступные действия
 			</button>
 			<div class="dropdown-menu" aria-labelledby="actionsButton">
@@ -34,7 +34,7 @@
 				<button type="button" class="dropdown-item" ng-if="worker.status == {{ App\Worker::STATUS_ACTIVE }} && worker.status_date" ng-click="showStatusModal(worker, {{ App\Worker::STATUS_INACTIVE }})">
 					Изменить дату отстранения от работы
 				</button>
-			</div>
+			</div> --}}
 			<a ng-href="@{{ worker.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>

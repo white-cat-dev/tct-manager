@@ -15,7 +15,7 @@
 			<a ng-href="@{{ order.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
-			<button type="button" class="btn btn-primary" ng-click="loadExportFile(order)">
+			<button type="button" class="btn btn-primary" ng-if="id" ng-click="loadExportFile(order)">
 				<i class="fas fa-print"></i> Распечатать
 			</button>
 			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(order)">
@@ -404,7 +404,7 @@
 		<div class="buttons-block">
 			<button class="btn btn-primary" ng-click="save()" ng-disabled="isSaving">
 				<span ng-if="isSaving">
-					<i class="fa fa-spinner fa-spin"></i> Сохранение
+					<i class="fa fa-spinner fa-spin"></i> Сохранение...
 				</span>
 				<span ng-if="!isSaving">
 					<i class="fas fa-save"></i> Сохранить и выйти
