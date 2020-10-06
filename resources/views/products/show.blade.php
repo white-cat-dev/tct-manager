@@ -15,7 +15,7 @@
 			<a ng-href="@{{ productGroup.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
-			<button type="button" class="btn btn-primary" ng-click="copy(id)">
+			<button type="button" class="btn btn-primary" ng-click="showCopy(productGroup)">
 				<i class="fas fa-copy"></i> Копировать
 			</button>
 			<button type="button" class="btn btn-primary" ng-click="showDelete(productGroup)">
@@ -26,7 +26,7 @@
 	</div>
 
 
-	<div class="show-block" ng-show="!isLoading">
+	<div class="show-block" ng-show="!isLoading && productGroup">
 		<div class="row justify-content-around">
 			<div class="col-12 col-xl-11">
 				<div class="product-stocks-block">
@@ -371,4 +371,5 @@
 	</div>
 
 	@include('partials.delete-modal')
+	@include('partials.copy-modal')
 </div>

@@ -186,7 +186,7 @@
 		</div>
 		
 		<div class="col-3">
-			<div class="employment-statuses" ng-show="!isLoading">
+			<div class="employment-statuses">
 				<div class="statuses-title">
 					Инструменты
 					@if (Auth::user() && Auth::user()->type == 'admin')
@@ -233,7 +233,7 @@
 		</div>
 	</div>
 
-	<div class="salaries-block" ng-show="!isLoading">
+	<div class="salaries-block" ng-show="!isLoading && workers.length > 0">
 		<div class="block-title">
 			Данные о зарплате за 
 			<span ng-repeat="month in monthes" ng-if="currentDate.month == month.id">
@@ -450,8 +450,13 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" ng-click="saveSalary()">
-						<i class="fas fa-save"></i> Сохранить
+					<button type="button" class="btn btn-primary" ng-click="saveSalary()" ng-disabled="isModalSaving">
+						<span ng-if="isModalSaving">
+							<i class="fa fa-spinner fa-spin"></i> Сохранение
+						</span>
+						<span ng-if="!isModalSaving">
+							<i class="fas fa-save"></i> Сохранить
+						</span>
 					</button>
 				</div>
 			</div>

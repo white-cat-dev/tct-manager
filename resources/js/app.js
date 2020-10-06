@@ -3,19 +3,86 @@ require('bootstrap');
 require('angular');
 require('angularjs-color-picker');
 require('angular-datepicker');
+window.toastr = require('toastr');
 window.moment = require('moment');
+
+toastr.options.timeOut = 2000;
+toastr.options.extendedTimeOut = 1000;
 
 
 var tctApp = angular.module('tctApp', [
 	require('angular-sanitize'),
 	require('angular-route'), 
 	require('angular-resource'), 
-	require('angular-toastr'),
 	require('angular-ui-mask'),
 	require('ui-select'),
 	'color.picker',
 	'datePicker'
 ]);
+
+
+tctApp.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.useApplyAsync(true);
+
+    $httpProvider.interceptors.push(['$rootScope', '$q', '$location', function ($rootScope, $q, $location) {
+        return {
+            response: function (response) 
+            {
+                return response || $q.when(response);
+            },
+
+            responseError: function (response) 
+            {
+                switch (response.status)
+                {
+                    case -1:
+                    case 502:
+                        toastr.error('Проверьте подключение к Интернету и обновите страницу');
+                        break;
+
+                    case 301:
+                    case 302:
+                        $location.url('/');
+                        toastr.warning('Страница перемещена');
+                        break;
+
+                    case 401:
+                    case 403:
+                    case 419:
+                        toastr.error('Ваша сессия истекла, обновите страницу и авторизуйтесь');
+                        break;
+
+                    case 422:
+                        toastr.error('Проверьте введенные данные');
+                        break;
+
+                    case 404:
+                        $location.url('/');
+                        toastr.warning('Страница не найдена');
+                        break;
+
+                    case 500:
+                        toastr.error('Произошла ошибка на сервере, сообщите разработчику');
+                        break;
+
+                    default:
+                        toastr.error('Произошла неизвестная ошибка, сообщите разработчику код ответа - ' + response.status);
+                        break;
+                }
+
+                return $q.reject(response);
+            },
+            request: function(config) 
+            {
+                return config;
+            },
+            requestError: function(err) 
+            {
+                $q.reject(err);
+            }
+        };
+    }]);
+}]);
 
 
 tctApp.config(['$locationProvider', function($locationProvider) {
@@ -35,13 +102,6 @@ tctApp.config(function($provide) {
 
         return options;
     });
-});
-
-tctApp.config(function(toastrConfig) {
-	angular.extend(toastrConfig, {
-		timeOut: 2000,
-		extendedTimeOut: 1000
-	});
 });
 
 tctApp.config(function($provide) {
@@ -324,7 +384,7 @@ tctApp.factory('AuthRepository', ['$resource', function($resource) {
 
 
 
-tctApp.run(function($rootScope, AuthRepository) 
+tctApp.run(function($rootScope, $location, AuthRepository) 
 {
     $rootScope.searchInputKeyPressed = function($event) 
     {
@@ -370,7 +430,7 @@ tctApp.run(function($rootScope, AuthRepository)
     {
     	AuthRepository.logout(function(response) 
     	{
-			document.location.href = '/login';		
+			$location.url('/login');
     	});
     }
 });

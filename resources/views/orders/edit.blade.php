@@ -15,22 +15,12 @@
 			<a ng-href="@{{ order.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
-			<button type="button" class="btn btn-primary" ng-click="loadExportFile(order)">
+			<button type="button" class="btn btn-primary" ng-if="id" ng-click="loadExportFile(order)">
 				<i class="fas fa-print"></i> Распечатать
 			</button>
 			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(order)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>
-		</div>
-	</div>
-
-	<div class="alerts-block" ng-class="{'shown': showAlert}">
-		<div class="alert alert-success" role="alert" ng-if="successAlert">
-			@{{ successAlert }} <br>
-			Вы можете <a href="{{ route('orders') }}" class="btn-link">перейти к списку заказов</a> или <a href="{{ route('order-create') }}" class="btn-link">создать новый заказ</a>
-		</div>
-		<div class="alert alert-danger" role="alert" ng-if="errorAlert">
-			@{{ errorAlert }}
 		</div>
 	</div>
 
@@ -281,8 +271,8 @@
 
 		<div class="params-section">
 			<div class="row justify-content-around">
-				<div class="col-6 col-xl-5">
-					<div class="params-title mb-4">Итоговая информация</div>
+				<div class="col-5 col-xl-4">
+					<div class="params-title mb-3">Итоговая информация</div>
 
 					<div class="form-group">
 						<span class="param-label">Вес заказа: </span>@{{ order.weight | number }} кг
@@ -291,12 +281,18 @@
 					<div class="form-group">
 						<span class="param-label">Стоимость заказа: </span>@{{ order.cost | number }} руб
 					</div>
+				</div>
+
+				<div class="col-7 col-xl-6">
+					<div class="params-title mb-3">Производство заказа</div>
 
 					<div class="form-group">
-						<div class="param-label">Дата готовности</div>
-						<input type="text" class="form-control" ng-model="order.date_to_raw" ui-mask="99.99.9999">
+						<div class="order-form-group">
+							<div class="param-label">Дата готовности</div>
+							<input type="text" class="form-control" ng-model="order.date_to_raw" ui-mask="99.99.9999">
+						</div>
 
-						<button type="button"  class="btn btn-primary mt-2" ng-if="!id"  ng-click="getDate()" ng-disabled="isAddSaving">
+						<button type="button" class="btn btn-primary" ng-if="!id"  ng-click="getDate()" ng-disabled="isAddSaving">
 							<span ng-if="isAddSaving">
 								<i class="fa fa-spinner fa-spin"></i> Рассчет даты готовности
 							</span>
@@ -307,108 +303,108 @@
 					</div>
 				</div>
 
-				<div class="col-6 col-xl-5">
-					<div ng-show="!id">
-						<div class="order-paid-block">
-							<div class="param-label">Оплачено:</div>
+				<div class="col-5 col-xl-4" ng-show="!id">
+					<div class="params-title mt-3 mb-3">Оплата заказа</div>
+
+					<div class="order-form-group">
+						<div class="param-label">Оплачено:</div>
+						<div class="form-group-units">
 							<input type="text" class="form-control" ng-model="order.paid" ng-change="inputFloat(order, 'paid')" ng-blur="checkFullPayment()">
-							<span class="product-units">
+							<span class="units">
 								@{{ order.paid }} <span>руб</span>
 							</span>
 						</div>
-
-						<div class="custom-control custom-checkbox mb-3">
-							<input type="checkbox" class="custom-control-input" ng-model="isFullPaymentChosen" ng-change="chooseFullPayment()" id="checkboxPayment">
-							<label class="custom-control-label" for="checkboxPayment">
-								Полная оплата
-							</label>
-						</div>
-						
-						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" ng-model="order.all_realizations" id="checkboxRealizations" ng-disabled="!isAllRealizationsActive">
-							<label class="custom-control-label" for="checkboxRealizations">
-								Отпустить полностью
-							</label>
-						</div>
 					</div>
+
+					<div class="custom-control custom-checkbox mb-3">
+						<input type="checkbox" class="custom-control-input" ng-model="isFullPaymentChosen" ng-change="chooseFullPayment()" id="checkboxPayment">
+						<label class="custom-control-label" for="checkboxPayment">
+							Полная оплата
+						</label>
+					</div>
+				</div>
+
+				<div class="col-7 col-xl-6" ng-show="!id">
+					<div class="params-title mt-3 mb-3">Выдача заказа</div>
+
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" ng-model="isOrderAllRealizationsChosen" ng-change="chooseOrderRealizations(true)" id="checkboxAllRealizations" ng-disabled="!isOrderAllRealizationsActive">
+						<label class="custom-control-label" for="checkboxAllRealizations">
+							Отпустить полностью
+						</label>
+					</div>
+
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" ng-model="isOrderPartRealizationsChosen" ng-change="chooseOrderRealizations(false)" id="checkboxPartRealizations" ng-disabled="!isOrderPartRealizationsActive">
+						<label class="custom-control-label" for="checkboxPartRealizations">
+							Отпустить частично
+						</label>
+					</div>
+
+					<table class="table table-sm order-realizations-table" ng-if="isOrderPartRealizationsChosen">
+						<tr>
+							<th>Продукт</th>
+							<th>Кол-во</th>
+							<th>В наличии</th>
+							<th>Отпустить</th>
+						</tr>
+						<tr ng-repeat="product in order.products" ng-if="product.id">
+							<td>
+								@{{ product.product_group.name }}
+								@{{ product.product_group.size }}
+								<div class="product-color" ng-if="product.variation_noun_text">
+									@{{product.variation_noun_text }}
+								</div>		
+							</td>
+
+							<td>
+								@{{ product.pivot.count }} <span ng-bind-html="product.units_text"></span>
+							</td>
+
+							<td>
+								@{{ product.in_stock }} <span ng-bind-html="product.units_text"></span>
+							</td>
+
+							<td>
+								<div class="form-group-units">
+									<input type="text" class="form-control form-control-sm" ng-model="product.pivot.realization_performed" ng-change="inputFloat(product.pivot, 'realization_performed')"> 
+									<div class="units">
+										@{{ product.pivot.realization_performed }} <span ng-bind-html="product.units_text"></span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr ng-if="order.pallets > 0">
+							<td>
+								Поддоны	
+							</td>
+
+							<td>
+								@{{ order.pallets }} шт
+							</td>
+
+							<td>
+								—
+							</td>
+
+							<td>
+								<div class="form-group-units">
+									<input type="text" class="form-control form-control-sm" ng-model="order.pallets_realization_performed" ng-change="inputFloat(order, 'pallets_realization_performed')"> 
+									<div class="units">
+										@{{ order.pallets_realization_performed }} <span>шт</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
 
-		{{-- <div class="params-section" ng-if="id">
-			<div class="row justify-content-around">
-				<div class="col-5 col-xl-4">
-					<div class="params-title mb-4">История оплаты</div>
-
-					<div class="alert alert-secondary">
-						<table class="table history-table" ng-if="order.payments.length > 0">
-							<tr>
-								<th>Дата</th>
-								<th>Сумма</th>
-							</tr>
-							<tr ng-repeat="payment in order.payments">
-								<td>
-									<input type="text" class="form-control" ng-model="payment.date_raw" ui-mask="99.99.9999">
-								</td>
-								<td>
-									<input type="text" class="form-control" ng-model="payment.paid" ng-change="inputFloat(payment, 'paid')">
-									<span class="product-units">
-										@{{ payment.paid }} <span>руб</span>
-									</span>
-								</td>
-							</tr>
-						</table>
-
-						<div ng-if="order.payments.length == 0">
-							<i class="far fa-calendar-times"></i> Оплат заказа еще не поступало
-						</div>
-					</div>
-				</div>
-				<div class="col-7 col-xl-6">
-					<div class="params-title mb-4">История выдачи</div>
-					
-					<div class="alert alert-secondary">
-						<table class="table history-table" ng-if="(order.realizations | filter: {'date': '!= null'}).length > 0">
-							<tr>
-								<th>Дата</th>
-								<th>Продукт</th>
-								<th>Количество</th>
-							</tr>
-							<tr ng-repeat="realization in order.realizations | filter: {'date': '!= null'}">
-								<td>
-									<input type="text" class="form-control" ng-model="realization.date_raw" ui-mask="99.99.9999">
-								</td>
-								<td style="width: 50%">
-									<div ng-if="realization.product">
-										@{{ realization.product.product_group.name }} @{{ realization.product.product_group.size }}
-										<div class="product-color">@{{ realization.product.variation_text }}</div>
-									</div>
-									<div ng-if="!realization.product">
-										Поддоны
-									</div>
-								</td>
-								<td>
-									<input type="text" class="form-control" ng-model="realization.performed" ng-change="inputFloat(realization, 'performed')">
-									<span class="product-units">
-										@{{ realization.performed }} <span ng-bind-html="realization.product.units_text" ng-if="realization.product"></span>
-										<span ng-if="!realization.product">шт</span>
-									</span>
-								</td>
-							</tr>
-						</table>
-
-						<div ng-if="(order.realizations | filter: {'date': '!= null'}).length == 0">
-							<i class="far fa-calendar-times"></i> Заказ еще не выдан
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> --}}
-
 		<div class="buttons-block">
 			<button class="btn btn-primary" ng-click="save()" ng-disabled="isSaving">
 				<span ng-if="isSaving">
-					<i class="fa fa-spinner fa-spin"></i> Сохранение
+					<i class="fa fa-spinner fa-spin"></i> Сохранение...
 				</span>
 				<span ng-if="!isSaving">
 					<i class="fas fa-save"></i> Сохранить и выйти

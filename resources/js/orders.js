@@ -4,7 +4,6 @@ angular.module('tctApp').controller('OrdersController', [
 	'$location',
 	'$timeout',
 	'$filter',
-	'toastr',
 	'ProductsRepository',
 	'OrdersRepository',
 	'ExportsRepository',
@@ -14,7 +13,6 @@ angular.module('tctApp').controller('OrdersController', [
 		$location,
 		$timeout,
 		$filter,
-		toastr,
 		ProductsRepository,
 		OrdersRepository,
 		ExportsRepository
@@ -44,6 +42,7 @@ angular.module('tctApp').controller('OrdersController', [
 		'weight': 0,
 		'pallets': 0,
 		'pallets_price': 200,
+		'pallets_realization_performed': 0,
 		'priority': '1',
 		'delivery': '',
 		'delivery_distance': 0,
@@ -128,6 +127,10 @@ angular.module('tctApp').controller('OrdersController', [
 		{
 			$scope.order = response;
 			$scope.isLoading = false;
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -167,17 +170,17 @@ angular.module('tctApp').controller('OrdersController', [
 					$scope.order.priority = '' + $scope.order.priority;
 				}
 
-				for (payment of $scope.order.payments)
-				{
-					var date = payment.date.split("-");
-					payment.date_raw = date[2] + date[1] + date[0];
-				}
+				// for (payment of $scope.order.payments)
+				// {
+				// 	var date = payment.date.split("-");
+				// 	payment.date_raw = date[2] + date[1] + date[0];
+				// }
 
-				for (realization of $scope.order.realizations)
-				{
-					var date = realization.date.split("-");
-					realization.date_raw = date[2] + date[1] + date[0];
-				}
+				// for (realization of $scope.order.realizations)
+				// {
+				// 	var date = realization.date.split("-");
+				// 	realization.date_raw = date[2] + date[1] + date[0];
+				// }
 
 				ProductsRepository.query(function(response) 
 				{
@@ -205,6 +208,10 @@ angular.module('tctApp').controller('OrdersController', [
 						}
 					}
 				});
+			},
+			function(response)
+			{
+				$scope.isLoading = false;
 			});
 		}
 		else
@@ -224,9 +231,6 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.save = function() 
 	{
-		$scope.isSaving = true;
-
-
 		if ($scope.currentOrder)
 		{
 			$scope.id = $scope.currentOrder.id;
@@ -234,6 +238,8 @@ angular.module('tctApp').controller('OrdersController', [
 			$scope.baseUrl = 'orders';
 			$scope.order['production'] = true;
 		}
+
+		$scope.isSaving = true;
 
 		OrdersRepository.save({id: $scope.id}, $scope.order, function(response) 
 		{
@@ -259,12 +265,7 @@ angular.module('tctApp').controller('OrdersController', [
             switch (response.status) 
             {
             	case 422:
-            		toastr.error('Проверьте введенные данные');
             		$scope.orderErrors = response.data.errors;
-            		break
-
-            	default:
-            		toastr.error('Произошла ошибка на сервере');
             		break;
             }
         });
@@ -287,13 +288,6 @@ angular.module('tctApp').controller('OrdersController', [
 		function(response) 
 		{
             $scope.isAddSaving = false;
-
-            switch (response.status) 
-            {
-            	default:
-            		toastr.error('Произошла ошибка на сервере');
-            		break;
-            }
         });
 	}
 
@@ -318,10 +312,14 @@ angular.module('tctApp').controller('OrdersController', [
 
 	$scope.delete = function(id)
 	{
-		$scope.hideDelete();
+		$scope.isDeleting = true;
 
 		OrdersRepository.delete({id: id}, function(response) 
 		{
+			$scope.isDeleting = false;
+
+			$scope.hideDelete();
+
 			if ($scope.baseUrl)
 			{
 				$location.path($scope.baseUrl).replace();
@@ -335,15 +333,13 @@ angular.module('tctApp').controller('OrdersController', [
 		}, 
 		function(response) 
 		{
-        	toastr.error('Произошла ошибка на сервере');
+        	$scope.isDeleting = false;
         });
 	}
 
 
 	$scope.loadOrders = function()
 	{
-		$scope.isLoading = true;
-
 		var request = {
 			'main_category': $scope.currentMainCategory.join(','),
 			'page': $scope.currentPage
@@ -361,6 +357,8 @@ angular.module('tctApp').controller('OrdersController', [
 		{
 			request.month = $scope.currentDate.month;
 		}
+
+		$scope.isLoading = true;
 		
 		OrdersRepository.query(request, function(response) 
 		{
@@ -391,7 +389,6 @@ angular.module('tctApp').controller('OrdersController', [
 		function(response) 
 		{
             $scope.isLoading = false;
-            toastr.error('Произошла ошибка на сервере');
         });
 	}
 
@@ -451,7 +448,8 @@ angular.module('tctApp').controller('OrdersController', [
 			'pivot': {
 				'price': 0,
 				'count': 0,
-				'cost': 0
+				'cost': 0,
+				'realization_performed': 0
 			}
 		});
 	}
@@ -474,6 +472,10 @@ angular.module('tctApp').controller('OrdersController', [
 			productData.pivot.price = 0;
 		}
 
+		productData.product_group = {
+			'name': productGroup.name,
+			'size': productGroup.size
+		};
 		productData.category = productGroup.category;
 		productData.weight_unit = productGroup.weight_unit;
 		productData.unit_in_units = productGroup.unit_in_units;
@@ -504,6 +506,7 @@ angular.module('tctApp').controller('OrdersController', [
 		productData.price = product.price;
 		productData.price_cashless = product.price_cashless;
 		productData.price_vat = product.price_vat;
+		productData.variation_noun_text = product.variation_noun_text;
 
 		$scope.updateOrderInfo();
 	}
@@ -516,12 +519,14 @@ angular.module('tctApp').controller('OrdersController', [
 		$scope.order.pallets = 0;
 		$scope.order.main_category = '';
 
-		$scope.isAllRealizationsActive = true;
+		$scope.isOrderAllRealizationsActive = true;
+		$scope.isOrderPartRealizationsActive = false;
 
 		for (product of $scope.order.products) 
 		{
 			if (!product.id)
 			{
+				$scope.isOrderAllRealizationsActive = false;
 				continue;
 			}
 
@@ -556,11 +561,31 @@ angular.module('tctApp').controller('OrdersController', [
 				$scope.order.main_category = product.category.main_category;
 			}
 
+			$scope.isOrderPartRealizationsActive = true;
+
 			if (product.pivot.count > product.in_stock)
 			{
-				$scope.isAllRealizationsActive = false;
-				$scope.order.all_realizations = false;
+				$scope.isOrderAllRealizationsActive = false;
+				$scope.isOrderAllRealizationsChosen = false;
 			}
+
+			if ($scope.isOrderAllRealizationsChosen)
+			{
+				product.pivot.realization_performed = product.pivot.count;
+			}
+			else if (!$scope.isOrderPartRealizationsChosen)
+			{
+				product.pivot.realization_performed = 0;
+			}
+		}
+
+		if ($scope.isOrderAllRealizationsChosen)
+		{
+			$scope.order.pallets_realization_performed = $scope.order.pallets;
+		}
+		else if (!$scope.isOrderPartRealizationsChosen)
+		{
+			$scope.order.pallets_realization_performed = 0;
 		}
 
 		$scope.order.pallets_price = $scope.palletsPrices[$scope.order.pay_type];
@@ -731,10 +756,10 @@ angular.module('tctApp').controller('OrdersController', [
     		realization.date_raw = $scope.modalOrder.realization_date_raw;
     	}
 
-    	$scope.isSaving = true;
+    	$scope.isModalSaving = true;
     	OrdersRepository.saveRealization({'realizations': $scope.modalOrder.realizations}, function(response) 
 		{
-			$scope.isSaving = false;
+			$scope.isModalSaving = false;
 
 			toastr.success('Выдача заказа успешно сохранена!');
 
@@ -750,9 +775,26 @@ angular.module('tctApp').controller('OrdersController', [
 		}, 
 		function(response) 
 		{
-            $scope.isSaving = false;
-            toastr.error('Произошла ошибка на сервере');
+            $scope.isModalSaving = false;
         });
+    }
+
+
+    $scope.isOrderAllRealizationsChosen = false;
+
+
+    $scope.chooseOrderRealizations = function(allRealizations)
+    {
+    	if (allRealizations && $scope.isOrderAllRealizationsChosen)
+    	{
+    		$scope.isOrderPartRealizationsChosen = false;
+    	}
+    	else if (!allRealizations && $scope.isOrderPartRealizationsChosen)
+    	{
+    		$scope.isOrderAllRealizationsChosen = false;
+    	}
+
+    	$scope.updateOrderInfo();
     }
 
 
@@ -828,10 +870,10 @@ angular.module('tctApp').controller('OrdersController', [
 
     $scope.savePayment = function()
     {
-    	$scope.isSaving = true;
+    	$scope.isModalSaving = true;
     	OrdersRepository.savePayment($scope.modalPayment, function(response) 
 		{
-			$scope.isSaving = false;
+			$scope.isModalSaving = false;
 
 			toastr.success('Платеж успешно сохранен!');
 
@@ -849,8 +891,7 @@ angular.module('tctApp').controller('OrdersController', [
 		}, 
 		function(response) 
 		{
-            $scope.isSaving = false;
-            toastr.error('Произошла ошибка на сервере');
+            $scope.isModalSaving = false;
         });
     }
 
@@ -872,7 +913,6 @@ angular.module('tctApp').controller('OrdersController', [
 		function(response) 
 		{
             $scope.isModalLoading = false;
-            toastr.error('Произошла ошибка на сервере');
         });
 	}
 
@@ -892,11 +932,12 @@ angular.module('tctApp').controller('OrdersController', [
 		{
 			window.open(
 			 	response.file,
-			 	'_blank' // <- This is what makes it open in a new window.
+			 	'_blank'
 			);
 		}, 
 		function(response) 
 		{
+			
         });
 	}
 }]);

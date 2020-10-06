@@ -4109,539 +4109,6 @@ module.exports = 'ngSanitize';
 
 /***/ }),
 
-/***/ "./node_modules/angular-toastr/dist/angular-toastr.tpls.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/angular-toastr/dist/angular-toastr.tpls.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-(function() {
-  'use strict';
-
-  angular.module('toastr', [])
-    .factory('toastr', toastr);
-
-  toastr.$inject = ['$animate', '$injector', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
-
-  function toastr($animate, $injector, $document, $rootScope, $sce, toastrConfig, $q) {
-    var container;
-    var index = 0;
-    var toasts = [];
-
-    var previousToastMessage = '';
-    var openToasts = {};
-
-    var containerDefer = $q.defer();
-
-    var toast = {
-      active: active,
-      clear: clear,
-      error: error,
-      info: info,
-      remove: remove,
-      success: success,
-      warning: warning,
-      refreshTimer: refreshTimer
-    };
-
-    return toast;
-
-    /* Public API */
-    function active() {
-      return toasts.length;
-    }
-
-    function clear(toast) {
-      // Bit of a hack, I will remove this soon with a BC
-      if (arguments.length === 1 && !toast) { return; }
-
-      if (toast) {
-        remove(toast.toastId);
-      } else {
-        for (var i = 0; i < toasts.length; i++) {
-          remove(toasts[i].toastId);
-        }
-      }
-    }
-
-    function error(message, title, optionsOverride) {
-      var type = _getOptions().iconClasses.error;
-      return _buildNotification(type, message, title, optionsOverride);
-    }
-
-    function info(message, title, optionsOverride) {
-      var type = _getOptions().iconClasses.info;
-      return _buildNotification(type, message, title, optionsOverride);
-    }
-
-    function success(message, title, optionsOverride) {
-      var type = _getOptions().iconClasses.success;
-      return _buildNotification(type, message, title, optionsOverride);
-    }
-
-    function warning(message, title, optionsOverride) {
-      var type = _getOptions().iconClasses.warning;
-      return _buildNotification(type, message, title, optionsOverride);
-    }
-
-    function refreshTimer(toast, newTime) {
-      if (toast && toast.isOpened && toasts.indexOf(toast) >= 0) {
-          toast.scope.refreshTimer(newTime);
-      }
-    }
-
-    function remove(toastId, wasClicked) {
-      var toast = findToast(toastId);
-
-      if (toast && ! toast.deleting) { // Avoid clicking when fading out
-        toast.deleting = true;
-        toast.isOpened = false;
-        $animate.leave(toast.el).then(function() {
-          if (toast.scope.options.onHidden) {
-            toast.scope.options.onHidden(!!wasClicked, toast);
-          }
-          toast.scope.$destroy();
-          var index = toasts.indexOf(toast);
-          delete openToasts[toast.scope.message];
-          toasts.splice(index, 1);
-          var maxOpened = toastrConfig.maxOpened;
-          if (maxOpened && toasts.length >= maxOpened) {
-            toasts[maxOpened - 1].open.resolve();
-          }
-          if (lastToast()) {
-            container.remove();
-            container = null;
-            containerDefer = $q.defer();
-          }
-        });
-      }
-
-      function findToast(toastId) {
-        for (var i = 0; i < toasts.length; i++) {
-          if (toasts[i].toastId === toastId) {
-            return toasts[i];
-          }
-        }
-      }
-
-      function lastToast() {
-        return !toasts.length;
-      }
-    }
-
-    /* Internal functions */
-    function _buildNotification(type, message, title, optionsOverride) {
-      if (angular.isObject(title)) {
-        optionsOverride = title;
-        title = null;
-      }
-
-      return _notify({
-        iconClass: type,
-        message: message,
-        optionsOverride: optionsOverride,
-        title: title
-      });
-    }
-
-    function _getOptions() {
-      return angular.extend({}, toastrConfig);
-    }
-
-    function _createOrGetContainer(options) {
-      if(container) { return containerDefer.promise; }
-
-      container = angular.element('<div></div>');
-      container.attr('id', options.containerId);
-      container.addClass(options.positionClass);
-      container.css({'pointer-events': 'auto'});
-
-      var target = angular.element(document.querySelector(options.target));
-
-      if ( ! target || ! target.length) {
-        throw 'Target for toasts doesn\'t exist';
-      }
-
-      $animate.enter(container, target).then(function() {
-        containerDefer.resolve();
-      });
-
-      return containerDefer.promise;
-    }
-
-    function _notify(map) {
-      var options = _getOptions();
-
-      if (shouldExit()) { return; }
-
-      var newToast = createToast();
-
-      toasts.push(newToast);
-
-      if (ifMaxOpenedAndAutoDismiss()) {
-        var oldToasts = toasts.slice(0, (toasts.length - options.maxOpened));
-        for (var i = 0, len = oldToasts.length; i < len; i++) {
-          remove(oldToasts[i].toastId);
-        }
-      }
-
-      if (maxOpenedNotReached()) {
-        newToast.open.resolve();
-      }
-
-      newToast.open.promise.then(function() {
-        _createOrGetContainer(options).then(function() {
-          newToast.isOpened = true;
-          if (options.newestOnTop) {
-            $animate.enter(newToast.el, container).then(function() {
-              newToast.scope.init();
-            });
-          } else {
-            var sibling = container[0].lastChild ? angular.element(container[0].lastChild) : null;
-            $animate.enter(newToast.el, container, sibling).then(function() {
-              newToast.scope.init();
-            });
-          }
-        });
-      });
-
-      return newToast;
-
-      function ifMaxOpenedAndAutoDismiss() {
-        return options.autoDismiss && options.maxOpened && toasts.length > options.maxOpened;
-      }
-
-      function createScope(toast, map, options) {
-        if (options.allowHtml) {
-          toast.scope.allowHtml = true;
-          toast.scope.title = $sce.trustAsHtml(map.title);
-          toast.scope.message = $sce.trustAsHtml(map.message);
-        } else {
-          toast.scope.title = map.title;
-          toast.scope.message = map.message;
-        }
-
-        toast.scope.toastType = toast.iconClass;
-        toast.scope.toastId = toast.toastId;
-        toast.scope.extraData = options.extraData;
-
-        toast.scope.options = {
-          extendedTimeOut: options.extendedTimeOut,
-          messageClass: options.messageClass,
-          onHidden: options.onHidden,
-          onShown: generateEvent('onShown'),
-          onTap: generateEvent('onTap'),
-          progressBar: options.progressBar,
-          tapToDismiss: options.tapToDismiss,
-          timeOut: options.timeOut,
-          titleClass: options.titleClass,
-          toastClass: options.toastClass
-        };
-
-        if (options.closeButton) {
-          toast.scope.options.closeHtml = options.closeHtml;
-        }
-
-        function generateEvent(event) {
-          if (options[event]) {
-            return function() {
-              options[event](toast);
-            };
-          }
-        }
-      }
-
-      function createToast() {
-        var newToast = {
-          toastId: index++,
-          isOpened: false,
-          scope: $rootScope.$new(),
-          open: $q.defer()
-        };
-        newToast.iconClass = map.iconClass;
-        if (map.optionsOverride) {
-          angular.extend(options, cleanOptionsOverride(map.optionsOverride));
-          newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
-        }
-
-        createScope(newToast, map, options);
-
-        newToast.el = createToastEl(newToast.scope);
-
-        return newToast;
-
-        function cleanOptionsOverride(options) {
-          var badOptions = ['containerId', 'iconClasses', 'maxOpened', 'newestOnTop',
-                            'positionClass', 'preventDuplicates', 'preventOpenDuplicates', 'templates'];
-          for (var i = 0, l = badOptions.length; i < l; i++) {
-            delete options[badOptions[i]];
-          }
-
-          return options;
-        }
-      }
-
-      function createToastEl(scope) {
-        var angularDomEl = angular.element('<div toast></div>'),
-          $compile = $injector.get('$compile');
-        return $compile(angularDomEl)(scope);
-      }
-
-      function maxOpenedNotReached() {
-        return options.maxOpened && toasts.length <= options.maxOpened || !options.maxOpened;
-      }
-
-      function shouldExit() {
-        var isDuplicateOfLast = options.preventDuplicates && map.message === previousToastMessage;
-        var isDuplicateOpen = options.preventOpenDuplicates && openToasts[map.message];
-
-        if (isDuplicateOfLast || isDuplicateOpen) {
-          return true;
-        }
-
-        previousToastMessage = map.message;
-        openToasts[map.message] = true;
-
-        return false;
-      }
-    }
-  }
-}());
-
-(function() {
-  'use strict';
-
-  angular.module('toastr')
-    .constant('toastrConfig', {
-      allowHtml: false,
-      autoDismiss: false,
-      closeButton: false,
-      closeHtml: '<button>&times;</button>',
-      containerId: 'toast-container',
-      extendedTimeOut: 1000,
-      iconClasses: {
-        error: 'toast-error',
-        info: 'toast-info',
-        success: 'toast-success',
-        warning: 'toast-warning'
-      },
-      maxOpened: 0,
-      messageClass: 'toast-message',
-      newestOnTop: true,
-      onHidden: null,
-      onShown: null,
-      onTap: null,
-      positionClass: 'toast-top-right',
-      preventDuplicates: false,
-      preventOpenDuplicates: false,
-      progressBar: false,
-      tapToDismiss: true,
-      target: 'body',
-      templates: {
-        toast: 'directives/toast/toast.html',
-        progressbar: 'directives/progressbar/progressbar.html'
-      },
-      timeOut: 5000,
-      titleClass: 'toast-title',
-      toastClass: 'toast'
-    });
-}());
-
-(function() {
-  'use strict';
-
-  angular.module('toastr')
-    .directive('progressBar', progressBar);
-
-  progressBar.$inject = ['toastrConfig'];
-
-  function progressBar(toastrConfig) {
-    return {
-      require: '^toast',
-      templateUrl: function() {
-        return toastrConfig.templates.progressbar;
-      },
-      link: linkFunction
-    };
-
-    function linkFunction(scope, element, attrs, toastCtrl) {
-      var intervalId, currentTimeOut, hideTime;
-
-      toastCtrl.progressBar = scope;
-
-      scope.start = function(duration) {
-        if (intervalId) {
-          clearInterval(intervalId);
-        }
-
-        currentTimeOut = parseFloat(duration);
-        hideTime = new Date().getTime() + currentTimeOut;
-        intervalId = setInterval(updateProgress, 10);
-      };
-
-      scope.stop = function() {
-        if (intervalId) {
-          clearInterval(intervalId);
-        }
-      };
-
-      function updateProgress() {
-        var percentage = ((hideTime - (new Date().getTime())) / currentTimeOut) * 100;
-        element.css('width', percentage + '%');
-      }
-
-      scope.$on('$destroy', function() {
-        // Failsafe stop
-        clearInterval(intervalId);
-      });
-    }
-  }
-}());
-
-(function() {
-  'use strict';
-
-  angular.module('toastr')
-    .controller('ToastController', ToastController);
-
-  function ToastController() {
-    this.progressBar = null;
-
-    this.startProgressBar = function(duration) {
-      if (this.progressBar) {
-        this.progressBar.start(duration);
-      }
-    };
-
-    this.stopProgressBar = function() {
-      if (this.progressBar) {
-        this.progressBar.stop();
-      }
-    };
-  }
-}());
-
-(function() {
-  'use strict';
-
-  angular.module('toastr')
-    .directive('toast', toast);
-
-  toast.$inject = ['$injector', '$interval', 'toastrConfig', 'toastr'];
-
-  function toast($injector, $interval, toastrConfig, toastr) {
-    return {
-      templateUrl: function() {
-        return toastrConfig.templates.toast;
-      },
-      controller: 'ToastController',
-      link: toastLinkFunction
-    };
-
-    function toastLinkFunction(scope, element, attrs, toastCtrl) {
-      var timeout;
-
-      scope.toastClass = scope.options.toastClass;
-      scope.titleClass = scope.options.titleClass;
-      scope.messageClass = scope.options.messageClass;
-      scope.progressBar = scope.options.progressBar;
-
-      if (wantsCloseButton()) {
-        var button = angular.element(scope.options.closeHtml),
-          $compile = $injector.get('$compile');
-        button.addClass('toast-close-button');
-        button.attr('ng-click', 'close(true, $event)');
-        $compile(button)(scope);
-        element.children().prepend(button);
-      }
-
-      scope.init = function() {
-        if (scope.options.timeOut) {
-          timeout = createTimeout(scope.options.timeOut);
-        }
-        if (scope.options.onShown) {
-          scope.options.onShown();
-        }
-      };
-
-      element.on('mouseenter', function() {
-        hideAndStopProgressBar();
-        if (timeout) {
-          $interval.cancel(timeout);
-        }
-      });
-
-      scope.tapToast = function () {
-        if (angular.isFunction(scope.options.onTap)) {
-          scope.options.onTap();
-        }
-        if (scope.options.tapToDismiss) {
-          scope.close(true);
-        }
-      };
-
-      scope.close = function (wasClicked, $event) {
-        if ($event && angular.isFunction($event.stopPropagation)) {
-          $event.stopPropagation();
-        }
-        toastr.remove(scope.toastId, wasClicked);
-      };
-      
-      scope.refreshTimer = function(newTime) {
-        if (timeout) {
-          $interval.cancel(timeout);
-          timeout = createTimeout(newTime || scope.options.timeOut);
-        }
-      };
-
-      element.on('mouseleave', function() {
-        if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
-        scope.$apply(function() {
-          scope.progressBar = scope.options.progressBar;
-        });
-        timeout = createTimeout(scope.options.extendedTimeOut);
-      });
-
-      function createTimeout(time) {
-        toastCtrl.startProgressBar(time);
-        return $interval(function() {
-          toastCtrl.stopProgressBar();
-          toastr.remove(scope.toastId);
-        }, time, 1);
-      }
-
-      function hideAndStopProgressBar() {
-        scope.progressBar = false;
-        toastCtrl.stopProgressBar();
-      }
-
-      function wantsCloseButton() {
-        return scope.options.closeHtml;
-      }
-    }
-  }
-}());
-
-angular.module("toastr").run(["$templateCache", function($templateCache) {$templateCache.put("directives/progressbar/progressbar.html","<div class=\"toast-progress\"></div>\n");
-$templateCache.put("directives/toast/toast.html","<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">\n  <div ng-switch on=\"allowHtml\">\n    <div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\" aria-label=\"{{title}}\">{{title}}</div>\n    <div ng-switch-default class=\"{{messageClass}}\" aria-label=\"{{message}}\">{{message}}</div>\n    <div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"></div>\n    <div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"></div>\n  </div>\n  <progress-bar ng-if=\"progressBar\"></progress-bar>\n</div>\n");}]);
-
-/***/ }),
-
-/***/ "./node_modules/angular-toastr/index.js":
-/*!**********************************************!*\
-  !*** ./node_modules/angular-toastr/index.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(/*! ./dist/angular-toastr.tpls.js */ "./node_modules/angular-toastr/dist/angular-toastr.tpls.js");
-module.exports = 'toastr';
-
-
-
-/***/ }),
-
 /***/ "./node_modules/angular-ui-mask/dist/mask.js":
 /*!***************************************************!*\
   !*** ./node_modules/angular-ui-mask/dist/mask.js ***!
@@ -78774,6 +78241,488 @@ else {}
 
 /***/ }),
 
+/***/ "./node_modules/toastr/toastr.js":
+/*!***************************************!*\
+  !*** ./node_modules/toastr/toastr.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+ * Toastr
+ * Copyright 2012-2015
+ * Authors: John Papa, Hans Fjällemark, and Tim Ferrell.
+ * All Rights Reserved.
+ * Use, reproduction, distribution, and modification of this code is subject to the terms and
+ * conditions of the MIT license, available at http://www.opensource.org/licenses/mit-license.php
+ *
+ * ARIA Support: Greta Krafsig
+ *
+ * Project: https://github.com/CodeSeven/toastr
+ */
+/* global define */
+(function (define) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")], __WEBPACK_AMD_DEFINE_RESULT__ = (function ($) {
+        return (function () {
+            var $container;
+            var listener;
+            var toastId = 0;
+            var toastType = {
+                error: 'error',
+                info: 'info',
+                success: 'success',
+                warning: 'warning'
+            };
+
+            var toastr = {
+                clear: clear,
+                remove: remove,
+                error: error,
+                getContainer: getContainer,
+                info: info,
+                options: {},
+                subscribe: subscribe,
+                success: success,
+                version: '2.1.4',
+                warning: warning
+            };
+
+            var previousToast;
+
+            return toastr;
+
+            ////////////////
+
+            function error(message, title, optionsOverride) {
+                return notify({
+                    type: toastType.error,
+                    iconClass: getOptions().iconClasses.error,
+                    message: message,
+                    optionsOverride: optionsOverride,
+                    title: title
+                });
+            }
+
+            function getContainer(options, create) {
+                if (!options) { options = getOptions(); }
+                $container = $('#' + options.containerId);
+                if ($container.length) {
+                    return $container;
+                }
+                if (create) {
+                    $container = createContainer(options);
+                }
+                return $container;
+            }
+
+            function info(message, title, optionsOverride) {
+                return notify({
+                    type: toastType.info,
+                    iconClass: getOptions().iconClasses.info,
+                    message: message,
+                    optionsOverride: optionsOverride,
+                    title: title
+                });
+            }
+
+            function subscribe(callback) {
+                listener = callback;
+            }
+
+            function success(message, title, optionsOverride) {
+                return notify({
+                    type: toastType.success,
+                    iconClass: getOptions().iconClasses.success,
+                    message: message,
+                    optionsOverride: optionsOverride,
+                    title: title
+                });
+            }
+
+            function warning(message, title, optionsOverride) {
+                return notify({
+                    type: toastType.warning,
+                    iconClass: getOptions().iconClasses.warning,
+                    message: message,
+                    optionsOverride: optionsOverride,
+                    title: title
+                });
+            }
+
+            function clear($toastElement, clearOptions) {
+                var options = getOptions();
+                if (!$container) { getContainer(options); }
+                if (!clearToast($toastElement, options, clearOptions)) {
+                    clearContainer(options);
+                }
+            }
+
+            function remove($toastElement) {
+                var options = getOptions();
+                if (!$container) { getContainer(options); }
+                if ($toastElement && $(':focus', $toastElement).length === 0) {
+                    removeToast($toastElement);
+                    return;
+                }
+                if ($container.children().length) {
+                    $container.remove();
+                }
+            }
+
+            // internal functions
+
+            function clearContainer (options) {
+                var toastsToClear = $container.children();
+                for (var i = toastsToClear.length - 1; i >= 0; i--) {
+                    clearToast($(toastsToClear[i]), options);
+                }
+            }
+
+            function clearToast ($toastElement, options, clearOptions) {
+                var force = clearOptions && clearOptions.force ? clearOptions.force : false;
+                if ($toastElement && (force || $(':focus', $toastElement).length === 0)) {
+                    $toastElement[options.hideMethod]({
+                        duration: options.hideDuration,
+                        easing: options.hideEasing,
+                        complete: function () { removeToast($toastElement); }
+                    });
+                    return true;
+                }
+                return false;
+            }
+
+            function createContainer(options) {
+                $container = $('<div/>')
+                    .attr('id', options.containerId)
+                    .addClass(options.positionClass);
+
+                $container.appendTo($(options.target));
+                return $container;
+            }
+
+            function getDefaults() {
+                return {
+                    tapToDismiss: true,
+                    toastClass: 'toast',
+                    containerId: 'toast-container',
+                    debug: false,
+
+                    showMethod: 'fadeIn', //fadeIn, slideDown, and show are built into jQuery
+                    showDuration: 300,
+                    showEasing: 'swing', //swing and linear are built into jQuery
+                    onShown: undefined,
+                    hideMethod: 'fadeOut',
+                    hideDuration: 1000,
+                    hideEasing: 'swing',
+                    onHidden: undefined,
+                    closeMethod: false,
+                    closeDuration: false,
+                    closeEasing: false,
+                    closeOnHover: true,
+
+                    extendedTimeOut: 1000,
+                    iconClasses: {
+                        error: 'toast-error',
+                        info: 'toast-info',
+                        success: 'toast-success',
+                        warning: 'toast-warning'
+                    },
+                    iconClass: 'toast-info',
+                    positionClass: 'toast-top-right',
+                    timeOut: 5000, // Set timeOut and extendedTimeOut to 0 to make it sticky
+                    titleClass: 'toast-title',
+                    messageClass: 'toast-message',
+                    escapeHtml: false,
+                    target: 'body',
+                    closeHtml: '<button type="button">&times;</button>',
+                    closeClass: 'toast-close-button',
+                    newestOnTop: true,
+                    preventDuplicates: false,
+                    progressBar: false,
+                    progressClass: 'toast-progress',
+                    rtl: false
+                };
+            }
+
+            function publish(args) {
+                if (!listener) { return; }
+                listener(args);
+            }
+
+            function notify(map) {
+                var options = getOptions();
+                var iconClass = map.iconClass || options.iconClass;
+
+                if (typeof (map.optionsOverride) !== 'undefined') {
+                    options = $.extend(options, map.optionsOverride);
+                    iconClass = map.optionsOverride.iconClass || iconClass;
+                }
+
+                if (shouldExit(options, map)) { return; }
+
+                toastId++;
+
+                $container = getContainer(options, true);
+
+                var intervalId = null;
+                var $toastElement = $('<div/>');
+                var $titleElement = $('<div/>');
+                var $messageElement = $('<div/>');
+                var $progressElement = $('<div/>');
+                var $closeElement = $(options.closeHtml);
+                var progressBar = {
+                    intervalId: null,
+                    hideEta: null,
+                    maxHideTime: null
+                };
+                var response = {
+                    toastId: toastId,
+                    state: 'visible',
+                    startTime: new Date(),
+                    options: options,
+                    map: map
+                };
+
+                personalizeToast();
+
+                displayToast();
+
+                handleEvents();
+
+                publish(response);
+
+                if (options.debug && console) {
+                    console.log(response);
+                }
+
+                return $toastElement;
+
+                function escapeHtml(source) {
+                    if (source == null) {
+                        source = '';
+                    }
+
+                    return source
+                        .replace(/&/g, '&amp;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                }
+
+                function personalizeToast() {
+                    setIcon();
+                    setTitle();
+                    setMessage();
+                    setCloseButton();
+                    setProgressBar();
+                    setRTL();
+                    setSequence();
+                    setAria();
+                }
+
+                function setAria() {
+                    var ariaValue = '';
+                    switch (map.iconClass) {
+                        case 'toast-success':
+                        case 'toast-info':
+                            ariaValue =  'polite';
+                            break;
+                        default:
+                            ariaValue = 'assertive';
+                    }
+                    $toastElement.attr('aria-live', ariaValue);
+                }
+
+                function handleEvents() {
+                    if (options.closeOnHover) {
+                        $toastElement.hover(stickAround, delayedHideToast);
+                    }
+
+                    if (!options.onclick && options.tapToDismiss) {
+                        $toastElement.click(hideToast);
+                    }
+
+                    if (options.closeButton && $closeElement) {
+                        $closeElement.click(function (event) {
+                            if (event.stopPropagation) {
+                                event.stopPropagation();
+                            } else if (event.cancelBubble !== undefined && event.cancelBubble !== true) {
+                                event.cancelBubble = true;
+                            }
+
+                            if (options.onCloseClick) {
+                                options.onCloseClick(event);
+                            }
+
+                            hideToast(true);
+                        });
+                    }
+
+                    if (options.onclick) {
+                        $toastElement.click(function (event) {
+                            options.onclick(event);
+                            hideToast();
+                        });
+                    }
+                }
+
+                function displayToast() {
+                    $toastElement.hide();
+
+                    $toastElement[options.showMethod](
+                        {duration: options.showDuration, easing: options.showEasing, complete: options.onShown}
+                    );
+
+                    if (options.timeOut > 0) {
+                        intervalId = setTimeout(hideToast, options.timeOut);
+                        progressBar.maxHideTime = parseFloat(options.timeOut);
+                        progressBar.hideEta = new Date().getTime() + progressBar.maxHideTime;
+                        if (options.progressBar) {
+                            progressBar.intervalId = setInterval(updateProgress, 10);
+                        }
+                    }
+                }
+
+                function setIcon() {
+                    if (map.iconClass) {
+                        $toastElement.addClass(options.toastClass).addClass(iconClass);
+                    }
+                }
+
+                function setSequence() {
+                    if (options.newestOnTop) {
+                        $container.prepend($toastElement);
+                    } else {
+                        $container.append($toastElement);
+                    }
+                }
+
+                function setTitle() {
+                    if (map.title) {
+                        var suffix = map.title;
+                        if (options.escapeHtml) {
+                            suffix = escapeHtml(map.title);
+                        }
+                        $titleElement.append(suffix).addClass(options.titleClass);
+                        $toastElement.append($titleElement);
+                    }
+                }
+
+                function setMessage() {
+                    if (map.message) {
+                        var suffix = map.message;
+                        if (options.escapeHtml) {
+                            suffix = escapeHtml(map.message);
+                        }
+                        $messageElement.append(suffix).addClass(options.messageClass);
+                        $toastElement.append($messageElement);
+                    }
+                }
+
+                function setCloseButton() {
+                    if (options.closeButton) {
+                        $closeElement.addClass(options.closeClass).attr('role', 'button');
+                        $toastElement.prepend($closeElement);
+                    }
+                }
+
+                function setProgressBar() {
+                    if (options.progressBar) {
+                        $progressElement.addClass(options.progressClass);
+                        $toastElement.prepend($progressElement);
+                    }
+                }
+
+                function setRTL() {
+                    if (options.rtl) {
+                        $toastElement.addClass('rtl');
+                    }
+                }
+
+                function shouldExit(options, map) {
+                    if (options.preventDuplicates) {
+                        if (map.message === previousToast) {
+                            return true;
+                        } else {
+                            previousToast = map.message;
+                        }
+                    }
+                    return false;
+                }
+
+                function hideToast(override) {
+                    var method = override && options.closeMethod !== false ? options.closeMethod : options.hideMethod;
+                    var duration = override && options.closeDuration !== false ?
+                        options.closeDuration : options.hideDuration;
+                    var easing = override && options.closeEasing !== false ? options.closeEasing : options.hideEasing;
+                    if ($(':focus', $toastElement).length && !override) {
+                        return;
+                    }
+                    clearTimeout(progressBar.intervalId);
+                    return $toastElement[method]({
+                        duration: duration,
+                        easing: easing,
+                        complete: function () {
+                            removeToast($toastElement);
+                            clearTimeout(intervalId);
+                            if (options.onHidden && response.state !== 'hidden') {
+                                options.onHidden();
+                            }
+                            response.state = 'hidden';
+                            response.endTime = new Date();
+                            publish(response);
+                        }
+                    });
+                }
+
+                function delayedHideToast() {
+                    if (options.timeOut > 0 || options.extendedTimeOut > 0) {
+                        intervalId = setTimeout(hideToast, options.extendedTimeOut);
+                        progressBar.maxHideTime = parseFloat(options.extendedTimeOut);
+                        progressBar.hideEta = new Date().getTime() + progressBar.maxHideTime;
+                    }
+                }
+
+                function stickAround() {
+                    clearTimeout(intervalId);
+                    progressBar.hideEta = 0;
+                    $toastElement.stop(true, true)[options.showMethod](
+                        {duration: options.showDuration, easing: options.showEasing}
+                    );
+                }
+
+                function updateProgress() {
+                    var percentage = ((progressBar.hideEta - (new Date().getTime())) / progressBar.maxHideTime) * 100;
+                    $progressElement.width(percentage + '%');
+                }
+            }
+
+            function getOptions() {
+                return $.extend({}, getDefaults(), toastr.options);
+            }
+
+            function removeToast($toastElement) {
+                if (!$container) { $container = getContainer(); }
+                if ($toastElement.is(':visible')) {
+                    return;
+                }
+                $toastElement.remove();
+                $toastElement = null;
+                if ($container.children().length === 0) {
+                    $container.remove();
+                    previousToast = undefined;
+                }
+            }
+
+        })();
+    }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+}(__webpack_require__(/*! !webpack amd define */ "./node_modules/webpack/buildin/amd-define.js")));
+
+
+/***/ }),
+
 /***/ "./node_modules/ui-select/dist/select.js":
 /*!***********************************************!*\
   !*** ./node_modules/ui-select/dist/select.js ***!
@@ -81224,6 +81173,20 @@ module.exports = 'ui.select';
 
 /***/ }),
 
+/***/ "./node_modules/webpack/buildin/amd-define.js":
+/*!***************************************!*\
+  !*** (webpack)/buildin/amd-define.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+	throw new Error("define cannot be used indirect");
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -81305,8 +81268,66 @@ __webpack_require__(/*! angularjs-color-picker */ "./node_modules/angularjs-colo
 
 __webpack_require__(/*! angular-datepicker */ "./node_modules/angular-datepicker/dist/index.js");
 
+window.toastr = __webpack_require__(/*! toastr */ "./node_modules/toastr/toastr.js");
 window.moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-var tctApp = angular.module('tctApp', [__webpack_require__(/*! angular-sanitize */ "./node_modules/angular-sanitize/index.js"), __webpack_require__(/*! angular-route */ "./node_modules/angular-route/index.js"), __webpack_require__(/*! angular-resource */ "./node_modules/angular-resource/index.js"), __webpack_require__(/*! angular-toastr */ "./node_modules/angular-toastr/index.js"), __webpack_require__(/*! angular-ui-mask */ "./node_modules/angular-ui-mask/index.js"), __webpack_require__(/*! ui-select */ "./node_modules/ui-select/index.js"), 'color.picker', 'datePicker']);
+toastr.options.timeOut = 2000;
+toastr.options.extendedTimeOut = 1000;
+var tctApp = angular.module('tctApp', [__webpack_require__(/*! angular-sanitize */ "./node_modules/angular-sanitize/index.js"), __webpack_require__(/*! angular-route */ "./node_modules/angular-route/index.js"), __webpack_require__(/*! angular-resource */ "./node_modules/angular-resource/index.js"), __webpack_require__(/*! angular-ui-mask */ "./node_modules/angular-ui-mask/index.js"), __webpack_require__(/*! ui-select */ "./node_modules/ui-select/index.js"), 'color.picker', 'datePicker']);
+tctApp.config(['$httpProvider', function ($httpProvider) {
+  $httpProvider.useApplyAsync(true);
+  $httpProvider.interceptors.push(['$rootScope', '$q', '$location', function ($rootScope, $q, $location) {
+    return {
+      response: function response(_response) {
+        return _response || $q.when(_response);
+      },
+      responseError: function responseError(response) {
+        switch (response.status) {
+          case -1:
+          case 502:
+            toastr.error('Проверьте подключение к Интернету и обновите страницу');
+            break;
+
+          case 301:
+          case 302:
+            $location.url('/');
+            toastr.warning('Страница перемещена');
+            break;
+
+          case 401:
+          case 403:
+          case 419:
+            toastr.error('Ваша сессия истекла, обновите страницу и авторизуйтесь');
+            break;
+
+          case 422:
+            toastr.error('Проверьте введенные данные');
+            break;
+
+          case 404:
+            $location.url('/');
+            toastr.warning('Страница не найдена');
+            break;
+
+          case 500:
+            toastr.error('Произошла ошибка на сервере, сообщите разработчику');
+            break;
+
+          default:
+            toastr.error('Произошла неизвестная ошибка, сообщите разработчику код ответа - ' + response.status);
+            break;
+        }
+
+        return $q.reject(response);
+      },
+      request: function request(config) {
+        return config;
+      },
+      requestError: function requestError(err) {
+        $q.reject(err);
+      }
+    };
+  }]);
+}]);
 tctApp.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode({
     enabled: true,
@@ -81321,12 +81342,6 @@ tctApp.config(function ($provide) {
     options.hue = true;
     options.format = 'hexString';
     return options;
-  });
-});
-tctApp.config(function (toastrConfig) {
-  angular.extend(toastrConfig, {
-    timeOut: 2000,
-    extendedTimeOut: 1000
   });
 });
 tctApp.config(function ($provide) {
@@ -81597,7 +81612,7 @@ tctApp.factory('AuthRepository', ['$resource', function ($resource) {
     }
   });
 }]);
-tctApp.run(function ($rootScope, AuthRepository) {
+tctApp.run(function ($rootScope, $location, AuthRepository) {
   $rootScope.searchInputKeyPressed = function ($event) {
     if ($event.which === 13) {
       $event.currentTarget.blur();
@@ -81632,7 +81647,7 @@ tctApp.run(function ($rootScope, AuthRepository) {
 
   $rootScope.logout = function () {
     AuthRepository.logout(function (response) {
-      document.location.href = '/login';
+      $location.url('/login');
     });
   };
 });
@@ -81646,7 +81661,7 @@ tctApp.run(function ($rootScope, AuthRepository) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('CategoriesController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'CategoriesRepository', function ($scope, $routeParams, $location, $timeout, toastr, CategoriesRepository) {
+angular.module('tctApp').controller('CategoriesController', ['$scope', '$routeParams', '$location', '$timeout', 'CategoriesRepository', function ($scope, $routeParams, $location, $timeout, CategoriesRepository) {
   $scope.baseUrl = '';
   $scope.categories = [];
   $scope.category = {
@@ -81670,6 +81685,8 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
     CategoriesRepository.query(function (response) {
       $scope.isLoading = false;
       $scope.categories = response;
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -81682,6 +81699,8 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
     }, function (response) {
       $scope.isLoading = false;
       $scope.category = response;
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -81696,27 +81715,28 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
       }, function (response) {
         $scope.isLoading = false;
         $scope.category = response;
+      }, function (response) {
+        $scope.isLoading = false;
       });
     }
   };
 
   $scope.save = function () {
+    $scope.isSaving = true;
     CategoriesRepository.save({
       id: $scope.id
     }, $scope.category, function (response) {
+      $scope.isSaving = false;
       toastr.success($scope.id ? 'Категория успешно обновлена!' : 'Новая категория успешно создана!');
       $scope.categoryErrors = {};
       $scope.id = response.id;
       $scope.category.url = response.url;
     }, function (response) {
+      $scope.isSaving = false;
+
       switch (response.status) {
         case 422:
-          toastr.error('Проверьте введенные данные');
           $scope.categoryErrors = response.data.errors;
-          break;
-
-        default:
-          toastr.error('Произошла ошибка на сервере');
           break;
       }
     });
@@ -81735,10 +81755,13 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
   };
 
   $scope["delete"] = function (id) {
-    $scope.hideDelete();
+    $scope.isDeleting = true;
     CategoriesRepository["delete"]({
       id: id
     }, function (response) {
+      $scope.isDeleting = false;
+      $scope.hideDelete();
+
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
@@ -81746,7 +81769,7 @@ angular.module('tctApp').controller('CategoriesController', ['$scope', '$routePa
         $scope.init();
       }
     }, function (response) {
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isDeleting = false;
     });
   };
 }]);
@@ -81843,7 +81866,7 @@ angular.module('tctApp').controller('ClientsController', ['$scope', '$routeParam
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'EmploymentsRepository', function ($scope, $routeParams, $location, $timeout, toastr, EmploymentsRepository) {
+angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeParams', '$location', '$timeout', 'EmploymentsRepository', function ($scope, $routeParams, $location, $timeout, EmploymentsRepository) {
   $scope.Math = window.Math;
   $scope.Object = Object;
   $scope.days = 0;
@@ -81890,6 +81913,8 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       $scope.updateTotalSalary();
       $scope.updateTotalEmployment();
       $scope.initScroll();
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -81945,7 +81970,6 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       $scope.init();
     }, function (response) {
       $scope.isSaving = false;
-      toastr.error('Произошла ошибка на сервере');
     });
   };
 
@@ -81964,8 +81988,9 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
   $scope.currentEmploymentStatus = null;
 
   $scope.chooseCurrentEmploymentStatus = function (status) {
-    $scope.isSalariesShown = false;
-    $scope.currentEmploymentStatus = $scope.currentEmploymentStatus != status ? status : null;
+    $scope.isSalariesShown = false; // $scope.currentEmploymentStatus = ($scope.currentEmploymentStatus != status) ? status : null;
+
+    $scope.currentEmploymentStatus = status;
     $scope.currentMainCategory = null;
     $scope.cleanCurrent = false;
   };
@@ -82038,7 +82063,7 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       if ($scope.currentEmploymentStatus !== null) {
         statusId = $scope.currentEmploymentStatus;
 
-        if ($scope.statuses[$scope.currentEmploymentStatus].customable > 0) {
+        if ($scope.statuses[$scope.currentEmploymentStatus].customable > 0 && statusCustom <= 0) {
           statusCustom = worker.id > 0 ? 1 : 9; // mainCategory = 'tiles';
         }
       }
@@ -82070,12 +82095,16 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
   };
 
   $scope.saveSalary = function () {
+    $scope.isModalSaving = true;
     EmploymentsRepository.saveSalary({
       id: $scope.modalWorker.salary.id
     }, $scope.modalWorker.salary, function (response) {
+      $scope.isModalSaving = false;
       toastr.success('Все изменения успешно сохранены!');
       $scope.hideSalaryModal();
       $scope.init();
+    }, function (response) {
+      $scope.isModalSaving = false;
     });
   };
 
@@ -82193,7 +82222,7 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routeParams', '$location', '$filter', '$timeout', 'toastr', 'FacilitiesRepository', 'CategoriesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $filter, $timeout, toastr, FacilitiesRepository, CategoriesRepository, WorkersRepository) {
+angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routeParams', '$location', '$filter', '$timeout', 'FacilitiesRepository', 'CategoriesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $filter, $timeout, FacilitiesRepository, CategoriesRepository, WorkersRepository) {
   $scope.baseUrl = '';
   $scope.facilities = [];
   $scope.facility = {
@@ -82233,6 +82262,8 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
           }
         }
       }
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -82246,6 +82277,8 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
       $scope.isLoading = false;
       $scope.facility = response;
       $scope.facility.status_date_raw = $scope.facility.status_date ? new Date(Date.parse($scope.facility.status_date.replace(/-/, '/'))) : null;
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -82286,6 +82319,8 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
             }
           }
         }
+      }, function (response) {
+        $scope.isLoading = false;
       });
     }
 
@@ -82305,22 +82340,21 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
 
   $scope.save = function (facility) {
     facility = facility || $scope.facility;
+    $scope.isSaving = true;
     FacilitiesRepository.save({
       id: facility.id
     }, facility, function (response) {
+      $scope.isSaving = false;
       toastr.success($scope.id ? 'Цех успешно обновлена!' : 'Новый цех успешно создан!');
       $scope.facilityErrors = {};
       $scope.id = response.id;
       $scope.facility.url = response.url;
     }, function (response) {
+      $scope.isSaving = false;
+
       switch (response.status) {
         case 422:
-          toastr.error('Проверьте введенные данные');
           $scope.facilityErrors = response.data.errors;
-          break;
-
-        default:
-          toastr.error('Произошла ошибка на сервере');
           break;
       }
     });
@@ -82339,10 +82373,13 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
   };
 
   $scope["delete"] = function (id) {
-    $scope.hideDelete();
+    $scope.isDeleting = true;
     FacilitiesRepository["delete"]({
       id: id
     }, function (response) {
+      $scope.isDeleting = false;
+      $scope.hideDelete();
+
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
@@ -82350,7 +82387,7 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
         $scope.init();
       }
     }, function (response) {
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isDeleting = false;
     });
   };
 
@@ -82411,16 +82448,13 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
       $scope.modalFacility.status = ($scope.modalFacility.status + 1) % 2;
     }
 
+    $scope.isModalSaving = true;
     FacilitiesRepository.save({
       id: $scope.modalFacility.id
     }, $scope.modalFacility, function (response) {
-      $scope.modalStatusErrors = {};
-      $scope.successTopAlert = 'Изменения успешно сохранены!';
-      $scope.showTopAlert = true;
-      $timeout(function () {
-        $scope.showTopAlert = false;
-      }, 2000);
+      $scope.isModalSaving = false;
       $scope.hideStatusModal();
+      toastr.success('Изменения успешно сохранены!');
 
       if (!$scope.baseUrl) {
         $scope.init();
@@ -82428,7 +82462,13 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
         $scope.initShow();
       }
     }, function (response) {
-      $scope.modalStatusErrors = response.data.errors;
+      $scope.isModalSaving = false;
+
+      switch (response.status) {
+        case 422:
+          $scope.modalStatusErrors = response.data.errors;
+          break;
+      }
     });
   };
 }]);
@@ -82453,7 +82493,7 @@ angular.module('tctApp').controller('FacilitiesController', ['$scope', '$routePa
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('MaterialsController', ['$scope', '$routeParams', '$location', '$filter', '$timeout', 'toastr', 'MaterialsRepository', 'ExportsRepository', function ($scope, $routeParams, $location, $filter, $timeout, toastr, MaterialsRepository, ExportsRepository) {
+angular.module('tctApp').controller('MaterialsController', ['$scope', '$routeParams', '$location', '$filter', '$timeout', 'MaterialsRepository', 'ExportsRepository', function ($scope, $routeParams, $location, $filter, $timeout, MaterialsRepository, ExportsRepository) {
   $scope.baseUrl = '';
   $scope.materialGroups = [];
   $scope.materials = [];
@@ -82558,6 +82598,8 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
           }
         }
       }
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -82571,6 +82613,8 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
       $scope.isLoading = false;
       $scope.materialGroup = response;
       $scope.initStocks();
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -82585,27 +82629,28 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
       }, function (response) {
         $scope.isLoading = false;
         $scope.materialGroup = response;
+      }, function (response) {
+        $scope.isLoading = false;
       });
     }
   };
 
   $scope.save = function () {
+    $scope.isSaving = true;
     MaterialsRepository.save({
       id: $scope.id
     }, $scope.materialGroup, function (response) {
+      $scope.isSaving = false;
       toastr.success($scope.id ? 'Материал успешно обновлен!' : 'Новый материал успешно создан!');
       $scope.materialGroupErrors = {};
       $scope.id = response.id;
       $scope.materialGroup.url = response.url;
     }, function (response) {
+      $scope.isSaving = false;
+
       switch (response.status) {
         case 422:
-          toastr.error('Проверьте введенные данные');
           $scope.materialGroupErrors = response.data.errors;
-          break;
-
-        default:
-          toastr.error('Произошла ошибка на сервере');
           break;
       }
     });
@@ -82624,10 +82669,13 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
   };
 
   $scope["delete"] = function (id) {
-    $scope.hideDelete();
+    $scope.isDeleting = true;
     MaterialsRepository["delete"]({
       id: id
     }, function (response) {
+      $scope.isDeleting = false;
+      $scope.hideDelete();
+
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
@@ -82635,7 +82683,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
         $scope.init();
       }
     }, function (response) {
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isDeleting = false;
     });
   };
 
@@ -82734,9 +82782,11 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
       }
     }
 
+    $scope.isModalSaving = true;
     MaterialsRepository.saveSupply({
       'supplies': $scope.modalSupply.supplies
     }, function (response) {
+      $scope.isModalSaving = false;
       toastr.success('Все изменения успешно сохранены!');
       $scope.hideSupplyModal();
 
@@ -82745,6 +82795,8 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
       } else {
         $scope.init();
       }
+    }, function (response) {
+      $scope.isModalSaving = false;
     });
   };
 
@@ -82766,14 +82818,16 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
       request.month = $scope.currentDate.month;
     }
 
-    $scope.isAddLoading = true;
+    $scope.isSuppliesLoading = true;
     MaterialsRepository.supplies(request, function (response) {
-      $scope.isAddLoading = false;
+      $scope.isSuppliesLoading = false;
       $scope.monthes = response.monthes;
       $scope.years = response.years;
       $scope.currentDate.month = response.month;
       $scope.currentDate.year = response.year;
       $scope.supplies = response.supplies;
+    }, function (response) {
+      $scope.isSuppliesLoading = false;
     });
   };
 
@@ -82808,6 +82862,8 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
       $scope.stocksCurrentDate.month = response.month;
       $scope.stocksCurrentDate.year = response.year;
       $scope.stocks = response.stocks;
+    }, function (response) {
+      $scope.isStocksLoading = false;
     });
   };
 }]);
@@ -82821,7 +82877,7 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductsRepository', 'OrdersRepository', 'ExportsRepository', function ($scope, $routeParams, $location, $timeout, $filter, toastr, ProductsRepository, OrdersRepository, ExportsRepository) {
+angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams', '$location', '$timeout', '$filter', 'ProductsRepository', 'OrdersRepository', 'ExportsRepository', function ($scope, $routeParams, $location, $timeout, $filter, ProductsRepository, OrdersRepository, ExportsRepository) {
   $scope.Math = window.Math;
   $scope.baseUrl = '';
   $scope.monthes = [];
@@ -82841,6 +82897,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     'weight': 0,
     'pallets': 0,
     'pallets_price': 200,
+    'pallets_realization_performed': 0,
     'priority': '1',
     'delivery': '',
     'delivery_distance': 0,
@@ -82901,6 +82958,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     }, function (response) {
       $scope.order = response;
       $scope.isLoading = false;
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -82930,77 +82989,37 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
         if ($scope.order.priority) {
           $scope.order.priority = '' + $scope.order.priority;
-        }
+        } // for (payment of $scope.order.payments)
+        // {
+        // 	var date = payment.date.split("-");
+        // 	payment.date_raw = date[2] + date[1] + date[0];
+        // }
+        // for (realization of $scope.order.realizations)
+        // {
+        // 	var date = realization.date.split("-");
+        // 	realization.date_raw = date[2] + date[1] + date[0];
+        // }
 
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-          for (var _iterator = $scope.order.payments[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            payment = _step.value;
-            var date = payment.date.split("-");
-            payment.date_raw = date[2] + date[1] + date[0];
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-              _iterator["return"]();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
-        }
-
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
-
-        try {
-          for (var _iterator2 = $scope.order.realizations[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            realization = _step2.value;
-            var date = realization.date.split("-");
-            realization.date_raw = date[2] + date[1] + date[0];
-          }
-        } catch (err) {
-          _didIteratorError2 = true;
-          _iteratorError2 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-              _iterator2["return"]();
-            }
-          } finally {
-            if (_didIteratorError2) {
-              throw _iteratorError2;
-            }
-          }
-        }
 
         ProductsRepository.query(function (response) {
           $scope.isLoading = false;
           $scope.productGroups = response;
-          var _iteratorNormalCompletion3 = true;
-          var _didIteratorError3 = false;
-          var _iteratorError3 = undefined;
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
 
           try {
-            for (var _iterator3 = $scope.order.products[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-              product = _step3.value;
+            for (var _iterator = $scope.order.products[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              product = _step.value;
               product.pivot.manual_price = product.pivot.price;
               var chosenProductGroup = null;
-              var _iteratorNormalCompletion4 = true;
-              var _didIteratorError4 = false;
-              var _iteratorError4 = undefined;
+              var _iteratorNormalCompletion2 = true;
+              var _didIteratorError2 = false;
+              var _iteratorError2 = undefined;
 
               try {
-                for (var _iterator4 = $scope.productGroups[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                  productGroup = _step4.value;
+                for (var _iterator2 = $scope.productGroups[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                  productGroup = _step2.value;
 
                   if (productGroup.id == product.product_group_id) {
                     chosenProductGroup = productGroup;
@@ -83008,16 +83027,16 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
                   }
                 }
               } catch (err) {
-                _didIteratorError4 = true;
-                _iteratorError4 = err;
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
               } finally {
                 try {
-                  if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-                    _iterator4["return"]();
+                  if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                    _iterator2["return"]();
                   }
                 } finally {
-                  if (_didIteratorError4) {
-                    throw _iteratorError4;
+                  if (_didIteratorError2) {
+                    throw _iteratorError2;
                   }
                 }
               }
@@ -83027,20 +83046,22 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
               }
             }
           } catch (err) {
-            _didIteratorError3 = true;
-            _iteratorError3 = err;
+            _didIteratorError = true;
+            _iteratorError = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-                _iterator3["return"]();
+              if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                _iterator["return"]();
               }
             } finally {
-              if (_didIteratorError3) {
-                throw _iteratorError3;
+              if (_didIteratorError) {
+                throw _iteratorError;
               }
             }
           }
         });
+      }, function (response) {
+        $scope.isLoading = false;
       });
     } else {
       $scope.order.date_raw = $filter('date')(new Date(), 'ddMMyyyy');
@@ -83053,8 +83074,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.save = function () {
-    $scope.isSaving = true;
-
     if ($scope.currentOrder) {
       $scope.id = $scope.currentOrder.id;
       $scope.order = $scope.currentOrder;
@@ -83062,6 +83081,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       $scope.order['production'] = true;
     }
 
+    $scope.isSaving = true;
     OrdersRepository.save({
       id: $scope.id
     }, $scope.order, function (response) {
@@ -83080,12 +83100,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
       switch (response.status) {
         case 422:
-          toastr.error('Проверьте введенные данные');
           $scope.orderErrors = response.data.errors;
-          break;
-
-        default:
-          toastr.error('Произошла ошибка на сервере');
           break;
       }
     });
@@ -83100,12 +83115,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       toastr.success('Дата готовности заказа успешно рассчитана!');
     }, function (response) {
       $scope.isAddSaving = false;
-
-      switch (response.status) {
-        default:
-          toastr.error('Произошла ошибка на сервере');
-          break;
-      }
     });
   };
 
@@ -83122,10 +83131,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope["delete"] = function (id) {
-    $scope.hideDelete();
+    $scope.isDeleting = true;
     OrdersRepository["delete"]({
       id: id
     }, function (response) {
+      $scope.isDeleting = false;
+      $scope.hideDelete();
+
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
@@ -83133,12 +83145,11 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         $scope.loadOrders();
       }
     }, function (response) {
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isDeleting = false;
     });
   };
 
   $scope.loadOrders = function () {
-    $scope.isLoading = true;
     var request = {
       'main_category': $scope.currentMainCategory.join(','),
       'page': $scope.currentPage
@@ -83156,6 +83167,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       request.month = $scope.currentDate.month;
     }
 
+    $scope.isLoading = true;
     OrdersRepository.query(request, function (response) {
       $scope.isLoading = false;
       $scope.orders = response.orders;
@@ -83166,13 +83178,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       $scope.currentDate.year = response.year;
 
       if ($scope.currentOrder) {
-        var _iteratorNormalCompletion5 = true;
-        var _didIteratorError5 = false;
-        var _iteratorError5 = undefined;
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
 
         try {
-          for (var _iterator5 = $scope.orders[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-            order = _step5.value;
+          for (var _iterator3 = $scope.orders[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            order = _step3.value;
 
             if (order.id == $scope.currentOrder.id) {
               $scope.currentOrder = order;
@@ -83180,16 +83192,16 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
             }
           }
         } catch (err) {
-          _didIteratorError5 = true;
-          _iteratorError5 = err;
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
-              _iterator5["return"]();
+            if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+              _iterator3["return"]();
             }
           } finally {
-            if (_didIteratorError5) {
-              throw _iteratorError5;
+            if (_didIteratorError3) {
+              throw _iteratorError3;
             }
           }
         }
@@ -83197,7 +83209,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
     }, function (response) {
       $scope.isLoading = false;
-      toastr.error('Произошла ошибка на сервере');
     });
   };
 
@@ -83240,7 +83251,8 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       'pivot': {
         'price': 0,
         'count': 0,
-        'cost': 0
+        'cost': 0,
+        'realization_performed': 0
       }
     });
   };
@@ -83257,6 +83269,10 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       productData.pivot.price = 0;
     }
 
+    productData.product_group = {
+      'name': productGroup.name,
+      'size': productGroup.size
+    };
     productData.category = productGroup.category;
     productData.weight_unit = productGroup.weight_unit;
     productData.unit_in_units = productGroup.unit_in_units;
@@ -83281,6 +83297,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     productData.price = product.price;
     productData.price_cashless = product.price_cashless;
     productData.price_vat = product.price_vat;
+    productData.variation_noun_text = product.variation_noun_text;
     $scope.updateOrderInfo();
   };
 
@@ -83289,16 +83306,18 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     $scope.order.weight = 0;
     $scope.order.pallets = 0;
     $scope.order.main_category = '';
-    $scope.isAllRealizationsActive = true;
-    var _iteratorNormalCompletion6 = true;
-    var _didIteratorError6 = false;
-    var _iteratorError6 = undefined;
+    $scope.isOrderAllRealizationsActive = true;
+    $scope.isOrderPartRealizationsActive = false;
+    var _iteratorNormalCompletion4 = true;
+    var _didIteratorError4 = false;
+    var _iteratorError4 = undefined;
 
     try {
-      for (var _iterator6 = $scope.order.products[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-        product = _step6.value;
+      for (var _iterator4 = $scope.order.products[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+        product = _step4.value;
 
         if (!product.id) {
+          $scope.isOrderAllRealizationsActive = false;
           continue;
         }
 
@@ -83329,24 +83348,38 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
           $scope.order.main_category = product.category.main_category;
         }
 
+        $scope.isOrderPartRealizationsActive = true;
+
         if (product.pivot.count > product.in_stock) {
-          $scope.isAllRealizationsActive = false;
-          $scope.order.all_realizations = false;
+          $scope.isOrderAllRealizationsActive = false;
+          $scope.isOrderAllRealizationsChosen = false;
+        }
+
+        if ($scope.isOrderAllRealizationsChosen) {
+          product.pivot.realization_performed = product.pivot.count;
+        } else if (!$scope.isOrderPartRealizationsChosen) {
+          product.pivot.realization_performed = 0;
         }
       }
     } catch (err) {
-      _didIteratorError6 = true;
-      _iteratorError6 = err;
+      _didIteratorError4 = true;
+      _iteratorError4 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
-          _iterator6["return"]();
+        if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+          _iterator4["return"]();
         }
       } finally {
-        if (_didIteratorError6) {
-          throw _iteratorError6;
+        if (_didIteratorError4) {
+          throw _iteratorError4;
         }
       }
+    }
+
+    if ($scope.isOrderAllRealizationsChosen) {
+      $scope.order.pallets_realization_performed = $scope.order.pallets;
+    } else if (!$scope.isOrderPartRealizationsChosen) {
+      $scope.order.pallets_realization_performed = 0;
     }
 
     $scope.order.pallets_price = $scope.palletsPrices[$scope.order.pay_type];
@@ -83410,13 +83443,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       $scope.modalOrder.realization_date_raw = $filter('date')(new Date(), 'ddMMyyyy');
       $scope.modalOrder.disabled_realizations = true;
       $scope.modalOrder.realizations = [];
-      var _iteratorNormalCompletion7 = true;
-      var _didIteratorError7 = false;
-      var _iteratorError7 = undefined;
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
 
       try {
-        for (var _iterator7 = $scope.modalOrder.products[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-          product = _step7.value;
+        for (var _iterator5 = $scope.modalOrder.products[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          product = _step5.value;
           var planned = Math.round((product.progress.total - product.progress.realization) * 100) / 100;
           var maxPerformed = product.in_stock < planned ? product.in_stock : planned;
           $scope.modalOrder.realizations.push({
@@ -83432,16 +83465,16 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
           }
         }
       } catch (err) {
-        _didIteratorError7 = true;
-        _iteratorError7 = err;
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
-            _iterator7["return"]();
+          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+            _iterator5["return"]();
           }
         } finally {
-          if (_didIteratorError7) {
-            throw _iteratorError7;
+          if (_didIteratorError5) {
+            throw _iteratorError5;
           }
         }
       }
@@ -83475,26 +83508,26 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
   $scope.chooseAllRealizations = function () {
     if ($scope.isAllRealizationsChosen) {
-      var _iteratorNormalCompletion8 = true;
-      var _didIteratorError8 = false;
-      var _iteratorError8 = undefined;
+      var _iteratorNormalCompletion6 = true;
+      var _didIteratorError6 = false;
+      var _iteratorError6 = undefined;
 
       try {
-        for (var _iterator8 = $scope.modalOrder.realizations[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-          realization = _step8.value;
+        for (var _iterator6 = $scope.modalOrder.realizations[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+          realization = _step6.value;
           realization.performed = realization.max_performed;
         }
       } catch (err) {
-        _didIteratorError8 = true;
-        _iteratorError8 = err;
+        _didIteratorError6 = true;
+        _iteratorError6 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion8 && _iterator8["return"] != null) {
-            _iterator8["return"]();
+          if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
+            _iterator6["return"]();
           }
         } finally {
-          if (_didIteratorError8) {
-            throw _iteratorError8;
+          if (_didIteratorError6) {
+            throw _iteratorError6;
           }
         }
       }
@@ -83506,13 +83539,13 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       realization.performed = realization.max_performed;
     }
 
-    var _iteratorNormalCompletion9 = true;
-    var _didIteratorError9 = false;
-    var _iteratorError9 = undefined;
+    var _iteratorNormalCompletion7 = true;
+    var _didIteratorError7 = false;
+    var _iteratorError7 = undefined;
 
     try {
-      for (var _iterator9 = $scope.modalOrder.realizations[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-        realization = _step9.value;
+      for (var _iterator7 = $scope.modalOrder.realizations[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+        realization = _step7.value;
 
         if (realization.performed < realization.max_performed) {
           $scope.isAllRealizationsChosen = false;
@@ -83520,16 +83553,16 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         }
       }
     } catch (err) {
-      _didIteratorError9 = true;
-      _iteratorError9 = err;
+      _didIteratorError7 = true;
+      _iteratorError7 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion9 && _iterator9["return"] != null) {
-          _iterator9["return"]();
+        if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
+          _iterator7["return"]();
         }
       } finally {
-        if (_didIteratorError9) {
-          throw _iteratorError9;
+        if (_didIteratorError7) {
+          throw _iteratorError7;
         }
       }
     }
@@ -83538,35 +83571,35 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.saveRealization = function () {
-    var _iteratorNormalCompletion10 = true;
-    var _didIteratorError10 = false;
-    var _iteratorError10 = undefined;
+    var _iteratorNormalCompletion8 = true;
+    var _didIteratorError8 = false;
+    var _iteratorError8 = undefined;
 
     try {
-      for (var _iterator10 = $scope.modalOrder.realizations[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-        realization = _step10.value;
+      for (var _iterator8 = $scope.modalOrder.realizations[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+        realization = _step8.value;
         realization.date_raw = $scope.modalOrder.realization_date_raw;
       }
     } catch (err) {
-      _didIteratorError10 = true;
-      _iteratorError10 = err;
+      _didIteratorError8 = true;
+      _iteratorError8 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion10 && _iterator10["return"] != null) {
-          _iterator10["return"]();
+        if (!_iteratorNormalCompletion8 && _iterator8["return"] != null) {
+          _iterator8["return"]();
         }
       } finally {
-        if (_didIteratorError10) {
-          throw _iteratorError10;
+        if (_didIteratorError8) {
+          throw _iteratorError8;
         }
       }
     }
 
-    $scope.isSaving = true;
+    $scope.isModalSaving = true;
     OrdersRepository.saveRealization({
       'realizations': $scope.modalOrder.realizations
     }, function (response) {
-      $scope.isSaving = false;
+      $scope.isModalSaving = false;
       toastr.success('Выдача заказа успешно сохранена!');
       $scope.hideRealizationModal();
 
@@ -83576,9 +83609,20 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         $scope.loadOrders();
       }
     }, function (response) {
-      $scope.isSaving = false;
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isModalSaving = false;
     });
+  };
+
+  $scope.isOrderAllRealizationsChosen = false;
+
+  $scope.chooseOrderRealizations = function (allRealizations) {
+    if (allRealizations && $scope.isOrderAllRealizationsChosen) {
+      $scope.isOrderPartRealizationsChosen = false;
+    } else if (!allRealizations && $scope.isOrderPartRealizationsChosen) {
+      $scope.isOrderAllRealizationsChosen = false;
+    }
+
+    $scope.updateOrderInfo();
   };
 
   $scope.isPaymentModalShown = false;
@@ -83630,9 +83674,9 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   };
 
   $scope.savePayment = function () {
-    $scope.isSaving = true;
+    $scope.isModalSaving = true;
     OrdersRepository.savePayment($scope.modalPayment, function (response) {
-      $scope.isSaving = false;
+      $scope.isModalSaving = false;
       toastr.success('Платеж успешно сохранен!');
       $scope.hidePaymentModal();
 
@@ -83642,8 +83686,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         $scope.loadOrders();
       }
     }, function (response) {
-      $scope.isSaving = false;
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isModalSaving = false;
     });
   };
 
@@ -83658,7 +83701,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       $scope.modalOrders = response;
     }, function (response) {
       $scope.isModalLoading = false;
-      toastr.error('Произошла ошибка на сервере');
     });
   };
 
@@ -83672,8 +83714,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
     ExportsRepository.order({
       'id': order.id
     }, function (response) {
-      window.open(response.file, '_blank' // <- This is what makes it open in a new window.
-      );
+      window.open(response.file, '_blank');
     }, function (response) {});
   };
 }]);
@@ -83689,7 +83730,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$scope', '$routeParams', '$location', '$timeout', '$filter', 'toastr', 'ProductionsRepository', 'OrdersRepository', 'ProductsRepository', function ($rootScope, $scope, $routeParams, $location, $timeout, $filter, toastr, ProductionsRepository, OrdersRepository, ProductsRepository) {
+angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$scope', '$routeParams', '$location', '$timeout', '$filter', 'ProductionsRepository', 'OrdersRepository', 'ProductsRepository', function ($rootScope, $scope, $routeParams, $location, $timeout, $filter, ProductionsRepository, OrdersRepository, ProductsRepository) {
   $scope.Math = window.Math;
   $scope.Object = window.Object;
   $scope.days = 0;
@@ -83788,28 +83829,35 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
       }
 
       $scope.initScroll();
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
-  $scope.markColors = ['#e67e22', '#9b59b6', '#2ecc71', '#1abc9c', '#d35400', '#f1c40f', '#3498db'];
-  $scope.ordersMarkColors = {};
-
-  $scope.markOrder = function (orderId) {
-    if ($scope.ordersMarkColors[orderId]) {
-      $scope.markColors.push($scope.ordersMarkColors[orderId]);
-      delete $scope.ordersMarkColors[orderId];
-    } else {
-      $scope.ordersMarkColors[orderId] = $scope.markColors.pop();
-    }
-  };
-
-  $scope.getOrderMarkColor = function (production) {
-    if (production && $scope.ordersMarkColors[production.order_id]) {
-      return $scope.ordersMarkColors[production.order_id];
-    } else {
-      return 'transparent';
-    }
-  };
+  $scope.markColors = ['#e67e22', '#9b59b6', '#2ecc71', '#1abc9c', '#d35400', '#f1c40f', '#3498db']; // $scope.ordersMarkColors = {};
+  // $scope.markOrder = function(orderId)
+  // {
+  // 	if ($scope.ordersMarkColors[orderId])
+  // 	{
+  // 		$scope.markColors.push($scope.ordersMarkColors[orderId]);
+  // 		delete $scope.ordersMarkColors[orderId];
+  // 	}
+  // 	else
+  // 	{
+  // 		$scope.ordersMarkColors[orderId] = $scope.markColors.pop();
+  // 	}
+  // }
+  // $scope.getOrderMarkColor = function(production)
+  // {
+  // 	if ((production) && ($scope.ordersMarkColors[production.order_id]))
+  // 	{
+  // 		return $scope.ordersMarkColors[production.order_id];
+  // 	}
+  // 	else
+  // 	{
+  // 		return 'transparent';
+  // 	}
+  // }
 
   $scope.showAllProductions = function () {
     $scope.isAllProductionsShown = true;
@@ -83830,77 +83878,62 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
       $scope.productGroups = response;
     });
     $scope.modalDate = new Date($scope.currentDate.year, $scope.currentDate.month - 1, day);
-    $scope.modalDay = day;
-    $scope.modalProductionProducts = [];
+    $scope.modalDay = day; // $scope.modalProductionProducts = [];
+    // for (product of $scope.productionProducts)
+    // {
+    // 	if (product.productions[day])
+    // 	{
+    // 		var newProduct = angular.copy(product);
+    // 		newProduct.orders = [];
+    // 		newProduct.productions = [];
+    // 		newProduct.production = product.productions[day];
+    // 		newProduct.production_id = newProduct.production.id;
+    // 		if (product.productions[0])
+    // 		{
+    // 			newProduct.base_planned = (product.productions[0].planned > product.productions[0].performed) ? 
+    // 				Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000 : 0;
+    // 		}
+    // 		else
+    // 		{
+    // 			newProduct.base_planned = 0;
+    // 		}
+    // 		$scope.modalProductionProducts.push(newProduct);
+    // 	}
+    // 	else if (product.productions[0])
+    // 	{
+    // 		if (product.productions[0].planned > product.productions[0].performed)
+    // 		{
+    // 			var facilities = $scope.getCategoryFacilities(product.category_id);
+    // 			if (facilities.length > 0)
+    // 			{
+    // 				$scope.newProduct[facilities[0].id] = {
+    // 					'id': product.id,
+    // 					'production_id': Infinity,
+    // 					'category_id': product.category_id,
+    // 					'product_group_id': product.product_group_id,
+    // 					'product_id': product.id,
+    // 					'product_group': product.product_group,
+    // 					'category': product.category,
+    // 					'variation': product.variation,
+    // 					'units_text': product.units_text,
+    // 					'variation_noun_text': product.variation_noun_text,
+    // 					'base_planned': Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000
+    // 				};
+    // 				$scope.addProduct(facilities[0].id);
+    // 			}
+    // 		}
+    // 	}
+    // }
+
+    $scope.modalProductionCategories = [];
+    var mainCategories = {};
     var _iteratorNormalCompletion2 = true;
     var _didIteratorError2 = false;
     var _iteratorError2 = undefined;
 
     try {
-      for (var _iterator2 = $scope.productionProducts[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-        product = _step2.value;
-
-        if (product.productions[day]) {
-          var newProduct = angular.copy(product);
-          newProduct.orders = [];
-          newProduct.productions = [];
-          newProduct.production = product.productions[day];
-          newProduct.production_id = newProduct.production.id;
-
-          if (product.productions[0]) {
-            newProduct.base_planned = product.productions[0].planned > product.productions[0].performed ? Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000 : 0;
-          } else {
-            newProduct.base_planned = 0;
-          }
-
-          $scope.modalProductionProducts.push(newProduct);
-        } else if (product.productions[0]) {
-          if (product.productions[0].planned > product.productions[0].performed) {
-            var facilities = $scope.getCategoryFacilities(product.category_id);
-
-            if (facilities.length > 0) {
-              $scope.newProduct[facilities[0].id] = {
-                'id': product.id,
-                'production_id': Infinity,
-                'category_id': product.category_id,
-                'product_group_id': product.product_group_id,
-                'product_id': product.id,
-                'product_group': product.product_group,
-                'category': product.category,
-                'variation': product.variation,
-                'units_text': product.units_text,
-                'variation_noun_text': product.variation_noun_text,
-                'base_planned': Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000
-              };
-              $scope.addProduct(facilities[0].id);
-            }
-          }
-        }
-      }
-    } catch (err) {
-      _didIteratorError2 = true;
-      _iteratorError2 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-          _iterator2["return"]();
-        }
-      } finally {
-        if (_didIteratorError2) {
-          throw _iteratorError2;
-        }
-      }
-    }
-
-    $scope.modalProductionCategories = [];
-    var mainCategories = {};
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
-
-    try {
-      for (var _iterator3 = $scope.productionCategories[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        category = _step3.value;
+      for (var _iterator2 = $scope.productionCategories[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        category = _step2.value;
 
         if (category.productions[day]) {
           var newCategory = angular.copy(category);
@@ -83919,6 +83952,41 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
         }
       }
     } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+          _iterator2["return"]();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
+      }
+    }
+
+    for (key in mainCategories) {
+      $scope.modalProductionCategories.push(mainCategories[key]);
+    }
+
+    $scope.modalProductionMaterials = [];
+    var _iteratorNormalCompletion3 = true;
+    var _didIteratorError3 = false;
+    var _iteratorError3 = undefined;
+
+    try {
+      for (var _iterator3 = $scope.productionMaterials[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        material = _step3.value;
+
+        if (material.applies[day]) {
+          var newMaterial = angular.copy(material);
+          newMaterial.apply = newMaterial.applies[day];
+          newMaterial.applies = [];
+          $scope.modalProductionMaterials.push(newMaterial);
+        }
+      }
+    } catch (err) {
       _didIteratorError3 = true;
       _iteratorError3 = err;
     } finally {
@@ -83929,41 +83997,6 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
       } finally {
         if (_didIteratorError3) {
           throw _iteratorError3;
-        }
-      }
-    }
-
-    for (key in mainCategories) {
-      $scope.modalProductionCategories.push(mainCategories[key]);
-    }
-
-    $scope.modalProductionMaterials = [];
-    var _iteratorNormalCompletion4 = true;
-    var _didIteratorError4 = false;
-    var _iteratorError4 = undefined;
-
-    try {
-      for (var _iterator4 = $scope.productionMaterials[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-        material = _step4.value;
-
-        if (material.applies[day]) {
-          var newMaterial = angular.copy(material);
-          newMaterial.apply = newMaterial.applies[day];
-          newMaterial.applies = [];
-          $scope.modalProductionMaterials.push(newMaterial);
-        }
-      }
-    } catch (err) {
-      _didIteratorError4 = true;
-      _iteratorError4 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-          _iterator4["return"]();
-        }
-      } finally {
-        if (_didIteratorError4) {
-          throw _iteratorError4;
         }
       }
     }
@@ -83987,6 +84020,33 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
     var productions = [];
 
     if ($scope.isModalShown) {
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = $scope.productionProducts[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          product = _step4.value;
+
+          if (product.productions[$scope.modalDay]) {
+            productions.push(product.productions[$scope.modalDay]);
+          }
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+            _iterator4["return"]();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+    } else {
       var _iteratorNormalCompletion5 = true;
       var _didIteratorError5 = false;
       var _iteratorError5 = undefined;
@@ -83995,8 +84055,10 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
         for (var _iterator5 = $scope.productionProducts[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
           product = _step5.value;
 
-          if (product.productions[$scope.modalDay]) {
-            productions.push(product.productions[$scope.modalDay]);
+          for (day = 1; day <= $scope.days; day++) {
+            if ($scope.updatedProductions[product.id] && $scope.updatedProductions[product.id].indexOf(day) != -1) {
+              productions.push(product.productions[day]);
+            }
           }
         }
       } catch (err) {
@@ -84010,35 +84072,6 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
         } finally {
           if (_didIteratorError5) {
             throw _iteratorError5;
-          }
-        }
-      }
-    } else {
-      var _iteratorNormalCompletion6 = true;
-      var _didIteratorError6 = false;
-      var _iteratorError6 = undefined;
-
-      try {
-        for (var _iterator6 = $scope.productionProducts[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-          product = _step6.value;
-
-          for (day = 1; day <= $scope.days; day++) {
-            if ($scope.updatedProductions[product.id] && $scope.updatedProductions[product.id].indexOf(day) != -1) {
-              productions.push(product.productions[day]);
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError6 = true;
-        _iteratorError6 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
-            _iterator6["return"]();
-          }
-        } finally {
-          if (_didIteratorError6) {
-            throw _iteratorError6;
           }
         }
       }
@@ -84058,7 +84091,6 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
       $scope.init();
     }, function (response) {
       $scope.isSaving = false;
-      toastr.error('Произошла ошибка на сервере');
     });
   };
 
@@ -84068,15 +84100,14 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
       'year': $scope.currentDate.year,
       'month': $scope.currentDate.month
     };
-    $scope.isSaving = true;
+    $scope.isModalSaving = true;
     ProductionsRepository.saveMaterials(request, function (response) {
-      $scope.isSaving = false;
+      $scope.isModalSaving = false;
       toastr.success('Все изменения успешно сохранены!');
       $scope.hideModal();
       $scope.init();
     }, function (response) {
-      $scope.isSaving = false;
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isModalSaving = false;
     });
   };
 
@@ -84346,13 +84377,13 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
 
   $scope.updateOrderProductionsPerformed = function (product) {
     performed = product.production.performed;
-    var _iteratorNormalCompletion7 = true;
-    var _didIteratorError7 = false;
-    var _iteratorError7 = undefined;
+    var _iteratorNormalCompletion6 = true;
+    var _didIteratorError6 = false;
+    var _iteratorError6 = undefined;
 
     try {
-      for (var _iterator7 = product.orders[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-        order = _step7.value;
+      for (var _iterator6 = product.orders[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+        order = _step6.value;
 
         if (order.production.planned > performed) {
           order.production.performed = performed;
@@ -84363,16 +84394,16 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
         performed -= order.production.performed;
       }
     } catch (err) {
-      _didIteratorError7 = true;
-      _iteratorError7 = err;
+      _didIteratorError6 = true;
+      _iteratorError6 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
-          _iterator7["return"]();
+        if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
+          _iterator6["return"]();
         }
       } finally {
-        if (_didIteratorError7) {
-          throw _iteratorError7;
+        if (_didIteratorError6) {
+          throw _iteratorError6;
         }
       }
     }
@@ -84400,26 +84431,26 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
   };
 
   $scope.updateOrderProductionsFacility = function (product) {
-    var _iteratorNormalCompletion8 = true;
-    var _didIteratorError8 = false;
-    var _iteratorError8 = undefined;
+    var _iteratorNormalCompletion7 = true;
+    var _didIteratorError7 = false;
+    var _iteratorError7 = undefined;
 
     try {
-      for (var _iterator8 = product.orders[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-        order = _step8.value;
+      for (var _iterator7 = product.orders[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+        order = _step7.value;
         order.production.facility_id = product.production.facility_id;
       }
     } catch (err) {
-      _didIteratorError8 = true;
-      _iteratorError8 = err;
+      _didIteratorError7 = true;
+      _iteratorError7 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion8 && _iterator8["return"] != null) {
-          _iterator8["return"]();
+        if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
+          _iterator7["return"]();
         }
       } finally {
-        if (_didIteratorError8) {
-          throw _iteratorError8;
+        if (_didIteratorError7) {
+          throw _iteratorError7;
         }
       }
     }
@@ -84439,7 +84470,6 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
       document.querySelector('body').classList.add('modal-open');
     }, function (response) {
       $scope.isModalLoading = false;
-      toastr.error('Произошла ошибка на сервере');
     });
   };
 
@@ -84470,7 +84500,6 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
       $scope.init();
     }, function (response) {
       $scope.isReplaning = false;
-      toastr.error('Произошла ошибка на сервере');
     });
   };
 
@@ -84510,7 +84539,7 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('ProductsController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'CategoriesRepository', 'ProductsRepository', 'ExportsRepository', 'MaterialsRepository', 'RecipesRepository', function ($scope, $routeParams, $location, $timeout, toastr, CategoriesRepository, ProductsRepository, ExportsRepository, MaterialsRepository, RecipesRepository) {
+angular.module('tctApp').controller('ProductsController', ['$scope', '$routeParams', '$location', '$timeout', 'CategoriesRepository', 'ProductsRepository', 'ExportsRepository', 'MaterialsRepository', 'RecipesRepository', function ($scope, $routeParams, $location, $timeout, CategoriesRepository, ProductsRepository, ExportsRepository, MaterialsRepository, RecipesRepository) {
   $scope.Math = window.Math;
   $scope.baseUrl = '';
   $scope.productGroups = [];
@@ -84594,8 +84623,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     }
 
     $scope.loadCategories();
-    $scope.loadProducts();
-    $scope.loadMaterials();
+    $scope.loadProducts(); // $scope.loadMaterials();
   };
 
   $scope.initShow = function () {
@@ -84608,6 +84636,9 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       $scope.isLoading = false;
       $scope.productGroup = response;
       $scope.initStocks();
+    }, function (response) {
+      $scope.isLoading = false;
+      $scope.productGroup = null;
     });
   };
 
@@ -84629,6 +84660,9 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
         }
 
         $scope.loadCategories();
+      }, function (response) {
+        $scope.isLoading = false;
+        $scope.productGroup = null;
       });
     } else {
       $scope.loadCategories();
@@ -84640,22 +84674,21 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   };
 
   $scope.save = function () {
+    $scope.isSaving = true;
     ProductsRepository.save({
       id: $scope.id
     }, $scope.productGroup, function (response) {
+      $scope.isSaving = false;
       toastr.success($scope.id ? 'Продукт успешно обновлен!' : 'Новый продукт успешно создан!');
       $scope.productGroupErrors = {};
       $scope.id = response.id;
       $scope.productGroup.url = response.url;
     }, function (response) {
+      $scope.isSaving = false;
+
       switch (response.status) {
         case 422:
-          toastr.error('Проверьте введенные данные');
           $scope.productGroupErrors = response.data.errors;
-          break;
-
-        default:
-          toastr.error('Произошла ошибка на сервере');
           break;
       }
     });
@@ -84674,32 +84707,53 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
   };
 
   $scope["delete"] = function (id) {
-    $scope.hideDelete();
+    $scope.isDeleting = true;
     ProductsRepository["delete"]({
       id: id
     }, function (response) {
+      $scope.isDeleting = false;
+      $scope.hideDelete();
+      toastr.success('Продукт успешно удален!');
+
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
-        toastr.success('Продукт успешно удален!');
         $scope.init();
       }
     }, function (response) {
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isDeleting = false;
     });
   };
 
+  $scope.showCopy = function (product) {
+    $scope.isCopyModalShown = true;
+    $scope.copyType = 'product';
+    $scope.copyData = product;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideCopy = function () {
+    $scope.isCopyModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
   $scope.copy = function (id) {
+    $scope.isCopying = true;
     ProductsRepository.copy({
       id: id
     }, {}, function (response) {
+      $scope.isCopying = false;
+      $scope.hideCopy();
+      toastr.success('Копия успешно создана');
+
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl + '/' + response.id + '/edit').replace();
       } else {
-        toastr.success('Копия успешно создана');
         $scope.init();
       }
-    }, function (response) {});
+    }, function (response) {
+      $scope.isCopying = false;
+    });
   };
 
   $scope.loadCategories = function () {
@@ -84743,6 +84797,8 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     ProductsRepository.query(request, function (response) {
       $scope.isLoading = false;
       $scope.productGroups = response;
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -84864,13 +84920,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
           }
         }
       }
-    } // if (currentProduct.productGroup.category.units != 'unit')
-    // {
-    // 	if (key == 'price') 
-    // 	{
-    // 	}
-    // }
-
+    }
   };
 
   $scope.isSetPairShown = false;
@@ -84891,18 +84941,20 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     $scope.modalProductGroup = angular.copy(productGroup);
     $scope.modalProduct = $scope.modalProductGroup.products[productNum];
     $scope.modalProduct.old_in_stock = $scope.modalProduct.in_stock;
+    document.querySelector('body').classList.add('modal-open');
   };
 
   $scope.hideProductStockModal = function () {
     $scope.isProductStockModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
   };
 
   $scope.saveProductStock = function () {
-    $scope.isSaving = true;
+    $scope.isModalSaving = true;
     ProductsRepository.save({
       id: $scope.modalProductGroup.id
     }, $scope.modalProductGroup, function (response) {
-      $scope.isSaving = false;
+      $scope.isModalSaving = false;
       toastr.success('Изменения успешно сохранены!');
       $scope.hideProductStockModal();
 
@@ -84912,54 +84964,36 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
         $scope.init();
       }
     }, function (response) {
-      $scope.isSaving = false;
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isModalSaving = false;
     });
-  };
+  }; // $scope.saveEditField = function(groupNum, num, key) 
+  // {
+  // 	var productGroup = $scope.productGroups[groupNum];
+  // 	var product = productGroup.products[num];
+  // 	if (product[key] != product['new_' + key])
+  // 	{
+  // 		product[key] = product['new_' + key];
+  // 	}
+  // 	else
+  // 	{
+  // 		return;
+  // 	}
+  // 	ProductsRepository.save({id: productGroup.id}, productGroup, function(response) 
+  // 	{
+  // 		toastr.success('Изменения успешно сохранены!');
+  // 		productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
+  // 		productGroup.in_stock = 0;
+  // 		for (product of productGroup.products)
+  // 		{
+  // 			productGroup.in_stock += product.in_stock;
+  // 		}
+  // 	},
+  // 	function(response)
+  // 	{
+  // 		$scope.isLoading = false;
+  // 	});
+  // }
 
-  $scope.saveEditField = function (groupNum, num, key) {
-    var productGroup = $scope.productGroups[groupNum];
-    var product = productGroup.products[num];
-
-    if (product[key] != product['new_' + key]) {
-      product[key] = product['new_' + key];
-    } else {
-      return;
-    }
-
-    ProductsRepository.save({
-      id: productGroup.id
-    }, productGroup, function (response) {
-      toastr.success('Изменения успешно сохранены!');
-      productGroup.products[num].free_in_stock = response.products[num].free_in_stock;
-      productGroup.in_stock = 0;
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = productGroup.products[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          product = _step3.value;
-          productGroup.in_stock += product.in_stock;
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-            _iterator3["return"]();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-    }, function (response) {
-      toastr.error('Произошла ошибка на сервере');
-    });
-  };
 
   $scope.loadExportFile = function () {
     var request = {
@@ -84969,9 +85003,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
     };
     ExportsRepository.products(request, function (response) {
       document.location.href = response.file;
-    }, function (response) {
-      toastr.error('Произошла ошибка на сервере');
-    });
+    }, function (response) {});
   };
 
   $scope.modalProductOrders = [];
@@ -84987,13 +85019,14 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       $scope.modalProductOrders = response;
     }, function (response) {
       $scope.isModalLoading = false;
-      toastr.error('Произошла ошибка на сервере');
     });
+    document.querySelector('body').classList.add('modal-open');
   };
 
   $scope.hideProductOrdersModal = function () {
     $scope.isProductOrdersModalShown = false;
     $scope.modalProductOrders = [];
+    document.querySelector('body').classList.remove('modal-open');
   };
 
   $scope.stocksMonthes = [];
@@ -85027,6 +85060,8 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
       $scope.stocksCurrentDate.month = response.month;
       $scope.stocksCurrentDate.year = response.year;
       $scope.stocks = response.stocks;
+    }, function (response) {
+      $scope.isStocksLoading = false;
     });
   };
 }]);
@@ -85040,7 +85075,7 @@ angular.module('tctApp').controller('ProductsController', ['$scope', '$routePara
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'RecipesRepository', 'MaterialsRepository', 'CategoriesRepository', function ($scope, $routeParams, $location, $timeout, toastr, RecipesRepository, MaterialsRepository, CategoriesRepository) {
+angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParams', '$location', '$timeout', 'RecipesRepository', 'MaterialsRepository', 'CategoriesRepository', function ($scope, $routeParams, $location, $timeout, RecipesRepository, MaterialsRepository, CategoriesRepository) {
   $scope.baseUrl = '';
   $scope.recipes = [];
   $scope.recipe = {
@@ -85062,6 +85097,8 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
     RecipesRepository.query(function (response) {
       $scope.isLoading = false;
       $scope.recipes = response;
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -85074,6 +85111,8 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
     }, function (response) {
       $scope.isLoading = false;
       $scope.recipe = response;
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -85088,6 +85127,8 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
       }, function (response) {
         $scope.isLoading = false;
         $scope.recipe = response;
+      }, function (response) {
+        $scope.isLoading = false;
       });
     }
 
@@ -85100,22 +85141,21 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
   };
 
   $scope.save = function () {
+    $scope.isSaving = true;
     RecipesRepository.save({
       id: $scope.id
     }, $scope.recipe, function (response) {
+      $scope.isSaving = false;
       toastr.success($scope.id ? 'Рецепт успешно обновлен!' : 'Новый рецепт успешно создан!');
       $scope.recipeErrors = {};
       $scope.id = response.id;
       $scope.recipe.url = response.url;
     }, function (response) {
+      $scope.isSaving = false;
+
       switch (response.status) {
         case 422:
-          toastr.error('Проверьте введенные данные');
           $scope.recipeErrors = response.data.errors;
-          break;
-
-        default:
-          toastr.error('Произошла ошибка на сервере');
           break;
       }
     });
@@ -85134,10 +85174,13 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
   };
 
   $scope["delete"] = function (id) {
-    $scope.hideDelete();
+    $scope.isDeleting = true;
     RecipesRepository["delete"]({
       id: id
     }, function (response) {
+      $scope.isDeleting = false;
+      $scope.hideDelete();
+
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
@@ -85145,7 +85188,7 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
         $scope.init();
       }
     }, function (response) {
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isDeleting = false;
     });
   };
 
@@ -85172,7 +85215,7 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '$routeParams', '$location', 'toastr', 'EmploymentStatusesRepository', function ($scope, $routeParams, $location, toastr, EmploymentStatusesRepository) {
+angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '$routeParams', '$location', 'EmploymentStatusesRepository', function ($scope, $routeParams, $location, EmploymentStatusesRepository) {
   $scope.statusTemplates = ['name', '<i class="fas fa-check"></i>', '<i class="fas fa-times"></i>', '<i class="fas fa-question"></i>'];
 
   $scope.init = function () {
@@ -85182,7 +85225,7 @@ angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '
       for (key in $scope.statuses) {
         $scope.statuses[key].customable = Boolean($scope.statuses[key].customable);
       }
-    });
+    }, function (response) {});
   };
 
   $scope.addStatus = function () {
@@ -85201,10 +85244,14 @@ angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '
   };
 
   $scope.save = function () {
+    $scope.isSaving = true;
     EmploymentStatusesRepository.save({
       'statuses': $scope.statuses
     }, function (response) {
+      $scope.isSaving = false;
       toastr.success('Статусы успешно сохранены!');
+    }, function (response) {
+      scope.isSaving = false;
     });
   };
 }]);
@@ -85218,7 +85265,7 @@ angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParams', '$location', '$timeout', 'toastr', 'FacilitiesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $timeout, toastr, FacilitiesRepository, WorkersRepository) {
+angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParams', '$location', '$timeout', 'FacilitiesRepository', 'WorkersRepository', function ($scope, $routeParams, $location, $timeout, FacilitiesRepository, WorkersRepository) {
   $scope.Object = Object;
   $scope.baseUrl = '';
   $scope.worker = {
@@ -85232,6 +85279,8 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
     WorkersRepository.query(function (response) {
       $scope.isLoading = false;
       $scope.workers = response;
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -85244,6 +85293,8 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
     }, function (response) {
       $scope.isLoading = false;
       $scope.worker = response;
+    }, function (response) {
+      $scope.isLoading = false;
     });
   };
 
@@ -85263,6 +85314,8 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
           var birthdate = $scope.worker.birthdate.split("-");
           $scope.worker.birthdate_raw = birthdate[2] + birthdate[1] + birthdate[0];
         }
+      }, function (response) {
+        $scope.isLoading = false;
       });
     }
 
@@ -85272,23 +85325,21 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
   };
 
   $scope.save = function () {
-    console.log($scope.worker);
+    $scope.isSaving = true;
     WorkersRepository.save({
       id: $scope.id
     }, $scope.worker, function (response) {
+      $scope.isSaving = false;
       toastr.success($scope.id ? 'Работник успешно обновлен!' : 'Новый работник успешно создан!');
       $scope.workerErrors = {};
       $scope.id = response.id;
       $scope.worker.url = response.url;
     }, function (response) {
+      $scope.isSaving = false;
+
       switch (response.status) {
         case 422:
-          toastr.error('Проверьте введенные данные');
           $scope.workerErrors = response.data.errors;
-          break;
-
-        default:
-          toastr.error('Произошла ошибка на сервере');
           break;
       }
     });
@@ -85307,10 +85358,13 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
   };
 
   $scope["delete"] = function (id) {
-    $scope.hideDelete();
+    $scope.isDeleting = true;
     WorkersRepository["delete"]({
       id: id
     }, function (response) {
+      $scope.isDeleting = false;
+      $scope.hideDelete();
+
       if ($scope.baseUrl) {
         $location.path($scope.baseUrl).replace();
       } else {
@@ -85318,7 +85372,7 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
         $scope.init();
       }
     }, function (response) {
-      toastr.error('Произошла ошибка на сервере');
+      $scope.isDeleting = false;
     });
   };
 
@@ -85353,9 +85407,11 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
       $scope.modalWorker.status = ($scope.modalWorker.status + 1) % 2;
     }
 
+    $scope.isModalSaving = true;
     WorkersRepository.save({
       id: $scope.modalWorker.id
     }, $scope.modalWorker, function (response) {
+      $scope.isModalSaving = false;
       $scope.modalStatusErrors = {};
       toastr.success('Изменения успешно сохранены!');
       $scope.hideStatusModal();
@@ -85366,7 +85422,13 @@ angular.module('tctApp').controller('WorkersController', ['$scope', '$routeParam
         $scope.initShow();
       }
     }, function (response) {
-      $scope.modalStatusErrors = response.data.errors;
+      $scope.isModalSaving = false;
+
+      switch (response.status) {
+        case 422:
+          $scope.modalStatusErrors = response.data.errors;
+          break;
+      }
     });
   };
 }]);

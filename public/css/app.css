@@ -12783,7 +12783,8 @@ i.far {
   border-radius: 0px 0px 5px 5px;
 }
 
-.modal.delete-modal .modal-content {
+.modal.delete-modal .modal-content,
+.modal.copy-modal .modal-content {
   margin-top: 15vh;
 }
 
@@ -14750,41 +14751,112 @@ i.far {
   white-space: nowrap;
 }
 
-.orders-page .order-paid-block {
+.orders-page .order-form-group {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   position: relative;
 }
 
-.orders-page .order-paid-block .param-label {
+.orders-page .order-form-group .param-label {
   margin-bottom: 0px;
   margin-right: 15px;
 }
 
-.orders-page .order-paid-block .form-control {
+.orders-page .order-form-group .form-control {
   width: 200px;
 }
 
-.orders-page .order-paid-block .form-control {
+.orders-page .order-form-group .form-control {
   background: transparent;
   color: #212529;
 }
 
-.orders-page .order-paid-block .form-control:focus {
+.orders-page .order-form-group .form-control:focus {
   background: transparent;
 }
 
-.orders-page .order-paid-block .product-units {
-  position: absolute;
-  top: 8px;
-  left: 108px;
-  color: transparent;
-  z-index: -1;
+.orders-page .order-form-group .form-group-units {
+  position: relative;
 }
 
-.orders-page .order-paid-block .product-units > span {
-  color: #495057;
+.orders-page .order-form-group .form-group-units .form-control {
+  background: transparent;
+  z-index: 1;
+  position: relative;
+}
+
+.orders-page .order-form-group .form-group-units .form-control:focus {
+  background: transparent;
+}
+
+.orders-page .order-form-group .form-group-units .units {
+  position: absolute;
+  top: 12px;
+  left: 13px;
+  color: transparent;
+  z-index: 0;
+  line-height: 100%;
+}
+
+.orders-page .order-form-group .form-group-units .units > span {
+  color: #747474;
+}
+
+.orders-page .order-realizations-table {
+  margin-top: 20px;
+}
+
+.orders-page .order-realizations-table .product-color {
+  color: #9a9a9a;
+}
+
+.orders-page .order-realizations-table tr td,
+.orders-page .order-realizations-table tr th {
+  width: 25%;
+  text-align: left;
+  font-size: 14px;
+}
+
+.orders-page .order-realizations-table tr td:first-child {
+  font-size: 12px;
+}
+
+.orders-page .order-realizations-table tr th:last-child,
+.orders-page .order-realizations-table tr td:last-child {
+  min-width: 100px;
+  padding-left: 20px;
+}
+
+.orders-page .order-realizations-table tr th {
+  vertical-align: middle;
+}
+
+.orders-page .order-realizations-table .form-group-units {
+  position: relative;
+}
+
+.orders-page .order-realizations-table .form-group-units .form-control {
+  background: transparent;
+  z-index: 1;
+  position: relative;
+}
+
+.orders-page .order-realizations-table .form-group-units .form-control:focus {
+  background: transparent;
+}
+
+.orders-page .order-realizations-table .form-group-units .units {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  color: transparent;
+  z-index: 0;
+  line-height: 100%;
+}
+
+.orders-page .order-realizations-table .form-group-units .units > span {
+  color: #747474;
 }
 
 .orders-page .realization-modal .table .product-color {

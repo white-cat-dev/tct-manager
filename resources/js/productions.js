@@ -7,7 +7,6 @@ angular.module('tctApp').controller('ProductionsController', [
 	'$location',
 	'$timeout',
 	'$filter',
-	'toastr',
 	'ProductionsRepository',
 	'OrdersRepository',
 	'ProductsRepository',
@@ -18,7 +17,6 @@ angular.module('tctApp').controller('ProductionsController', [
 		$location,
 		$timeout,
 		$filter,
-		toastr,
 		ProductionsRepository,
 		OrdersRepository,
 		ProductsRepository
@@ -124,6 +122,10 @@ angular.module('tctApp').controller('ProductionsController', [
 				}
 			}
 			$scope.initScroll();
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -138,33 +140,33 @@ angular.module('tctApp').controller('ProductionsController', [
 		'#3498db',
 	];
 
-	$scope.ordersMarkColors = {};
+	// $scope.ordersMarkColors = {};
 
-	$scope.markOrder = function(orderId)
-	{
-		if ($scope.ordersMarkColors[orderId])
-		{
-			$scope.markColors.push($scope.ordersMarkColors[orderId]);
-			delete $scope.ordersMarkColors[orderId];
-		}
-		else
-		{
-			$scope.ordersMarkColors[orderId] = $scope.markColors.pop();
-		}
-	}
+	// $scope.markOrder = function(orderId)
+	// {
+	// 	if ($scope.ordersMarkColors[orderId])
+	// 	{
+	// 		$scope.markColors.push($scope.ordersMarkColors[orderId]);
+	// 		delete $scope.ordersMarkColors[orderId];
+	// 	}
+	// 	else
+	// 	{
+	// 		$scope.ordersMarkColors[orderId] = $scope.markColors.pop();
+	// 	}
+	// }
 
 	
-	$scope.getOrderMarkColor = function(production)
-	{
-		if ((production) && ($scope.ordersMarkColors[production.order_id]))
-		{
-			return $scope.ordersMarkColors[production.order_id];
-		}
-		else
-		{
-			return 'transparent';
-		}
-	}
+	// $scope.getOrderMarkColor = function(production)
+	// {
+	// 	if ((production) && ($scope.ordersMarkColors[production.order_id]))
+	// 	{
+	// 		return $scope.ordersMarkColors[production.order_id];
+	// 	}
+	// 	else
+	// 	{
+	// 		return 'transparent';
+	// 	}
+	// }
 
 
 	$scope.showAllProductions = function()
@@ -199,57 +201,57 @@ angular.module('tctApp').controller('ProductionsController', [
 		$scope.modalDate = new Date($scope.currentDate.year, $scope.currentDate.month - 1, day);
 		$scope.modalDay = day;
 
-		$scope.modalProductionProducts = [];
+		// $scope.modalProductionProducts = [];
 
-		for (product of $scope.productionProducts)
-		{
-			if (product.productions[day])
-			{
-				var newProduct = angular.copy(product);
-				newProduct.orders = [];
-				newProduct.productions = [];
-				newProduct.production = product.productions[day];
-				newProduct.production_id = newProduct.production.id;
+		// for (product of $scope.productionProducts)
+		// {
+		// 	if (product.productions[day])
+		// 	{
+		// 		var newProduct = angular.copy(product);
+		// 		newProduct.orders = [];
+		// 		newProduct.productions = [];
+		// 		newProduct.production = product.productions[day];
+		// 		newProduct.production_id = newProduct.production.id;
 
-				if (product.productions[0])
-				{
-					newProduct.base_planned = (product.productions[0].planned > product.productions[0].performed) ? 
-						Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000 : 0;
-				}
-				else
-				{
-					newProduct.base_planned = 0;
-				}
+		// 		if (product.productions[0])
+		// 		{
+		// 			newProduct.base_planned = (product.productions[0].planned > product.productions[0].performed) ? 
+		// 				Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000 : 0;
+		// 		}
+		// 		else
+		// 		{
+		// 			newProduct.base_planned = 0;
+		// 		}
 
-				$scope.modalProductionProducts.push(newProduct);
-			}
-			else if (product.productions[0])
-			{
-				if (product.productions[0].planned > product.productions[0].performed)
-				{
-					var facilities = $scope.getCategoryFacilities(product.category_id);
+		// 		$scope.modalProductionProducts.push(newProduct);
+		// 	}
+		// 	else if (product.productions[0])
+		// 	{
+		// 		if (product.productions[0].planned > product.productions[0].performed)
+		// 		{
+		// 			var facilities = $scope.getCategoryFacilities(product.category_id);
 
-					if (facilities.length > 0)
-					{
-						$scope.newProduct[facilities[0].id] = {
-							'id': product.id,
-							'production_id': Infinity,
-							'category_id': product.category_id,
-							'product_group_id': product.product_group_id,
-							'product_id': product.id,
-							'product_group': product.product_group,
-							'category': product.category,
-							'variation': product.variation,
-							'units_text': product.units_text,
-							'variation_noun_text': product.variation_noun_text,
-							'base_planned': Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000
-						};
+		// 			if (facilities.length > 0)
+		// 			{
+		// 				$scope.newProduct[facilities[0].id] = {
+		// 					'id': product.id,
+		// 					'production_id': Infinity,
+		// 					'category_id': product.category_id,
+		// 					'product_group_id': product.product_group_id,
+		// 					'product_id': product.id,
+		// 					'product_group': product.product_group,
+		// 					'category': product.category,
+		// 					'variation': product.variation,
+		// 					'units_text': product.units_text,
+		// 					'variation_noun_text': product.variation_noun_text,
+		// 					'base_planned': Math.round((product.productions[0].planned - product.productions[0].performed) * 1000) / 1000
+		// 				};
 
-						$scope.addProduct(facilities[0].id);
-					}
-				}
-			}
-		}
+		// 				$scope.addProduct(facilities[0].id);
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 
 		$scope.modalProductionCategories = [];
@@ -369,7 +371,6 @@ angular.module('tctApp').controller('ProductionsController', [
 		function(response) 
 		{
             $scope.isSaving = false;
-            toastr.error('Произошла ошибка на сервере');
         });
 	}
 
@@ -382,10 +383,11 @@ angular.module('tctApp').controller('ProductionsController', [
 			'month': $scope.currentDate.month
 		}
 
-		$scope.isSaving = true;
+		$scope.isModalSaving = true;
 		ProductionsRepository.saveMaterials(request, function(response) 
 		{
-			$scope.isSaving = false;
+			$scope.isModalSaving = false;
+
 			toastr.success('Все изменения успешно сохранены!');
 
 			$scope.hideModal();
@@ -393,8 +395,7 @@ angular.module('tctApp').controller('ProductionsController', [
 		}, 
 		function(response) 
 		{
-            $scope.isSaving = false;
-            toastr.error('Произошла ошибка на сервере');
+            $scope.isModalSaving = false;
         });
 	}
 
@@ -803,7 +804,6 @@ angular.module('tctApp').controller('ProductionsController', [
 		function(response) 
 		{
             $scope.isModalLoading = false;
-            toastr.error('Произошла ошибка на сервере');
         });
 	}
 
@@ -849,7 +849,6 @@ angular.module('tctApp').controller('ProductionsController', [
 		function(response) 
 		{
             $scope.isReplaning = false;
-            toastr.error('Произошла ошибка на сервере');
         });
 	}
 

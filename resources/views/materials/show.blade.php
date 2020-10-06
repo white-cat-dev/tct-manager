@@ -124,7 +124,7 @@
 						</table>
 					</div>
 
-					<div class="alert alert-secondary" ng-if="stocks.length == 0 && !isLoading">
+					<div class="alert alert-secondary" ng-if="stocks.length == 0 && !isStocksLoading">
 						<i class="far fa-calendar-times"></i> Нет истории остатков в этом месяце
 					</div>
 				</div>
@@ -136,7 +136,7 @@
 				<div class="material-supplies-block mb-5" ng-init="initSupplies()">
 					<div class="params-title mt-0">История поступлений</div>	
 
-					<div class="modal-loading-block" ng-if="isAddLoading">
+					<div class="modal-loading-block" ng-if="isSuppliesLoading">
 						<i class="fa fa-cog fa-spin"></i>
 					</div>
 
@@ -213,7 +213,7 @@
 						</table>
 					</div>
 
-					<div class="alert alert-secondary" ng-if="supplies.length == 0 && !isLoading">
+					<div class="alert alert-secondary" ng-if="supplies.length == 0 && !isSuppliesLoading">
 						<i class="far fa-calendar-times"></i> Поступлений материала в этом месяце не было
 					</div>
 				</div>

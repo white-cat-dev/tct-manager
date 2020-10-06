@@ -4,7 +4,6 @@ angular.module('tctApp').controller('MaterialsController', [
 	'$location',
 	'$filter',
 	'$timeout',
-	'toastr',
 	'MaterialsRepository',
 	'ExportsRepository',
 	function(
@@ -13,7 +12,6 @@ angular.module('tctApp').controller('MaterialsController', [
 		$location,
 		$filter,
 		$timeout,
-		toastr,
 		MaterialsRepository,
 		ExportsRepository
 	){
@@ -107,6 +105,10 @@ angular.module('tctApp').controller('MaterialsController', [
 					$scope.materials.push(material);
 				}
 			}
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -123,6 +125,10 @@ angular.module('tctApp').controller('MaterialsController', [
 			$scope.materialGroup = response;
 
 			$scope.initStocks();
+		},
+		function(response)
+		{
+			$scope.isLoading = false;
 		});
 	}
 
@@ -139,6 +145,10 @@ angular.module('tctApp').controller('MaterialsController', [
 			{
 				$scope.isLoading = false;
 				$scope.materialGroup = response;
+			},
+			function(response)
+			{
+				$scope.isLoading = false;
 			});
 		}
 	}
@@ -146,8 +156,11 @@ angular.module('tctApp').controller('MaterialsController', [
 
 	$scope.save = function() 
 	{
+		$scope.isSaving = true;
 		MaterialsRepository.save({id: $scope.id}, $scope.materialGroup, function(response) 
 		{
+			$scope.isSaving = false;
+
 			toastr.success($scope.id ? 'Материал успешно обновлен!' : 'Новый материал успешно создан!');
 
 			$scope.materialGroupErrors = {};
@@ -156,16 +169,13 @@ angular.module('tctApp').controller('MaterialsController', [
 		}, 
 		function(response) 
 		{
+            $scope.isSaving = false;
+
             switch (response.status) 
             {
             	case 422:
-            		toastr.error('Проверьте введенные данные');
             		$scope.materialGroupErrors = response.data.errors;
             		break
-
-            	default:
-            		toastr.error('Произошла ошибка на сервере');
-            		break;
             }
         });
 	}
@@ -191,10 +201,13 @@ angular.module('tctApp').controller('MaterialsController', [
 
 	$scope.delete = function(id)
 	{
-		$scope.hideDelete();
-
+		$scope.isDeleting = true;
 		MaterialsRepository.delete({id: id}, function(response) 
 		{
+			$scope.isDeleting = false;
+
+			$scope.hideDelete();
+
 			if ($scope.baseUrl)
 			{
 				$location.path($scope.baseUrl).replace();
@@ -208,7 +221,7 @@ angular.module('tctApp').controller('MaterialsController', [
 		}, 
 		function(response) 
 		{
-        	toastr.error('Произошла ошибка на сервере');
+        	$scope.isDeleting = false;
         });
 	}
 
@@ -319,11 +332,16 @@ angular.module('tctApp').controller('MaterialsController', [
     		supply.date_raw = $scope.modalSupply.date_raw;
     	}
 
+    	$scope.isModalSaving = true;
+
     	MaterialsRepository.saveSupply({'supplies': $scope.modalSupply.supplies}, function(response) 
 		{
+			$scope.isModalSaving = false;
+
 			toastr.success('Все изменения успешно сохранены!');
 
 			$scope.hideSupplyModal();
+
 			if ($scope.baseUrl)
 			{
 				$scope.initShow();
@@ -332,6 +350,10 @@ angular.module('tctApp').controller('MaterialsController', [
 			{
 				$scope.init();
 			}
+		},
+		function(response) 
+		{
+			$scope.isModalSaving = false;
 		});
     }
 
@@ -357,11 +379,11 @@ angular.module('tctApp').controller('MaterialsController', [
 			request.month = $scope.currentDate.month;
 		}
 
-    	$scope.isAddLoading = true;
+    	$scope.isSuppliesLoading = true;
 
     	MaterialsRepository.supplies(request, function(response) 
 		{
-			$scope.isAddLoading = false;
+			$scope.isSuppliesLoading = false;
 
 			$scope.monthes = response.monthes;
 			$scope.years = response.years;
@@ -370,6 +392,10 @@ angular.module('tctApp').controller('MaterialsController', [
 			$scope.currentDate.year = response.year;
 
 			$scope.supplies = response.supplies;
+		},
+		function(response) 
+		{
+			$scope.isSuppliesLoading = false;
 		});
     }
 
@@ -414,6 +440,10 @@ angular.module('tctApp').controller('MaterialsController', [
 			$scope.stocksCurrentDate.year = response.year;
 
 			$scope.stocks = response.stocks;
+		},
+		function(response) 
+		{
+			$scope.isStocksLoading = false;
 		});
     }
 }]);

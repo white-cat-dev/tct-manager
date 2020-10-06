@@ -190,6 +190,13 @@ class OrdersController extends Controller
                     continue;
                 }
 
+                $product = Product::find($productData['id']);
+
+                if (!$product)
+                {
+                    continue;
+                }
+
                 $order->products()->attach([
                     $productData['id'] => [
                     	'price' => $productData['pivot']['price'],
@@ -197,6 +204,22 @@ class OrdersController extends Controller
                         'cost' => $productData['pivot']['cost']
                     ]
                 ]);
+
+                if ($productData['pivot']['realization_performed'] > 0)
+                {
+                    $realization = $order->realizations()->create([
+                        'date' => $order->date,
+                        'category_id' => $product->category_id,
+                        'product_group_id' => $product->product_group_id,
+                        'product_id' => $product->id,
+                        'order_id' => $order->id,
+                        'planned' => 0,
+                        'ready' => 0,
+                        'performed' => $productData['pivot']['realization_performed']
+                    ]);
+
+                    $product->updateInStock($product->in_stock - $realization->performed, 'realization', $realization);
+                }
             }
 
             if ($order->paid > 0)
@@ -207,24 +230,8 @@ class OrdersController extends Controller
                 ]);
             }
 
-            if (!empty($request->get('all_realizations')))
+            if (!empty($request->get('pallets_realization_performed')))
             {   
-                foreach ($order->products as $product) 
-                {
-                    $realization = $order->realizations()->create([
-                        'date' => $order->date,
-                        'category_id' => $product->category_id,
-                        'product_group_id' => $product->product_group_id,
-                        'product_id' => $product->id,
-                        'order_id' => $order->id,
-                        'planned' => 0,
-                        'ready' => 0,
-                        'performed' => $product->pivot->count
-                    ]);
-
-                    $product->updateInStock($product->in_stock - $product->pivot->count, 'realization', $realization);
-                }
-
                 $realization = $order->realizations()->create([
                     'date' => $order->date,
                     'category_id' => 0,
@@ -235,13 +242,10 @@ class OrdersController extends Controller
                     'ready' => 0,
                     'performed' => $order->pallets
                 ]);
+            }
 
-                $this->checkFinishedOrder($order);
-            }
-            else
-            {
-                ProductionsService::getInstance()->planOrder($order);
-            }
+            $this->checkFinishedOrder($order);
+            ProductionsService::getInstance()->planOrder($order);
             
             return $order;
         }

@@ -2,13 +2,11 @@ angular.module('tctApp').controller('EmploymentStatusesController', [
 	'$scope',
 	'$routeParams',
 	'$location',
-	'toastr',
 	'EmploymentStatusesRepository',
 	function(
 		$scope, 
 		$routeParams,
 		$location,
-		toastr,
 		EmploymentStatusesRepository
 	){
 
@@ -31,6 +29,10 @@ angular.module('tctApp').controller('EmploymentStatusesController', [
 			{
 				$scope.statuses[key].customable = Boolean($scope.statuses[key].customable);
 			}
+		},
+		function(response)
+		{
+
 		});
 	}
 
@@ -56,9 +58,16 @@ angular.module('tctApp').controller('EmploymentStatusesController', [
 
 	$scope.save = function()
 	{
+		$scope.isSaving = true;
+
 		EmploymentStatusesRepository.save({'statuses': $scope.statuses}, function(response) 
 		{
+			$scope.isSaving = false;
 			toastr.success('Статусы успешно сохранены!');
+		}, 
+		function(response)
+		{
+			scope.isSaving = false;
 		});
 	}
 }]);

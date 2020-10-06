@@ -154,7 +154,7 @@
 						<a ng-href="@{{ productGroup.url + '/edit' }}" class="btn btn-sm btn-primary">
 							<i class="fas fa-edit"></i>
 						</a>
-						<button type="button" class="btn btn-sm btn-primary" ng-click="copy(productGroup.id)">
+						<button type="button" class="btn btn-sm btn-primary" ng-click="showCopy(productGroup)">
 							<i class="fas fa-copy"></i>
 						</button>
 						{{-- <button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(productGroup)">
@@ -183,7 +183,7 @@
 					<a ng-href="@{{ productGroup.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
-					<button type="button" class="btn btn-sm btn-primary" ng-click="copy(productGroup.id)">
+					<button type="button" class="btn btn-sm btn-primary" ng-click="showCopy(productGroup)">
 						<i class="fas fa-copy"></i>
 					</button>
 					{{-- <button type="button" class="btn btn-sm btn-primary" ng-click="delete(productGroup.id)">
@@ -236,6 +236,7 @@
 	</div>
 
 	@include('partials.delete-modal')
-	@include('partials/product-orders-modal')
-	@include('partials/product-stock-modal')
+	@include('partials.copy-modal')
+	@include('partials.product-orders-modal')
+	@include('partials.product-stock-modal')
 </div>

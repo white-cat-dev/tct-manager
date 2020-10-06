@@ -15,7 +15,7 @@
 			<a ng-href="@{{ productGroup.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
-			<button type="button" class="btn btn-primary" ng-click="copy(id)">
+			<button type="button" class="btn btn-primary" ng-click="showCopy(productGroup)">
 				<i class="fas fa-copy"></i> Копировать
 			</button>
 			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(productGroup)">
@@ -24,17 +24,8 @@
 		</div>
 	</div>
 
-	<div class="alerts-block" ng-class="{'shown': showAlert}">
-		<div class="alert alert-success" role="alert" ng-if="successAlert">
-			@{{ successAlert }} <br>
-			Вы можете <a href="{{ route('products') }}" class="btn-link">перейти к списку продуктов</a> или <a href="{{ route('product-create') }}" class="btn-link">создать новый продукт</a>
-		</div>
-		<div class="alert alert-danger" role="alert" ng-if="errorAlert">
-			@{{ errorAlert }}
-		</div>
-	</div>
 
-	<div class="edit-form-block" ng-show="!isLoading">
+	<div class="edit-form-block" ng-show="!isLoading && productGroup">
 		<div class="row justify-content-around">
 			<div class="col-6 col-xl-5">
 				<div class="params-title">
@@ -417,11 +408,17 @@
 		</div>
 
 		<div class="buttons-block">
-			<button class="btn btn-primary" ng-click="save()">
-				<i class="fas fa-save"></i> Сохранить
+			<button class="btn btn-primary" ng-click="save()" ng-disabled="isSaving">
+				<span ng-if="isSaving">
+					<i class="fa fa-spinner fa-spin"></i> Сохранение...
+				</span>
+				<span ng-if="!isSaving">
+					<i class="fas fa-save"></i> Сохранить
+				</span>
 			</button>
 		</div>
 	</div>
-
+	
 	@include('partials.delete-modal')
+	@include('partials.copy-modal')
 </div>
