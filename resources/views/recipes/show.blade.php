@@ -15,6 +15,9 @@
 			<a ng-href="@{{ recipe.url + '/edit' }}" class="btn btn-primary">
 				<i class="fas fa-edit"></i> Редактировать
 			</a>
+			<button type="button" class="btn btn-primary" ng-click="showCopy(recipe)">
+				<i class="fas fa-copy"></i> Копировать
+			</button>
 			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(recipe)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>

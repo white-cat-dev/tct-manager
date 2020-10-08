@@ -179,6 +179,50 @@ angular.module('tctApp').controller('RecipesController', [
 	}
 
 
+	$scope.showCopy = function(recipe)
+	{
+		$scope.isCopyModalShown = true;
+		$scope.copyType = 'recipe';
+		$scope.copyData = recipe;
+
+		document.querySelector('body').classList.add('modal-open');
+	}
+
+
+	$scope.hideCopy = function()
+	{
+		$scope.isCopyModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
+	}
+
+
+	$scope.copy = function(id)
+	{
+		$scope.isCopying = true;
+		RecipesRepository.copy({id: id}, {}, function(response) 
+		{
+			$scope.isCopying = false;
+			$scope.hideCopy();
+
+			toastr.success('Копия успешно создана');
+
+			if ($scope.baseUrl)
+			{
+				$location.path($scope.baseUrl + '/' + response.id + '/edit').replace();
+			}
+			else
+			{
+				$scope.init();
+			}
+		},
+		function(response)
+		{
+			$scope.isCopying = false;
+		});
+	}
+
+
 	$scope.addMaterialGroup = function()
 	{
 		$scope.recipe.material_groups.push({

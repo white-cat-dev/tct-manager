@@ -384,6 +384,8 @@ angular.module('tctApp').controller('OrdersController', [
 					}
 				}
 			}
+
+			$scope.currentOrder = null;
 			// window.scrollTo(0, 0);
 		}, 
 		function(response) 

@@ -81515,6 +81515,10 @@ tctApp.factory('ProductsRepository', ['$resource', function ($resource) {
 }]);
 tctApp.factory('MaterialsRepository', ['$resource', function ($resource) {
   return $resource('/materials/:id', null, {
+    copy: {
+      method: 'POST',
+      url: '/materials/:id/copy'
+    },
     supplies: {
       method: 'GET',
       url: '/materials/:id/supplies'
@@ -81530,7 +81534,12 @@ tctApp.factory('MaterialsRepository', ['$resource', function ($resource) {
   });
 }]);
 tctApp.factory('RecipesRepository', ['$resource', function ($resource) {
-  return $resource('/recipes/:id');
+  return $resource('/recipes/:id', null, {
+    copy: {
+      method: 'POST',
+      url: '/recipes/:id/copy'
+    }
+  });
 }]);
 tctApp.factory('ClientsRepository', ['$resource', function ($resource) {
   return $resource('/clients/:id');
@@ -82687,6 +82696,37 @@ angular.module('tctApp').controller('MaterialsController', ['$scope', '$routePar
     });
   };
 
+  $scope.showCopy = function (material) {
+    $scope.isCopyModalShown = true;
+    $scope.copyType = 'material';
+    $scope.copyData = material;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideCopy = function () {
+    $scope.isCopyModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
+  $scope.copy = function (id) {
+    $scope.isCopying = true;
+    MaterialsRepository.copy({
+      id: id
+    }, {}, function (response) {
+      $scope.isCopying = false;
+      $scope.hideCopy();
+      toastr.success('Копия успешно создана');
+
+      if ($scope.baseUrl) {
+        $location.path($scope.baseUrl + '/' + response.id + '/edit').replace();
+      } else {
+        $scope.init();
+      }
+    }, function (response) {
+      $scope.isCopying = false;
+    });
+  };
+
   $scope.addMaterial = function () {
     $scope.materialGroup.materials.push({
       'variation': '',
@@ -83205,8 +83245,9 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
             }
           }
         }
-      } // window.scrollTo(0, 0);
+      }
 
+      $scope.currentOrder = null; // window.scrollTo(0, 0);
     }, function (response) {
       $scope.isLoading = false;
     });
@@ -85189,6 +85230,37 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
       }
     }, function (response) {
       $scope.isDeleting = false;
+    });
+  };
+
+  $scope.showCopy = function (recipe) {
+    $scope.isCopyModalShown = true;
+    $scope.copyType = 'recipe';
+    $scope.copyData = recipe;
+    document.querySelector('body').classList.add('modal-open');
+  };
+
+  $scope.hideCopy = function () {
+    $scope.isCopyModalShown = false;
+    document.querySelector('body').classList.remove('modal-open');
+  };
+
+  $scope.copy = function (id) {
+    $scope.isCopying = true;
+    RecipesRepository.copy({
+      id: id
+    }, {}, function (response) {
+      $scope.isCopying = false;
+      $scope.hideCopy();
+      toastr.success('Копия успешно создана');
+
+      if ($scope.baseUrl) {
+        $location.path($scope.baseUrl + '/' + response.id + '/edit').replace();
+      } else {
+        $scope.init();
+      }
+    }, function (response) {
+      $scope.isCopying = false;
     });
   };
 

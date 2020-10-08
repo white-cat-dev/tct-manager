@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function()
 
 		Route::post('/', 'MaterialsController@create');
 		Route::post('{materialGroup}', 'MaterialsController@edit');
+		Route::post('{materialGroup}/copy', 'MaterialsController@copy');
 
 		Route::delete('{materialGroup}', 'MaterialsController@delete');
 	});
@@ -79,6 +80,7 @@ Route::middleware('auth')->group(function()
 
 		Route::post('/', 'RecipesController@create');
 		Route::post('{recipe}', 'RecipesController@edit');
+		Route::post('{recipe}/copy', 'RecipesController@copy');
 
 		Route::delete('{recipe}', 'RecipesController@delete');
 	});

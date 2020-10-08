@@ -15,6 +15,9 @@
 			<a ng-href="@{{ materialGroup.url }}" class="btn btn-primary" ng-if="id">
 				<i class="fas fa-eye"></i> Просмотреть
 			</a>
+			<button type="button" class="btn btn-primary" ng-click="showCopy(materialGroup)">
+				<i class="fas fa-copy"></i> Копировать
+			</button>
 			<button type="button" class="btn btn-primary" ng-if="id" ng-click="showDelete(materialGroup)">
 				<i class="far fa-trash-alt"></i> Удалить
 			</button>

@@ -73,6 +73,9 @@
 					<a ng-href="@{{ recipe.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
+					<button type="button" class="btn btn-sm btn-primary" ng-click="showCopy(recipe)">
+						<i class="fas fa-copy"></i>
+					</button>
 					{{-- <button type="button" class="btn btn-sm btn-primary" ng-click="showDelete(recipe)">
 						<i class="far fa-trash-alt"></i>
 					</button> --}}
@@ -99,4 +102,5 @@
 	</div>
 
 	@include('partials.delete-modal')
+	@include('partials.copy-modal')
 </div>

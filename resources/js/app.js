@@ -318,6 +318,7 @@ tctApp.factory('ProductsRepository', ['$resource', function($resource) {
 
 tctApp.factory('MaterialsRepository', ['$resource', function($resource) { 
 	return $resource('/materials/:id', null, {
+		copy: { method: 'POST', url: '/materials/:id/copy' },
 		supplies: { method: 'GET', url: '/materials/:id/supplies' },
 		saveSupply: { method: 'POST', url: '/materials/supply' },
 		stocks:  { method: 'GET', url: '/materials/:id/stocks' }
@@ -325,7 +326,9 @@ tctApp.factory('MaterialsRepository', ['$resource', function($resource) {
 }]);
 
 tctApp.factory('RecipesRepository', ['$resource', function($resource) { 
-	return $resource('/recipes/:id');  
+	return $resource('/recipes/:id', null, {
+		copy: { method: 'POST', url: '/recipes/:id/copy' }
+    });  
 }]);
 
 tctApp.factory('ClientsRepository', ['$resource', function($resource) { 

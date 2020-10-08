@@ -226,6 +226,50 @@ angular.module('tctApp').controller('MaterialsController', [
 	}
 
 
+	$scope.showCopy = function(material)
+	{
+		$scope.isCopyModalShown = true;
+		$scope.copyType = 'material';
+		$scope.copyData = material;
+
+		document.querySelector('body').classList.add('modal-open');
+	}
+
+
+	$scope.hideCopy = function()
+	{
+		$scope.isCopyModalShown = false;
+
+		document.querySelector('body').classList.remove('modal-open');
+	}
+
+
+	$scope.copy = function(id)
+	{
+		$scope.isCopying = true;
+		MaterialsRepository.copy({id: id}, {}, function(response) 
+		{
+			$scope.isCopying = false;
+			$scope.hideCopy();
+
+			toastr.success('Копия успешно создана');
+
+			if ($scope.baseUrl)
+			{
+				$location.path($scope.baseUrl + '/' + response.id + '/edit').replace();
+			}
+			else
+			{
+				$scope.init();
+			}
+		},
+		function(response)
+		{
+			$scope.isCopying = false;
+		});
+	}
+
+
 	$scope.addMaterial = function()
 	{
 		$scope.materialGroup.materials.push({

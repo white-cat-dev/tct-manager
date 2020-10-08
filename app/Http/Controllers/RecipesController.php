@@ -12,7 +12,7 @@ class RecipesController extends Controller
     {
         if ($request->wantsJson())
         {
-            $recipes = Recipe::all();
+            $recipes = Recipe::orderBy('name')->get();
 
             return $recipes;
         }
@@ -103,6 +103,26 @@ class RecipesController extends Controller
         {
             $recipe->delete();
         }
+    }
+
+
+    public function copy(Request $request, Recipe $recipe)
+    {
+        $recipeCopy = $recipe->replicate()->fill([
+            'name' => $recipe->name . ' (копия)'
+        ]);
+        $recipeCopy->save();
+
+        foreach ($recipe->material_groups as $materialGroup) 
+        {
+            $recipeCopy->material_groups()->attach([
+                $materialGroup->id => [
+                    'count' => $materialGroup->pivot->count
+                ]
+            ]);
+        }
+
+        return $recipeCopy;
     }
 
 

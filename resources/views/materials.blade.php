@@ -92,6 +92,9 @@
 					<a ng-href="@{{ materialGroup.url + '/edit' }}" class="btn btn-sm btn-primary">
 						<i class="fas fa-edit"></i>
 					</a>
+					<button type="button" class="btn btn-sm btn-primary" ng-click="showCopy(materialGroup)">
+						<i class="fas fa-copy"></i>
+					</button>
 					@endif
 				</div>
 			</td>
@@ -116,4 +119,5 @@
 
 	@include('partials.material-supply-modal')
 	@include('partials.delete-modal')
+	@include('partials.copy-modal')
 </div>

@@ -187,6 +187,15 @@ class ProductsController extends Controller
                 'product_group_id' => $productGroupCopy->id
             ]);
             $productCopy->save();
+
+            $productStock = $productCopy->stocks()->create([
+                'date' => date('Y-m-d'),
+                'process_id' => 0,
+                'process_type' => '',
+                'in_stock' => $productCopy->in_stock,
+                'new_in_stock' => $productCopy->in_stock,
+                'reason' => 'create'
+            ]);
         }
 
         return $productGroupCopy;
