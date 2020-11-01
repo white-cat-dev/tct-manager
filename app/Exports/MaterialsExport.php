@@ -14,7 +14,7 @@ class MaterialsExport implements FromCollection, ShouldAutoSize
     public function collection()
     {
         $collection = collect([
-            ['Название', 'В наличии']
+            ['Название', 'Цена', 'В наличии']
         ]);
 
         $materials = Material::all()->sortBy('material_group.name');
@@ -23,6 +23,7 @@ class MaterialsExport implements FromCollection, ShouldAutoSize
         {
             $collection->push([
                 $material->material_group->name . ' ' . $material->variation_text,
+                $material->price . ' руб',
                 $material->in_stock > 0 ? $material->in_stock : '0'
             ]);
         }

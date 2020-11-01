@@ -40,13 +40,14 @@ class ProductsExport implements FromCollection, ShouldAutoSize
 
 
         $collection = collect([
-            ['Название', 'В наличии']
+            ['Название', 'Цена', 'В наличии']
         ]);
 
         foreach ($products as $product) 
         {
             $collection->push([
                 $product->product_group->name .  ' ' . $product->product_group->size . ' ' . $product->variation_text,
+                $product->price . ' руб',
                 $product->in_stock > 0 ? $product->in_stock : '0'
             ]);
         }
@@ -62,6 +63,7 @@ class ProductsExport implements FromCollection, ShouldAutoSize
             {
                 $collection->push([
                     $material->name,
+                    $material->price . ' руб',
                     $material->in_stock > 0 ? $material->in_stock : '0'
                 ]);
             }
