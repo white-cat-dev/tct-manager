@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use App\Exports\ProductsExport;
 use App\Exports\MaterialsExport;
+use App\Exports\ProductionsExport;
+use Carbon\Carbon;
 use App\Order;
 use Excel;
 use Storage;
@@ -39,7 +41,7 @@ class ExportsController extends Controller
         $onlyInStock = $request->get('stock', false);
         $withMaterials = $request->get('materials', false);
 
-        $fileName = 'products_' . date('d_m_Y') . '.xlsx';
+        $fileName = 'products_(' . date('d_m_Y') . ').xlsx';
 
         Excel::store(new ProductsExport($category, $onlyInStock, $withMaterials), 'exports/products/' . $fileName);
 
@@ -51,12 +53,31 @@ class ExportsController extends Controller
 
     public function materials(Request $request)
     {
-        $fileName = 'materials_' . date('d_m_Y') . '.xlsx';
+        $fileName = 'materials_(' . date('d_m_Y') . ').xlsx';
 
         Excel::store(new MaterialsExport(), 'exports/materials/' . $fileName);
 
         return [
             'file' => route('export', ['file' => $fileName, 'type' => 'materials'])
+        ];
+    }
+
+
+    public function productions(Request $request)
+    {
+        $today = Carbon::today();
+
+        $year = (int)$request->get('year', $today->year);
+        $month = (int)$request->get('month', $today->month);
+
+        $date = Carbon::create($year, $month);
+
+        $fileName = 'productions_' . $date->format('m_Y') . '_(' . date('d_m_Y') . ').xlsx';
+
+        Excel::store(new ProductionsExport($year, $month), 'exports/productions/' . $fileName);
+
+        return [
+            'file' => route('export', ['file' => $fileName, 'type' => 'productions'])
         ];
     }
 

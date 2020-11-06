@@ -374,6 +374,7 @@ tctApp.factory('ExportsRepository', ['$resource', function($resource) {
 	return $resource('/export', null, {
 		products: { method: 'GET', url: '/export/products' },
 		materials: { method: 'GET', url: '/export/materials' },
+		productions: { method: 'GET', url: '/export/productions' },
 		order: { method: 'GET', url: '/export/order' }
     });  
 }]);

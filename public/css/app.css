@@ -12165,6 +12165,22 @@ body.modal-open {
   overflow-y: scroll;
 }
 
+.dropdown-toggle::after {
+  margin-left: 0.3em;
+  vertical-align: 0.1em;
+  border-top: 0.35em solid;
+  border-right: 0.35em solid transparent;
+  border-left: 0.35em solid transparent;
+}
+
+.dropdown-menu {
+  padding: 0.3rem 0;
+}
+
+.dropdown-item {
+  padding: 0.25rem 0.75rem;
+}
+
 header {
   background: #276090;
   z-index: 25;

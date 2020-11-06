@@ -10,6 +10,7 @@ angular.module('tctApp').controller('ProductionsController', [
 	'ProductionsRepository',
 	'OrdersRepository',
 	'ProductsRepository',
+	'ExportsRepository',
 	function(
 		$rootScope,
 		$scope, 
@@ -19,7 +20,8 @@ angular.module('tctApp').controller('ProductionsController', [
 		$filter,
 		ProductionsRepository,
 		OrdersRepository,
-		ProductsRepository
+		ProductsRepository,
+		ExportsRepository
 	){
 
 	$scope.Math = window.Math;
@@ -850,6 +852,29 @@ angular.module('tctApp').controller('ProductionsController', [
 		{
             $scope.isReplaning = false;
         });
+	}
+
+
+	$scope.loadExportFile = function() 
+	{
+		var request = {};
+		if ($scope.currentDate.year > 0)
+		{
+			request.year = $scope.currentDate.year;
+		}
+		if ($scope.currentDate.month > 0)
+		{
+			request.month = $scope.currentDate.month;
+		}
+
+		ExportsRepository.productions(request, function(response) 
+		{
+			document.location.href = response.file;
+		},
+		function(response)
+		{
+			
+		});
 	}
 
 

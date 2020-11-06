@@ -22,9 +22,14 @@
 		</div>
 
 		<div class="right-buttons d-none d-md-flex">
-			<button type="button" class="btn btn-primary" ng-click="loadExportFile()">
-				<i class="fas fa-file-excel"></i> Скачать
+			<button class="btn btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-cog"></i> Действия
 			</button>
+			<div class="dropdown-menu" aria-labelledby="actionsButton">
+				<button type="button" class="dropdown-item" ng-click="loadExportFile()">
+					<i class="fas fa-file-excel"></i> Скачать остатки
+				</button>
+			</div>
 
 			@if (Auth::user() && Auth::user()->type == 'admin')
 			<a href="{{ route('product-create') }}" class="btn btn-primary">

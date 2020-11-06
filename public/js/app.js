@@ -81607,6 +81607,10 @@ tctApp.factory('ExportsRepository', ['$resource', function ($resource) {
       method: 'GET',
       url: '/export/materials'
     },
+    productions: {
+      method: 'GET',
+      url: '/export/productions'
+    },
     order: {
       method: 'GET',
       url: '/export/order'
@@ -83771,7 +83775,7 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$scope', '$routeParams', '$location', '$timeout', '$filter', 'ProductionsRepository', 'OrdersRepository', 'ProductsRepository', function ($rootScope, $scope, $routeParams, $location, $timeout, $filter, ProductionsRepository, OrdersRepository, ProductsRepository) {
+angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$scope', '$routeParams', '$location', '$timeout', '$filter', 'ProductionsRepository', 'OrdersRepository', 'ProductsRepository', 'ExportsRepository', function ($rootScope, $scope, $routeParams, $location, $timeout, $filter, ProductionsRepository, OrdersRepository, ProductsRepository, ExportsRepository) {
   $scope.Math = window.Math;
   $scope.Object = window.Object;
   $scope.days = 0;
@@ -84542,6 +84546,22 @@ angular.module('tctApp').controller('ProductionsController', ['$rootScope', '$sc
     }, function (response) {
       $scope.isReplaning = false;
     });
+  };
+
+  $scope.loadExportFile = function () {
+    var request = {};
+
+    if ($scope.currentDate.year > 0) {
+      request.year = $scope.currentDate.year;
+    }
+
+    if ($scope.currentDate.month > 0) {
+      request.month = $scope.currentDate.month;
+    }
+
+    ExportsRepository.productions(request, function (response) {
+      document.location.href = response.file;
+    }, function (response) {});
   };
 
   $scope.initScroll = function () {

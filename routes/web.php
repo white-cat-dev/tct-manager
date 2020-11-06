@@ -177,6 +177,7 @@ Route::middleware('auth')->group(function()
 	{
 		Route::get('products', 'ExportsController@products');
 		Route::get('materials', 'ExportsController@materials');
+		Route::get('productions', 'ExportsController@productions');
 		Route::get('order', 'ExportsController@order');
 		
 		Route::get('{type}/{file}', 'ExportsController@index')->name('export');

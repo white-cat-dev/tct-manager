@@ -86,7 +86,7 @@
 				@if (Auth::user() && Auth::user()->type == 'admin')
 				<div class="buttons-block">
 					<button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fas fa-cog"></i> Доступные действия
+						<i class="fas fa-cog"></i> Действия
 					</button>
 					<div class="dropdown-menu" aria-labelledby="actionsButton">
 						<button type="button" class="btn-sm dropdown-item" ng-if="facility.status == {{ App\Facility::STATUS_ACTIVE }} && !facility.status_date" ng-click="showStatusModal(facility, {{ App\Facility::STATUS_INACTIVE }})">

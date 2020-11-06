@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Services\ProductionsService;
 use Arr;
 
 
 class Product extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'category_id',
         'product_group_id',

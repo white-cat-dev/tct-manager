@@ -52,9 +52,18 @@
 		</div>
 
 		<div class="right-buttons d-none d-md-flex">
-			<button type="button" class="btn btn-primary" ng-click="showReplanModal()" ng-disabled="Object.keys(updatedProductions).length > 0">
-				<i class="far fa-calendar-check"></i> План
+			<button class="btn btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-cog"></i> Действия
 			</button>
+			<div class="dropdown-menu" aria-labelledby="actionsButton">
+				<button type="button" class="dropdown-item" ng-click="showReplanModal()" ng-disabled="Object.keys(updatedProductions).length > 0">
+					<i class="far fa-calendar-check"></i> Перестроить план
+				</button>
+
+				<button type="button" class="dropdown-item" ng-click="loadExportFile()" ng-disabled="Object.keys(updatedProductions).length > 0">
+					<i class="fas fa-file-excel"></i> Скачать отчёт
+				</button>
+			</div>
 
 			<button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="isSaving" style="width: 220px;">
 				<span ng-if="isSaving">

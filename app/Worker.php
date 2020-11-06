@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Arr;
 
 
 class Worker extends Model
 {
+    use SoftDeletes;
+
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
 

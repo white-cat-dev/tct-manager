@@ -22,9 +22,15 @@
 		</div>
 
 		<div class="right-buttons d-none d-md-flex">
-			<button type="button" class="btn btn-primary" ng-click="showPaidCostReportModal()">
-				<i class="fas fa-paste"></i> Отчёт
+			<button class="btn btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-cog"></i> Действия
 			</button>
+			<div class="dropdown-menu" aria-labelledby="actionsButton">
+				<button type="button" class="dropdown-item" ng-click="showPaidCostReportModal()">
+					<i class="fas fa-paste"></i> Сформировать отчёт
+				</button>
+			</div>
+
 			<a href="{{ route('order-create') }}" class="btn btn-primary">
 				<i class="fas fa-plus"></i> Создать заказ
 			</a>
@@ -226,7 +232,7 @@
 
 					<div class="buttons-block">
 						<button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fas fa-cog"></i> Доступные действия
+							<i class="fas fa-cog"></i> Действия
 						</button>
 						<div class="dropdown-menu" aria-labelledby="actionsButton">
 							<button type="button" class="btn-sm dropdown-item" ng-if="currentOrder.status != {{ App\Order::STATUS_NEW }}" ng-click="showRealizationModal(currentOrder)">

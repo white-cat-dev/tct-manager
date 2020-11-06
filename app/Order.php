@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Arr;
 
 
 class Order extends Model
 {
+    use SoftDeletes;
+
     const STATUS_PRODUCTION = 1;
     const STATUS_READY = 2;
     const STATUS_NEW = 3;

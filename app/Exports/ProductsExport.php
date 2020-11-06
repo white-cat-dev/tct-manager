@@ -2,10 +2,10 @@
 
 namespace App\Exports;
 
-use App\Product;
-use App\Material;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use App\Product;
+use App\Material;
 
 
 class ProductsExport implements FromCollection, ShouldAutoSize
@@ -40,35 +40,35 @@ class ProductsExport implements FromCollection, ShouldAutoSize
 
 
         $collection = collect([
-            ['Название', 'Цена', 'В наличии']
+            ['Наименование', 'Цена', 'В наличии']
         ]);
 
         foreach ($products as $product) 
         {
             $collection->push([
                 $product->product_group->name .  ' ' . $product->product_group->size . ' ' . $product->variation_text,
-                $product->price . ' руб',
+                $product->price,
                 $product->in_stock > 0 ? $product->in_stock : '0'
             ]);
         }
 
 
-        if ($this->withMaterials)
-        {
-            $collection->push(['', '']);
+        // if ($this->withMaterials)
+        // {
+        //     $collection->push(['', '']);
 
-            $materials = Material::orderBy('name')->get();
+        //     $materials = Material::orderBy('name')->get();
 
-            foreach ($materials as $material) 
-            {
-                $collection->push([
-                    $material->name,
-                    $material->price . ' руб',
-                    $material->in_stock > 0 ? $material->in_stock : '0'
-                ]);
-            }
+        //     foreach ($materials as $material) 
+        //     {
+        //         $collection->push([
+        //             $material->name,
+        //             $material->price,
+        //             $material->in_stock > 0 ? $material->in_stock : '0'
+        //         ]);
+        //     }
 
-        }
+        // }
 
         return $collection;
     }

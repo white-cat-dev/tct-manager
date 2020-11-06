@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class ProductGroup extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'wp_name',
         'wp_slug',
