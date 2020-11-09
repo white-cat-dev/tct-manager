@@ -16,13 +16,18 @@
 		</div>
 
 		<div class="right-buttons">
-			<button type="button" class="btn btn-primary" ng-click="showSupplyModal()">
-				<i class="fas fa-truck"></i> Поступление
+			<button class="btn btn-primary dropdown-toggle" type="button" id="actionsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-cog"></i> Действия
 			</button>
+			<div class="dropdown-menu" aria-labelledby="actionsButton">
+				<button type="button" class="dropdown-item" ng-click="showSupplyModal()">
+					<i class="fas fa-truck"></i> Поступление
+				</button>
 
-			<button type="button" class="btn btn-primary" ng-click="loadExportFile()">
-				<i class="fas fa-file-excel"></i> Скачать
-			</button>
+				<button type="button" class="dropdown-item" ng-click="loadExportFile()">
+					<i class="fas fa-file-excel"></i> Скачать остатки
+				</button>
+			</div>
 
 			@if (Auth::user() && Auth::user()->type == 'admin')
 			<a href="{{ route('material-create') }}" class="btn btn-primary">

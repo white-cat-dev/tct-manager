@@ -41,6 +41,7 @@ class ProductionsExport implements FromCollection, ShouldAutoSize
 
                 $productsProductions[$production->product_id] = [
                     'name' => $product->product_group->name .  ' ' . $product->product_group->size . ' ' . $product->variation_text,
+                    'price' => $product->price,
                     'performed' => $production->performed
                 ];
             }
@@ -51,7 +52,7 @@ class ProductionsExport implements FromCollection, ShouldAutoSize
         }
 
         $collection = collect([
-            ['Наименование', 'Выпущено']
+            ['Наименование', 'Цена', 'Выпущено']
         ]);
 
         foreach ($productsProductions as $productProduction) 
@@ -60,6 +61,7 @@ class ProductionsExport implements FromCollection, ShouldAutoSize
             {
                 $collection->push([
                     $productProduction['name'],
+                    $productProduction['price'],
                     $productProduction['performed']            
                 ]);
             }
