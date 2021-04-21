@@ -83284,8 +83284,10 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
   $scope.chooseOrder = function (order) {
     if ($scope.currentOrder && $scope.currentOrder.id == order.id) {
       $scope.currentOrder = null;
+      document.querySelector('body').classList.remove('mobile-modal-open');
     } else {
       $scope.currentOrder = order;
+      document.querySelector('body').classList.add('mobile-modal-open');
     }
   };
 

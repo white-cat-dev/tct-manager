@@ -28,8 +28,8 @@
 		<tr>
 			<th><div>№</div></th>
 			<th><div>Название</div></th>
-			<th><div>Единицы измерения</div></th>
-			<th><div>Разновидности</div></th>
+			<th class="d-none d-md-table-cell"><div>Единицы измерения</div></th>
+			<th class="d-none d-md-table-cell"><div>Разновидности</div></th>
 			<th><div>&nbsp;</div></th>
 		</tr>
 
@@ -40,11 +40,11 @@
 			<td>
 				@{{ category.name }}
 			</td>
-			<td>
+			<td class="d-none d-md-table-cell">
 				<span ng-repeat="unit in units" ng-if="unit.key == category.units" ng-bind-html="unit.name"> 
 				</span>
 			</td>
-			<td>
+			<td class="d-none d-md-table-cell">
 				<span ng-switch on="category.variations">
 					<span ng-switch-when="colors">Разновидности по цветам</span>
 					<span ng-switch-when="grades">Разновидности по марке бетона</span>

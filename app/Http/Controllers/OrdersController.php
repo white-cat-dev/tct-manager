@@ -43,10 +43,8 @@ class OrdersController extends Controller
                 switch ($status) 
                 {
                     case 'production':
-                        $query->where('status', Order::STATUS_PRODUCTION);
-                        break;
-
                     case 'ready':
+                    case 'not-ready':
                         $query->where('status', Order::STATUS_PRODUCTION);
                         break;
 
@@ -98,7 +96,33 @@ class OrdersController extends Controller
                             }
                         }
 
-                        if ($isOrderReady && ($order->status != Order::STATUS_FINISHED))
+                        if ($isOrderReady)
+                        {
+                            $orders->push($order);
+                        }
+                    }
+                    break;
+
+                case 'not-ready':
+                    $tempOrders = $query->get();
+                    $orders = collect([]);
+
+                    foreach ($tempOrders as $order) 
+                    {
+                        $isOrderReady = true;
+
+                        $order->progress = $order->getProgress();
+                        foreach ($order->products as $product) 
+                        {
+                            $product->progress = $product->getProgress($order);
+
+                            if ($product->progress['total'] - $product->progress['realization'] > $product->in_stock)
+                            {
+                                $isOrderReady = false;
+                            }
+                        }
+
+                        if (!$isOrderReady)
                         {
                             $orders->push($order);
                         }

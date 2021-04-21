@@ -12161,6 +12161,12 @@ body.modal-open {
   padding-right: 17px;
 }
 
+@media (max-width: 1209.98px) {
+  body.mobile-modal-open {
+    overflow-y: hidden;
+  }
+}
+
 .modal-open .modal {
   overflow-y: scroll;
 }
@@ -12782,26 +12788,35 @@ i.far {
   background: rgba(0, 0, 0, 0.1);
 }
 
-.modal .modal-content {
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+.modal.delete-modal .modal-content,
+.modal.copy-modal .modal-content {
+  margin-top: 15vh;
 }
 
-.modal .modal-header {
+@media (max-width: 575.98px) {
+  .modal-dialog {
+    margin: 15px;
+  }
+}
+
+.modal-content {
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  border: solid 1px rgba(0, 0, 0, 0.3);
+  background-clip: unset;
+}
+
+.modal-header {
   border-bottom: solid 1px #dadada;
   font-weight: 500;
   font-size: 18px;
+  padding: 15px;
 }
 
-.modal .modal-footer {
+.modal-footer {
   background: #f9f9f9;
   justify-content: center;
   border-top: solid 1px #dadada;
   border-radius: 0px 0px 5px 5px;
-}
-
-.modal.delete-modal .modal-content,
-.modal.copy-modal .modal-content {
-  margin-top: 15vh;
 }
 
 .ui-select-container {
@@ -14369,13 +14384,61 @@ i.far {
   max-width: 54%;
 }
 
+@media (min-width: 768px) and (max-width: 1209.98px) {
+  .orders-page .orders-row .col:first-child {
+    flex: 0 0 40%;
+    max-width: 40%;
+    padding-right: 0px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .orders-page .orders-row .col:first-child {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
 .orders-page .orders-row .col:last-child {
   flex: 0 0 46%;
   max-width: 46%;
 }
 
+@media (min-width: 768px) and (max-width: 1209.98px) {
+  .orders-page .orders-row .col:last-child {
+    flex: 0 0 60%;
+    max-width: 60%;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .orders-page .orders-row .col:last-child {
+    flex: 0 0 100%;
+    max-width: 100%;
+    display: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .orders-page .orders-row .col:last-child.mobile-shown-col {
+    display: block;
+    position: fixed;
+    overflow-y: scroll;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 25;
+    background: rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: start;
+  }
+}
+
 .orders-page .statuses-menu-block {
   position: relative;
+  background: #f3f3f3;
 }
 
 @media (max-width: 767.98px) {
@@ -14389,6 +14452,7 @@ i.far {
 .orders-page .statuses-menu-block .btn {
   background: #FFFFFF;
   border: solid 1px #e6e6e6;
+  margin-bottom: 5px;
 }
 
 @media (max-width: 767.98px) {
@@ -14398,6 +14462,7 @@ i.far {
     text-align: left;
     padding: 8px 12px;
     margin-right: 0px;
+    margin-bottom: 0px;
   }
 }
 
@@ -14408,12 +14473,14 @@ i.far {
 }
 
 .orders-page .statuses-menu-block .statuses-menu {
-  padding: 10px;
+  padding: 10px 10px 5px 10px;
+  max-width: calc(100% - 200px);
   background: #f3f3f3;
 }
 
 @media (max-width: 767.98px) {
   .orders-page .statuses-menu-block .statuses-menu {
+    max-width: unset;
     padding-top: 0px;
     padding-bottom: 20px;
     max-height: 40px;
@@ -14424,7 +14491,7 @@ i.far {
   }
 
   .orders-page .statuses-menu-block .statuses-menu.shown {
-    max-height: 300px;
+    max-height: 400px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
   }
 
@@ -14433,13 +14500,17 @@ i.far {
   }
 }
 
+.orders-page .statuses-menu-block .statuses-menu .btn:nth-child(2) {
+  margin-right: 3px;
+}
+
 .orders-page .statuses-menu-block .main-category-block {
   position: absolute;
   top: 16px;
   right: 15px;
 }
 
-@media (max-width: 1209.98px) {
+@media (max-width: 767.98px) {
   .orders-page .statuses-menu-block .main-category-block {
     top: 53px;
     left: 0px;
@@ -14549,6 +14620,12 @@ i.far {
   margin-top: 20px;
 }
 
+@media (max-width: 767.98px) {
+  .orders-page .main-orders-block {
+    margin-top: 10px;
+  }
+}
+
 .orders-page .main-orders-block .table {
   font-size: 14px;
   margin-bottom: 0px;
@@ -14604,14 +14681,33 @@ i.far {
 }
 
 .orders-page .main-products-block {
-  box-shadow: 1px 1px 5px #e6e6e6;
-  border: solid 1px #dadada;
-  padding: 15px 10px;
-  position: relative;
   position: -webkit-sticky;
   position: sticky;
   top: 20px;
   margin-top: 20px;
+  box-shadow: 1px 1px 5px #e6e6e6;
+  border: solid 1px #dadada;
+}
+
+@media (max-width: 767.98px) {
+  .orders-page .main-products-block {
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    border: solid 1px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 430px;
+    background: #FFFFFF;
+  }
+}
+
+.orders-page .main-products-block .main-products {
+  position: relative;
+  padding: 15px 10px;
+}
+
+@media (max-width: 767.98px) {
+  .orders-page .main-products-block .main-products {
+    padding: 15px;
+  }
 }
 
 .orders-page .main-products-block .order-info-block {
@@ -14628,6 +14724,23 @@ i.far {
   margin-bottom: 0px;
 }
 
+@media (max-width: 767.98px) {
+  .orders-page .main-products-block .table {
+    margin-top: 20px;
+  }
+
+  .orders-page .main-products-block .table tr:nth-child(2n+1) td {
+    border-top: none;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    padding-left: 0px;
+  }
+
+  .orders-page .main-products-block .table tr:nth-child(2n) td {
+    padding-top: 10px;
+  }
+}
+
 .orders-page .main-products-block .table tr td:first-child,
 .orders-page .main-products-block .table tr th:first-child {
   padding-left: 0px;
@@ -14639,6 +14752,14 @@ i.far {
   white-space: normal;
 }
 
+@media (max-width: 767.98px) {
+  .orders-page .main-products-block .table tr td:nth-child(2),
+  .orders-page .main-products-block .table tr th:nth-child(2) {
+    padding-left: 0px;
+    text-align: left;
+  }
+}
+
 .orders-page .main-products-block .table .product-color {
   color: #9a9a9a;
 }
@@ -14646,8 +14767,15 @@ i.far {
 .orders-page .main-products-block .table th,
 .orders-page .main-products-block .table td {
   text-align: center;
-  padding: 7px;
+  padding: 7px 3px;
   white-space: nowrap;
+}
+
+@media (max-width: 767.98px) {
+  .orders-page .main-products-block .table th,
+  .orders-page .main-products-block .table td {
+    padding-left: 0px;
+  }
 }
 
 .orders-page .main-products-block .table th {

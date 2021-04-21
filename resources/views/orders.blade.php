@@ -41,11 +41,12 @@
 	<div class="statuses-menu-block" ng-init="isStatusesShown = false">	
 		<div class="statuses-menu" ng-class="{'shown': isStatusesShown}" ng-click="isStatusesShown = !isStatusesShown">
 			<div class="statuses-title btn d-block d-md-none">
-				<span ng-if="isStatusesShown">Выберите категорию...</span>
-				<span ng-if="currentStatus == 0 && !isStatusesShown">Все категории</span>
-				<span ng-switch on="currentStatus" ng-if="!isCategoriesShown">
+				<span ng-if="isStatusesShown">Выберите статус...</span>
+				<span ng-if="currentStatus == 0 && !isStatusesShown">Все заказы</span>
+				<span ng-switch on="currentStatus" ng-if="!isStatusesShown">
 					<span ng-switch-when="production">В работе</span>
 					<span ng-switch-when="ready">Готовые к выдаче</span>
+					<span ng-switch-when="not-ready">Не готовые к выдаче</span>
 					<span ng-switch-when="unpaid">Неоплаченные</span>
 					<span ng-switch-when="finished">Завершенные</span>
 					<span ng-switch-when="new">С сайта</span>
@@ -64,6 +65,9 @@
 			</button>
 			<button type="button" class="btn" ng-class="{'active': currentStatus == 'ready'}" ng-click="chooseStatus('ready')">
 				Готовые к выдаче
+			</button>
+			<button type="button" class="btn" ng-class="{'active': currentStatus == 'not-ready'}" ng-click="chooseStatus('not-ready')">
+				Не готовые к выдаче
 			</button>
 			<button type="button" class="btn" ng-class="{'active': currentStatus == 'unpaid'}" ng-click="chooseStatus('unpaid')">
 				Неоплаченные
@@ -110,9 +114,6 @@
 							<div class="order-name">
 								<span ng-if="order.number">@{{ order.number }}</span>
 								<span ng-if="!order.number">@{{ order.id }}</span>
-								{{-- <div class="order-priority" ng-if="order.priority == {{ App\Order::PRIORITY_HIGH }}">
-									Важно
-								</div> --}}
 							</div>
 						</td>
 						<td>
@@ -132,9 +133,17 @@
 			</div>
 		</div>
 
-		<div class="col">
+		<div class="col" ng-class="{'mobile-shown-col': currentOrder}" ng-cloak>
 			<div class="main-products-block">
-				<div ng-if="currentOrder">
+				<div class="modal-header d-flex d-md-none">
+					<div class="modal-title">
+						Просмотр заказа
+					</div>
+					<button type="button" class="close" ng-click="chooseOrder(currentOrder)">
+						<i class="fas fa-times"></i>
+					</button>
+				</div>
+				<div class="main-products" ng-show="currentOrder">
 					<div class="title-block">
 						Заказ №<span ng-if="currentOrder.number">@{{ currentOrder.number }}</span><span ng-if="!currentOrder.number">@{{ currentOrder.id }}</span>
 						<div class="order-status-block">@{{ currentOrder.status_text }}</div>
@@ -147,7 +156,7 @@
 						<a ng-href="@{{ currentOrder.url + '/edit' }}" class="btn btn-primary btn-sm">
 							<i class="fas fa-edit"></i>
 						</a>
-						<button type="button" class="btn btn-primary btn-sm" ng-click="loadExportFile(currentOrder)">
+						<button type="button" class="btn btn-primary btn-sm d-none d-lg-inline-block" ng-click="loadExportFile(currentOrder)">
 							<i class="fas fa-print"></i>
 						</button>
 					</div>
@@ -177,14 +186,21 @@
 
 					<table class="table table-sm" ng-if="currentOrder.products.length > 0">
 						<tr>
-							<th>Продукт</th>
+							<th class="d-none d-md-table-cell">Продукт</th>
 							<th>Кол-во</th>
 							<th>Отпущено</th>
 							<th>Осталось</th>
 							<th ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }} && currentOrder.status != {{ App\Order::STATUS_UNPAID }}">В наличии</th>
 						</tr>
-						<tr ng-repeat="product in currentOrder.products">
-							<td>
+						<tr ng-repeat-start="product in currentOrder.products" class="d-md-none">
+							<td colspan="7">
+								@{{ product.product_group.name }}
+								@{{ product.product_group.size }}
+								<div class="product-color">@{{ product.variation_noun_text }}</div>
+							</td>
+						</tr>
+						<tr ng-repeat-end>
+							<td class="d-none d-md-table-cell">
 								<div>@{{ product.product_group.name }}</div>
 								<div>@{{ product.product_group.size }}</div>
 								<div class="product-color">@{{ product.variation_noun_text }}</div>
@@ -211,8 +227,13 @@
 								</span>
 							</td>
 						</tr>
+						<tr ng-if="currentOrder.pallets > 0" class="d-md-none">
+							<td colspan="7">
+								Поддоны
+							</td>
+						</tr>
 						<tr ng-if="currentOrder.pallets > 0">
-							<td>
+							<td class="d-none d-md-table-cell">
 								<div>Поддоны</div>
 							</td>
 							<td ng-class="{'text-success': currentOrder.pallets_progress.total == currentOrder.pallets_progress.realization}">
@@ -228,6 +249,7 @@
 								—
 							</td>
 						</tr>
+						<tr></tr>
 					</table>
 
 					<div class="buttons-block">
@@ -248,7 +270,7 @@
 					</div>
 				</div>
 
-				<div ng-if="!currentOrder">
+				<div ng-show="!currentOrder">
 					<div class="no-current-order">
 						<div class="icon">
 							<i class="fas fa-shopping-cart"></i>
