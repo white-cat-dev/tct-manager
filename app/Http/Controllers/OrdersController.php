@@ -264,7 +264,7 @@ class OrdersController extends Controller
                     'order_id' => $order->id,
                     'planned' => 0,
                     'ready' => 0,
-                    'performed' => $order->pallets
+                    'performed' => $request->get('pallets_realization_performed')
                 ]);
             }
 
