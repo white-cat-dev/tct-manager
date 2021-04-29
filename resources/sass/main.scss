@@ -92,6 +92,10 @@ footer {
 .content-block {
 	min-height: calc(100vh - 148px);
     margin: 20px auto;
+
+    @include media-breakpoint-down(sm) {
+    	margin-top: 12px;
+    }
 }
 
 .loading-block {
@@ -311,9 +315,15 @@ small {
 
 h1 {
 	font-size: 32px;
+	line-height: 38px;
 	border-bottom: solid 1px darken($grey, 10%);
     padding-bottom: 15px;
     margin-bottom: 0px;
+
+    @include media-breakpoint-down(sm) {
+    	font-size: 25px;
+    	padding-bottom: 10px;
+    }
 }
 
 i.fas, i.far {
@@ -368,18 +378,16 @@ i.fas, i.far {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // position: sticky;
-    // top: 0;
-    // z-index: 10;
     background: #FFF;
     margin: 0px -10px;
 
     @include media-breakpoint-down(sm) {
-		display: block;
-	}
+    	padding: 15px 10px;
+    }
 
 	.left-buttons {
 		display: flex;
+		flex: 1;
 		align-items: center;
 
 		& > .btn, 
@@ -405,17 +413,12 @@ i.fas, i.far {
 			&:first-child {
 				margin-left: 0px;
 			}
-
-			@include media-breakpoint-down(sm) {
-				margin-left: 0px;
-				margin-right: 10px;
-				margin-top: 20px;
-			}
 		}
 	}
 
 	.btn {
 		white-space: nowrap;
+		min-width: 50px;
 	}
 
 	&.section-buttons-block {
@@ -514,8 +517,8 @@ i.fas, i.far {
     	font-weight: 500;
     }
 
-    .params-section {
-		padding-top: 20px;
+    .params-col {
+		padding-bottom: 20px;
 	}
 }
 
@@ -689,6 +692,10 @@ i.fas, i.far {
 
 	.ui-select-match {
 		overflow: hidden;
+
+		.ui-select-match-text {
+			white-space: nowrap;
+		}
 	}
 
 	.ui-select-choices {

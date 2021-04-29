@@ -156,7 +156,7 @@
 						<a ng-href="@{{ currentOrder.url + '/edit' }}" class="btn btn-primary btn-sm">
 							<i class="fas fa-edit"></i>
 						</a>
-						<button type="button" class="btn btn-primary btn-sm d-none d-lg-inline-block" ng-click="loadExportFile(currentOrder)">
+						<button type="button" class="btn btn-primary btn-sm" ng-click="loadExportFile(currentOrder)">
 							<i class="fas fa-print"></i>
 						</button>
 					</div>
@@ -186,13 +186,13 @@
 
 					<table class="table table-sm" ng-if="currentOrder.products.length > 0">
 						<tr>
-							<th class="d-none d-md-table-cell">Продукт</th>
+							<th class="d-none d-lg-table-cell">Продукт</th>
 							<th>Кол-во</th>
 							<th>Отпущено</th>
 							<th>Осталось</th>
 							<th ng-if="currentOrder.status != {{ App\Order::STATUS_FINISHED }} && currentOrder.status != {{ App\Order::STATUS_UNPAID }}">В наличии</th>
 						</tr>
-						<tr ng-repeat-start="product in currentOrder.products" class="d-md-none">
+						<tr ng-repeat-start="product in currentOrder.products" class="d-lg-none">
 							<td colspan="7">
 								@{{ product.product_group.name }}
 								@{{ product.product_group.size }}
@@ -200,7 +200,7 @@
 							</td>
 						</tr>
 						<tr ng-repeat-end>
-							<td class="d-none d-md-table-cell">
+							<td class="d-none d-lg-table-cell">
 								<div>@{{ product.product_group.name }}</div>
 								<div>@{{ product.product_group.size }}</div>
 								<div class="product-color">@{{ product.variation_noun_text }}</div>
@@ -227,13 +227,13 @@
 								</span>
 							</td>
 						</tr>
-						<tr ng-if="currentOrder.pallets > 0" class="d-md-none">
+						<tr ng-if="currentOrder.pallets > 0" class="d-lg-none">
 							<td colspan="7">
 								Поддоны
 							</td>
 						</tr>
 						<tr ng-if="currentOrder.pallets > 0">
-							<td class="d-none d-md-table-cell">
+							<td class="d-none d-lg-table-cell">
 								<div>Поддоны</div>
 							</td>
 							<td ng-class="{'text-success': currentOrder.pallets_progress.total == currentOrder.pallets_progress.realization}">
@@ -294,6 +294,7 @@
 		<span ng-switch on="currentStatus">
 			<span ng-switch-when="production">заказа в работе</span>
 			<span ng-switch-when="ready">готового к выдаче заказа</span>
+			<span ng-switch-when="not-ready">не готового к выдаче заказа</span>
 			<span ng-switch-when="unpaid">неоплаченного заказа</span>
 			<span ng-switch-when="finished">завершенного заказа</span>
 			<span ng-switch-when="new">заказа с сайта</span>
