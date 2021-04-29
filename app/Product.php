@@ -275,21 +275,25 @@ class Product extends Model
         {
             return 'под заказ';
         }
-        else if ($this->free_in_stock < 5)
-        {
-            return 'меньше 5 ' . $units;
-        }
-        else if ($this->free_in_stock < 10)
-        {
-            return 'меньше 10 ' . $units;
-        }
-        else if ($this->free_in_stock < 50)
-        {
-            return 'меньше 50 ' . $units;
-        }
+        // else if ($this->free_in_stock < 5)
+        // {
+        //     return 'меньше 5 ' . $units;
+        // }
+        // else if ($this->free_in_stock < 10)
+        // {
+        //     return 'меньше 10 ' . $units;
+        // }
+        // else if ($this->free_in_stock < 50)
+        // {
+        //     return 'меньше 50 ' . $units;
+        // }
+        // else
+        // {
+        //     return 'больше 50 ' . $units;
+        // }
         else
         {
-            return 'больше 50 ' . $units;
+            return floor($this->free_in_stock) . ' ' . $units;
         }
     }
 
