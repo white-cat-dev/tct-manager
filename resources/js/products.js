@@ -79,6 +79,21 @@ angular.module('tctApp').controller('ProductsController', [
 			'key': 'black',
 			'main_key': 'color',
 			'name': 'черный'
+		},
+		{
+			'key': 'light-brown',
+			'main_key': 'color',
+			'name': 'светло-коричневый'
+		},
+		{
+			'key': 'orange',
+			'main_key': 'color',
+			'name': 'оранжевый'
+		},
+		{
+			'key': 'white',
+			'main_key': 'color',
+			'name': 'белый'
 		}
 	];
 

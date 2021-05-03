@@ -53,6 +53,7 @@ class Order extends Model
         'formatted_date',
         'formatted_date_to',
         'payments_paid',
+        'realizations_cost',
         'pallets_progress'
     ];
 

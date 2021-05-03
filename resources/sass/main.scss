@@ -418,7 +418,10 @@ i.fas, i.far {
 
 	.btn {
 		white-space: nowrap;
-		min-width: 50px;
+
+		@include media-breakpoint-down(sm) {
+			min-width: 50px;
+		}
 	}
 
 	&.section-buttons-block {
@@ -797,15 +800,15 @@ i.fas, i.far {
 	}
 }
 
-.btn-group {
-	.btn {
-		border-color: #FFFFFF;
-		min-width: 50px;
-	}
-	.btn-sm {
-		min-width: 40px;
-	}
-}
+// .btn-group {
+// 	.btn {
+// 		border-color: #FFFFFF;
+// 		min-width: 50px;
+// 	}
+// 	.btn-sm {
+// 		min-width: 40px;
+// 	}
+// }
 
 .auth-content-block {
 	.form-check {

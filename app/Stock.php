@@ -12,6 +12,7 @@ class Stock extends Model
     	'date',
     	'model_id',
     	'model_type',
+        'process_date',
         'process_id',
         'process_type',
     	'in_stock',
@@ -31,6 +32,7 @@ class Stock extends Model
 
     protected $appends = [
         'formatted_date',
+        'formatted_process_date',
         'reason_text',
         'change'
     ];
@@ -50,6 +52,18 @@ class Stock extends Model
     public function getFormattedDateAttribute()
     {
         return Carbon::createFromDate($this->date)->format('d.m.Y');
+    }
+
+    public function getFormattedProcessDateAttribute()
+    {
+        if ($this->process_date)
+        {
+            return Carbon::createFromDate($this->process_date)->format('d.m.Y');
+        }
+        else
+        {
+            return $this->formatted_date;
+        }
     }
 
     public function getChangeAttribute()

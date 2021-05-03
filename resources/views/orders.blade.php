@@ -45,8 +45,8 @@
 				<span ng-if="currentStatus == 0 && !isStatusesShown">Все заказы</span>
 				<span ng-switch on="currentStatus" ng-if="!isStatusesShown">
 					<span ng-switch-when="production">В работе</span>
-					<span ng-switch-when="ready">Готовые к выдаче</span>
-					<span ng-switch-when="not-ready">Не готовые к выдаче</span>
+					<span ng-switch-when="ready">Готовые</span>
+					<span ng-switch-when="not-ready">Не готовые</span>
 					<span ng-switch-when="unpaid">Неоплаченные</span>
 					<span ng-switch-when="finished">Завершенные</span>
 					<span ng-switch-when="new">С сайта</span>
@@ -64,10 +64,10 @@
 				В работе
 			</button>
 			<button type="button" class="btn" ng-class="{'active': currentStatus == 'ready'}" ng-click="chooseStatus('ready')">
-				Готовые к выдаче
+				Готовые
 			</button>
 			<button type="button" class="btn" ng-class="{'active': currentStatus == 'not-ready'}" ng-click="chooseStatus('not-ready')">
-				Не готовые к выдаче
+				Не готовые
 			</button>
 			<button type="button" class="btn" ng-class="{'active': currentStatus == 'unpaid'}" ng-click="chooseStatus('unpaid')">
 				Неоплаченные
@@ -75,9 +75,9 @@
 			<button type="button" class="btn" ng-class="{'active': currentStatus == 'finished'}" ng-click="chooseStatus('finished')">
 				Завершенные
 			</button>
-			<button type="button" class="btn" ng-class="{'active': currentStatus == 'new'}" ng-click="chooseStatus('new')">
+			{{-- <button type="button" class="btn" ng-class="{'active': currentStatus == 'new'}" ng-click="chooseStatus('new')">
 				С сайта
-			</button>
+			</button> --}}
 		</div>
 
 		<div class="main-category-block">
@@ -105,9 +105,10 @@
 					<tr>
 						<th>Номер</th>
 						<th>Дата принятия</th>
-						<th class="d-none d-lg-table-cell">Дата готовности</th>
+						{{-- <th class="d-none d-lg-table-cell">Дата готовности</th> --}}
 						<th>Стоимость</th>
 						<th class="d-none d-lg-table-cell">Оплачено</th>
+						<th class="d-none d-lg-table-cell">Отпущено</th>
 					</tr>
 					<tr ng-repeat="order in orders | filter: {'number': searchQuery}" ng-click="chooseOrder(order)" ng-class="{'active': currentOrder.id == order.id}">
 						<td ng-class="{'text-success': order.priority == {{ App\Order::PRIORITY_HIGH }} }">
@@ -119,14 +120,17 @@
 						<td>
 							@{{ order.formatted_date }}
 						</td>
-						<td class="d-none d-lg-table-cell">
+					{{-- 	<td class="d-none d-lg-table-cell">
 							@{{ order.formatted_date_to }}
-						</td>
+						</td> --}}
 						<td ng-class="{'text-success': order.pay_type != 'cash'}">
 							@{{ order.cost | number }} руб
 						</td>
 						<td ng-class="{'text-success': order.pay_type != 'cash'}" class="d-none d-lg-table-cell">
 							@{{ order.payments_paid | number }} руб
+						</td>
+						<td ng-class="{'text-success': order.pay_type != 'cash'}" class="d-none d-lg-table-cell">
+							@{{ order.realizations_cost | number }} руб
 						</td>
 					</tr>
 				</table>
@@ -293,8 +297,8 @@
 		Не найдено ни одного
 		<span ng-switch on="currentStatus">
 			<span ng-switch-when="production">заказа в работе</span>
-			<span ng-switch-when="ready">готового к выдаче заказа</span>
-			<span ng-switch-when="not-ready">не готового к выдаче заказа</span>
+			<span ng-switch-when="ready">готового заказа</span>
+			<span ng-switch-when="not-ready">не готового заказа</span>
 			<span ng-switch-when="unpaid">неоплаченного заказа</span>
 			<span ng-switch-when="finished">завершенного заказа</span>
 			<span ng-switch-when="new">заказа с сайта</span>

@@ -220,6 +220,7 @@ class Product extends Model
 
         $productStock = $this->stocks()->create([
             'date' => date('Y-m-d'),
+            'process_date' => !empty($process) ? $process->date : date('Y-m-d'),
             'process_id' => !empty($process) ? $process->id : 0,
             'process_type' => !empty($processTypes[$reason]) ? $processTypes[$reason] : '',
             'in_stock' => $this->in_stock,
@@ -374,7 +375,10 @@ class Product extends Model
                 'color' => 'цветная',
                 'yellow' => 'желтая',
                 'brown' => 'коричневая',
-                'black' => 'черная'
+                'black' => 'черная',
+                'white' => 'белая',
+                'orange' => 'оранжевая',
+                'light-brown' => 'светло-коричневая'
             ],
             'masculine' => [
                 'grey' => 'серый',
@@ -382,7 +386,10 @@ class Product extends Model
                 'color' => 'цветной',
                 'yellow' => 'желтый',
                 'brown' => 'коричневый',
-                'black' => 'черный'
+                'black' => 'черный',
+                'white' => 'белый',
+                'orange' => 'оранжевый',
+                'light-brown' => 'светло-коричневый'
             ],
             'neuter' => [
                 'grey' => 'серое',
@@ -390,7 +397,10 @@ class Product extends Model
                 'color' => 'цветное',
                 'yellow' => 'желтое',
                 'brown' => 'коричневое',
-                'black' => 'черное'
+                'black' => 'черное',
+                'white' => 'белый',
+                'orange' => 'оранжевый',
+                'light-brown' => 'светло-коричневый'
             ]
         ],
         'grades' => [

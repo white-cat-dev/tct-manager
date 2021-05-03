@@ -110,6 +110,7 @@ class Material extends Model
 
         $materialStock = $this->stocks()->create([
             'date' => date('Y-m-d'),
+            'process_date' => !empty($process) ? $process->date : date('Y-m-d'),
             'process_id' => !empty($process) ? $process->id : 0,
             'process_type' => !empty($processTypes[$reason]) ? $processTypes[$reason] : '',
             'in_stock' => $this->in_stock,
@@ -129,7 +130,10 @@ class Material extends Model
             'red' => 'красный',
             'yellow' => 'желтый',
             'brown' => 'коричневый',
-            'black' => 'черный'
+            'black' => 'черный',
+            'white' => 'белый',
+            'orange' => 'оранжевый',
+            'light-brown' => 'светло-коричневый'
         ]
     ];
 }

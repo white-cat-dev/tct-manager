@@ -253,9 +253,10 @@
 				<tr>
 					<th>Работник</th>
 					<th>График</th>
+					<th>Дни</th>
 					<th>Аванс</th>
 					<th>Налоги</th>
-					<th>Обед</th>
+					{{-- <th>Обед</th> --}}
 					<th>Премия</th>
 					<th>Доплата</th>
 					<th>Итого</th>
@@ -270,14 +271,17 @@
 						@{{ worker.salary.employments | number }} руб
 					</td>
 					<td>
+						@{{ worker.totalEmployment | number }}
+					</td>
+					<td>
 						@{{ worker.salary.advance | number }} руб
 					</td>
 					<td>
 						@{{ worker.salary.tax | number }} руб
 					</td>
-					<td>
+					{{-- <td>
 						@{{ worker.salary.lunch | number }} руб
-					</td>
+					</td> --}}
 					<td>
 						@{{ worker.salary.bonus | number }} руб
 					</td>
@@ -303,14 +307,17 @@
 						@{{ manager.salary.employments | number }} руб
 					</td>
 					<td>
+						@{{ manager.totalEmployment | number }}
+					</td>
+					<td>
 						@{{ manager.salary.advance | number }} руб
 					</td>
 					<td>
 						@{{ manager.salary.tax | number }} руб
 					</td>
-					<td>
+					{{-- <td>
 						@{{ manager.salary.lunch | number }} руб
-					</td>
+					</td> --}}
 					<td>
 						@{{ manager.salary.bonus | number }} руб
 					</td>
@@ -336,14 +343,17 @@
 						@{{ totalSalary.employments | number }} руб
 					</td>
 					<td>
+						@{{ totalSalary.totalEmployment | number }}
+					</td>
+					<td>
 						@{{ totalSalary.advance | number }} руб
 					</td>
 					<td>
 						@{{ totalSalary.tax | number }} руб
 					</td>
-					<td>
+					{{-- <td>
 						@{{ totalSalary.lunch | number }} руб
-					</td>
+					</td> --}}
 					<td>
 						@{{ totalSalary.bonus | number }} руб
 					</td>
@@ -407,7 +417,7 @@
 								</div>
 							</td>
 						</tr>
-						<tr>
+						{{-- <tr>
 							<td>Обед</td>
 							<td>
 								<div class="form-group-units">
@@ -417,7 +427,7 @@
 									</div>
 								</div>
 							</td>
-						</tr>
+						</tr> --}}
 						<tr>
 							<td>Премия</td>
 							<td>

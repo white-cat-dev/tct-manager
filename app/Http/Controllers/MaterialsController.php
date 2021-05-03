@@ -212,8 +212,9 @@ class MaterialsController extends Controller
             $years = DateService::getYears(Stock::select('date'));
 
             $stocks = $material->stocks()
-                ->whereYear('date', $year)
-                ->whereMonth('date', $month)
+                ->whereYear('process_date', $year)
+                ->whereMonth('process_date', $month)
+                ->orderBy('process_date')
                 ->get();
 
             return ['monthes' => $monthes,

@@ -90,11 +90,12 @@
 								<th>До</th>
 								<th>Изменение</th>
 								<th>После</th>
+								<th>Дата изменения</th>
 								<th>Основание</th>
 							</tr>
 							<tr ng-repeat="stock in stocks">
 								<td>
-									@{{ stock.formatted_date }}
+									@{{ stock.formatted_process_date }}
 								</td>
 								<td>
 									<span ng-if="stock.reason != 'create' && stock.reason != 'month_start'">
@@ -121,6 +122,9 @@
 									@{{ stock.new_in_stock | number }} <span ng-bind-html="stock.model.units_text"></span>
 								</td>
 								<td>
+									@{{ stock.formatted_date }}
+								</td>
+								<td>
 									@{{ stock.reason_text }}
 								</td>
 							</tr>
@@ -134,7 +138,7 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row justify-content-center">
 			<div class="col-12 col-lg-8 col-xl-6">
 				<div class="material-supplies-block mb-5" ng-init="initSupplies()">
 					<div class="params-title mt-0">История поступлений</div>	

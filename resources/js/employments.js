@@ -68,7 +68,6 @@ angular.module('tctApp').controller('EmploymentsController', [
 				$scope.chooseCurrentEmploymentStatus(Object.keys($scope.statuses)[0]);
 			}
 
-			$scope.updateTotalSalary();
 			$scope.updateTotalEmployment();
 
 			$scope.initScroll();
@@ -336,7 +335,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 			'tax': 0, 
 			'lunch': 0, 
 			'bonus': 0, 
-			'surcharge': 0
+			'surcharge': 0,
+			'totalEmployment': 0
 		};
 
 		var workers = angular.copy($scope.workers);
@@ -346,7 +346,14 @@ angular.module('tctApp').controller('EmploymentsController', [
 		{
 			for (key in $scope.totalSalary)
 			{
-				$scope.totalSalary[key] += workers[i].salary[key];
+				if (key == 'totalEmployment')
+				{
+					$scope.totalSalary[key] += workers[i][key];
+				}
+				else
+				{
+					$scope.totalSalary[key] += workers[i].salary[key];
+				}
 			}
 		}
 	}
@@ -403,6 +410,8 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 			$scope.manager.totalEmployment = Math.round($scope.manager.totalEmployment * 100) / 100;
 		}
+
+		$scope.updateTotalSalary();
 	}
 
 
