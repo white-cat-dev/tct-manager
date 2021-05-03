@@ -51,6 +51,7 @@ class ProductsStocks extends Command
                     'date' => date('Y-m-d'),
                     'in_stock' => $product->in_stock,
                     'new_in_stock' => $product->in_stock,
+                    'process_date' => date('Y-m-d'),
                     'process_id' => 0,
                     'process_type' => '',
                     'reason' => 'create'
