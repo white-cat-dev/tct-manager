@@ -42220,19 +42220,21 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
     if ($scope.cleanCurrent) {
       worker.employments[day].status_id = 0;
       worker.employments[day].main_category = '';
-      worker.employments[day].status_custom = 1; // delete worker.employments[day]; 
-
+      worker.employments[day].status_custom = 0;
       return;
     }
 
     if (!worker.employments[day]) {
       var statusId = $scope.currentEmploymentStatus !== null ? $scope.currentEmploymentStatus : -1;
-      var mainCategory = $scope.currentMainCategory !== null ? $scope.currentMainCategory : 0;
+      var mainCategory = $scope.currentMainCategory !== null ? $scope.currentMainCategory : '';
       var statusCustom = 0;
 
       if (statusId) {
-        if ($scope.statuses[statusId].customable > 0) {
-          statusCustom = worker.id > 0 ? 1 : 9;
+        if ($scope.statuses[statusId].customable) {
+          statusCustom = $scope.statuses[statusId].default_salary;
+        }
+
+        if ($scope.statuses[statusId].type == 'production') {
           mainCategory = 'tiles';
         }
       }
@@ -42251,20 +42253,27 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
       var statusCustom = worker.employments[day].status_custom;
 
       if ($scope.currentEmploymentStatus !== null) {
-        statusId = $scope.currentEmploymentStatus;
+        if (statusId != $scope.currentEmploymentStatus) {
+          statusId = $scope.currentEmploymentStatus;
 
-        if ($scope.statuses[$scope.currentEmploymentStatus].customable > 0 && statusCustom <= 0) {
-          statusCustom = worker.id > 0 ? 1 : 9; // mainCategory = 'tiles';
+          if ($scope.statuses[statusId].customable) {
+            statusCustom = $scope.statuses[statusId].default_salary;
+          }
         }
       }
 
       if ($scope.currentMainCategory !== null) {
         mainCategory = $scope.currentMainCategory;
+      } else if (worker.employments[day].main_category == '' && $scope.statuses[statusId].type == 'production') {
+        mainCategory = 'tiles';
+      } else if ($scope.statuses[statusId].type != 'production') {
+        mainCategory = '';
       }
 
       worker.employments[day].status_id = statusId;
       worker.employments[day].main_category = mainCategory;
       worker.employments[day].status_custom = statusCustom;
+      worker.employments[day].updated = true;
     }
 
     $scope.updateTotalEmployment(worker);
@@ -42350,10 +42359,8 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
           continue;
         }
 
-        if (status.customable) {
-          workers[i].totalEmployment += +workers[i].employments[key].status_custom;
-        } else {
-          workers[i].totalEmployment += status.salary_production;
+        if (status.type == 'production') {
+          workers[i].totalEmployment += status.customable ? +workers[i].employments[key].status_custom : status.salary;
         }
       }
 
@@ -42370,10 +42377,8 @@ angular.module('tctApp').controller('EmploymentsController', ['$scope', '$routeP
           continue;
         }
 
-        if (status.customable) {
-          $scope.manager.totalEmployment += +$scope.manager.employments[key].status_custom;
-        } else {
-          $scope.manager.totalEmployment += status.salary_production;
+        if (status.type == 'hours') {
+          $scope.manager.totalEmployment += status.customable ? +$scope.manager.employments[key].status_custom : status.salary;
         }
       }
 
@@ -45333,7 +45338,7 @@ angular.module('tctApp').controller('RecipesController', ['$scope', '$routeParam
 /***/ (() => {
 
 angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '$routeParams', '$location', 'EmploymentStatusesRepository', function ($scope, $routeParams, $location, EmploymentStatusesRepository) {
-  $scope.statusTemplates = ['name', '<i class="fas fa-check"></i>', '<i class="fas fa-times"></i>', '<i class="fas fa-question"></i>'];
+  $scope.statusTemplates = ['<i class="fas fa-check"></i>', '<i class="fas fa-times"></i>', '<i class="fas fa-question"></i>', '<i class="fas fa-user"></i>', '<i class="fas fa-user-tie"></i>', '<i class="fas fa-coffee"></i>'];
 
   $scope.init = function () {
     EmploymentStatusesRepository.query(function (response) {
@@ -45350,9 +45355,11 @@ angular.module('tctApp').controller('EmploymentStatusesController', ['$scope', '
       'icon': '',
       'icon_color': '#888888',
       'name': '',
-      'salary_production': 0,
-      'salary_fixed': 0,
-      'salary_team': 0
+      'type': 'fixed',
+      'base_salary': 0,
+      'salary': 0,
+      'customable': false,
+      'salary_default': 0
     });
   };
 

@@ -147,7 +147,7 @@
 						    width: 30px;
 						    text-align: center;
 						    border: none;
-						    color: $primary;
+						    color: inherit;
 						    font-size: 14px;
 						    font-weight: 500;
 						    background: none;
@@ -444,12 +444,15 @@
 
 .statuses-page {
 	.table {
+		table-layout: fixed;
+
 		td {
 			vertical-align: top;
 		}
 	}
 	.custom-checkbox {
 		font-size: 14px;
+		line-height: 18px;
 		color: darken($grey, 50%);
 		margin-top: 5px;
 
@@ -464,5 +467,20 @@
 		.ui-select-match-text {
 			color: inherit;
 		}
+
+		& > .ui-select-match > .btn {
+			text-align: center !important;
+		}
+
+		.ui-select-choices-row {
+			text-align: center;
+		}
+	}
+
+	.help {
+		font-size: 14px;
+		line-height: 18px;
+		color: darken($grey, 50%);
+		display: inline-block;
 	}
 }

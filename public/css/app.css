@@ -15594,7 +15594,7 @@ i.far {
   width: 30px;
   text-align: center;
   border: none;
-  color: #276090;
+  color: inherit;
   font-size: 14px;
   font-weight: 500;
   background: none;
@@ -15882,12 +15882,17 @@ i.far {
   text-align: center;
 }
 
+.statuses-page .table {
+  table-layout: fixed;
+}
+
 .statuses-page .table td {
   vertical-align: top;
 }
 
 .statuses-page .custom-checkbox {
   font-size: 14px;
+  line-height: 18px;
   color: #747474;
   margin-top: 5px;
 }
@@ -15900,6 +15905,21 @@ i.far {
 .statuses-page .ui-select-container .btn,
 .statuses-page .ui-select-container .ui-select-match-text {
   color: inherit;
+}
+
+.statuses-page .ui-select-container > .ui-select-match > .btn {
+  text-align: center !important;
+}
+
+.statuses-page .ui-select-container .ui-select-choices-row {
+  text-align: center;
+}
+
+.statuses-page .help {
+  font-size: 14px;
+  line-height: 18px;
+  color: #747474;
+  display: inline-block;
 }
 
 .facilities-page {

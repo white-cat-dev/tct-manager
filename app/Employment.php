@@ -34,7 +34,7 @@ class Employment extends Model
 
     public function status()
     {
-        return $this->belongsTo(EmploymentStatus::class);
+        return $this->belongsTo(EmploymentStatus::class)->withTrashed();
     }
 
 

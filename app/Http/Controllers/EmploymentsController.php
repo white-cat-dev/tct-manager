@@ -179,25 +179,71 @@ class EmploymentsController extends Controller
                         $employment->delete();
                         continue;
                     }
+                    if ($employmentData['status_id'] > 0)
+                    {
+                        if (!$employmentData['updated'])
+                        {
+                            continue;
+                        }
 
-                    $employment->update([
-                        'status_id' => $employmentData['status_id'],
-                        'status_custom' => $employmentData['status_custom'],
-                        'main_category' => $employmentData['main_category']
-                    ]); 
+                        $status = $statuses->where('id', $employmentData['status_id'])->first();
+                        if ($status)
+                        {
+                            switch ($status->type) 
+                            {                              
+                                case 'hours':
+                                    $salary = $status->base_salary * (($status->customable) ? $employmentData['status_custom'] : $status->salary); 
+                                    break;
+
+                                case 'fixed':
+                                    $salary = ($status->customable) ? $employmentData['status_custom'] : $status->salary; 
+                                    break;
+
+                                default:
+                                    $salary = 0;
+                                    break;
+                            }
+
+                            $employment->update([
+                                'status_id' => $employmentData['status_id'],
+                                'status_custom' => $employmentData['status_custom'],
+                                'main_category' => $employmentData['main_category'],
+                                'salary' => $salary
+                            ]); 
+                        }
+                    }
                 }
                 else
                 {
                     if ($employmentData['status_id'] > 0)
                     {
-                        $employment = Employment::create([
-                            'date' => $date,
-                            'worker_id' => $employmentData['worker_id'],
-                            'status_id' => $employmentData['status_id'],
-                            'status_custom' => $employmentData['status_custom'],
-                            'main_category' => $employmentData['main_category'] ? $employmentData['main_category'] : 'tiles',
-                            'salary' => 0
-                        ]);
+                        $status = $statuses->where('id', $employmentData['status_id'])->first();
+                        if ($status)
+                        {
+                            switch ($status->type) 
+                            {                              
+                                case 'hours':
+                                    $salary = $status->base_salary * (($status->customable) ? $employmentData['status_custom'] : $status->salary); 
+                                    break;
+
+                                case 'fixed':
+                                    $salary = ($status->customable) ? $employmentData['status_custom'] : $status->salary; 
+                                    break;
+
+                                default:
+                                    $salary = 0;
+                                    break;
+                            }
+
+                            $employment = Employment::create([
+                                'date' => $date,
+                                'worker_id' => $employmentData['worker_id'],
+                                'status_id' => $employmentData['status_id'],
+                                'status_custom' => $employmentData['status_custom'],
+                                'main_category' => $employmentData['main_category'],
+                                'salary' => $salary
+                            ]);
+                        }
                     }
                 }
             }
@@ -222,7 +268,8 @@ class EmploymentsController extends Controller
             'status_id' => !empty($data['status_id']) ? $data['status_id'] : 0,
             'status_custom' => !empty($data['status_custom']) ? $data['status_custom'] : 0,
             'main_category' => !empty($data['main_category']) ? $data['main_category'] : '',
-            'salary' => !empty($data['salary']) ? $data['salary'] : 0
+            'salary' => !empty($data['salary']) ? $data['salary'] : 0,
+            'updated' => !empty($data['updated']) ? $data['updated'] : false
         ];
     }
 }

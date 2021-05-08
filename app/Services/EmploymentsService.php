@@ -43,34 +43,21 @@ class EmploymentsService
         {
             $day = Carbon::createFromDate($date)->day;
 
-            if (!empty($managerEmployment))
-            {
-                $statusProduction = $managerEmployment->status->customable ? $managerEmployment->status_custom : $managerEmployment->status->salary_production;
-
-                $managerEmployment->update([
-                    'salary' => ceil(200 * $statusProduction)
-                ]);
-            }
-
             foreach ($employments as $employment) 
             {
-                $mainCategory = $employment->main_category;
-                $statusProduction = $employment->status->customable ? $employment->status_custom : $employment->status->salary_production;
-
-                if ($employment->worker_id == 0)
+                if ($employment->status->type != 'production')
                 {
-                    $employment->update([
-                        'salary' => ceil(200 * $statusProduction)
-                    ]);
                     continue;
                 }
+
+                $productionSalary = $employment->status->customable ? $employment->status_custom : $employment->status->salary;
+                $mainCategory = $employment->main_category;
                 
                 $salary = 0;
                 if (!empty($employmentsTotal[$day][$mainCategory]))
                 {
-                    $salary = $employmentsTotal[$day][$mainCategory]['person_salary'] * $statusProduction;
+                    $salary = $employmentsTotal[$day][$mainCategory]['person_salary'] * $productionSalary;
                 }
-                $salary += $employment->status->salary_fixed;
 
                 $employment->update([
                     'salary' => ceil($salary)
@@ -79,6 +66,10 @@ class EmploymentsService
         }
 
         $workers = Worker::whereHas('employments', function($query) use ($year, $month) {
+                $query->whereYear('date', $year)
+                    ->whereMonth('date', $month);
+            })
+            ->orWhereHas('salaries', function($query) use ($year, $month) {
                 $query->whereYear('date', $year)
                     ->whereMonth('date', $month);
             })
@@ -189,8 +180,6 @@ class EmploymentsService
 
         $newEmploymentTotal = [
             'salary' => 0,
-            'manager' => 0,
-            'final_salary' => 0,
             'team' => 0,
             'person_salary' => 0
         ];
@@ -217,19 +206,15 @@ class EmploymentsService
 
         foreach ($employmentsDays as $date => $employments) 
         {
-            $managerEmployment = null;
-
             $day = Carbon::createFromDate($date)->day;
 
             foreach ($employments as $employment) 
             {
-                if ($employment->worker_id == 0)
+                if ($employment->status->type != 'production')
                 {
-                    $managerEmployment = $employment;
                     continue;
                 }
-
-                $statusProduction = $employment->status->customable ? $employment->status_custom : $employment->status->salary_production;
+                $productionSalary = $employment->status->customable ? $employment->status_custom : $employment->status->salary;
                 $mainCategory = $employment->main_category;
 
                 if (!$mainCategory)
@@ -248,16 +233,7 @@ class EmploymentsService
                     $employmentsTotal[$day][$mainCategory] = $newEmploymentTotal;
                 }
 
-                $employmentsTotal[$day][$mainCategory]['team'] += $statusProduction;
-            }
-
-            if (!empty($managerEmployment))
-            {
-                $statusProduction = $managerEmployment->status->customable ? $managerEmployment->status_custom : $managerEmployment->status->salary_production;
-                if ($employmentsTotal[$day]['tiles']) 
-                {
-                    $employmentsTotal[$day]['tiles']['manager'] = 50 * $statusProduction;
-                }
+                $employmentsTotal[$day][$mainCategory]['team'] += $productionSalary;
             }
 
             if (!empty($employmentsTotal[$day]))
@@ -266,10 +242,9 @@ class EmploymentsService
                 {
                     $employmentsTotal[$day][$category]['salary'] = ceil($employmentsTotal[$day][$category]['salary']);
 
-                    $employmentsTotal[$day][$category]['final_salary'] = $employmentsTotal[$day][$category]['salary'] - $employmentsTotal[$day][$category]['manager'];
                     if ($employmentsTotal[$day][$category]['team'] > 0)
                     {
-                        $employmentsTotal[$day][$category]['person_salary'] = ceil($employmentsTotal[$day][$category]['final_salary'] / $employmentsTotal[$day][$category]['team']);
+                        $employmentsTotal[$day][$category]['person_salary'] = ceil($employmentsTotal[$day][$category]['salary'] / $employmentsTotal[$day][$category]['team']);
                     }
                 }
             }

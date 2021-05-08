@@ -119,10 +119,10 @@
 											<div ng-bind-html="statuses[worker.employments[$index+1].status_id].icon" ng-if="!statuses[worker.employments[$index+1].status_id].customable"></div>
 
 											<div ng-if="statuses[worker.employments[$index+1].status_id].customable">
-												<div ng-if="!statuses[currentEmploymentStatus].customable">
+												<div ng-if="(currentEmploymentStatus != worker.employments[$index+1].status_id) || (!statuses[currentEmploymentStatus].customable)">
 													@{{ worker.employments[$index+1].status_custom }} 
 												</div>
-												<div ng-if="statuses[currentEmploymentStatus].customable">
+												<div ng-if="(currentEmploymentStatus == worker.employments[$index+1].status_id) && (statuses[currentEmploymentStatus].customable)">
 													<input type="text" class="form-control" ng-model="worker.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)" ng-change="inputFloat(worker.employments[$index+1], 'status_custom')" ng-blur="updateTotalEmployment(worker)">
 												</div>
 											</div>
@@ -150,10 +150,10 @@
 											<div ng-bind-html="statuses[manager.employments[$index+1].status_id].icon" ng-if="!statuses[manager.employments[$index+1].status_id].customable"></div>
 
 											<div ng-if="statuses[manager.employments[$index+1].status_id].customable">
-												<div ng-if="!statuses[currentEmploymentStatus].customable">
+												<div ng-if="(currentEmploymentStatus != manager.employments[$index+1].status_id) || (!statuses[currentEmploymentStatus].customable)">
 													@{{ manager.employments[$index+1].status_custom }} 
 												</div>
-												<div ng-if="statuses[currentEmploymentStatus].customable">
+												<div ng-if="(currentEmploymentStatus == manager.employments[$index+1].status_id) && (statuses[currentEmploymentStatus].customable)">
 													<input type="text" class="form-control" ng-model="manager.employments[$index+1].status_custom" ng-keypress="inputKeyPressed($event)" ng-change="inputFloat(manager.employments[$index+1], 'status_custom')" ng-blur="updateTotalEmployment(worker)">
 												</div>
 											</div>
@@ -504,7 +504,7 @@
 						        </td>
 
 						        <td class="text-center">
-						        	@{{ employment.salary | number }} - @{{ employment.manager | number }} = @{{ employment.final_salary | number }}
+						        	@{{ employment.salary | number }} руб
 						        </td>
 
 						        <td class="text-center">
@@ -512,7 +512,7 @@
 						        </td>
 
 						        <td class="text-center">
-									@{{ employment.person_salary  | number }}
+									@{{ employment.person_salary  | number }} руб
 								</td>
 						    </tr>
 						</table>

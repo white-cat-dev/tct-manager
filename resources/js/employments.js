@@ -204,22 +204,25 @@ angular.module('tctApp').controller('EmploymentsController', [
 		{
 			worker.employments[day].status_id = 0;
 			worker.employments[day].main_category = '';
-			worker.employments[day].status_custom = 1;
-			// delete worker.employments[day]; 
+			worker.employments[day].status_custom = 0;
 			return;
 		}
 
 		if (!worker.employments[day])
 		{
 			var statusId = ($scope.currentEmploymentStatus !== null) ? $scope.currentEmploymentStatus : -1;
-			var mainCategory = ($scope.currentMainCategory !== null) ? $scope.currentMainCategory : 0;
+			var mainCategory = ($scope.currentMainCategory !== null) ? $scope.currentMainCategory : '';
 			var statusCustom = 0; 
 
 			if (statusId)
 			{
-				if ($scope.statuses[statusId].customable > 0)
+				if ($scope.statuses[statusId].customable)
 				{
-					statusCustom = (worker.id > 0) ? 1 : 9;
+					statusCustom = $scope.statuses[statusId].default_salary;
+				}
+
+				if ($scope.statuses[statusId].type == 'production')
+				{
 					mainCategory = 'tiles';
 				}
 			}
@@ -241,12 +244,14 @@ angular.module('tctApp').controller('EmploymentsController', [
 
 			if ($scope.currentEmploymentStatus !== null)
 			{
-				statusId = $scope.currentEmploymentStatus;
-
-				if (($scope.statuses[$scope.currentEmploymentStatus].customable > 0) && (statusCustom <= 0))
+				if (statusId != $scope.currentEmploymentStatus)
 				{
-					statusCustom = (worker.id > 0) ? 1 : 9;
-					// mainCategory = 'tiles';
+					statusId = $scope.currentEmploymentStatus;
+
+					if ($scope.statuses[statusId].customable)
+					{
+						statusCustom = $scope.statuses[statusId].default_salary;
+					}
 				}
 			}
 
@@ -254,10 +259,19 @@ angular.module('tctApp').controller('EmploymentsController', [
 			{
 				mainCategory = $scope.currentMainCategory;
 			}
+			else if ((worker.employments[day].main_category == '') && ($scope.statuses[statusId].type == 'production'))
+			{
+				mainCategory = 'tiles';
+			}
+			else if ($scope.statuses[statusId].type != 'production')
+			{
+				mainCategory = '';
+			}
 
 			worker.employments[day].status_id = statusId;
 			worker.employments[day].main_category = mainCategory;
 			worker.employments[day].status_custom = statusCustom;
+			worker.employments[day].updated = true;
 		}
 
 		$scope.updateTotalEmployment(worker);
@@ -374,14 +388,11 @@ angular.module('tctApp').controller('EmploymentsController', [
 				{
 					continue;
 				}
-				if (status.customable)
+				if (status.type == 'production')
 				{
-					workers[i].totalEmployment += +workers[i].employments[key].status_custom;
+					workers[i].totalEmployment += (status.customable) ? +workers[i].employments[key].status_custom : status.salary;
 				}
-				else
-				{
-					workers[i].totalEmployment += status.salary_production;
-				}
+
 			}
 
 			workers[i].totalEmployment = Math.round(workers[i].totalEmployment * 100) / 100;
@@ -398,13 +409,9 @@ angular.module('tctApp').controller('EmploymentsController', [
 				{
 					continue;
 				}
-				if (status.customable)
+				if (status.type == 'hours')
 				{
-					$scope.manager.totalEmployment += +$scope.manager.employments[key].status_custom;
-				}
-				else
-				{
-					$scope.manager.totalEmployment += status.salary_production;
+					$scope.manager.totalEmployment += (status.customable) ? +$scope.manager.employments[key].status_custom : status.salary;
 				}
 			}
 

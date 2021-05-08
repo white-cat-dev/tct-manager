@@ -22,11 +22,13 @@
 	<div class="edit-form-block">
 		<table class="table">
 			<tr>
-				<th>Название</th>
-				<th>Производство</th>
-				<th>Фиксированная</th>
-				<th>Иконка</th>
-				<th>Цвет иконки</th>
+				<th style="width: 15%;">Название</th>
+				<th style="width: 18%;">Тип оплаты</th>
+				<th style="width: 15%;">Базовое значение</th>
+				<th style="width: 15%;">Значение</th>
+				<th style="width: 15%;">Значение по умолчанию</th>
+				<th style="width: 8%;">Иконка</th>
+				<th style="width: 8%;">Цвет иконки</th>
 				<th></th>
 			</tr>
 
@@ -34,26 +36,51 @@
 				<td>
 					<input type="text" class="form-control" ng-model="status.name">
 				</td>
+				<td ng-init="status.type = ('' + status.type)">
+					<div class="custom-control custom-radio">
+						<input class="custom-control-input" type="radio" id="radioProduction@{{ $index }}" ng-model="status.type" value="production">
+						<label class="custom-control-label" for="radioProduction@{{ $index }}">
+							сдельная
+						</label>
+					</div>
+					<div class="custom-control custom-radio">
+						<input class="custom-control-input" type="radio" id="radioHours@{{ $index }}" ng-model="status.type" value="hours">
+						<label class="custom-control-label" for="radioHours@{{ $index }}">
+							почасовая
+						</label>
+					</div>
+					<div class="custom-control custom-radio">
+						<input class="custom-control-input" type="radio" id="radioFixed@{{ $index }}" ng-model="status.type" value="fixed">
+						<label class="custom-control-label" for="radioFixed@{{ $index }}">
+							фиксированная
+						</label>
+					</div>
+				</td>
 				<td>
-					<input type="text" class="form-control" ng-model="status.salary_production" ng-disabled="status.customable">
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" ng-model="status.customable" id="checkboxCustomable@{{ $index }}">
-						<label class="custom-control-label" for="checkboxCustomable@{{ $index }}">
+					<input type="text" class="form-control" ng-model="status.base_salary" ng-disabled="status.type != 'hours'">
+					<span class="help" ng-if="status.type=='hours'">Оплата за 1 час</span>
+					<span class="help" ng-if="status.type=='production'">Зависит от объема производства</span>
+				</td>
+				<td>
+					<input type="text" class="form-control" ng-model="status.salary" ng-disabled="status.customable">
+					<div class="custom-control custom-checkbox" >
+						<input type="checkbox" class="custom-control-input" ng-model="status.customable" id="checkboxManual@{{ $index }}">
+						<label class="custom-control-label" for="checkboxManual@{{ $index }}">
 							Ручной ввод значения
 						</label>
 					</div>
 				</td>
 				<td>
-					<input type="text" class="form-control" ng-model="status.salary_fixed">
+					<input type="text" class="form-control" ng-model="status.default_salary" ng-disabled="!status.customable">
 				</td>
 				<td ng-style="{'color': status.icon_color}">
-					<ui-select ng-model="status.icon" skip-focusser="true" ng-disabled="status.customable">
-			            <ui-select-match placeholder="Выберите иконку">
-				            <span ng-if="$select.selected == 'name'" ng-bind-html="status.name" style="font-weight: 500;"></span>
+					<ui-select ng-model="status.icon" skip-focusser="true">
+			            <ui-select-match placeholder="...">
+
 				            <span ng-if="$select.selected != 'name'" ng-bind-html="$select.selected"></span>
 				        </ui-select-match>
 			            <ui-select-choices repeat="statusTemplate in statusTemplates">
-			            	<span ng-if="statusTemplate == 'name'">Название</span>
+
 			                <span ng-if="statusTemplate != 'name'" ng-bind-html="statusTemplate"></span>
 			            </ui-select-choices>
 					</ui-select>

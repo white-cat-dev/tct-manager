@@ -14,15 +14,17 @@ class EmploymentStatus extends Model
     	'icon',
         'icon_color',
         'name',
-        'salary_production',
-        'salary_fixed',
-        'salary_team',
-        'customable'
+        'type',
+        'base_salary',
+        'salary',
+        'default_salary',
+        'customable',
     ];
 
     protected $casts = [
-        'salary_production' => 'float',
-        'salary_fixed' => 'float',
-        'salary_team' => 'float'
+        'base_salary' => 'float',
+        'salary' => 'float',
+        'default_salary' => 'float',
+        'customable' => 'boolean'
     ];
 }

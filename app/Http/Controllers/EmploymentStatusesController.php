@@ -11,7 +11,8 @@ class EmploymentStatusesController extends Controller
     protected $validationRules = [
         'name' => 'required',
         'icon' => 'required',
-        'icon_color' => 'required'
+        'icon_color' => 'required',
+        'type' => 'required'
     ];
 
 
@@ -68,10 +69,11 @@ class EmploymentStatusesController extends Controller
             'icon' => !empty($data['icon']) ? $data['icon'] : 0,
             'icon_color' => !empty($data['icon_color']) ? $data['icon_color'] : '#000000',
             'name' => !empty($data['name']) ? $data['name'] : '',
-            'salary_production' => !empty($data['salary_production']) ? $data['salary_production'] : 0,
-            'salary_fixed' => !empty($data['salary_fixed']) ? $data['salary_fixed'] : 0,
-            'salary_team' => !empty($data['salary_team']) ? $data['salary_team'] : 0,
-            'customable' => !empty($data['customable']) ? $data['customable'] : 0
+            'type' => !empty($data['type']) ? $data['type'] : 'fixed',
+            'base_salary' => !empty($data['base_salary']) ? $data['base_salary'] : 0,
+            'salary' => !empty($data['salary']) ? $data['salary'] : 0,
+            'default_salary' => !empty($data['default_salary']) ? $data['default_salary'] : 0,
+            'customable' => !empty($data['customable']) ? $data['customable'] : false
         ];
     }
 }
