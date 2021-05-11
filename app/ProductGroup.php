@@ -11,6 +11,7 @@ class ProductGroup extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'guid',
         'wp_name',
         'wp_slug',
     	'name',

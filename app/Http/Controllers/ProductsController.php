@@ -270,6 +270,7 @@ class ProductsController extends Controller
         return [
             'wp_name' => $wpName,
             'wp_slug' => $wpSlug,
+            'guid' => $request->get('guid', Str::uuid()),
             'name' => $request->get('name', ''),
             'set_pair_id' => $request->get('set_pair_id', null),
             'set_pair_ratio' => $request->get('set_pair_ratio', 0),

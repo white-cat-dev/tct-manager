@@ -36,7 +36,7 @@
 					<div class="param-label">Полное название</div>
 					<input type="text" class="form-control" ng-model="productGroup.wp_name" ng-class="{'is-invalid': productGroupErrors.wp_name}">
 					<small class="form-text">
-						Введите название, которое используется в WordPress
+						Введите название, которое используется на сайте
 					</small>
 				</div>
 
@@ -77,7 +77,15 @@
 					</div>
 
 					<small class="form-text">
-						Необходим для формирования характеристик для WordPress
+						Необходим для формирования характеристик на сайте
+					</small>
+				</div>
+
+				<div class="form-group">
+					<div class="param-label">Guid</div>
+					<input type="text" class="form-control" ng-model="productGroup.guid" ng-class="{'is-invalid': productGroupErrors.guid}">
+					<small class="form-text">
+						Идентификатор для интеграции с сайтом
 					</small>
 				</div>
 

@@ -173,6 +173,14 @@
 						<span ng-switch-when="neuter">Средний</span>
 					</span>
 				</div>
+				<div class="param-block" ng-if="productGroup.guid">
+					<div class="param-name">
+						Guid
+					</div>
+					<div class="param-value">
+						@{{ productGroup.guid }}
+					</div>
+				</div>
 			</div>
 
 			<div class="col-12 col-lg-6 col-xl-5">
