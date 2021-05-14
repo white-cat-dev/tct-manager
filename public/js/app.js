@@ -43555,12 +43555,6 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
       _iterator4.f();
     }
 
-    if ($scope.isOrderAllRealizationsChosen) {
-      $scope.order.pallets_realization_performed = $scope.order.pallets;
-    } else if (!$scope.isOrderPartRealizationsChosen) {
-      $scope.order.pallets_realization_performed = 0;
-    }
-
     $scope.order.pallets_price = $scope.palletsPrices[$scope.order.pay_type];
 
     if ($scope.order.manual_pallets_price !== undefined) {
@@ -43569,6 +43563,12 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
 
     if ($scope.order.manual_pallets !== undefined) {
       $scope.order.pallets = $scope.order.manual_pallets;
+    }
+
+    if ($scope.isOrderAllRealizationsChosen) {
+      $scope.order.pallets_realization_performed = $scope.order.pallets;
+    } else if (!$scope.isOrderPartRealizationsChosen) {
+      $scope.order.pallets_realization_performed = 0;
     }
 
     $scope.order.cost += $scope.order.pallets * $scope.order.pallets_price;

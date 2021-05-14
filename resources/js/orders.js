@@ -583,14 +583,6 @@ angular.module('tctApp').controller('OrdersController', [
 			}
 		}
 
-		if ($scope.isOrderAllRealizationsChosen)
-		{
-			$scope.order.pallets_realization_performed = $scope.order.pallets;
-		}
-		else if (!$scope.isOrderPartRealizationsChosen)
-		{
-			$scope.order.pallets_realization_performed = 0;
-		}
 
 		$scope.order.pallets_price = $scope.palletsPrices[$scope.order.pay_type];
 
@@ -603,6 +595,17 @@ angular.module('tctApp').controller('OrdersController', [
 		{
 			$scope.order.pallets = $scope.order.manual_pallets;
 		}
+
+
+		if ($scope.isOrderAllRealizationsChosen)
+		{
+			$scope.order.pallets_realization_performed = $scope.order.pallets;
+		}
+		else if (!$scope.isOrderPartRealizationsChosen)
+		{
+			$scope.order.pallets_realization_performed = 0;
+		}
+
 
 		$scope.order.cost += $scope.order.pallets * $scope.order.pallets_price;
 

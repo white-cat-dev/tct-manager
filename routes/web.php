@@ -283,3 +283,11 @@ Route::prefix('wp-api')->namespace('WpApi')->group(function()
 		Route::post('/', 'OrdersController@saveOrder');
 	});
 });
+
+Route::prefix('api')->namespace('Api')->group(function()
+{
+	Route::prefix('products')->group(function ()
+	{
+		Route::get('/', 'ProductsController@index');
+	});
+});
