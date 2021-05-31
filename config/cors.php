@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => ['wp-api/*', 'api/*'],
 
     'allowed_methods' => ['*'],
 
