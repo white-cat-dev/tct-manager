@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://tct.local', 'http://localhost:3000'],
+    'allowed_origins' => ['http://tct.local', 'http://localhost:3000', 'https://582907.ru'],
 
     'allowed_origins_patterns' => [],
 
