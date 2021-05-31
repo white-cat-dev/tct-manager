@@ -64,7 +64,7 @@
 				</td>
 				@endforeach
 			</tr>
-			@if ($productGroup->category->units != 'unit')
+			{{-- @if ($productGroup->category->units != 'unit')
 			<tr>
 				<td>
 					<strong>шт</strong>
@@ -75,7 +75,7 @@
 				</td>
 				@endforeach
 			</tr>
-			@endif
+			@endif --}}
 		</tbody>
 	</table>
 

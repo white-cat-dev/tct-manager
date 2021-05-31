@@ -286,8 +286,6 @@ Route::prefix('wp-api')->namespace('WpApi')->group(function()
 
 Route::prefix('api')->namespace('Api')->group(function()
 {
-	Route::prefix('products')->group(function ()
-	{
-		Route::get('/', 'ProductsController@index');
-	});
+	Route::get('products', 'ProductsController@index');
+	Route::get('products/stocks', 'ProductsController@stocks');
 });

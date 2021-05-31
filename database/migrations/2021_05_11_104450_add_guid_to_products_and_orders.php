@@ -14,11 +14,11 @@ class AddGuidToProductsAndOrders extends Migration
     public function up()
     {
         Schema::table('product_groups', function (Blueprint $table) {
-            $table->string('guid')->default('')->after('id');
+            $table->string('uuid')->default('')->after('id');
         });
 
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('guid')->default('')->after('id');
+            $table->string('uuid')->default('')->after('id');
         });
     }
 
@@ -30,11 +30,11 @@ class AddGuidToProductsAndOrders extends Migration
     public function down()
     {
         Schema::table('product_groups', function (Blueprint $table) {
-            $table->dropColumn('guid');
+            $table->dropColumn('uuid');
         });
 
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('guid');
+            $table->dropColumn('uuid');
         });
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\ProductGroup;
+use App\Product;
 use Str;
 
 
@@ -18,7 +19,7 @@ class ProductsController extends Controller
         foreach ($productGroups as $productGroup) 
         {
             $productGroupData = [
-                'guid' => $productGroup['guid']
+                'uuid' => $productGroup['uuid']
             ];
 
             $paramsData = [];
@@ -139,7 +140,7 @@ class ProductsController extends Controller
             }
 
             $productGroupsData[] = [
-                'guid' => $productGroup->guid,
+                'uuid' => $productGroup->uuid,
                 'name' => $productGroup->wp_name ? $productGroup->wp_name : $productGroup->name,
                 'size' => $productGroup->size,
                 'units' => $productGroup->units_text,
@@ -149,5 +150,25 @@ class ProductsController extends Controller
         }
 
         return $productGroupsData;
+    }
+
+
+    public function stocks(Request $request)
+    {
+        $stocks = [];
+
+        $uuid = explode(',', $request->get('products', ''));
+        $productGroups = ProductGroup::with('products')->whereIn('uuid', $uuid)->get();
+
+        foreach ($productGroups as $productGroup) 
+        {
+            $stocks[$productGroup->uuid] = [];
+            foreach ($productGroup->products as $product) 
+            {
+                $stocks[$productGroup->uuid][$product->variation] = $product->export_in_stock;
+            }
+        }
+
+        return $stocks;
     }
 }

@@ -299,6 +299,12 @@ class Product extends Model
     }
 
 
+    public function getExportInStockAttribute()
+    {
+        return floor($this->free_in_stock);
+    }
+
+
     public function getVariationTextAttribute()
     {
         if ($this->category->variations == 'colors')
