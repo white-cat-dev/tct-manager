@@ -14688,7 +14688,7 @@ i.far {
 }
 
 .orders-page .main-orders-block .table {
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 0px;
 }
 
@@ -14726,10 +14726,6 @@ i.far {
 .orders-page .main-orders-block .table th:first-child,
 .orders-page .main-orders-block .table td:first-child {
   padding-left: 10px;
-}
-
-.orders-page .main-orders-block .table th {
-  font-size: 13px;
 }
 
 .orders-page .main-orders-block .no-current-order {

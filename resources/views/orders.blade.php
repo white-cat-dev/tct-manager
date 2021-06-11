@@ -104,8 +104,8 @@
 				<table class="table">
 					<tr>
 						<th>Номер</th>
-						<th>Дата принятия</th>
-						{{-- <th class="d-none d-lg-table-cell">Дата готовности</th> --}}
+						<th>Принят</th>
+						<th class="d-none d-lg-table-cell">Готов</th>
 						<th>Стоимость</th>
 						<th class="d-none d-lg-table-cell">Оплачено</th>
 						<th class="d-none d-lg-table-cell">Отпущено</th>
@@ -120,9 +120,9 @@
 						<td>
 							@{{ order.formatted_date }}
 						</td>
-					{{-- 	<td class="d-none d-lg-table-cell">
+						<td class="d-none d-lg-table-cell">
 							@{{ order.formatted_date_to }}
-						</td> --}}
+						</td>
 						<td ng-class="{'text-success': order.pay_type != 'cash'}">
 							@{{ order.cost | number }} руб
 						</td>

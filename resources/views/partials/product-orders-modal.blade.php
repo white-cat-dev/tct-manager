@@ -24,22 +24,26 @@
 				<table class="table" ng-if="modalProductOrders.length > 0">
 					<tr>
 						<th>Заказ</th>
+						<th>До</th>
 						<th>Количество</th>
 						<th>Отпущено</th>
 						<th>Осталось</th>
 					</tr>
 
 					<tr ng-repeat="order in modalProductOrders" ng-if="order.progress.planned > 0">
-						<td style="width: 25%;">
+						<td style="width: 20%;">
 							<a ng-href="@{{ order.url }}" ng-click="hideProductOrdersModal()">@{{ order.number }}</a>
 						</td>
-						<td style="width: 25%;">
+						<td style="width: 20%;">
+							@{{ order.formatted_date_to }}
+						</td>
+						<td style="width: 20%;">
 							@{{ order.progress.total }} <span ng-bind-html="modalProduct.units_text"></span>
 						</td>
-						<td style="width: 25%;">
+						<td style="width: 20%;">
 							@{{ order.progress.realization }} <span ng-bind-html="modalProduct.units_text"></span>
 						</td>
-						<td style="width: 25%;">
+						<td style="width: 20%;">
 							@{{ order.progress.planned }} <span ng-bind-html="modalProduct.units_text"></span>
 						</td>
 					</tr>
