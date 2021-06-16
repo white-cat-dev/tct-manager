@@ -144,6 +144,8 @@ class ProductsController extends Controller
                 'name' => $productGroup->wp_name ? $productGroup->wp_name : $productGroup->name,
                 'size' => $productGroup->size,
                 'units' => $productGroup->units_text,
+                'units_in_pallet' => $productGroup->units_in_pallete,
+                'weight_units' => $productGroup->weight_unit * $productGroup->unit_in_units,
                 'params' => $paramsData,
                 'products' => $productsData
             ];

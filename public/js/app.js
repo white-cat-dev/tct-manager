@@ -43191,12 +43191,12 @@ angular.module('tctApp').controller('OrdersController', ['$scope', '$routeParams
         $scope.order.manual_delivery_price = $scope.order.delivery_price;
 
         if ($scope.order.date) {
-          var date = $scope.order.date.split("-");
+          var date = $scope.order.date.slice(0, 10).split("-");
           $scope.order.date_raw = date[2] + date[1] + date[0];
         }
 
         if ($scope.order.date_to) {
-          var dateTo = $scope.order.date_to.split("-");
+          var dateTo = $scope.order.date_to.slice(0, 10).split("-");
           $scope.order.date_to_raw = dateTo[2] + dateTo[1] + dateTo[0];
         }
 

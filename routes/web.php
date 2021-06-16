@@ -288,4 +288,6 @@ Route::prefix('api')->namespace('Api')->group(function()
 {
 	Route::get('products', 'ProductsController@index');
 	Route::get('products/stocks', 'ProductsController@stocks');
+
+	Route::post('order', 'OrdersController@stocks');
 });

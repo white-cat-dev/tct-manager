@@ -18,8 +18,8 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->string('number');
             $table->string('main_category');
-            $table->date('date');
-            $table->date('date_to');
+            $table->timestamp('date');
+            $table->timestamp('date_to');
             $table->integer('client_id');
             $table->string('delivery');
             $table->decimal('delivery_distance', 5, 2)->unsigned();
